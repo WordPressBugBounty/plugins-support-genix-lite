@@ -1,0 +1,3694 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Project-Id-Version: Support Genix Lite\n"
+"POT-Creation-Date: 2022-11-23 15:54+0600\n"
+"PO-Revision-Date: 2025-05-09 07:15+0000\n"
+"Last-Translator: Carlos Buetas\n"
+"Language-Team: Español\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: support-genix-lite.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2;___;_ee;SetTitle;AddInfo;AddError;"
+"SetSubtitle;AddModel;AddModelNonSearchable\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: es_ES\n"
+"X-Loco-Version: 2.7.2; wp-6.8.1"
+
+#: core/AppsBDModel.php:1099
+#, php-format
+msgid " %s are required"
+msgstr " Se requieren %s"
+
+#: core/AppsBDModel.php:1101
+#, php-format
+msgid " %s is required"
+msgstr " Se requiere %s"
+
+#: core/AppsBDModel.php:1070
+#, php-format
+msgid " %s should be less then %s"
+msgstr " %s debe ser menor que %s"
+
+#: appcore/APBDWPPromoBannerNotice.php:148
+msgid " Claim It Now!"
+msgstr ""
+
+#: core/AppsBDModel.php:1090
+msgid " should be hexadecimal"
+msgstr " debe ser hexadecimal"
+
+#: modules/Apbd_wps_settings.php:3075
+msgid "$1 For The First Month"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2505 modules/Apbd_wps_settings.php:3154
+#, php-format
+msgid "%1$s at %2$s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2345 modules/Apbd_wps_settings.php:2352
+#, php-format
+msgid "%1$s is invalid."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2359
+#, php-format
+msgid "%1$s is required."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2336
+#, php-format
+msgid "%1$s must contain number."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3009 modules/Apbd_wps_settings.php:3248
+#, php-format
+msgid "%d Agent"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3246
+#, php-format
+msgid "%d Categor"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3007
+#, php-format
+msgid "%d Category"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3008 modules/Apbd_wps_settings.php:3247
+#, php-format
+msgid "%d Tag"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3021
+#, php-format
+msgid "%d Tags"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2663
+#, php-format
+msgid "%s (Status Label)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2664
+#, php-format
+msgid "%s (status label)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2885
+#, fuzzy, php-format
+#| msgid "Integration"
+msgid "%s Integration"
+msgstr "Integración"
+
+#: modules/Apbd_wps_settings.php:3188
+#, php-format
+msgid "%s is not valid."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2515 modules/Apbd_wps_settings.php:3105
+#, fuzzy, php-format
+#| msgid "%s is required"
+msgid "%s is required."
+msgstr "Se requiere %s"
+
+#: core/AppsBDModel.php:1084
+#, php-format
+msgid "%s should be a valid email address"
+msgstr "%s debe ser una dirección de correo electrónico válida"
+
+#: core/AppsBDModel.php:1057
+#, php-format
+msgid "%s should be digit"
+msgstr "%s debe ser un dígito"
+
+#: core/AppsBDModel.php:1063
+#, php-format
+msgid "%s should be numeric"
+msgstr "%s debe ser numérico"
+
+#: modules/Apbd_wps_settings.php:2939 modules/Apbd_wps_settings.php:3186
+#, php-format
+msgid "%s:"
+msgstr ""
+
+#: modules/Apbd_wps_role.php:317 modules/Apbd_wps_role.php:436
+#: modules/Apbd_wps_settings.php:1759 modules/Apbd_wps_ticket_category.php:314
+#, php-format
+msgid "(ID: %d)"
+msgstr "(ID: %d)"
+
+#: modules/Apbd_wps_role.php:376 modules/Apbd_wps_ticket.php:964
+#: modules/Apbd_wps_ticket.php:1025
+#, php-format
+msgid "(Key: %d)"
+msgstr ""
+
+#: models/database/Mapbd_wps_woocommerce.php:104
+#: modules/Apbd_wps_settings.php:2836
+msgid ""
+"A new Order #{{order_id}} has been placed by {{user_full_name}} in your "
+"store {{store_title}}."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2686
+msgid "Action"
+msgstr "Acción"
+
+#: modules/Apbd_wps_settings.php:2490 modules/Apbd_wps_settings.php:3203
+msgid "Activate"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3057
+msgid "Activate & Continue"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2923
+msgid "Activate License"
+msgstr ""
+
+#: core/base_helper.php:207 models/database/Mapbd_wps_ticket.php:147
+#: modules/Apbd_wps_settings.php:2660 modules/Apbd_wps_settings.php:3241
+#: modules/Apbd_wps_ticket.php:938
+msgid "Active"
+msgstr "Activo"
+
+#: modules/Apbd_wps_settings.php:2557 modules/Apbd_wps_settings.php:3239
+msgid "Add Internal Note"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2995
+msgid "Add More"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3062
+msgid "Add More Category"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3064
+msgid "Add More Tag"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2682
+msgid "Add New"
+msgstr "Agregar nuevo"
+
+#: modules/Apbd_wps_settings.php:2474 modules/Apbd_wps_settings.php:3144
+#, php-format
+msgid "Add New %s"
+msgstr ""
+
+#: modules/Apbd_wps_notification.php:25
+msgid "Add New Notification"
+msgstr "Agregar nueva notificación"
+
+#: modules/Apbd_wps_settings.php:2475 modules/Apbd_wps_settings.php:3140
+msgid "Add Ticket"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2551 modules/Apbd_wps_settings.php:3166
+#: views/download_ticket/main.php:159
+msgid "Additional Data"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2778
+msgid "Address:"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2763
+msgid "Admin Only"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2732
+msgid "Admin or Agent"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2871
+msgid "Admin URL"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:744
+msgid "Administrator"
+msgstr "Administrador"
+
+#: models/database/Mapbd_wps_canned_msg.php:162
+#: modules/Apbd_wps_settings.php:2482 modules/Apbd_wps_settings.php:3197
+msgid "Agent"
+msgstr "Agente"
+
+#: modules/Apbd_wps_settings.php:2503 modules/Apbd_wps_settings.php:3227
+msgid "Agent:"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2569
+msgid ""
+"Agents with this role will be limited to handling tickets in the selected "
+"categories only."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3083 modules/Apbd_wps_settings.php:3265
+msgid "Agents:"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3005 modules/Apbd_wps_settings.php:3244
+msgid "All"
+msgstr ""
+
+#: modules/Apbd_wps_role.php:425 modules/Apbd_wps_settings.php:2471
+#: modules/Apbd_wps_settings.php:3138
+msgid "All Agents"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2690
+msgid "All Capabilities"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2472 modules/Apbd_wps_settings.php:3139
+#: modules/Apbd_wps_ticket_category.php:301
+msgid "All Categories"
+msgstr "todas las categorias"
+
+#: modules/Apbd_wps_settings.php:1748
+msgid "All Pages"
+msgstr ""
+
+#: modules/Apbd_wps_ticket.php:1017
+msgid "All Priorities"
+msgstr ""
+
+#: modules/Apbd_wps_role.php:305 modules/Apbd_wps_role.php:367
+msgid "All Roles"
+msgstr ""
+
+#: modules/Apbd_wps_ticket.php:956
+#, fuzzy
+#| msgid "All States"
+msgid "All Statuses"
+msgstr "Todos los Estados"
+
+#: modules/Apbd_wps_settings.php:3006 modules/Apbd_wps_settings.php:3245
+msgid "All Tags"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2458 modules/Apbd_wps_settings.php:3132
+msgid "All Tickets"
+msgstr "Todas las entradas"
+
+#: modules/Apbd_wps_settings.php:2640
+msgid "Allowed File Types"
+msgstr "Tipos de archivo permitidos"
+
+#: modules/Apbd_wps_settings.php:2854
+msgid "API Consumer Key"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2855
+msgid "API consumer key"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2856
+msgid "API Consumer Secret"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2857
+msgid "API consumer secret"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2864
+msgid "API Endpoint"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2865
+msgid "API endpoint"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2866
+msgid "API endpoint URL (example: https://example.com/edd-api/)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2916
+msgid "API endpoint URL (example: https://example.com/wp-json/licensor/)."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2917
+msgid "API Key"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2918
+msgid "API key"
+msgstr ""
+
+#: libs/APBD_WPS_EnvatoAPI.php:95
+msgid "API Key invalid"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2867
+msgid "API Public Key"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2868
+msgid "API public key"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2869
+msgid "API Token"
+msgstr "token de API"
+
+#: modules/Apbd_wps_settings.php:2870
+msgid "API token"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2912
+msgid "App Client ID"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2913
+msgid "App client ID"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2914
+msgid "App Client Secret"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2915
+msgid "App client secret"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2672
+msgid "App Loader"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2610
+msgid "App Loader Text"
+msgstr "Texto del cargador de aplicaciones"
+
+#: modules/Apbd_wps_settings.php:2485 modules/Apbd_wps_settings.php:3198
+msgid "Apply"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2491 modules/Apbd_wps_settings.php:3204
+msgid "Are you sure want to activate?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2935 modules/Apbd_wps_settings.php:3216
+#, fuzzy
+#| msgid "Are you sure to change order?"
+msgid "Are you sure want to change order?"
+msgstr "¿Estás seguro de cambiar el orden?"
+
+#: modules/Apbd_wps_settings.php:2497 modules/Apbd_wps_settings.php:3210
+msgid "Are you sure want to close?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2930
+msgid "Are you sure want to deactivate license?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2493 modules/Apbd_wps_settings.php:3206
+msgid "Are you sure want to deactivate?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2488 modules/Apbd_wps_settings.php:3201
+#, fuzzy
+#| msgid "Are you sure to delete?"
+msgid "Are you sure want to delete?"
+msgstr "¿Estás seguro de eliminar?"
+
+#: modules/Apbd_wps_settings.php:2542 modules/Apbd_wps_settings.php:3225
+msgid ""
+"Are you sure want to disable email notification to customer for this ticket?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2536 modules/Apbd_wps_settings.php:3221
+msgid ""
+"Are you sure want to enable email notification to customer for this ticket?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2501 modules/Apbd_wps_settings.php:3214
+msgid "Are you sure want to make private?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2499 modules/Apbd_wps_settings.php:3212
+msgid "Are you sure want to make public?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2487 modules/Apbd_wps_settings.php:3200
+msgid "Are you sure want to move to trash?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2495 modules/Apbd_wps_settings.php:3208
+msgid "Are you sure want to re-open?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2942 modules/Apbd_wps_settings.php:3219
+#, fuzzy
+#| msgid "Are you sure to reset order?"
+msgid "Are you sure want to reset order?"
+msgstr "¿Estás seguro de restablecer el pedido?"
+
+#: modules/Apbd_wps_settings.php:2489 modules/Apbd_wps_settings.php:3202
+msgid "Are you sure want to restore?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2559 modules/Apbd_wps_settings.php:3181
+msgid "Are you sure want to submit reply and close ticket?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2948 modules/Apbd_wps_settings.php:3254
+msgid "Assign Agent"
+msgstr "Asignar agente"
+
+#: modules/Apbd_wps_settings.php:2702
+msgid "Assign agent"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2693
+#, fuzzy
+#| msgid "Assign Me"
+msgid "Assign me"
+msgstr "Asignarme"
+
+#: modules/Apbd_wps_settings.php:2717
+msgid "Assign Rule"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2578
+msgid "Assign Rules"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2721
+msgid "Assign to agent"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2720
+msgid "Assign to role"
+msgstr ""
+
+#: views/download_ticket/main.php:57
+msgid "Assigned on"
+msgstr "Asignado el"
+
+#: modules/Apbd_wps_settings.php:2549
+#, fuzzy
+#| msgid "Assigned On"
+msgid "Assigned on:"
+msgstr "Asignado el"
+
+#. translators: %1$s: Project name, %2$s: Opening strong tag, %3$s: Closing strong tag, %4$s: Opening anchor tag, %5$s: Closing anchor tag
+#: appcore/APBDWPDiagnosticData.php:514
+#, php-format
+msgid ""
+"At %2$s%1$s%3$s, we prioritize continuous improvement and compatibility. To "
+"achieve this, we gather non-sensitive diagnostic information and details "
+"about plugin usage. This includes your site's URL, the versions of WordPress "
+"and PHP you're using, and a list of your installed plugins and themes. We "
+"also require your email address to provide you with exclusive discount "
+"coupons and updates. This data collection is crucial for ensuring that "
+"%2$s%1$s%3$s remains up-to-date and compatible with the most widely-used "
+"plugins and themes. Rest assured, your privacy is our priority - no spam, "
+"guaranteed. %4$sPrivacy Policy%5$s"
+msgstr ""
+"e mejora continua y compatibilidad. Para lograr esto, recopilamos "
+"información de diagnóstico no confidencial y detalles sobre el uso del "
+"complemento. Esto incluye la URL de su sitio, las versiones de WordPress y "
+"PHP que está utilizando y una lista de sus complementos y temas instalados. "
+"También requerimos su dirección de correo electrónico para proporcionarle "
+"cupones de descuento exclusivos y actualizaciones. Esta recopilación de "
+"datos es crucial para garantizar que %2$s%1$s%3$s permanezca actualizado y "
+"sea compatible con los complementos y temas más utilizados. Tenga la "
+"seguridad de que su privacidad es nuestra prioridad: no hay spam, "
+"garantizado. %4$sPolítica de privacidad%5$s"
+
+#: modules/Apbd_wps_settings.php:2775
+msgid "Attached with ticket category."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3042
+msgid "Auto Close Ticket"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2679
+msgid "Auto ticket close after"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2847
+msgid "Auto ticket creation."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2850
+msgid ""
+"Available placeholders: {{store_id}}, {{store_title}}, {{store_url}}, "
+"{{order_id}}, {{user_email}}, {{user_first_name}}, {{user_last_name}} and "
+"{{user_full_name}}."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2521 modules/Apbd_wps_settings.php:3237
+msgid "Back"
+msgstr "atrás"
+
+#: modules/Apbd_wps_settings.php:3169
+msgid "Back to Tickets"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2574
+msgid "Bar chart"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2816
+msgid "Based on settings"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2594
+msgid "BetterDocs"
+msgstr "BetterDocs"
+
+#: modules/Apbd_wps_settings.php:3036
+msgid "BetterDocs Integration"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2764
+msgid "Both (Clients & Admin)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2687
+msgid "Built-in"
+msgstr "Incorporado"
+
+#: modules/Apbd_wps_settings.php:2466 modules/Apbd_wps_settings.php:3137
+msgid "Bulk Actions"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2502 modules/Apbd_wps_settings.php:3152
+#, php-format
+msgid "by %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2530 modules/Apbd_wps_settings.php:3177
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: modules/Apbd_wps_settings.php:2689
+msgid "Capabilities"
+msgstr "Capacidades"
+
+#: modules/Apbd_wps_settings.php:2577
+msgid "Categories"
+msgstr "Categorías"
+
+#: modules/Apbd_wps_settings.php:2946
+msgid "Categories:"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2526 modules/Apbd_wps_settings.php:3125
+#: views/download_ticket/main.php:62
+msgid "Category"
+msgstr "Categoría"
+
+#: modules/Apbd_wps_settings.php:3067
+#, php-format
+msgid "Category %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2545 modules/Apbd_wps_settings.php:3161
+msgid "Category:"
+msgstr "Categoría:"
+
+#: modules/Apbd_wps_settings.php:3028
+msgid "Change"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2703
+msgid "Change category"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3147
+msgid "Change Password"
+msgstr "Cambia la contraseña"
+
+#: modules/Apbd_wps_settings.php:2701
+msgid "Change privacy"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2700
+msgid "Change status"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2525 modules/Apbd_wps_settings.php:3235
+msgid "Change User"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2907
+msgid "Check Support Expiry"
+msgstr "Comprobar la caducidad del soporte"
+
+#: modules/Apbd_wps_users.php:465
+msgid "Check your email for the confirmation link, then visit the login page."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2726
+msgid "Choose Category"
+msgstr "Elegir la categoría"
+
+#: modules/Apbd_wps_settings.php:2512 modules/Apbd_wps_settings.php:3233
+msgid "Choose User"
+msgstr ""
+
+#: modules/Apbd_wps_debug_log.php:109
+msgid "Clear failed try again"
+msgstr "Borrar fallido inténtalo de nuevo"
+
+#: modules/Apbd_wps_settings.php:2566
+msgid "Clear filters"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2529 modules/Apbd_wps_settings.php:3128
+msgid "Click or drag file to upload"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2671
+msgid "Click to disable file upload."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2681
+msgid "Click to disable."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2648
+msgid "Click to enable and setup."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2638
+msgid "Click to enable file upload and setup."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2899
+msgid "Click to enable."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3088 modules/Apbd_wps_settings.php:3268
+msgid "Click to make it private."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2534 modules/Apbd_wps_settings.php:3267
+msgid "Click to make it public."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2635
+msgid "Client & Reg. Page Image"
+msgstr "Cliente y reg. Imagen de página"
+
+#: modules/Apbd_wps_settings.php:2606
+msgid "Client Role"
+msgstr "Rol del cliente"
+
+#: modules/Apbd_wps_settings.php:2607
+msgid "Client role"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2496 modules/Apbd_wps_settings.php:3209
+msgid "Close"
+msgstr "Cierra"
+
+#: models/database/Mapbd_wps_ticket.php:147
+#: models/database/Mapbd_wps_ticket_log.php:105
+#: models/database/Mapbd_wps_ticket_reply.php:74
+#: modules/Apbd_wps_settings.php:2563 modules/Apbd_wps_settings.php:3243
+#: modules/Apbd_wps_ticket.php:935
+msgid "Closed"
+msgstr "Cerrado"
+
+#: modules/Apbd_wps_settings.php:2698
+#, fuzzy
+#| msgid "Closed Tickets"
+msgid "Closed ticket list"
+msgstr "Entradas Cerradas"
+
+#: modules/Apbd_wps_settings.php:2974
+msgid "Comma separated email addresses."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2877
+msgid "Comma-separated IDs of list (example: 1,2,3,4)."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2879
+msgid "Comma-separated IDs of tag (example: 1,2,3,4)."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2766
+msgid "Comma-separated options (example: Option A, Option B, Option C)."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3175
+msgid "Confirm New Password"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3176
+msgid "Confirm new password"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3120
+msgid "Confirm Password"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3121
+msgid "Confirm password"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2771
+msgid "Connected Email Address"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2772
+msgid "Connected email address"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2779
+msgid "Connected:"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2880
+msgid "Contact status"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2556 modules/Apbd_wps_settings.php:3178
+msgid "Content"
+msgstr "Contenido"
+
+#: modules/Apbd_wps_settings.php:3072
+msgid "Continue Setup"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2541 modules/Apbd_wps_settings.php:3224
+msgid "Copy Hotlink"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:551
+#, php-format
+msgid "Copyright %s © %s"
+msgstr "Derechos de autor %s © %s"
+
+#: appcore/APBDWPDiagnosticData.php:518
+msgid "Count Me In"
+msgstr "Cuenta conmigo"
+
+#: modules/Apbd_wps_settings.php:2522 modules/Apbd_wps_settings.php:3130
+msgid "Create"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3058
+#, php-format
+msgid "Create %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2762
+#, fuzzy
+#| msgid "Create for"
+msgid "Create For"
+msgstr "Crear para"
+
+#: modules/Apbd_wps_settings.php:2705
+msgid "Create note"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3086
+msgid "Create Ticket"
+msgstr "Crear Ticket"
+
+#: modules/Apbd_wps_settings.php:3024
+#, fuzzy
+#| msgid "Create Time:"
+msgid "Create ticket"
+msgstr "Tiempo de creación:"
+
+#: modules/Apbd_wps_settings.php:3101
+msgid "Create Ticket as a Guest"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3025
+msgid "Create ticket user"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2511 modules/Apbd_wps_settings.php:3232
+msgid "Create User"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2759
+msgid "Create Where"
+msgstr ""
+
+#: views/download_ticket/main.php:37
+#, fuzzy
+#| msgid "Created Date"
+msgid "Created at"
+msgstr "Fecha de creación"
+
+#: views/download_ticket/main.php:53
+msgid "Created by"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2506 modules/Apbd_wps_settings.php:3155
+msgid "Created:"
+msgstr ""
+
+#: api/v1/APBDWPSTicketAPI.php:776
+msgid "Creating a ticket has failed."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2789
+msgid "Cron Job Command"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2644
+#, php-format
+msgid "CSV %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3171
+msgid "Current Password"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3172
+msgid "Current password"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2670
+msgid "Custom CSS"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2738
+msgid "Custom Field"
+msgstr "Campo personalizado"
+
+#: modules/Apbd_wps_settings.php:2580
+#, fuzzy
+#| msgid "Custom Field List"
+msgid "Custom Fields"
+msgstr "Lista de campos personalizados"
+
+#: modules/Apbd_wps_settings.php:2967
+msgid "Custom Minutes"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2975
+msgid "Custom minutes"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2734
+msgid "Customer (Email to Ticket)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2733
+msgid "Customer (Ticket Portal)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2969
+msgid "Daily"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2634
+msgid "Dashboard Image"
+msgstr "Imagen del tablero"
+
+#: modules/Apbd_wps_settings.php:2483 modules/Apbd_wps_settings.php:3150
+msgid "Date"
+msgstr "Fecha"
+
+#: modules/Apbd_wps_settings.php:2998
+msgid "Date range"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2997
+msgid "Date Ranges"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2993
+msgid "Day"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2986
+msgid "Day of Month"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2987
+msgid "Day of month"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2977
+msgid "Day of Week"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2978
+msgid "Day of week"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3023
+msgid "Days"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2492 modules/Apbd_wps_settings.php:3205
+msgid "Deactivate"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2931
+msgid "Deactivate License"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2932
+msgid "Deactivate license"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2667
+#, php-format
+msgid "Default %s brand color: %s (HEX)."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2470 modules/Apbd_wps_settings.php:3195
+msgid "Delete"
+msgstr "Borrar"
+
+#: modules/Apbd_wps_debug_log.php:100 modules/Apbd_wps_notification.php:131
+msgid "Delete failed try again"
+msgstr "Eliminación fallida inténtalo de nuevo"
+
+#: modules/Apbd_wps_debug_log.php:87 modules/Apbd_wps_notification.php:118
+msgid "Delete is temporary disabled"
+msgstr "Eliminar está deshabilitado temporalmente"
+
+#: modules/Apbd_wps_settings.php:2712
+#, fuzzy
+#| msgid "Delete Ticket"
+msgid "Delete ticket"
+msgstr "Eliminar Ticket"
+
+#: models/database/Mapbd_wps_ticket.php:147
+msgid "Deleted"
+msgstr "Eliminado"
+
+#: modules/Apbd_wps_settings.php:2528 modules/Apbd_wps_settings.php:3127
+msgid "Description"
+msgstr "Descripción"
+
+#: modules/Apbd_wps_debug_log.php:33
+msgid "Details Debug Log"
+msgstr "Detalles Registro de depuración"
+
+#: modules/Apbd_wps_settings.php:2628
+#, fuzzy
+#| msgid "Disable auto-scroll to the latest response on ticket details"
+msgid "Disable auto-scroll to the latest response on ticket details."
+msgstr ""
+"Deshabilite el desplazamiento automático a la última respuesta en los "
+"detalles del ticket"
+
+#: modules/Apbd_wps_settings.php:2617
+#, fuzzy
+#| msgid "Disable closed ticket reply"
+msgid "Disable closed ticket reply."
+msgstr "Desactivar respuesta de ticket cerrado"
+
+#: modules/Apbd_wps_settings.php:2622
+#, fuzzy
+#| msgid "Disable Guest Ticket Creation"
+msgid "Disable guest ticket creation."
+msgstr "Deshabilitar la creación de Tickets de invitado"
+
+#: modules/Apbd_wps_settings.php:2621
+#, fuzzy
+#| msgid "Disable Registration Form"
+msgid "Disable registration form."
+msgstr "Desactivar formulario de registro"
+
+#: modules/Apbd_wps_settings.php:2680
+msgid "Disable reply notice text"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2627
+msgid "Disable ticket hotlink (except guest ticket)."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2626
+#, fuzzy
+#| msgid "Disable ticket search by value of custom field"
+msgid "Disable ticket search by value of custom field."
+msgstr "Deshabilitar la búsqueda de tickets por valor del campo personalizado"
+
+#: modules/Apbd_wps_settings.php:2842
+msgid "Disallow cancelled order ID"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2841
+msgid "Disallow Options"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2843
+msgid "Disallow refunded order ID"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2629
+msgid "Discard"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3077
+msgid ""
+"Discover all the premium features Support Genix offers and see how it can "
+"transform your business."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2654
+msgid "Display Options"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2642
+#, php-format
+msgid "Docs %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2605
+msgid "Documentation"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3111
+msgid "Don't have an account?"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2748
+msgid "Dropdown"
+msgstr "Desplegable"
+
+#: core/AppsBDModel.php:1798
+msgid "E004"
+msgstr "E004"
+
+#: modules/Apbd_wps_settings.php:2589
+msgid "EDD"
+msgstr "EDD"
+
+#: modules/Apbd_wps_settings.php:2862
+msgid "EDD in external site"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2861
+msgid "EDD in same site"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3032
+msgid "EDD Integration"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2859
+msgid "Edd Integration"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2858
+msgid "Edd Integrations"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2544 modules/Apbd_wps_settings.php:3185
+msgid "Edit"
+msgstr "Editar"
+
+#: modules/Apbd_wps_settings.php:2552 modules/Apbd_wps_settings.php:3167
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2706
+msgid "Edit custom field value"
+msgstr ""
+
+#: modules/Apbd_wps_notification.php:54
+msgid "Edit Notification"
+msgstr "Editar notificación"
+
+#: modules/Apbd_wps_settings.php:2713
+msgid "Edit order source"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2714
+msgid "Edit Purchase Code"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3068
+#, php-format
+msgid "EG: %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2596 views/download_ticket/main.php:174
+msgid "Elite Licenser"
+msgstr "Licenciador de élite"
+
+#: modules/Apbd_wps_settings.php:3037
+msgid "Elite Licenser Integration"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2814
+msgid "Elite Licenser Purchase Code"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2797
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: modules/Apbd_wps_settings.php:2518 modules/Apbd_wps_settings.php:3118
+msgid "Email Address"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2519 modules/Apbd_wps_settings.php:3119
+msgid "Email address"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3026
+msgid "Email Notification"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2535 modules/Apbd_wps_settings.php:3220
+msgid "Email notification"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3001
+msgid "Email Notification Content"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3002
+msgid "Email notification content"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2264
+msgid "Email notification disabled by"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2262
+msgid "Email notification enabled by"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2539 modules/Apbd_wps_settings.php:3222
+msgid "Email notification to customer for this ticket."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2540 modules/Apbd_wps_settings.php:3223
+msgid "Email notification."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3012
+msgid "Email Notifications"
+msgstr ""
+
+#: libs/Apbd_WPS_User.php:69 libs/Apbd_WPS_User.php:102
+msgid "Email or username is already exists"
+msgstr "El correo electrónico o el nombre de usuario ya existe"
+
+#: modules/Apbd_wps_settings.php:2791
+msgid "Email Reply Start Text"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2735
+msgid "Email Template"
+msgstr "Plantilla de correo electrónico"
+
+#: modules/Apbd_wps_settings.php:2579
+msgid "Email Templates"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2581
+msgid "Email to Ticket"
+msgstr "Enviar correo electrónico a ticket"
+
+#: modules/Apbd_wps_settings.php:2964
+msgid "Email:"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2633
+#, fuzzy
+#| msgid "Enable App Loader"
+msgid "Enable App Loader."
+msgstr "Habilitar cargador de aplicaciones"
+
+#: modules/Apbd_wps_settings.php:2616
+#, fuzzy
+#| msgid "Enable auto ticket close"
+msgid "Enable auto ticket close."
+msgstr "Habilitar cierre automático de ticket"
+
+#: modules/Apbd_wps_settings.php:2919
+msgid "Enable cache response."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2992
+msgid "Enable email notification."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2991
+msgid "Enable portal notice."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2618
+#, fuzzy
+#| msgid "Enable public ticket option (on creation)"
+msgid "Enable public ticket option (on creation)."
+msgstr "Habilitar la opción de Ticket público (en la creación)"
+
+#: modules/Apbd_wps_settings.php:2619
+#, fuzzy
+#| msgid "Enable public ticket option (on details)"
+msgid "Enable public ticket option (on details)."
+msgstr "Habilitar la opción de Ticket público (en detalles)"
+
+#: modules/Apbd_wps_settings.php:2615
+#, fuzzy
+#| msgid "Enable Sequential Ticket Track ID"
+msgid "Enable Sequential Ticket Track ID."
+msgstr "Habilitar ID de seguimiento de ticket secuencial"
+
+#: modules/Apbd_wps_settings.php:2609
+msgid "Enable shortcode mode for ticket page."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2623
+#, fuzzy
+#| msgid "Enable ticket close option for customer"
+msgid "Enable ticket close option for customer."
+msgstr "Habilitar la opción de cierre de ticket para el cliente"
+
+#: modules/Apbd_wps_settings.php:2620
+#, fuzzy
+#| msgid "Enable to show public tickets"
+msgid "Enable to show public tickets."
+msgstr "Habilitar para mostrar entradas públicas"
+
+#: modules/Apbd_wps_settings.php:2613
+#, fuzzy
+#| msgid "Enable Wordpress Login Register"
+msgid "Enable Wordpress Login Register."
+msgstr "Habilitar Wordpress Iniciar sesión Registrarse"
+
+#: modules/Apbd_wps_settings.php:2614
+#, fuzzy
+#| msgid "Enable Wordpress Profile Link"
+msgid "Enable Wordpress Profile Link."
+msgstr "Habilitar enlace de perfil de Wordpress"
+
+#: modules/Apbd_wps_settings.php:2903
+msgid "Enter a value between 1 and 20."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2988
+msgid "Enter a value between 1 and 31."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2976
+msgid "Enter a value between 5 and 60."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3054
+msgid "Enter Your License Key"
+msgstr ""
+
+#: modules/Apbd_wps_envato_system.php:340
+msgid "Enter your purchase code"
+msgstr "Introduce tu código de compra"
+
+#: modules/Apbd_wps_settings.php:2595 views/download_ticket/main.php:169
+msgid "Envato"
+msgstr "Envato"
+
+#: modules/Apbd_wps_settings.php:2904
+msgid "Envato API Token"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2905
+msgid "Envato API token"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3049
+msgid "Envato Integration"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2813
+msgid "Envato Purchase Code"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2910
+msgid "Envato Username"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2911
+msgid "Envato username"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2819
+msgid "Events"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2567
+msgid "Export"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2532 modules/Apbd_wps_settings.php:3159
+msgid "Export Ticket"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3029
+msgid "Feature"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2796
+msgid "Field"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2751
+msgid "Field Label"
+msgstr "Etiqueta de campo"
+
+#: modules/Apbd_wps_settings.php:2752
+msgid "Field label"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2765
+#, fuzzy
+#| msgid "Field Option"
+msgid "Field Options"
+msgstr "Opción de campo"
+
+#: modules/Apbd_wps_settings.php:2753
+msgid "Field Slug"
+msgstr "Babosa de campo"
+
+#: modules/Apbd_wps_settings.php:2754
+msgid "Field slug"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2742
+msgid "Field Type"
+msgstr "Tipo de campo"
+
+#: modules/Apbd_wps_settings.php:2743
+msgid "Field type"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2600
+#, fuzzy
+#| msgid "False"
+msgid "File"
+msgstr "Falso"
+
+#: modules/Apbd_wps_settings.php:2123
+msgid "File upload has been disabled in demomode"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3051
+msgid "Finished"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2513 modules/Apbd_wps_settings.php:3114
+msgid "First Name"
+msgstr "Primer nombre"
+
+#: modules/Apbd_wps_settings.php:2514 modules/Apbd_wps_settings.php:3115
+msgid "First name"
+msgstr "Nombre de pila"
+
+#: modules/Apbd_wps_settings.php:2590
+msgid "FluentCRM"
+msgstr "FluentCRM"
+
+#: modules/Apbd_wps_settings.php:2875
+msgid "FluentCRM in external site"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2874
+msgid "FluentCRM in same site"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2873
+msgid "FluentCRM Integration"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2872
+msgid "FluentCRM Integrations"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2611
+msgid "Footer Copyright Text"
+msgstr "Texto de derechos de autor del pie de página"
+
+#: modules/Apbd_wps_settings.php:2756
+msgid "Form Options"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3030
+msgid "Free"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2983
+msgid "Friday"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2575
+msgid "General"
+msgstr "General"
+
+#: modules/Apbd_wps_settings.php:3110
+#, fuzzy
+#| msgid "Again New Password"
+msgid "Get New Password"
+msgstr "Nuevamente Nueva Contraseña"
+
+#: modules/Apbd_wps_settings.php:3078
+msgid "Get Started"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2829
+msgid "Get Support"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3073
+#, fuzzy
+#| msgid "Go to"
+msgid "Go Pro"
+msgstr "Ir"
+
+#: modules/Apbd_wps_settings.php:3066
+msgid "Go to Tickets"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3047
+msgid "Google reCAPTCHA (v3)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2758
+#, fuzzy
+#| msgid "Half Field: "
+msgid "Half Field"
+msgstr "Medio campo:"
+
+#: modules/Apbd_wps_settings.php:2658
+#, fuzzy
+#| msgid "Hide reCAPTCHA Badge"
+msgid "Hide reCAPTCHA Badge."
+msgstr "Ocultar insignia reCAPTCHA"
+
+#: modules/Apbd_wps_settings.php:2625
+#, fuzzy
+#| msgid "Hide ticket details info by default"
+msgid "Hide ticket details info by default."
+msgstr "Ocultar información de detalles del Ticket por defecto"
+
+#: modules/Apbd_wps_ticket.php:1000
+msgid "High"
+msgstr "Alto"
+
+#: modules/Apbd_wps_settings.php:2961
+msgid "Holiday"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3099
+msgid "Home"
+msgstr "Hogar"
+
+#: modules/Apbd_wps_settings.php:2853
+msgid "Home URL of the store (example: https://example.com)."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2780
+msgid "Host"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2963
+msgid "Host:"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2968
+msgid "Hourly"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://supportgenix.com"
+msgstr "http://supportgenix.com"
+
+#. Author URI of the plugin/theme
+msgid "https://supportgenix.com"
+msgstr "https://supportgenix.com"
+
+#: modules/Apbd_wps_settings.php:2776
+#, php-format
+msgid ""
+"I agree with the Support Genix email to ticket %sterms and conditions%s."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2684
+msgid "ID"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2811
+msgid "If enabled"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2920
+msgid ""
+"If you enable this, license code checking request will be cache for 5 "
+"minutes."
+msgstr ""
+
+#: models/database/Mapbd_wps_ticket.php:147
+#: models/database/Mapbd_wps_ticket_log.php:105
+#: models/database/Mapbd_wps_ticket_reply.php:74
+#: modules/Apbd_wps_settings.php:2662 modules/Apbd_wps_ticket.php:936
+#, fuzzy
+#| msgid "In Progress"
+msgid "In-progress"
+msgstr "En progreso"
+
+#: core/base_helper.php:208 models/database/Mapbd_wps_ticket.php:147
+#: modules/Apbd_wps_settings.php:2661 modules/Apbd_wps_settings.php:3242
+#: modules/Apbd_wps_ticket.php:939
+msgid "Inactive"
+msgstr "Inactivo"
+
+#: modules/Apbd_wps_settings.php:2585
+msgid "Incoming"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2793
+msgid "Incoming Webhook"
+msgstr "Webhook entrante"
+
+#: modules/Apbd_wps_settings.php:2792
+msgid "Incoming Webhooks"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2543 modules/Apbd_wps_settings.php:3160
+msgid "Information"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2531 modules/Apbd_wps_settings.php:3131
+#, php-format
+msgid "Insert %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2749
+msgid "Instruction Text"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2587
+msgid "Integrations"
+msgstr "Integraciones"
+
+#: modules/Apbd_wps_canned_msg.php:42 modules/Apbd_wps_canned_msg.php:78
+#: modules/Apbd_wps_custom_field.php:46 modules/Apbd_wps_custom_field.php:82
+#: modules/Apbd_wps_email_template.php:49
+#: modules/Apbd_wps_envato_system.php:168 modules/Apbd_wps_role.php:68
+#: modules/Apbd_wps_role.php:127 modules/Apbd_wps_settings.php:1877
+#: modules/Apbd_wps_settings.php:1910 modules/Apbd_wps_settings.php:1950
+#: modules/Apbd_wps_settings.php:2008 modules/Apbd_wps_settings.php:2077
+#: modules/Apbd_wps_ticket.php:116 modules/Apbd_wps_ticket.php:196
+#: modules/Apbd_wps_ticket.php:246 modules/Apbd_wps_ticket.php:756
+#: modules/Apbd_wps_ticket.php:817 modules/Apbd_wps_ticket.php:878
+#: modules/Apbd_wps_ticket_assign_rule.php:43
+#: modules/Apbd_wps_ticket_assign_rule.php:79
+#: modules/Apbd_wps_ticket_category.php:47
+#: modules/Apbd_wps_ticket_category.php:138
+#: modules/Apbd_wps_ticket_category.php:146
+#: modules/Apbd_wps_ticket_reply.php:86 modules/Apbd_wps_users.php:71
+#: modules/Apbd_wps_users.php:212 modules/Apbd_wps_users.php:275
+#: modules/Apbd_wps_users.php:326 modules/Apbd_wps_users.php:425
+#: modules/Apbd_wps_users.php:473 modules/Apbd_wps_users.php:514
+msgid "Invalid data."
+msgstr ""
+
+#: api/v1/APBDWPSAPIConfig.php:177
+msgid "Invalid input"
+msgstr "Entrada inválida"
+
+#: modules/Apbd_wps_canned_msg.php:82 modules/Apbd_wps_canned_msg.php:151
+#: modules/Apbd_wps_custom_field.php:86 modules/Apbd_wps_custom_field.php:168
+#: modules/Apbd_wps_email_template.php:53 modules/Apbd_wps_role.php:131
+#: modules/Apbd_wps_role.php:237 modules/Apbd_wps_ticket_assign_rule.php:83
+#: modules/Apbd_wps_ticket_assign_rule.php:152
+#: modules/Apbd_wps_ticket_category.php:150
+#: modules/Apbd_wps_ticket_category.php:232
+msgid "Invalid item."
+msgstr ""
+
+#: appcore/APBDWPPromoBannerNotice.php:194
+msgid "Invalid nonce"
+msgstr ""
+
+#: modules/Apbd_wps_debug_log.php:90 modules/Apbd_wps_notification.php:121
+#: modules/Apbd_wps_notification.php:141
+msgid "Invalid Request"
+msgstr "Solicitud no válida"
+
+#: modules/Apbd_wps_debug_log.php:29 modules/Apbd_wps_debug_log.php:38
+#: modules/Apbd_wps_notification.php:50 modules/Apbd_wps_notification.php:70
+msgid "Invalid request"
+msgstr "Solicitud no válida"
+
+#: api/v1/APBDWPSAPIPortal.php:286 modules/Apbd_wps_canned_msg.php:25
+#: modules/Apbd_wps_canned_msg.php:53 modules/Apbd_wps_canned_msg.php:133
+#: modules/Apbd_wps_canned_msg.php:161 modules/Apbd_wps_canned_msg.php:190
+#: modules/Apbd_wps_canned_msg.php:220 modules/Apbd_wps_custom_field.php:29
+#: modules/Apbd_wps_custom_field.php:57 modules/Apbd_wps_custom_field.php:153
+#: modules/Apbd_wps_custom_field.php:178 modules/Apbd_wps_custom_field.php:205
+#: modules/Apbd_wps_custom_field.php:235 modules/Apbd_wps_custom_field.php:265
+#: modules/Apbd_wps_email_template.php:24
+#: modules/Apbd_wps_email_template.php:104
+#: modules/Apbd_wps_email_template.php:134
+#: modules/Apbd_wps_envato_system.php:103 modules/Apbd_wps_role.php:46
+#: modules/Apbd_wps_role.php:79 modules/Apbd_wps_role.php:221
+#: modules/Apbd_wps_role.php:247 modules/Apbd_wps_settings.php:1779
+#: modules/Apbd_wps_settings.php:1887 modules/Apbd_wps_settings.php:1920
+#: modules/Apbd_wps_settings.php:1960 modules/Apbd_wps_settings.php:2018
+#: modules/Apbd_wps_ticket.php:53 modules/Apbd_wps_ticket.php:126
+#: modules/Apbd_wps_ticket.php:206 modules/Apbd_wps_ticket.php:256
+#: modules/Apbd_wps_ticket.php:317 modules/Apbd_wps_ticket.php:398
+#: modules/Apbd_wps_ticket.php:441 modules/Apbd_wps_ticket.php:508
+#: modules/Apbd_wps_ticket.php:701 modules/Apbd_wps_ticket.php:718
+#: modules/Apbd_wps_ticket.php:735 modules/Apbd_wps_ticket.php:766
+#: modules/Apbd_wps_ticket.php:796 modules/Apbd_wps_ticket.php:827
+#: modules/Apbd_wps_ticket.php:857 modules/Apbd_wps_ticket.php:888
+#: modules/Apbd_wps_ticket.php:1048 modules/Apbd_wps_ticket_assign_rule.php:26
+#: modules/Apbd_wps_ticket_assign_rule.php:54
+#: modules/Apbd_wps_ticket_assign_rule.php:134
+#: modules/Apbd_wps_ticket_assign_rule.php:162
+#: modules/Apbd_wps_ticket_assign_rule.php:191
+#: modules/Apbd_wps_ticket_assign_rule.php:221
+#: modules/Apbd_wps_ticket_category.php:30
+#: modules/Apbd_wps_ticket_category.php:58
+#: modules/Apbd_wps_ticket_category.php:117
+#: modules/Apbd_wps_ticket_category.php:214
+#: modules/Apbd_wps_ticket_category.php:242
+#: modules/Apbd_wps_ticket_category.php:338
+#: modules/Apbd_wps_ticket_category.php:368
+#: modules/Apbd_wps_ticket_reply.php:23 modules/Apbd_wps_users.php:33
+#: modules/Apbd_wps_users.php:81 modules/Apbd_wps_users.php:222
+#: modules/Apbd_wps_users.php:285 modules/Apbd_wps_users.php:336
+#: modules/Apbd_wps_users.php:358 modules/Apbd_wps_users.php:435
+#: modules/Apbd_wps_users.php:483 traits/APBDWPSTicketAPITrait.php:16
+#: traits/APBDWPSTicketAPITrait.php:62
+msgid "Invalid request."
+msgstr ""
+
+#: modules/Apbd_wps_users.php:272
+msgid "Invalid user."
+msgstr ""
+
+#: modules/Apbd_wps_users.php:470
+msgid "Invalid username or email address."
+msgstr ""
+
+#: modules/Apbd_wps_users.php:323
+msgid "Invalid username or password."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2647
+#, php-format
+msgid "JSON %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3059
+msgid "Just enter title of the categories and click save & next!"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3063
+msgid "Just enter title of the tags and click save & next!"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2739
+msgid "Label"
+msgstr "Etiqueta"
+
+#: modules/Apbd_wps_settings.php:2516 modules/Apbd_wps_settings.php:3116
+msgid "Last Name"
+msgstr "Apellido"
+
+#: modules/Apbd_wps_settings.php:2517 modules/Apbd_wps_settings.php:3117
+msgid "Last name"
+msgstr "Apellido"
+
+#: modules/Apbd_wps_settings.php:2604
+msgid "Learn more"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3070
+msgid "License Activated & Valid"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2921
+msgid "License Code"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2922
+msgid "License code"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2927
+msgid "License Expired on"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2906
+msgid "License Required"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2924
+msgid "License Status"
+msgstr ""
+
+#: modules/Apbd_wps_envato_system.php:394 modules/Apbd_wps_settings.php:2926
+msgid "License Type"
+msgstr "Tipo de licencia"
+
+#: modules/Apbd_wps_settings.php:2565
+msgid "Line chart"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2876
+msgid "List IDs"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2909
+#, fuzzy
+#| msgid "Loading ..."
+msgid "Loading..."
+msgstr "Cargando ..."
+
+#: modules/Apbd_wps_settings.php:3102
+msgid "Login"
+msgstr "Acceso"
+
+#: modules/Apbd_wps_settings.php:2673
+msgid "Login Page Link"
+msgstr "Enlace de la página de inicio de sesión"
+
+#: modules/Apbd_wps_users.php:318
+msgid "Login successful."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3013
+msgid "Login Systems"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2603 modules/Apbd_wps_settings.php:3260
+msgid "Login with Envato"
+msgstr "Iniciar sesión con Envato"
+
+#: modules/Apbd_wps_settings.php:3014 modules/Apbd_wps_settings.php:3259
+msgid "Login with Google"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2599
+msgid "Logo"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3148
+#, fuzzy
+#| msgid "log out"
+msgid "Logout"
+msgstr "cerrar sesión"
+
+#: modules/Apbd_wps_users.php:346
+msgid "Logout successful."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3108
+msgid "Lost your password?"
+msgstr "¿Perdiste tu contraseña?"
+
+#: modules/Apbd_wps_ticket.php:998
+msgid "Low"
+msgstr "Bajo"
+
+#: modules/Apbd_wps_settings.php:2768
+msgid "Mailbox"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2767
+msgid "Mailboxes (Modern)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2769
+msgid "Mailboxes (Traditional)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2788
+msgid "Mailboxes Settings"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2598
+msgid "Main"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3129
+#, fuzzy
+#| msgid "Make this ticket public"
+msgid "Make this ticket public."
+msgstr "Hacer público este Ticket"
+
+#: modules/Apbd_wps_settings.php:2597
+msgid "Manage License"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2696
+msgid "Manage other agent's tickets"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2697
+msgid "Manage self created tickets"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2695
+msgid "Manage unassigned tickets"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2691
+msgid "Manager"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2639
+msgid "Max file size"
+msgstr ""
+
+#: modules/Apbd_wps_ticket.php:999
+msgid "Medium"
+msgstr "Medio"
+
+#: modules/Apbd_wps_settings.php:2833
+msgid "Menu Title"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2834
+msgid "Menu title"
+msgstr ""
+
+#: core/AppsBDBaseModuleLite.php:164
+msgid "model not initialize"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2582
+msgid "Modern"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2979
+#, fuzzy
+#| msgid "Today"
+msgid "Monday"
+msgstr "Este Dia"
+
+#: modules/Apbd_wps_settings.php:2971
+#, fuzzy
+#| msgid "Month"
+msgid "Monthly"
+msgstr "Mes"
+
+#: modules/Apbd_wps_settings.php:2468 modules/Apbd_wps_settings.php:3193
+#, fuzzy
+#| msgid "Move To Trash"
+msgid "Move to Trash"
+msgstr "Mover a la papelera"
+
+#: modules/Apbd_wps_settings.php:2704
+msgid "Move to trash"
+msgstr ""
+
+#: models/database/Mapbd_wps_edd.php:75
+#: models/database/Mapbd_wps_woocommerce.php:134
+msgid "Multiple same site integration is not allowed."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2459 modules/Apbd_wps_settings.php:3189
+#, fuzzy
+#| msgid "My Ticket"
+msgid "My Tickets"
+msgstr "Mi billete"
+
+#: modules/Apbd_wps_settings.php:2546 modules/Apbd_wps_settings.php:3162
+msgid "N/A"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2685
+msgid "Name"
+msgstr "Nombre"
+
+#: models/database/Mapbd_wps_ticket.php:1188 modules/Apbd_wps_settings.php:2476
+#: modules/Apbd_wps_settings.php:3196
+msgid "Need Reply"
+msgstr "Necesito respuesta"
+
+#: models/database/Mapbd_wps_ticket.php:147
+#: models/database/Mapbd_wps_ticket_log.php:105
+#: models/database/Mapbd_wps_ticket_reply.php:74
+#: modules/Apbd_wps_settings.php:2659 modules/Apbd_wps_ticket.php:934
+msgid "New"
+msgstr "Nuevo"
+
+#: modules/Apbd_wps_settings.php:3173
+msgid "New Password"
+msgstr "Nueva contraseña"
+
+#: modules/Apbd_wps_settings.php:3174
+#, fuzzy
+#| msgid "2nd Password"
+msgid "New password"
+msgstr "2da contraseña"
+
+#: core/base_helper.php:210 modules/Apbd_wps_settings.php:2538
+#: modules/Apbd_wps_settings.php:3183
+msgid "No"
+msgstr "No"
+
+#: core/AppsBDBaseModuleLite.php:1044 core/AppsBDBaseModuleLite.php:1046
+#: core/AppsBDBaseModuleLite.php:1050
+msgid "No change for update"
+msgstr "Sin cambios para actualizar"
+
+#: models/database/Mapbd_wps_ticket.php:963
+#, fuzzy
+#| msgid "No notes Found"
+msgid "No items found!"
+msgstr "No se encontraron notas"
+
+#: appcore/APBDWPDiagnosticData.php:521
+msgid "No, Thanks"
+msgstr "No, gracias"
+
+#: modules/Apbd_wps_settings.php:2548 modules/Apbd_wps_settings.php:3228
+msgid "Note"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2636
+msgid "Nothing selected"
+msgstr ""
+
+#: modules/Apbd_wps_envato_system.php:165 modules/Apbd_wps_settings.php:1874
+#: modules/Apbd_wps_settings.php:1907 modules/Apbd_wps_settings.php:1947
+#: modules/Apbd_wps_settings.php:2005 modules/Apbd_wps_settings.php:2074
+msgid "Nothing to save."
+msgstr ""
+
+#: modules/Apbd_wps_canned_msg.php:70 modules/Apbd_wps_custom_field.php:74
+#: modules/Apbd_wps_email_template.php:41 modules/Apbd_wps_role.php:115
+#: modules/Apbd_wps_role.php:118 modules/Apbd_wps_ticket_assign_rule.php:71
+#: modules/Apbd_wps_ticket_category.php:135
+msgid "Nothing to update."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2890
+#, fuzzy
+#| msgid "Notification Settings"
+msgid "Notification Events"
+msgstr "Configuración de las notificaciones"
+
+#: modules/Apbd_wps_settings.php:2723
+msgid "Notify to agent"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2806
+msgid "Number"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2902
+msgid "Number of Suggested Docs"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2745
+msgid "Numeric"
+msgstr "Numérico"
+
+#: views/download_ticket/main.php:148
+msgid "Off"
+msgstr ""
+
+#: views/download_ticket/main.php:148
+msgid "On"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2824
+msgid "On Client Creation"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3027
+msgid "On Ticket Closed"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2822
+msgid "On Ticket Creation"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2823
+msgid "On Ticket Replied"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2803
+#, fuzzy
+#| msgid "Option"
+msgid "Optional"
+msgstr "Opción"
+
+#: modules/Apbd_wps_settings.php:2790 modules/Apbd_wps_settings.php:3261
+msgid "or"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2933
+msgid "Order"
+msgstr "Ordenar"
+
+#: models/database/Mapbd_wps_woocommerce.php:103
+#: modules/Apbd_wps_settings.php:2835
+msgid ""
+"Order #{{order_id}} has been placed by {{user_full_name}} at {{store_title}}"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2936 modules/Apbd_wps_settings.php:3217
+msgid "Order Down"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2830
+msgid "Order Info Required"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2941
+msgid "Order Reset"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2934 modules/Apbd_wps_settings.php:3215
+msgid "Order Up"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2962 modules/Apbd_wps_settings.php:3226
+#, php-format
+msgid "Other Tickets (%d)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2996
+msgid ""
+"Our office is currently closed for the holiday. While you're welcome to "
+"submit your ticket, please be aware that our team will review it when we "
+"return to the office. We thank you for your understanding and will respond "
+"to your request promptly upon our return."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2586
+msgid "Outgoing"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2818
+msgid "Outgoing Webhook"
+msgstr "Webhook saliente"
+
+#: modules/Apbd_wps_settings.php:2817
+msgid "Outgoing Webhooks"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2716
+msgid "Parent Category"
+msgstr "Categoría principal"
+
+#: modules/Apbd_wps_settings.php:3089 modules/Apbd_wps_settings.php:3270
+msgid "Participant"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3106
+msgid "Password"
+msgstr "Clave"
+
+#: modules/Apbd_wps_settings.php:2645
+#, php-format
+msgid "PDF %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2881
+msgid "Pending"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2958
+msgid "Performance Insights"
+msgstr ""
+
+#: core/AppsbdAjaxDataResponse.php:183
+msgid "Permission Denied"
+msgstr "Permiso denegado"
+
+#: modules/Apbd_wps_settings.php:2641
+#, php-format
+msgid "Photos %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2755
+msgid "Placeholder"
+msgstr "Marcador de posición"
+
+#: modules/Apbd_wps_settings.php:2727
+msgid "Placeholers"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3022
+#, php-format
+msgid ""
+"Please ensure you add the shortcode %s to your designated ticket page for "
+"proper functionality."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2773
+msgid "Please enter a valid email."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2674
+msgid "Please enter a valid URL."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3055
+msgid "Please enter your license key to activate."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2777
+msgid ""
+"Please make sure that support emails from connected address are forwared to "
+"mailbox address."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2989
+msgid ""
+"Please note that our support team is currently out of office for the weekend."
+" While you're welcome to submit your ticket, it will be reviewed when we "
+"return on the next business day. We appreciate your patience and will "
+"address your inquiry as soon as possible."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2908
+msgid "Please use this Confirmation URL while Register Envato App."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3016
+msgid "Please use this Confirmation URL while Register Google App."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2898
+msgid ""
+"Please use this URL into your Slack settings to enable your agent to respond "
+"to tickets via Slack."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2892
+msgid ""
+"Please use this URL into your Twilio settings to enable your agent to "
+"respond to tickets via WhatsApp."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2781
+msgid "Port"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2631
+msgid "Portal Icon"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2632
+msgid "Portal Logo"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2999
+msgid "Portal Notice Content"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3000
+msgid "Portal notice content"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:569
+#, fuzzy, php-format
+#| msgid "Powered by"
+msgid "Powered by %s"
+msgstr "Energizado por"
+
+#: modules/Apbd_wps_settings.php:2692
+msgid "Preset"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2666
+msgid "primary"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2665
+msgid "Primary Brand Color"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2500 modules/Apbd_wps_settings.php:3213
+msgid "Private"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2533 modules/Apbd_wps_settings.php:3266
+msgid "Private Ticket"
+msgstr "Ticket Privado"
+
+#: modules/Apbd_wps_settings.php:3031
+msgid "Pro"
+msgstr "Pro"
+
+#: modules/Apbd_wps_settings.php:2957
+msgid "Pro Edition"
+msgstr "Edición profesional"
+
+#: modules/Apbd_wps_envato_system.php:391
+msgid "Product Name"
+msgstr "nombre del producto"
+
+#: modules/Apbd_wps_settings.php:3146
+#, fuzzy
+#| msgid "profile"
+msgid "Profile"
+msgstr "perfil"
+
+#: modules/Apbd_wps_settings.php:2498 modules/Apbd_wps_settings.php:3211
+msgid "Public"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3082 modules/Apbd_wps_settings.php:3264
+#, fuzzy
+#| msgid "Public Tickets"
+msgid "Public Ticket"
+msgstr "Entradas Públicas"
+
+#: models/database/Mapbd_wps_ticket.php:1120
+msgid "Purchase"
+msgstr ""
+
+#: models/database/Mapbd_wps_ticket.php:1122
+#: modules/Apbd_wps_envato_system.php:337
+msgid "Purchase Code"
+msgstr "Código de compra"
+
+#: modules/Apbd_wps_envato_system.php:191
+#: modules/Apbd_wps_envato_system.php:206
+msgid "Purchase code is invalid"
+msgstr "El código de compra no es válido"
+
+#: modules/Apbd_wps_envato_system.php:239
+msgid "Purchase code is invalid."
+msgstr ""
+
+#: modules/Apbd_wps_envato_system.php:245
+msgid "Purchase code is required."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2467 modules/Apbd_wps_settings.php:3192
+msgid "Quick Edit"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2747
+msgid "Radio"
+msgstr "Radio"
+
+#: models/database/Mapbd_wps_ticket.php:147
+#: models/database/Mapbd_wps_ticket_log.php:105
+#: models/database/Mapbd_wps_ticket_reply.php:74
+#: modules/Apbd_wps_settings.php:2494 modules/Apbd_wps_settings.php:3207
+#: modules/Apbd_wps_ticket.php:937
+#, fuzzy
+#| msgid "Re-Open"
+msgid "Re-open"
+msgstr "Reabrir"
+
+#: modules/Apbd_wps_settings.php:2601
+#, fuzzy
+#| msgid "reCAPTCHA v3"
+msgid "reCAPTCHA (v3)"
+msgstr "reCAPTCHA v3"
+
+#: modules/Apbd_wps_settings.php:2736
+msgid "Recipient"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2973
+msgid "Recipients"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3113
+msgid "Register"
+msgstr "Registro"
+
+#: modules/Apbd_wps_settings.php:3112
+msgid "Register Now"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3263
+msgid "Register with Envato"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3262
+msgid "Register with Google"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2761
+#, fuzzy
+#| msgid "In Registration Form"
+msgid "Registration Form"
+msgstr "En formulario de registro"
+
+#: modules/Apbd_wps_settings.php:2675
+msgid "Registration Link"
+msgstr "Enlace de registro"
+
+#: modules/Apbd_wps_users.php:417
+msgid "Registration successful."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2568
+msgid "Reload"
+msgstr "Recargar"
+
+#: modules/Apbd_wps_settings.php:3107
+#, fuzzy
+#| msgid "Remember Me"
+msgid "Remember me."
+msgstr "Recuérdame"
+
+#: modules/Apbd_wps_settings.php:2820
+#, fuzzy
+#| msgid "Related URL"
+msgid "Remote URL"
+msgstr "URL relacionada"
+
+#: modules/Apbd_wps_settings.php:2612
+#, fuzzy
+#| msgid "Remove Powered By"
+msgid "Remove powered-by."
+msgstr "Quitar Desarrollado por"
+
+#: views/download_ticket/main.php:43 views/download_ticket/main.php:47
+msgid "Replied"
+msgstr "Respondido"
+
+#: modules/Apbd_wps_settings.php:2504 modules/Apbd_wps_settings.php:3153
+msgid "Replied:"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2481 modules/Apbd_wps_settings.php:3164
+msgid "Reply"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2947 modules/Apbd_wps_settings.php:3180
+msgid "Reply and close ticket"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3158
+msgid "Reply Count"
+msgstr ""
+
+#: models/database/Mapbd_wps_canned_msg.php:194
+msgid "Reply user group"
+msgstr "Responder grupo de usuarios"
+
+#: models/database/Mapbd_wps_canned_msg.php:193
+msgid "Reply user name"
+msgstr "Responder nombre de usuario"
+
+#: modules/Apbd_wps_settings.php:3040
+msgid "Report"
+msgstr "Informe"
+
+#: modules/Apbd_wps_settings.php:2564
+msgid "Report Based On"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2965
+msgid "Report Schedule"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2966
+msgid "Report schedule"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2455
+msgid "Reports"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2798
+#, fuzzy
+#| msgid "Required:"
+msgid "Required"
+msgstr "Requerido:"
+
+#: modules/Apbd_wps_settings.php:2757
+msgid "Required Field"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3085
+msgid "Reset"
+msgstr "Reiniciar"
+
+#: modules/Apbd_wps_settings.php:2478 modules/Apbd_wps_settings.php:3142
+msgid "Reset Filters"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2943 modules/Apbd_wps_settings.php:3218
+msgid "Reset Order"
+msgstr "Restablecer orden"
+
+#: modules/Apbd_wps_settings.php:3109
+#, fuzzy
+#| msgid "Retype Password"
+msgid "Reset Password"
+msgstr "Vuelva a escribir la contraseña"
+
+#: modules/Apbd_wps_settings.php:2897
+msgid "Response from Slack."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2891
+msgid "Response from WhatsApp."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2562
+msgid "Responses"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2469 modules/Apbd_wps_settings.php:3194
+msgid "Restore"
+msgstr "Restaurar"
+
+#: modules/Apbd_wps_settings.php:2711
+msgid "Restore ticket"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3124
+msgid "Returning User? Login"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2725
+msgid "Role"
+msgstr "Role"
+
+#: modules/Apbd_wps_settings.php:2719
+msgid "Role or Agent"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2718
+msgid "Rule Type"
+msgstr "Tipo de regla"
+
+#: modules/Apbd_wps_settings.php:2722
+msgid "Rule type"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2944
+msgid "Same-site"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2984
+msgid "Saturday"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3061
+msgid "Save & Next"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2555 modules/Apbd_wps_settings.php:3187
+msgid "Save Changes"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2457 modules/Apbd_wps_settings.php:3123
+msgid "Saved Replies"
+msgstr "Respuestas guardadas"
+
+#: modules/Apbd_wps_settings.php:2737
+#, fuzzy
+#| msgid "Need reply"
+msgid "Saved Reply"
+msgstr "Necesito respuesta"
+
+#: modules/Apbd_wps_settings.php:3003 modules/Apbd_wps_settings.php:3240
+msgid "Saved reply inserted."
+msgstr ""
+
+#: core/AppsBDBaseModuleLite.php:1048 modules/Apbd_wps_envato_system.php:160
+#: modules/Apbd_wps_settings.php:1869 modules/Apbd_wps_settings.php:1902
+#: modules/Apbd_wps_settings.php:1942 modules/Apbd_wps_settings.php:2000
+#: modules/Apbd_wps_settings.php:2069
+msgid "Saved Successfully"
+msgstr "Guardado exitosamente"
+
+#: modules/Apbd_wps_settings.php:2477 modules/Apbd_wps_settings.php:3141
+msgid "Search keyword"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2509 modules/Apbd_wps_settings.php:3230
+#, fuzzy
+#| msgid "Search Here"
+msgid "Search User"
+msgstr "Busca aquí"
+
+#: modules/Apbd_wps_settings.php:2669
+msgid "secondary"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2668
+msgid "Secondary Brand Color"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2794
+msgid "Secret"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2651
+msgid "Secret Key"
+msgstr "Llave secreta"
+
+#: modules/Apbd_wps_settings.php:2652
+msgid "Secret key"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2786
+msgid "Secure protocol (SSL/TLS)."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2787
+msgid "Secure Protocol Type"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3010
+msgid "Security"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2945
+msgid "Select"
+msgstr "Seleccione"
+
+#: modules/Apbd_wps_role.php:418 modules/Apbd_wps_settings.php:2951
+#: modules/Apbd_wps_settings.php:2954 modules/Apbd_wps_settings.php:3252
+msgid "Select Agent"
+msgstr ""
+
+#: api/v1/APBDWPSAPIConfig.php:78 modules/Apbd_wps_settings.php:2479
+#: modules/Apbd_wps_settings.php:2952 modules/Apbd_wps_settings.php:2955
+#: modules/Apbd_wps_settings.php:3145 modules/Apbd_wps_ticket_category.php:294
+msgid "Select Category"
+msgstr "selecciona una categoría"
+
+#: modules/Apbd_wps_settings.php:1741
+msgid "Select Page"
+msgstr ""
+
+#: modules/Apbd_wps_ticket.php:1010
+msgid "Select Priority"
+msgstr ""
+
+#: modules/Apbd_wps_role.php:298 modules/Apbd_wps_role.php:360
+#: modules/Apbd_wps_settings.php:2724
+msgid "Select Role"
+msgstr "Seleccionar rol"
+
+#: modules/Apbd_wps_settings.php:2953 modules/Apbd_wps_settings.php:2956
+#: modules/Apbd_wps_settings.php:3251 modules/Apbd_wps_ticket.php:949
+msgid "Select Status"
+msgstr "Seleccionar estado"
+
+#: modules/Apbd_wps_settings.php:3018 modules/Apbd_wps_settings.php:3253
+msgid "Select Tag"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2510 modules/Apbd_wps_settings.php:3231
+msgid "Select User"
+msgstr "Seleccionar usuario"
+
+#: modules/Apbd_wps_settings.php:2520 modules/Apbd_wps_settings.php:3236
+msgid "Send the new user an email about their account."
+msgstr ""
+
+#. translators: %1$s: Opening anchor tag, %2$s: Closing anchor tag
+#: appcore/APBDWPDiagnosticData.php:516
+#, php-format
+msgid ""
+"Server information (Web server, PHP version, MySQL version), WordPress "
+"information, site name, site URL, number of plugins, number of users, your "
+"name, and email address. You can rest assured that no sensitive data will be "
+"collected or tracked. %1$sLearn more%2$s."
+msgstr ""
+"Información del servidor (servidor web, versión PHP, versión MySQL), "
+"información de WordPress, nombre del sitio, URL del sitio, cantidad de "
+"complementos, cantidad de usuarios, su nombre y dirección de correo "
+"electrónico. Puede estar seguro de que no se recopilará ni rastreará ningún "
+"dato confidencial. %1$sMás información%2$s."
+
+#: modules/Apbd_wps_settings.php:2949 modules/Apbd_wps_settings.php:3255
+#, fuzzy
+#| msgid "Select category"
+msgid "Set Category"
+msgstr "Selecciona una categoría"
+
+#: modules/Apbd_wps_settings.php:2950 modules/Apbd_wps_settings.php:3257
+#, fuzzy
+#| msgid "User Status"
+msgid "Set Status"
+msgstr "Estatus de usuario"
+
+#: modules/Apbd_wps_settings.php:3019 modules/Apbd_wps_settings.php:3256
+msgid "Set Tag"
+msgstr ""
+
+#: core/AppsBDKarnelSupportGenixLite.php:787 core/helper.php:130
+#: core/helper.php:131 modules/Apbd_wps_settings.php:529
+#: modules/Apbd_wps_settings.php:2456
+msgid "Settings"
+msgstr "Ajustes"
+
+#: modules/Apbd_wps_settings.php:2655
+msgid "Show in Login Form"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2657
+#| msgid "Show Registration Form"
+msgid "Show in Registration Form"
+msgstr "Mostrar en formulario de registro"
+
+#: modules/Apbd_wps_settings.php:2831
+msgid "Show in Ticket Form"
+msgstr "Mostrar en forma de Ticket"
+
+#: modules/Apbd_wps_settings.php:2656
+msgid "Show in Ticket Form (If not logged in)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2863
+msgid "Show order details button."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2624
+#, fuzzy
+#| msgid "Show other tickets in ticket details page"
+msgid "Show other tickets in ticket details page."
+msgstr "Mostrar otros Tickets en la página de detalles del boleto"
+
+#: modules/Apbd_wps_settings.php:2832
+msgid "Show support menu in my account page."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2708
+msgid "Show ticket hotlink"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2707
+msgid "Show ticket user email"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2484 modules/Apbd_wps_settings.php:3151
+#, php-format
+msgid "Showing %1$d - %2$d of %3$d"
+msgstr ""
+
+#: modules/Apbd_wps_envato_system.php:408 modules/Apbd_wps_settings.php:2860
+msgid "Site"
+msgstr "Sitio"
+
+#: modules/Apbd_wps_settings.php:2649
+msgid "Site Key"
+msgstr "Clave del sitio"
+
+#: modules/Apbd_wps_settings.php:2650
+msgid "Site key"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3060
+msgid "Skip"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3056
+msgid "Skip Setup"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2592
+msgid "Slack"
+msgstr "Slack"
+
+#: modules/Apbd_wps_settings.php:2893
+msgid "Slack Bot User OAuth Token"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2896
+msgid "Slack Channel ID"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2894
+msgid "Slack Channel Name"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2895
+msgid "Slack Channel name"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3034
+msgid "Slack Integration"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2740
+msgid "Slug"
+msgstr "Babosa"
+
+#: modules/Apbd_wps_settings.php:2937
+msgid "Slug:"
+msgstr ""
+
+#: models/database/Mapbd_wps_imap_api_settings.php:182
+#: modules/Apbd_wps_canned_msg.php:34 modules/Apbd_wps_canned_msg.php:148
+#: modules/Apbd_wps_custom_field.php:38 modules/Apbd_wps_custom_field.php:165
+#: modules/Apbd_wps_custom_field.php:278 modules/Apbd_wps_envato_system.php:162
+#: modules/Apbd_wps_role.php:60 modules/Apbd_wps_role.php:234
+#: modules/Apbd_wps_settings.php:1871 modules/Apbd_wps_settings.php:1904
+#: modules/Apbd_wps_settings.php:1944 modules/Apbd_wps_settings.php:2002
+#: modules/Apbd_wps_settings.php:2071 modules/Apbd_wps_ticket.php:113
+#: modules/Apbd_wps_ticket.php:193 modules/Apbd_wps_ticket.php:242
+#: modules/Apbd_wps_ticket.php:542 modules/Apbd_wps_ticket.php:753
+#: modules/Apbd_wps_ticket.php:814 modules/Apbd_wps_ticket.php:875
+#: modules/Apbd_wps_ticket_assign_rule.php:35
+#: modules/Apbd_wps_ticket_assign_rule.php:149
+#: modules/Apbd_wps_ticket_category.php:39
+#: modules/Apbd_wps_ticket_category.php:106
+#: modules/Apbd_wps_ticket_category.php:229
+#: modules/Apbd_wps_ticket_reply.php:83 modules/Apbd_wps_users.php:68
+#: modules/Apbd_wps_users.php:187 modules/Apbd_wps_users.php:208
+#: modules/Apbd_wps_users.php:269 modules/Apbd_wps_users.php:320
+#: modules/Apbd_wps_users.php:348 modules/Apbd_wps_users.php:419
+#: modules/Apbd_wps_users.php:467 modules/Apbd_wps_users.php:511
+#, fuzzy
+#| msgid "Something went wrong"
+msgid "Something went wrong."
+msgstr "Algo salió mal"
+
+#: modules/Apbd_wps_settings.php:2464 modules/Apbd_wps_settings.php:3135
+msgid "Sort: Opening Date (Newest First)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2465 modules/Apbd_wps_settings.php:3136
+msgid "Sort: Opening Date (Oldest First)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2462 modules/Apbd_wps_settings.php:3133
+msgid "Sort: Reply Date (Newest First)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2463 modules/Apbd_wps_settings.php:3134
+msgid "Sort: Reply Date (Oldest First)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2553 modules/Apbd_wps_settings.php:3168
+msgid "Starter"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2507 modules/Apbd_wps_settings.php:3156
+#: views/download_ticket/main.php:67
+msgid "Status"
+msgstr "Estado"
+
+#: modules/Apbd_wps_settings.php:2547 modules/Apbd_wps_settings.php:3163
+msgid "Status:"
+msgstr "Estado:"
+
+#: modules/Apbd_wps_settings.php:2827
+msgid "Store"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2839
+msgid "Store Title"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2840
+msgid "Store title"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2852
+msgid "Store URL"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2602
+msgid "Style"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3039
+msgid "Style Customization"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2527 modules/Apbd_wps_settings.php:3126
+msgid "Subject"
+msgstr "Tema"
+
+#: modules/Apbd_wps_settings.php:2560 modules/Apbd_wps_settings.php:3184
+msgid "Submit & Close Ticket"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2558 modules/Apbd_wps_settings.php:3179
+msgid "Submit Reply"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2882
+msgid "Subscribed"
+msgstr ""
+
+#: modules/Apbd_wps_notification.php:32
+msgid "Successfully added"
+msgstr "Agregado exitosamente"
+
+#: modules/Apbd_wps_ticket_reply.php:79
+msgid "Successfully added & closed."
+msgstr ""
+
+#: modules/Apbd_wps_ticket_category.php:98
+msgid "Successfully added and updated."
+msgstr ""
+
+#: modules/Apbd_wps_canned_msg.php:32 modules/Apbd_wps_custom_field.php:36
+#: modules/Apbd_wps_role.php:58 modules/Apbd_wps_ticket.php:111
+#: modules/Apbd_wps_ticket.php:191 modules/Apbd_wps_ticket.php:240
+#: modules/Apbd_wps_ticket_assign_rule.php:33
+#: modules/Apbd_wps_ticket_category.php:37
+#: modules/Apbd_wps_ticket_category.php:100
+#: modules/Apbd_wps_ticket_reply.php:62 modules/Apbd_wps_users.php:66
+msgid "Successfully added."
+msgstr ""
+
+#: modules/Apbd_wps_debug_log.php:111
+msgid "Successfully Cleared"
+msgstr "Borrado con éxito"
+
+#: modules/Apbd_wps_users.php:185 modules/Apbd_wps_users.php:206
+msgid "Successfully created."
+msgstr ""
+
+#: modules/Apbd_wps_debug_log.php:98 modules/Apbd_wps_notification.php:129
+msgid "Successfully deleted"
+msgstr "Eliminado con éxito"
+
+#: modules/Apbd_wps_canned_msg.php:146 modules/Apbd_wps_canned_msg.php:180
+#: modules/Apbd_wps_custom_field.php:163 modules/Apbd_wps_custom_field.php:195
+#: modules/Apbd_wps_role.php:232 modules/Apbd_wps_role.php:266
+#: modules/Apbd_wps_ticket.php:873 modules/Apbd_wps_ticket.php:908
+#: modules/Apbd_wps_ticket_assign_rule.php:147
+#: modules/Apbd_wps_ticket_assign_rule.php:181
+#: modules/Apbd_wps_ticket_category.php:227
+#: modules/Apbd_wps_ticket_category.php:261
+msgid "Successfully deleted."
+msgstr ""
+
+#: modules/Apbd_wps_ticket.php:751 modules/Apbd_wps_ticket.php:786
+msgid "Successfully moved to trash."
+msgstr ""
+
+#: modules/Apbd_wps_custom_field.php:289
+msgid "Successfully reset."
+msgstr ""
+
+#: modules/Apbd_wps_ticket.php:812 modules/Apbd_wps_ticket.php:847
+msgid "Successfully restored."
+msgstr ""
+
+#: modules/Apbd_wps_notification.php:156
+msgid "Successfully Updated"
+msgstr "Actualizado exitosamente"
+
+#: modules/Apbd_wps_notification.php:61
+msgid "Successfully updated"
+msgstr "Actualizado exitosamente"
+
+#: modules/Apbd_wps_canned_msg.php:68 modules/Apbd_wps_canned_msg.php:210
+#: modules/Apbd_wps_canned_msg.php:240 modules/Apbd_wps_custom_field.php:72
+#: modules/Apbd_wps_custom_field.php:225 modules/Apbd_wps_custom_field.php:255
+#: modules/Apbd_wps_custom_field.php:276 modules/Apbd_wps_email_template.php:39
+#: modules/Apbd_wps_email_template.php:124
+#: modules/Apbd_wps_email_template.php:154 modules/Apbd_wps_role.php:99
+#: modules/Apbd_wps_role.php:113 modules/Apbd_wps_ticket.php:307
+#: modules/Apbd_wps_ticket.php:387 modules/Apbd_wps_ticket.php:430
+#: modules/Apbd_wps_ticket.php:497 modules/Apbd_wps_ticket.php:540
+#: modules/Apbd_wps_ticket_assign_rule.php:69
+#: modules/Apbd_wps_ticket_assign_rule.php:211
+#: modules/Apbd_wps_ticket_assign_rule.php:241
+#: modules/Apbd_wps_ticket_category.php:102
+#: modules/Apbd_wps_ticket_category.php:133
+#: modules/Apbd_wps_ticket_category.php:358
+#: modules/Apbd_wps_ticket_category.php:388 modules/Apbd_wps_users.php:267
+#: modules/Apbd_wps_users.php:509
+msgid "Successfully updated."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2900
+msgid "Suggested Docs Heading"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2901
+msgid "Suggested Docs heading"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2561
+msgid "Summary Data"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2985
+msgid "Sunday"
+msgstr ""
+
+#: models/database/Mapbd_wps_ticket.php:1121
+msgid "Support"
+msgstr ""
+
+#: views/download_ticket/main.php:86
+msgid "Support Agent"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2688
+msgid "Support Agent or Manager."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2928
+msgid "Support Expired on"
+msgstr ""
+
+#. Author of the plugin/theme
+#: modules/Apbd_wps_settings.php:500 modules/Apbd_wps_settings.php:578
+msgid "Support Genix"
+msgstr "Soporte Genix"
+
+#: modules/Apbd_wps_settings.php:3074
+msgid ""
+"Support Genix is a powerful, user-friendly help desk plugin, designed to "
+"simplify customer support management. Manage support tickets in one place, "
+"boost productivity, and enhance customer satisfaction effortlessly with this "
+"comprehensive customer ticketing system."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Support Genix Lite"
+msgstr "Soporte Genix Lite"
+
+#: modules/Apbd_wps_settings.php:2404
+msgid "Support Genix Options"
+msgstr ""
+
+#: appcore/APBDWPPromoBannerNotice.php:146
+msgid ""
+"Support Genix Pro Lifetime Deal is Now LIVE for Only $59 - Limited Time "
+"Offer! "
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:500
+msgid "Support Tickets"
+msgstr "Tickets de soporte"
+
+#: modules/Apbd_wps_envato_system.php:402
+msgid "Support Time"
+msgstr "Tiempo de soporte"
+
+#: modules/Apbd_wps_settings.php:2746
+msgid "Switch"
+msgstr "Cambiar"
+
+#: modules/Apbd_wps_settings.php:2114 modules/Apbd_wps_settings.php:2141
+msgid "System couldn't create directory"
+msgstr "El sistema no pudo crear el directorio"
+
+#: modules/Apbd_wps_settings.php:3004
+#, php-format
+msgid "System Timezone: %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3015 modules/Apbd_wps_settings.php:3258
+msgid "Tag"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3069
+#, php-format
+msgid "Tag %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2878
+msgid "Tag IDs"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3017 modules/Apbd_wps_settings.php:3250
+msgid "Tag:"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3011
+#, fuzzy
+#| msgid "tags"
+msgid "Tags"
+msgstr "etiquetas"
+
+#: modules/Apbd_wps_settings.php:3020 modules/Apbd_wps_settings.php:3249
+msgid "Tags:"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3080
+msgid "Take your experience to the next level with our Pro features"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2800
+msgid "Text"
+msgstr "Texto"
+
+#: modules/Apbd_wps_settings.php:2643
+#, php-format
+msgid "Text %s"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3084
+msgid "Text Editor"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2744
+msgid "Textbox"
+msgstr "Caja de texto"
+
+#: modules/Apbd_wps_settings.php:3053
+msgid ""
+"Thank you for choosing Support Genix, your powerful solution for managing "
+"support tickets with ease! This quick setup wizard will guide you through "
+"the basic configuration."
+msgstr ""
+
+#: core/secondary_helper.php:403
+#, php-format
+msgid "Thank you for using %s."
+msgstr ""
+
+#. translators: %1$s: Project name, %2$s: Opening strong tag, %3$s: Closing strong tag
+#: appcore/APBDWPDiagnosticData.php:669
+#, php-format
+msgid "Thank you very much for supporting %2$s%1$s%3$s."
+msgstr "Muchas gracias por apoyar a %2$s%1$s%3$s."
+
+#: modules/Apbd_wps_settings.php:2795
+msgid "The incoming webhook URL will be generated here automatically!"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2770
+msgid "The mailbox address will be generated here automatically!"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "The Ultimate Helpdesk & Customer Support Ticket System for WordPress."
+msgstr ""
+
+#: models/database/Mapbd_wps_canned_msg.php:191
+msgid "The user who has opened ticket"
+msgstr "El usuario que ha abierto el ticket"
+
+#: modules/Apbd_wps_settings.php:2573
+msgid "These are tickets that have not yet been assigned."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2572
+msgid "These are tickets that have not yet been categorized."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2571
+msgid ""
+"This count reflects the total number of times tickets have been marked as "
+"closed."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2570
+msgid ""
+"This count represents the total number of tickets currently requiring a "
+"response, and is not constrained by the date range filter."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2940 modules/Apbd_wps_settings.php:3122
+msgid "This field is required."
+msgstr ""
+
+#: views/download_ticket/main.php:82
+msgid "Thread Starter"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2982
+msgid "Thursday"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:1207 modules/Apbd_wps_settings.php:2473
+#: modules/Apbd_wps_settings.php:3143
+msgid "Ticket"
+msgstr "Ticket"
+
+#: modules/Apbd_wps_settings.php:2730
+msgid "Ticket Assigned"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2275
+#, php-format
+msgid "Ticket assigned on %s"
+msgstr "Ticket asignado el %s"
+
+#: modules/Apbd_wps_settings.php:2807
+msgid "Ticket Attachment(s)"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2848
+msgid "Ticket Category"
+msgstr "Categoría de entrada"
+
+#: modules/Apbd_wps_settings.php:2805
+#, fuzzy
+#| msgid "Ticket Category List"
+msgid "Ticket Category ID"
+msgstr "Lista de categorías de entradas"
+
+#: modules/Apbd_wps_settings.php:2731
+msgid "Ticket Closed"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2728
+msgid "Ticket Created"
+msgstr ""
+
+#: api/v1/APBDWPSUserAPI.php:288 api/v1/APBDWPSUserAPI.php:335
+msgid "Ticket creation failed"
+msgstr "Falló la creación del ticket"
+
+#: modules/Apbd_wps_settings.php:2815
+msgid "Ticket Custom Fields"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2550 modules/Apbd_wps_settings.php:3165
+msgid "Ticket Data"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2801
+msgid "Ticket Description"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2851
+msgid "Ticket description"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2699
+msgid "Ticket Details"
+msgstr "Detalles del Ticket"
+
+#: models/database/Mapbd_wps_ticket_reply.php:279
+msgid "Ticket doesn't found"
+msgstr "Ticket no encontrado"
+
+#: modules/Apbd_wps_ticket.php:1093
+msgid "Ticket downloaded."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2760
+#, fuzzy
+#| msgid "Ticket Logs"
+msgid "Ticket Form"
+msgstr "Registros de tickets"
+
+#: modules/Apbd_wps_settings.php:3041
+msgid "Ticket Hotlink"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2554 modules/Apbd_wps_settings.php:3229
+#, php-format
+msgid "Ticket Logs (%d)"
+msgstr ""
+
+#: models/database/Mapbd_wps_ticket.php:280
+#, php-format
+msgid "Ticket opened by %s"
+msgstr "Ticket abierto por %s"
+
+#: modules/Apbd_wps_settings.php:2608
+msgid "Ticket Page"
+msgstr "Página de entradas"
+
+#: modules/Apbd_wps_settings.php:2729
+#, fuzzy
+#| msgid "Ticket replied"
+msgid "Ticket Replied"
+msgstr "Ticket respondido"
+
+#: modules/Apbd_wps_settings.php:2694
+msgid "Ticket reply"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2237
+#, php-format
+msgid "Ticket status changed to %s"
+msgstr "El estado del ticket cambió a %s"
+
+#: modules/Apbd_wps_settings.php:2245
+#, php-format
+msgid "Ticket status changed to %s Automatically"
+msgstr "El estado del ticket cambió a %s automáticamente"
+
+#: modules/Apbd_wps_settings.php:2799
+#, fuzzy
+#| msgid "Ticket's Subject:"
+msgid "Ticket Subject"
+msgstr "Asunto del billete:"
+
+#: modules/Apbd_wps_settings.php:2849
+msgid "Ticket subject"
+msgstr "Asunto del billete"
+
+#: models/database/Mapbd_wps_canned_msg.php:192
+msgid "Ticket title"
+msgstr "título del billete"
+
+#: modules/Apbd_wps_settings.php:2508 modules/Apbd_wps_settings.php:3157
+#, fuzzy
+#| msgid "Ticket's Track Id:"
+msgid "Ticket Track ID"
+msgstr "ID de la pista del ticket:"
+
+#: models/database/Mapbd_wps_ticket.php:825
+msgid "Ticket track id initialize failed"
+msgstr "Error al inicializar el ID de la pista del ticket"
+
+#: modules/Apbd_wps_settings.php:2678
+msgid "Ticket track ID length"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2677
+msgid "Ticket track ID prefix"
+msgstr ""
+
+#: models/database/Mapbd_wps_canned_msg.php:152
+#: modules/Apbd_wps_settings.php:2524 modules/Apbd_wps_settings.php:3234
+msgid "Ticket User"
+msgstr "Usuario del Ticket"
+
+#: core/AppsBDKarnelSupportGenixLite.php:790 core/helper.php:121
+#: core/helper.php:122 modules/Apbd_wps_settings.php:520
+#: modules/Apbd_wps_settings.php:2454 modules/Apbd_wps_settings.php:3100
+msgid "Tickets"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3046
+msgid "Tickets on Behalf of Customers"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2972
+msgid "Time"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2994
+msgid "Time range"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2480 modules/Apbd_wps_settings.php:3149
+msgid "Title"
+msgstr "Título"
+
+#: modules/Apbd_wps_settings.php:2583
+msgid "Traditional"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2630
+msgid "Translatable"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2486 modules/Apbd_wps_settings.php:3199
+msgid "Trash"
+msgstr "Basura"
+
+#: modules/Apbd_wps_settings.php:2461 modules/Apbd_wps_settings.php:3191
+#: modules/Apbd_wps_ticket.php:940
+msgid "Trashed"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2709
+#, fuzzy
+#| msgid "Trashed Tickets"
+msgid "Trashed Ticket"
+msgstr "Entradas desechadas"
+
+#: modules/Apbd_wps_settings.php:2710
+msgid "Trashed ticket list"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2821
+msgid "Trigger Events"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2980
+msgid "Tuesday"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2593
+msgid "Tutor LMS"
+msgstr "Tutor LMS"
+
+#: modules/Apbd_wps_settings.php:3035
+msgid "Tutor LMS Integration"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2886
+msgid "Twilio Account SID"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2887
+msgid "Twilio Auth Token"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2888
+msgid "Twilio WhatsApp Number"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2889
+msgid "Twilio WhatsApp number"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2741
+msgid "Type"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2938
+msgid "Type:"
+msgstr "Escribe:"
+
+#: modules/Apbd_wps_settings.php:2460 modules/Apbd_wps_settings.php:3190
+#, fuzzy
+#| msgid "Assigned:"
+msgid "Unassigned"
+msgstr "Asignado:"
+
+#: appcore/APBDWPPromoBannerNotice.php:198
+msgid "Unauthorized"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3087
+msgid "Uncategorized"
+msgstr ""
+
+#: core/AppsBDModel.php:136
+msgid "Undefined Property"
+msgstr "Propiedad indefinida"
+
+#: modules/Apbd_wps_settings.php:3044
+msgid "Unlimited Agents"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3045
+msgid "Unlimited Customers/Clients"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3043
+msgid "Unlimited Tickets"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3079
+msgid "Unlock Premium Features"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2883
+msgid "Unsubscribed"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2715 modules/Apbd_wps_settings.php:3170
+msgid "Update"
+msgstr "Actualizar"
+
+#: modules/Apbd_wps_notification.php:158
+msgid "Update failed try again"
+msgstr "Actualización fallida, inténtalo de nuevo"
+
+#: modules/Apbd_wps_settings.php:3081
+msgid "Upgrade Now"
+msgstr ""
+
+#: core/helper.php:139 core/helper.php:140
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3076
+msgid "Upgrade to Pro Version"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2637
+msgid "Upload"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2774
+msgid ""
+"Upon saving, when the mailbox address is generated, please forward your "
+"support emails from connected email address to the mailbox address."
+msgstr ""
+
+#: modules/Apbd_wps_ticket.php:1001
+msgid "Urgent"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2808
+msgid "URL"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2750
+msgid "URL Input"
+msgstr "Entrada de URL"
+
+#: modules/Apbd_wps_settings.php:2809
+msgid "URLs array (or comma separated URLs)"
+msgstr ""
+
+#: api/v1/APBDWPSUserAPI.php:232 modules/Apbd_wps_settings.php:2523
+#: modules/Apbd_wps_settings.php:3238
+msgid "User"
+msgstr "Usuario"
+
+#: modules/Apbd_wps_users.php:422
+msgid "User already exists."
+msgstr ""
+
+#: api/v1/APBDWPSUserAPI.php:362
+msgid "User creation failed"
+msgstr "La creación del usuario falló"
+
+#: modules/Apbd_wps_settings.php:2782
+msgid "User Email"
+msgstr "Correo electrónico del usuario"
+
+#: modules/Apbd_wps_settings.php:2783
+msgid "User email"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2802
+msgid "User First Name"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2804
+msgid "User Last Name"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2784
+msgid "User Password"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2785
+msgid "User password"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2683
+msgid "User Role"
+msgstr "Rol del usuario"
+
+#: modules/Apbd_wps_settings.php:2576
+msgid "User Roles"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3048
+msgid "User Roles & Permissions"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3103
+msgid "Username or Email Address"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3104
+msgid "Username or email address"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2925
+msgid "Valid"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2653
+msgid "Value containing any asterisk (*) will not be updated."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2845
+msgid "Verify customer email address"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2846
+msgid "Verify external store SSL"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2844
+msgid "Verify Options"
+msgstr ""
+
+#: core/secondary_helper.php:413
+#, fuzzy, php-format
+#| msgid "Version"
+msgid "Version %s"
+msgstr "Versión"
+
+#: models/database/Mapbd_wps_ticket.php:484
+#: models/database/Mapbd_wps_ticket.php:485
+#: models/database/Mapbd_wps_ticket.php:556
+#: models/database/Mapbd_wps_ticket.php:557
+#: models/database/Mapbd_wps_ticket.php:618
+#: models/database/Mapbd_wps_ticket.php:661
+#: models/database/Mapbd_wps_ticket.php:662
+#: models/database/Mapbd_wps_ticket.php:737
+#: models/database/Mapbd_wps_ticket.php:774
+msgid "View Ticket"
+msgstr "Ver Ticket"
+
+#: modules/Apbd_wps_settings.php:538
+msgid "Visit Portal"
+msgstr ""
+
+#: models/database/Mapbd_wps_ticket_log.php:105
+msgid "Waiting For User"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:151 modules/Apbd_wps_settings.php:170
+msgid ""
+"We're sorry but Support Genix doesn't work properly without JavaScript "
+"enabled."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2884
+msgid "Webhook URL"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2584
+msgid "Webhooks"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2981
+msgid "Wednesday"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2960
+msgid "Weekend"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2959
+msgid "Weekend & Holiday"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3038
+msgid "Weekend & Holiday Settings"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2990
+msgid "Weekend Days"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2970
+msgid "Weekly"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3050
+msgid "Welcome"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3052
+msgid "Welcome to Support Genix"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2591
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+#: modules/Apbd_wps_settings.php:3033
+msgid "WhatsApp Integration"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2588 views/download_ticket/main.php:164
+msgid "WooCommerce"
+msgstr "WooCommerce"
+
+#: modules/Apbd_wps_settings.php:2838
+msgid "WooCommerce in external site"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2837
+msgid "WooCommerce in same site"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2825
+msgid "WooCommerce Integration"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2826
+msgid "WooCommerce Integrations"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2828
+msgid "WooCommerce Integrations Settings"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2812
+msgid "WooCommerce Order ID"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2810
+msgid "WooCommerce Store ID"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2676
+msgid "WP Profile Link"
+msgstr "Enlace de perfil de WP"
+
+#: core/base_helper.php:209 modules/Apbd_wps_settings.php:2537
+#: modules/Apbd_wps_settings.php:3182
+msgid "Yes"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3071
+msgid "You can manage your license settings after completing the setup."
+msgstr ""
+
+#: models/database/Mapbd_wps_ticket_reply.php:233
+msgid "You do not have permission to reply ticket"
+msgstr "No tienes permiso para responder ticket"
+
+#: models/database/Mapbd_wps_imap_api_settings.php:172
+msgid "You must agree with the email to ticket terms and conditions."
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:2929
+msgid "Your License Key"
+msgstr ""
+
+#: modules/Apbd_wps_settings.php:3065
+msgid "Your setup has been successfully completed!"
+msgstr ""
+
+#: models/database/Mapbd_wps_canned_msg.php:150
+#: models/database/Mapbd_wps_canned_msg.php:189
+msgid "Your site name"
+msgstr "el nombre de tu sitio"
+
+#: models/database/Mapbd_wps_canned_msg.php:151
+#: models/database/Mapbd_wps_canned_msg.php:190
+msgid "Your Site URL"
+msgstr "URL de su sitio"
+
+#: modules/Apbd_wps_settings.php:2646
+#, php-format
+msgid "Zip %s"
+msgstr ""
+
+#. translators: %1$s: Project name
+#: appcore/APBDWPDiagnosticData.php:585
+#, php-format
+msgid "🌟 Enhance Your %1$s Experience as a Valued Contributor!"
+msgstr "🌟 ¡Mejore su experiencia de %1$s como colaborador valioso!"

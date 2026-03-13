@@ -1,0 +1,1 @@
+import{e as c,j as t}from"../main.CmOl94vI.1773217505502.js";const S=({children:s,showOn:e=[],hideOn:u=[]})=>{var l;const o=c();if(e.length===0&&u.length===0)return t.jsx(t.Fragment,{children:s});const n=(l=Object.entries(o).find(r=>r==null?void 0:r[1]))==null?void 0:l[0];return n&&(e.length===0||e.includes(n))&&!u.includes(n)?t.jsx(t.Fragment,{children:s}):null};export{S};

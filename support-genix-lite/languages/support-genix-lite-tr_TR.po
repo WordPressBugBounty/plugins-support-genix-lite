@@ -1,0 +1,2652 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Project-Id-Version: Support Genix Lite\n"
+"POT-Creation-Date: 2022-11-23 16:51+0600\n"
+"PO-Revision-Date: 2024-08-28 09:15+0000\n"
+"Last-Translator: \n"
+"Language-Team: Turkish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: support-genix-lite.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;___;_e;_ee;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2;SetTitle;AddInfo;AddError;"
+"SetSubtitle;AddModel;AddModelNonSearchable\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: tr_TR\n"
+"X-Loco-Version: 2.6.9; wp-6.5.3"
+
+#: core/AppsBDModel.php:1050
+#, php-format
+msgid " %s are required"
+msgstr " %s gerekli"
+
+#: core/AppsBDModel.php:1052
+#, php-format
+msgid " %s is required"
+msgstr " %s gerekli"
+
+#: core/AppsBDModel.php:1026
+#, php-format
+msgid " %s should be less then %s"
+msgstr " %s, %s'den küçük olmalıdır"
+
+#: core/AppsBDModel.php:1039
+msgid " should be hexadecimal"
+msgstr " onaltılık olmalıdır"
+
+#: libs/jQGrid.php:112
+#, php-format
+msgid "%s CSV"
+msgstr "%s CSV'si"
+
+#: models/database/Mapbd_wps_canned_msg.php:248
+#: models/database/Mapbd_wps_custom_field.php:371
+#: models/database/Mapbd_wps_custom_field.php:378
+#: models/database/Mapbd_wps_custom_field.php:463
+#: models/database/Mapbd_wps_debug_log.php:231
+#: models/database/Mapbd_wps_debug_log.php:246
+#: models/database/Mapbd_wps_debug_log.php:253
+#: models/database/Mapbd_wps_debug_log.php:260
+#: models/database/Mapbd_wps_debug_log.php:272
+#: models/database/Mapbd_wps_email_templates.php:353
+#: models/database/Mapbd_wps_email_templates.php:360
+#: models/database/Mapbd_wps_email_templates.php:376
+#: models/database/Mapbd_wps_notes.php:117
+#: models/database/Mapbd_wps_notes.php:133
+#: models/database/Mapbd_wps_notes.php:140
+#: models/database/Mapbd_wps_notification.php:225
+#: models/database/Mapbd_wps_notification.php:232
+#: models/database/Mapbd_wps_notification.php:242
+#: models/database/Mapbd_wps_notification.php:261
+#: models/database/Mapbd_wps_notification.php:268
+#: models/database/Mapbd_wps_notification.php:291
+#: models/database/Mapbd_wps_notification.php:298
+#: models/database/Mapbd_wps_notification.php:307
+#: models/database/Mapbd_wps_notification.php:314
+#: models/database/Mapbd_wps_role.php:472
+#: models/database/Mapbd_wps_support_meta.php:163
+#: models/database/Mapbd_wps_ticket_assign_rule.php:355
+#: models/database/Mapbd_wps_ticket_assign_rule.php:368
+#: models/database/Mapbd_wps_ticket_category.php:173
+#: models/database/Mapbd_wps_ticket_log.php:209
+#: models/database/Mapbd_wps_ticket_log.php:228
+#: models/database/Mapbd_wps_ticket_log.php:236
+#: models/database/Mapbd_wps_ticket_log.php:248
+#: models/database/Mapbd_wps_users.php:98
+#: models/database/Mapbd_wps_users.php:105
+#: models/database/Mapbd_wps_users.php:114
+#: models/database/Mapbd_wps_users.php:121
+#: models/database/Mapbd_wps_users.php:130
+#: models/database/Mapbd_wps_users.php:138
+#: models/database/Mapbd_wps_users.php:149
+#: models/database/Mapbd_wps_users.php:156
+#: models/database/Mapbd_wps_users.php:165 views/apbd_wps_canned_msg/add.php:18
+#: views/apbd_wps_envato_system/integration.php:28
+#: views/apbd_wps_role/role-setting.php:14
+#: views/apbd_wps_settings/fileupload.php:36
+#: views/apbd_wps_settings/recaptcha_v3.php:49
+#: views/apbd_wps_settings/recaptcha_v3.php:60
+#, php-format
+msgid "%s is required"
+msgstr "%s gerekli"
+
+#: core/AppsBDModel.php:1033
+#, php-format
+msgid "%s should be a valid email address"
+msgstr "%s geçerli bir e-posta adresi olmalıdır"
+
+#: core/AppsBDModel.php:1013
+#, php-format
+msgid "%s should be digit"
+msgstr "%s rakam olmalıdır"
+
+#: core/AppsBDModel.php:1019
+#, php-format
+msgid "%s should be numeric"
+msgstr "%s sayısal olmalıdır"
+
+#: modules/Apbd_wps_settings.php:1409
+msgid "%{fld_name} doesn't match with its password"
+msgstr "%{fld_name}, şifresiyle eşleşmiyor"
+
+#: modules/Apbd_wps_settings.php:1406
+msgid "%{fld_name} is not valid"
+msgstr "%{fld_name} geçerli değil"
+
+#: modules/Apbd_wps_settings.php:1408
+msgid "%{fld_name} is required"
+msgstr "%{fld_name} gerekli"
+
+#: modules/Apbd_wps_settings.php:1407
+msgid "%{fld_name} not a valid email address"
+msgstr "%{fld_name} geçerli bir e-posta adresi değil"
+
+#: modules/Apbd_wps_ticket_category.php:111
+#, php-format
+msgid "(ID: %d)"
+msgstr "(Kimlik: %d)"
+
+#: modules/Apbd_wps_settings.php:1403
+msgid "2nd Password"
+msgstr "2. Şifre"
+
+#: views/apbd_wps_canned_msg/main.php:20
+#: views/apbd_wps_custom_field/main.php:19 views/apbd_wps_debug_log/main.php:21
+#: views/apbd_wps_email_template/main.php:20
+#: views/apbd_wps_role/role-list.php:18
+#: views/apbd_wps_ticket_assign_rule/main.php:18
+#: views/apbd_wps_ticket_category/main.php:17
+msgid "Action"
+msgstr "Eylem"
+
+#: modules/Apbd_wps_settings.php:1326
+msgid "Active"
+msgstr "Aktif"
+
+#: modules/Apbd_wps_settings.php:1323
+msgid "active Tickets"
+msgstr "Aktif Biletler"
+
+#: modules/Apbd_wps_settings.php:1385
+msgid "Add"
+msgstr "Ekle"
+
+#: views/apbd_wps_canned_msg/main.php:12
+#: views/apbd_wps_custom_field/main.php:12 views/apbd_wps_role/role-list.php:13
+#: views/apbd_wps_ticket_assign_rule/main.php:12
+#: views/apbd_wps_ticket_category/main.php:12
+msgid "Add New"
+msgstr "Yeni ekle"
+
+#: modules/Apbd_wps_ticket_category.php:40
+msgid "Add New Category "
+msgstr "Yeni Kategori Ekle"
+
+#: modules/Apbd_wps_custom_field.php:43
+msgid "Add New Field"
+msgstr "Yeni Alan Ekle"
+
+#: modules/Apbd_wps_canned_msg.php:40
+msgid "Add New Message "
+msgstr "Yeni Mesaj Ekle"
+
+#: modules/Apbd_wps_notification.php:41
+msgid "Add New Notification"
+msgstr "Yeni Bildirim Ekle"
+
+#: modules/Apbd_wps_role.php:158
+msgid "Add New Role"
+msgstr "Yeni Rol Ekle"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:40
+msgid "Add New Rule"
+msgstr "Yeni Kural Ekle"
+
+#: modules/APBD_wps_email_template.php:65
+msgid "Add New Template "
+msgstr "Yeni Şablon Ekle"
+
+#: models/database/Mapbd_wps_notes.php:129
+#: models/database/Mapbd_wps_notes.php:132
+#: views/apbd_wps_canned_msg/main.php:16
+msgid "Added By"
+msgstr "Tarafından eklendi"
+
+#: modules/Apbd_wps_settings.php:366
+msgid "Administrator"
+msgstr "yönetici"
+
+#: libs/jQGrid.php:627 libs/jQGrid.php:1494
+msgid "Advance Search"
+msgstr "Gelişmiş Arama"
+
+#: modules/Apbd_wps_settings.php:1304
+msgid "Again New Password"
+msgstr "Tekrar Yeni Şifre"
+
+#: models/database/Mapbd_wps_canned_msg.php:133
+msgid "Agent"
+msgstr "Ajan"
+
+#: models/database/Mapbd_wps_custom_field.php:427
+#: models/database/Mapbd_wps_ticket_assign_rule.php:325
+#: modules/Apbd_wps_custom_field.php:113
+#: modules/Apbd_wps_ticket_assign_rule.php:107
+msgid "All Categories"
+msgstr "Tüm Kategoriler"
+
+#: appcore/APBDWPSupportLite.php:317 core/AppsBDKarnelLite.php:1095
+msgid "All rights reserved"
+msgstr "Tüm hakları Saklıdır"
+
+#: modules/Apbd_wps_settings.php:1335
+msgid "All States"
+msgstr "Tüm devletler"
+
+#: modules/Apbd_wps_settings.php:1333
+msgid "All Tickets"
+msgstr "Tüm Biletler"
+
+#: views/apbd_wps_settings/fileupload.php:44
+msgid "Allowed File Types"
+msgstr "İzin Verilen Dosya Türleri"
+
+#: views/apbd_wps_envato_system/integration.php:95
+msgid "API Description (Personal API Key [Recommended])"
+msgstr "API Açıklaması (Kişisel API Anahtarı [Önerilen])"
+
+#: modules/Apbd_wps_envato_system.php:116
+msgid "API Key is invalid<br/>"
+msgstr "API Anahtarı geçersiz<br/>"
+
+#: modules/Apbd_wps_envato_system.php:111
+msgid "API Key is required"
+msgstr "API Anahtarı gerekli"
+
+#: views/apbd_wps_envato_system/integration.php:23
+#: views/apbd_wps_envato_system/integration.php:27
+msgid "API Token"
+msgstr "API Jetonu"
+
+#: views/apbd_wps_settings/general.php:314
+msgid "App Loader Image"
+msgstr "Uygulama Yükleyici Resmi"
+
+#: views/apbd_wps_settings/general.php:91
+msgid "App Loader Text"
+msgstr "Uygulama Yükleyici Metni"
+
+#: modules/Apbd_wps_custom_field.php:126 modules/Apbd_wps_custom_field.php:127
+msgid "Are you sure to change order?"
+msgstr "Sıralamayı değiştireceğinizden emin misiniz?"
+
+#: modules/APBD_wps_email_template.php:146 modules/Apbd_wps_canned_msg.php:116
+#: modules/Apbd_wps_custom_field.php:124 modules/Apbd_wps_custom_field.php:125
+#: modules/Apbd_wps_notification.php:116 modules/Apbd_wps_role.php:241
+#: modules/Apbd_wps_role.php:242 modules/Apbd_wps_role.php:268
+#: modules/Apbd_wps_role.php:270 modules/Apbd_wps_role.php:299
+#: modules/Apbd_wps_ticket_assign_rule.php:121
+#: modules/Apbd_wps_ticket_category.php:121
+msgid "Are you sure to change?"
+msgstr "Değişeceğinden emin misin?"
+
+#: modules/Apbd_wps_canned_msg.php:113 modules/Apbd_wps_custom_field.php:122
+#: modules/Apbd_wps_notification.php:114 modules/Apbd_wps_role.php:237
+#: modules/Apbd_wps_role.php:297 modules/Apbd_wps_ticket_assign_rule.php:114
+#: modules/Apbd_wps_ticket_category.php:119
+msgid "Are you sure to delete?"
+msgstr "Silmek istediğinize emin misiniz?"
+
+#: modules/Apbd_wps_settings.php:1417
+msgid "Are you sure to make private this ticket?"
+msgstr "Bu bileti özel yapacağınızdan emin misiniz?"
+
+#: modules/Apbd_wps_settings.php:1416
+msgid "Are you sure to make public this ticket?"
+msgstr "Bu bileti herkese açık hale getireceğinizden emin misiniz?"
+
+#: views/apbd_wps_custom_field/main.php:13
+msgid "Are you sure to reset order?"
+msgstr "Siparişi sıfırlayacağınızdan emin misiniz?"
+
+#: modules/Apbd_wps_settings.php:1435
+msgid "Are you sure to restore this ticket ?!"
+msgstr "Bu bileti geri yükleyeceğinizden emin misiniz?"
+
+#: modules/Apbd_wps_settings.php:1419
+msgid "Are you sure to trash it?"
+msgstr "Çöpe atacağınızdan emin misiniz?"
+
+#: modules/Apbd_wps_settings.php:1418
+msgid "Are you sure?"
+msgstr "Emin misin?"
+
+#: modules/Apbd_wps_settings.php:1451
+msgid "Ascending"
+msgstr "artan"
+
+#: modules/Apbd_wps_settings.php:1371
+msgid "Assign Agent"
+msgstr "Temsilci Ata"
+
+#: modules/Apbd_wps_settings.php:1351
+msgid "Assign Me"
+msgstr "Bana Ata"
+
+#: modules/Apbd_wps_settings.php:1353
+msgid "Assigned On"
+msgstr "Atanan"
+
+#: modules/Apbd_wps_settings.php:1352
+msgid "Assigned on"
+msgstr "atanan"
+
+#: modules/Apbd_wps_settings.php:1459
+msgid "Assigned Ticket"
+msgstr "Atanan Bilet"
+
+#: modules/Apbd_wps_settings.php:1350
+msgid "Assigned:"
+msgstr "Atanan:"
+
+#: appcore/APBDWPDiagnosticData.php:492
+#, php-format
+msgid ""
+"At %2$s%1$s%3$s, we prioritize continuous improvement and compatibility. To "
+"achieve this, we gather non-sensitive diagnostic information and details "
+"about plugin usage. This includes your site's URL, the versions of WordPress "
+"and PHP you're using, and a list of your installed plugins and themes. We "
+"also require your email address to provide you with exclusive discount "
+"coupons and updates. This data collection is crucial for ensuring that "
+"%2$s%1$s%3$s remains up-to-date and compatible with the most widely-used "
+"plugins and themes. Rest assured, your privacy is our priority - no spam, "
+"guaranteed. %4$sPrivacy Policy%5$s"
+msgstr ""
+"Sürekli iyileştirme ve uyumluluk. Bunu başarmak için hassas olmayan teşhis "
+"bilgilerini ve eklenti kullanımına ilişkin ayrıntıları topluyoruz. Bu, "
+"sitenizin URL'sini, kullandığınız WordPress ve PHP sürümlerini ve yüklü "
+"eklenti ve temalarınızın bir listesini içerir. Size özel indirim kuponları "
+"ve güncellemeler sağlamak için e-posta adresinize de ihtiyacımız var. Bu "
+"veri toplama, %2$s%1$s%3$s uygulamasının güncel kalmasını ve en yaygın "
+"kullanılan eklentiler ve temalarla uyumlu olmasını sağlamak açısından çok "
+"önemlidir. İçiniz rahat olsun, gizliliğiniz bizim önceliğimizdir; spam "
+"olmaması garanti edilir. %4$sGizlilik Politikası%5$s"
+
+#: modules/Apbd_wps_settings.php:1454 template/popup-msg.php:26
+#: template/popup.php:29
+msgid "Back"
+msgstr "Geri"
+
+#: modules/Apbd_wps_betterdocs.php:18
+msgid "BetterDocs"
+msgstr "BetterDocs"
+
+#: modules/Apbd_wps_betterdocs.php:22
+msgid "BetterDocs Settings"
+msgstr "BetterDocs Ayarları"
+
+#: views/apbd_wps_settings/general.php:67
+#: views/apbd_wps_settings/general.php:84
+msgid "Browse"
+msgstr "Araştır"
+
+#: modules/Apbd_wps_role.php:239
+msgid "Built-in"
+msgstr "yerleşik"
+
+#: modules/Apbd_wps_settings.php:1426
+msgid "By"
+msgstr "İle"
+
+#: modules/Apbd_wps_settings.php:1425
+msgid "by"
+msgstr "ile"
+
+#: modules/Apbd_wps_settings.php:1422 views/apbd_wps_canned_msg/add.php:76
+#: views/apbd_wps_custom_field/add.php:18 views/apbd_wps_debug_log/add.php:18
+#: views/apbd_wps_debug_log/view_dtls.php:37
+#: views/apbd_wps_email_template/add.php:20
+#: views/apbd_wps_email_template/view_param.php:18
+#: views/apbd_wps_role/add.php:18 views/apbd_wps_ticket_assign_rule/add.php:18
+#: views/apbd_wps_ticket_category/add.php:18
+msgid "Cancel"
+msgstr "İptal"
+
+#: models/database/Mapbd_wps_canned_msg.php:261
+#: models/database/Mapbd_wps_canned_msg.php:266
+#: views/apbd_wps_canned_msg/add.php:29 views/apbd_wps_canned_msg/add.php:32
+msgid "Canned Msg"
+msgstr "Hazır Mesaj"
+
+#: views/apbd_wps_role/role-access.php:13
+msgid "Capabilities"
+msgstr "Yetenekler"
+
+#: views/apbd_wps_ticket_assign_rule/main.php:13
+msgid "Categories"
+msgstr "Kategoriler"
+
+#: modules/Apbd_wps_settings.php:1450 views/apbd_wps_custom_field/main.php:17
+msgid "Category"
+msgstr "Kategori"
+
+#: modules/Apbd_wps_settings.php:1354
+msgid "Category:"
+msgstr "Kategori:"
+
+#: modules/Apbd_wps_settings.php:1309
+msgid "Change Password"
+msgstr "Şifre değiştir"
+
+#: views/apbd_wps_envato_system/integration.php:54
+msgid "Check Support Expiry"
+msgstr "Destek Bitişini Kontrol Edin"
+
+#: appcore/plugin_helper.php:62
+msgid "Choose"
+msgstr "Seçmek"
+
+#: models/database/Mapbd_wps_custom_field.php:421
+#: models/database/Mapbd_wps_ticket_assign_rule.php:319
+msgid "Choose Category"
+msgstr "Kategori Seçin"
+
+#: modules/Apbd_wps_settings.php:1295
+msgid "Choose Password"
+msgstr "Şifre seçin"
+
+#: modules/Apbd_wps_settings.php:1296
+msgid "Choose password"
+msgstr "Şifre seçin"
+
+#: views/apbd_wps_settings/general.php:60
+#: views/apbd_wps_settings/general.php:77
+msgid "Clear"
+msgstr "Temizlemek"
+
+#: modules/Apbd_wps_debug_log.php:119
+msgid "Clear failed try again"
+msgstr "Temizlenemedi tekrar deneyin"
+
+#: views/apbd_wps_debug_log/main.php:12
+msgid "Clear Log"
+msgstr "Günlüğü Temizle"
+
+#: modules/Apbd_wps_settings.php:1412
+msgid "Click Attach File"
+msgstr "Dosya Ekle'yi tıklayın"
+
+#: views/apbd_wps_envato_system/integration.php:108
+msgid "Click here"
+msgstr "Buraya Tıkla"
+
+#: views/apbd_wps_settings/general.php:322
+msgid "Click image to change it."
+msgstr "Değiştirmek için resme tıklayın."
+
+#: views/apbd_wps_settings/general.php:291
+msgid "Click image to change it. Recommended height: 40 px."
+msgstr "Değiştirmek için resme tıklayın. Önerilen yükseklik: 40 piksel."
+
+#: models/database/Mapbd_wps_email_templates.php:396
+#: views/apbd_wps_canned_msg/add.php:53
+#, php-format
+msgid "Click to insert {{%s}} to editor"
+msgstr "Düzenleyiciye {{%s}} eklemek için tıklayın"
+
+#: views/apbd_wps_settings/general.php:55
+msgid "Client & Reg. Page Image"
+msgstr "İstemci ve Kayıt Sayfa Resmi"
+
+#: modules/Apbd_wps_settings.php:1444
+msgid "Client loading"
+msgstr "İstemci yükleme"
+
+#: views/apbd_wps_settings/general.php:39
+msgid "Client Role"
+msgstr "İstemci Rolü"
+
+#. Description of the plugin/theme
+msgid "Client ticketing app for Wordpress"
+msgstr "Wordpress için müşteri biletleme uygulaması"
+
+#: modules/Apbd_wps_settings.php:1348 template/popup-msg.php:97
+msgid "Close"
+msgstr "Kapat"
+
+#: modules/Apbd_wps_settings.php:1347
+msgid "close"
+msgstr "kapat"
+
+#: template/popup-msg.php:71
+#, php-format
+msgid "Close in %s second(s)"
+msgstr "%s saniye içinde kapat"
+
+#: modules/Apbd_wps_settings.php:1330
+msgid "Close Ticket"
+msgstr "Bileti Kapat"
+
+#: modules/Apbd_wps_settings.php:1349
+msgid "Closed"
+msgstr "Kapalı"
+
+#: modules/Apbd_wps_settings.php:1329
+msgid "Closed Tickets"
+msgstr "Kapalı Biletler"
+
+#: models/database/Mapbd_wps_custom_field.php:464
+msgid "Comma( , ) separated. Ex: OptionA,OptionB,OptionC"
+msgstr "Virgülle ayrılmış. Örn: SeçenekA, SeçenekB, SeçenekC"
+
+#: models/database/Mapbd_wps_email_templates.php:373
+#: models/database/Mapbd_wps_email_templates.php:375
+msgid "Content"
+msgstr "İçerik"
+
+#: modules/Apbd_wps_settings.php:1462
+msgid "Copied"
+msgstr "Kopyalandı"
+
+#: modules/Apbd_wps_settings.php:1461
+msgid "Copy"
+msgstr "Kopyala"
+
+#: appcore/APBDWPSupportLite.php:316 core/AppsBDKarnelLite.php:1094
+msgid "Copyright"
+msgstr "telif hakkı"
+
+#: modules/Apbd_wps_settings.php:244 views/apbd_wps_settings/general.php:162
+#, php-format
+msgid "Copyright %s © %s"
+msgstr "Telif hakkı %s © %s"
+
+#: appcore/APBDWPDiagnosticData.php:495
+msgid "Count Me In"
+msgstr "Beni de sayın"
+
+#: views/apbd_wps_envato_system/integration.php:103
+msgid "Create a new token"
+msgstr "Yeni bir belirteç oluştur"
+
+#: modules/Apbd_wps_settings.php:1366
+msgid "Create Another Ticket"
+msgstr "Başka Bir Bilet Oluştur"
+
+#: models/database/Mapbd_wps_custom_field.php:407
+msgid "Create for"
+msgstr "Şunun için oluştur:"
+
+#: modules/Apbd_wps_settings.php:1291
+msgid "Create Ticket"
+msgstr "Bilet Oluştur"
+
+#: modules/Apbd_wps_settings.php:1380
+msgid "Create Time:"
+msgstr "Zaman yarat:"
+
+#: modules/Apbd_wps_settings.php:1377
+msgid "Created Date"
+msgstr "Oluşturulma Tarihi"
+
+#: views/apbd_wps_settings/fileupload.php:70
+msgid "CSV"
+msgstr "CSV"
+
+#: modules/Apbd_wps_custom_field.php:31
+msgid "Custom Field"
+msgstr "Özel alan"
+
+#: modules/Apbd_wps_custom_field.php:26
+msgid "Custom Field List"
+msgstr "Özel Alan Listesi"
+
+#: modules/Apbd_wps_custom_field.php:35
+msgid "Custom Field Settings"
+msgstr "Özel Alan Ayarları"
+
+#: modules/Apbd_wps_settings.php:1387
+msgid "Customer Notes"
+msgstr "müşteri notları"
+
+#: views/apbd_wps_settings/main.php:42
+msgid "Customization"
+msgstr "Özelleştirme"
+
+#: views/apbd_wps_settings/general.php:72
+msgid "Dashboard Image"
+msgstr "Pano Resmi"
+
+#: models/database/Mapbd_wps_custom_field.php:443
+#: modules/Apbd_wps_settings.php:1360
+msgid "Date"
+msgstr "Tarih"
+
+#: modules/Apbd_wps_settings.php:1364
+msgid "Days ago"
+msgstr "Günler önce"
+
+#: modules/Apbd_wps_debug_log.php:29
+msgid "Debug Log"
+msgstr "Hata ayıklama günlüğü"
+
+#: modules/Apbd_wps_debug_log.php:24
+msgid "Debug Log List"
+msgstr "Hata Ayıklama Günlük Listesi"
+
+#: modules/Apbd_wps_debug_log.php:33
+msgid "Debug Log Settings"
+msgstr "Hata Ayıklama Günlüğü Ayarları"
+
+#: modules/Apbd_wps_canned_msg.php:113 modules/Apbd_wps_custom_field.php:122
+#: modules/Apbd_wps_notification.php:114 modules/Apbd_wps_role.php:237
+#: modules/Apbd_wps_role.php:297 modules/Apbd_wps_settings.php:1401
+#: modules/Apbd_wps_ticket_assign_rule.php:114
+#: modules/Apbd_wps_ticket_category.php:119
+msgid "Delete"
+msgstr "Silmek"
+
+#: modules/APBD_wps_email_template.php:173 modules/Apbd_wps_canned_msg.php:142
+#: modules/Apbd_wps_custom_field.php:170 modules/Apbd_wps_debug_log.php:111
+#: modules/Apbd_wps_notification.php:144 modules/Apbd_wps_role.php:324
+#: modules/Apbd_wps_ticket_assign_rule.php:155
+#: modules/Apbd_wps_ticket_category.php:146
+msgid "Delete failed try again"
+msgstr "Silinemedi tekrar deneyin"
+
+#: modules/APBD_wps_email_template.php:158 modules/Apbd_wps_debug_log.php:98
+#: modules/Apbd_wps_notification.php:131
+msgid "Delete is temporary disabled"
+msgstr "Silme geçici olarak devre dışı bırakıldı"
+
+#: modules/Apbd_wps_settings.php:1389
+msgid "Delete Ticket"
+msgstr "Bileti Sil"
+
+#: modules/Apbd_wps_settings.php:1328
+msgid "Deleted"
+msgstr "silindi"
+
+#: modules/Apbd_wps_settings.php:1452
+msgid "Descending"
+msgstr "Azalan"
+
+#: models/database/Mapbd_wps_email_templates.php:389
+#: modules/Apbd_wps_settings.php:1311 views/apbd_wps_canned_msg/add.php:47
+msgid "Description"
+msgstr "Tanım"
+
+#: modules/Apbd_wps_debug_log.php:50
+msgid "Details Debug Log"
+msgstr "Ayrıntılar Hata Ayıklama Günlüğü"
+
+#: views/apbd_wps_debug_log/view_dtls.php:27
+msgid "Details Log"
+msgstr "Ayrıntılar Günlüğü"
+
+#: views/apbd_wps_settings/general.php:272
+msgid "Disable auto-scroll to the latest response on ticket details"
+msgstr ""
+"Bilet ayrıntılarındaki en son yanıta otomatik kaydırmayı devre dışı bırak"
+
+#: views/apbd_wps_settings/general.php:238
+msgid "Disable closed ticket reply"
+msgstr "Kapalı bilet yanıtını devre dışı bırak"
+
+#: views/apbd_wps_settings/general.php:207
+msgid "Disable Guest Ticket Creation"
+msgstr "Misafir Bileti Oluşturmayı Devre Dışı Bırak"
+
+#: views/apbd_wps_settings/general.php:201
+msgid "Disable Registration Form"
+msgstr "Kayıt Formunu Devre Dışı Bırak"
+
+#: views/apbd_wps_settings/general.php:261
+msgid "Disable ticket search by value of custom field"
+msgstr "Özel alanın değerine göre bilet aramayı devre dışı bırak"
+
+#: models/database/Mapbd_wps_users.php:161
+#: models/database/Mapbd_wps_users.php:164
+msgid "Display Name"
+msgstr "Ekran adı"
+
+#: views/apbd_wps_envato_system/integration.php:62
+msgid "Display On"
+msgstr "Ekran Açık"
+
+#: views/apbd_wps_settings/fileupload.php:56
+msgid "Docs"
+msgstr "Dokümanlar"
+
+#: libs/jQGrid.php:112
+msgid "Download"
+msgstr "İndirmek"
+
+#: libs/jQGrid.php:997 libs/jQGrid.php:1500
+msgid "Download CSV"
+msgstr "CSV'yi indir"
+
+#: views/apbd_wps_envato_system/integration.php:118
+msgid "Download your purchased items"
+msgstr "Satın aldığınız öğeleri indirin"
+
+#: models/database/Mapbd_wps_custom_field.php:446
+msgid "Dropdown"
+msgstr "Yıkılmak"
+
+#: views/apbd_wps_settings/general.php:165
+msgid "Dynamic data:"
+msgstr "Dinamik veriler:"
+
+#: core/AppsBDModel.php:1710
+msgid "E004"
+msgstr "E004"
+
+#: modules/Apbd_wps_edd.php:22
+msgid "Easy Digital Downloads"
+msgstr "Easy Digital Downloads"
+
+#: modules/Apbd_wps_edd.php:18
+msgid "EDD"
+msgstr "EDD"
+
+#: modules/APBD_wps_email_template.php:142 modules/Apbd_wps_canned_msg.php:112
+#: modules/Apbd_wps_custom_field.php:121 modules/Apbd_wps_notification.php:113
+#: modules/Apbd_wps_role.php:236 modules/Apbd_wps_role.php:296
+#: modules/Apbd_wps_ticket_assign_rule.php:113
+#: modules/Apbd_wps_ticket_category.php:118
+msgid "Edit"
+msgstr "Düzenlemek"
+
+#: modules/Apbd_wps_canned_msg.php:68
+msgid "Edit Canned Msg"
+msgstr "Hazır Mesajı Düzenle"
+
+#: modules/Apbd_wps_custom_field.php:71
+msgid "Edit Custom Field"
+msgstr "Özel Alanı Düzenle"
+
+#: modules/APBD_wps_email_template.php:95
+msgid "Edit Email Template"
+msgstr "E-posta Şablonunu Düzenle"
+
+#: modules/Apbd_wps_notification.php:69
+msgid "Edit Notification"
+msgstr "Bildirimi Düzenle"
+
+#: modules/Apbd_wps_role.php:189
+msgid "Edit Role"
+msgstr "Rolü Düzenle"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:68
+msgid "Edit Ticket Assign Rule"
+msgstr "Bilet Atama Kuralını Düzenle"
+
+#: modules/Apbd_wps_ticket_category.php:68
+msgid "Edit Ticket Category"
+msgstr "Bilet Kategorisini Düzenle"
+
+#: modules/Apbd_wps_elite_licenser.php:18
+msgid "Elite Licenser"
+msgstr "Elit Lisans Sahibi"
+
+#: modules/Apbd_wps_elite_licenser.php:22
+msgid "Elite Licenser Settings"
+msgstr "Elit Lisans Sahibi Ayarları"
+
+#: modules/Apbd_wps_settings.php:1294
+msgid "Email"
+msgstr "E-posta"
+
+#: libs/Apbd_WPS_User.php:61 libs/Apbd_WPS_User.php:93
+#: modules/Apbd_wps_settings.php:1410
+msgid "Email or username is already exists"
+msgstr "E-posta veya kullanıcı adı zaten var"
+
+#: modules/Apbd_wps_mailbox.php:22
+msgid "Email Piping Settings"
+msgstr "E-posta Borulama Ayarları"
+
+#: modules/APBD_wps_email_template.php:48
+#: modules/APBD_wps_email_template.php:53
+msgid "Email Template"
+msgstr "E-posta şablonu"
+
+#: modules/APBD_wps_email_template.php:57
+msgid "Email Template Settings"
+msgstr "E-posta Şablonu Ayarları"
+
+#: modules/Apbd_wps_mailbox.php:18
+msgid "Email to Ticket"
+msgstr "Bilete e-posta"
+
+#: views/apbd_wps_settings/general.php:306
+msgid "Enable App Loader"
+msgstr "Uygulama Yükleyiciyi Etkinleştir"
+
+#: views/apbd_wps_settings/general.php:227
+msgid "Enable auto ticket close"
+msgstr "Otomatik bilet kapatmayı etkinleştir"
+
+#: views/apbd_wps_envato_system/integration.php:13
+msgid "Enable it to setup api settings"
+msgstr "API ayarlarını ayarlamak için etkinleştirin"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:16
+msgid "Enable it to setup recaptcha v3 settings"
+msgstr "recaptcha v3 ayarlarını yapmak için etkinleştirin"
+
+#: views/apbd_wps_settings/general.php:183
+msgid "Enable public ticket option (on creation)"
+msgstr "Genel bilet seçeneğini etkinleştir (oluşturma sırasında)"
+
+#: views/apbd_wps_settings/general.php:189
+msgid "Enable public ticket option (on details)"
+msgstr "Genel bilet seçeneğini etkinleştir (ayrıntılar üzerinde)"
+
+#: views/apbd_wps_settings/general.php:144
+msgid "Enable Sequential Ticket Track ID"
+msgstr "Sıralı Bilet Parça Kimliğini Etkinleştir"
+
+#: views/apbd_wps_settings/general.php:216
+msgid "Enable ticket close option for customer"
+msgstr "Müşteri için bilet kapatma seçeneğini etkinleştirin"
+
+#: views/apbd_wps_settings/general.php:195
+msgid "Enable to show public tickets"
+msgstr "Genel biletleri göstermeyi etkinleştir"
+
+#: views/apbd_wps_settings/general.php:106
+msgid "Enable Wordpress Login Register"
+msgstr "Wordpress Giriş Kaydını Etkinleştir"
+
+#: views/apbd_wps_settings/general.php:126
+msgid "Enable Wordpress Profile Link"
+msgstr "Wordpress Profil Bağlantısını Etkinleştir"
+
+#: modules/Apbd_wps_envato_system.php:235
+msgid "Enter your purchase code"
+msgstr "Satın alma kodunuzu girin"
+
+#: models/database/Mapbd_wps_notes.php:120
+#: models/database/Mapbd_wps_notes.php:123
+msgid "Entry Date"
+msgstr "Giriş tarihi"
+
+#: models/database/Mapbd_wps_notification.php:257
+#: models/database/Mapbd_wps_notification.php:260
+msgid "Entry Link"
+msgstr "Giriş Bağlantısı"
+
+#: models/database/Mapbd_wps_debug_log.php:268
+#: models/database/Mapbd_wps_debug_log.php:271
+#: models/database/Mapbd_wps_notification.php:287
+#: models/database/Mapbd_wps_notification.php:290
+#: models/database/Mapbd_wps_ticket_log.php:244
+#: models/database/Mapbd_wps_ticket_log.php:247
+#: views/apbd_wps_debug_log/main.php:18
+msgid "Entry Time"
+msgstr "Giriş zamanı"
+
+#: models/database/Mapbd_wps_debug_log.php:218
+#: models/database/Mapbd_wps_notification.php:245
+#: views/apbd_wps_debug_log/main.php:17
+#: views/apbd_wps_debug_log/view_dtls.php:11
+msgid "Entry Type"
+msgstr "Giriş Türü"
+
+#: modules/Apbd_wps_envato_system.php:56
+#: views/apbd_wps_envato_system/integration.php:7
+msgid "Envato"
+msgstr "Envato"
+
+#: modules/Apbd_wps_envato_system.php:50 modules/Apbd_wps_envato_system.php:61
+msgid "Envato Settings"
+msgstr "Envato Ayarları"
+
+#: libs/Apbd_imap.php:60
+msgid "Error Message:"
+msgstr "Hata mesajı:"
+
+#: models/database/Mapbd_wps_notification.php:303
+#: models/database/Mapbd_wps_notification.php:306
+msgid "Extra Param"
+msgstr "Ekstra Param"
+
+#: modules/Apbd_wps_role.php:401 modules/Apbd_wps_role.php:409
+msgid "Failed to update"
+msgstr "Güncelleme başarısız oldu"
+
+#: modules/Apbd_wps_settings.php:1441
+msgid "False"
+msgstr "Yanlış"
+
+#: views/apbd_wps_settings/general.php:295
+msgid "Favicon"
+msgstr "Favicon"
+
+#: models/database/Mapbd_wps_custom_field.php:367
+#: models/database/Mapbd_wps_custom_field.php:370
+msgid "Field Label"
+msgstr "Alan Etiketi"
+
+#: models/database/Mapbd_wps_custom_field.php:461
+msgid "Field Option"
+msgstr "Alan Seçeneği"
+
+#: models/database/Mapbd_wps_custom_field.php:377
+msgid "Field Slug"
+msgstr "Tarla Sümüklüböceği"
+
+#: models/database/Mapbd_wps_custom_field.php:374
+#, php-format
+msgid "Field Slug %1$s(leave blank for auto generate)%2$s"
+msgstr "Alan Bilgisi %1$s(otomatik oluşturma için boş bırakın)%2$s"
+
+#: models/database/Mapbd_wps_custom_field.php:436
+#: models/database/Mapbd_wps_custom_field.php:452
+msgid "Field Type"
+msgstr "Alan türü"
+
+#: core/AppsBDLiteModule.php:297
+msgid "File Missing"
+msgstr "Eksik dosya"
+
+#: core/AppsBDLiteModule.php:298
+#, php-format
+msgid "File not exists: %s"
+msgstr "Dosya mevcut değil: %s"
+
+#: modules/Apbd_wps_settings.php:1411
+msgid "File size is larger then %{allowed_size}"
+msgstr "Dosya boyutu %{allowed_size} boyutundan daha büyük"
+
+#: views/apbd_wps_settings/main.php:23
+msgid "File Upload"
+msgstr "Dosya yükleme"
+
+#: views/apbd_wps_settings/fileupload.php:11
+msgid "File Upload Settings"
+msgstr "Dosya Yükleme Ayarları"
+
+#: views/apbd_wps_settings/fileupload.php:35
+msgid "File Upload Size"
+msgstr "Dosya Yükleme Boyutu"
+
+#: modules/Apbd_wps_settings.php:1275
+msgid "First Name"
+msgstr "İlk adı"
+
+#: modules/Apbd_wps_settings.php:1276
+msgid "First name"
+msgstr "İlk adı"
+
+#: modules/Apbd_wps_fluentcrm.php:18
+msgid "FluentCRM"
+msgstr "FluentCRM"
+
+#: modules/Apbd_wps_fluentcrm.php:22
+msgid "FluentCRM Settings"
+msgstr "FluentCRM Ayarları"
+
+#: views/apbd_wps_settings/general.php:159
+msgid "Footer Copyright Text"
+msgstr "Altbilgi Telif Hakkı Metni"
+
+#: views/apbd_wps_envato_system/integration.php:107
+msgid ""
+"For some bug of CodeCanyon API it required these permission which is shown "
+"in the hover image or"
+msgstr ""
+"CodeCanyon API'sinin bazı hataları için, vurgulu görüntüde gösterilen bu "
+"izinleri gerektiriyordu veya"
+
+#: libs/jQGrid.php:1457 libs/jQGrid.php:1566
+msgid "Form"
+msgstr "Biçim"
+
+#: views/apbd_wps_envato_system/integration.php:104
+msgid "form"
+msgstr "biçim"
+
+#: views/apbd_wps_settings/main.php:10
+msgid "General"
+msgstr "Genel"
+
+#: modules/Apbd_wps_settings.php:1040 views/apbd_wps_settings/general.php:7
+msgid "General Settings"
+msgstr "Genel Ayarlar"
+
+#: views/apbd_wps_envato_system/integration.php:29
+msgid "Generate an API key in your envato account and enter here"
+msgstr "envato hesabınızda bir API anahtarı oluşturun ve buraya girin"
+
+#: views/apbd_wps_betterdocs/main.php:12 views/apbd_wps_edd/main.php:12
+#: views/apbd_wps_elite_licenser/main.php:12
+#: views/apbd_wps_envato_system/main.php:32
+#: views/apbd_wps_fluentcrm/main.php:12
+#: views/apbd_wps_incoming_webhook/main.php:12
+#: views/apbd_wps_mailbox/main.php:12 views/apbd_wps_report/main.php:12
+#: views/apbd_wps_settings/app-footer.php:14
+#: views/apbd_wps_settings/main.php:58 views/apbd_wps_settings/main.php:70
+#: views/apbd_wps_slack/main.php:12 views/apbd_wps_tutorlms/main.php:12
+#: views/apbd_wps_webhook/main.php:12 views/apbd_wps_whatsapp/main.php:12
+#: views/apbd_wps_woocommerce/main.php:30
+#: views/apbd_wps_woocommerce/main.php:36
+msgid "Get Pro Now"
+msgstr "Şimdi Pro'yu Alın"
+
+#: views/apbd_wps_envato_system/integration.php:100
+msgid "Go to"
+msgstr "git"
+
+#: modules/Apbd_wps_custom_field.php:146
+msgid "Half Field: "
+msgstr "Yarım Alan:"
+
+#: models/database/Mapbd_wps_custom_field.php:386
+msgid "Help Text"
+msgstr "Yardım Metni"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:37
+msgid "Hide reCAPTCHA Badge"
+msgstr "reCAPTCHA Rozetini Gizle"
+
+#: views/apbd_wps_settings/general.php:252
+msgid "Hide ticket details info by default"
+msgstr "Bilet ayrıntıları bilgisini varsayılan olarak gizle"
+
+#: modules/Apbd_wps_settings.php:1357
+msgid "High"
+msgstr "Yüksek"
+
+#: modules/Apbd_wps_settings.php:1365
+msgid "Home"
+msgstr "Ev"
+
+#. Plugin URI of the plugin/theme
+msgid "http://supportgenix.com"
+msgstr "http://supportgenix.com"
+
+#. Author URI of the plugin/theme
+msgid "https://supportgenix.com"
+msgstr "https://supportgenix.com"
+
+#: views/apbd_wps_settings/fileupload.php:23
+msgid ""
+"If you enable it Then user can upload file when they open ticket and reply "
+"any ticket"
+msgstr ""
+"Etkinleştirirseniz, kullanıcı bileti açtığında dosya yükleyebilir ve "
+"herhangi bir bileti yanıtlayabilir"
+
+#: views/apbd_wps_settings/general.php:64
+#: views/apbd_wps_settings/general.php:81
+msgid "Img Url"
+msgstr "İmg URL'si"
+
+#: modules/Apbd_wps_settings.php:1319
+msgid "In Progress"
+msgstr "Devam etmekte"
+
+#: models/database/Mapbd_wps_custom_field.php:398
+msgid "In Registration Form"
+msgstr "Kayıt Formunda"
+
+#: modules/Apbd_wps_settings.php:1327
+msgid "Inactive"
+msgstr "etkin değil"
+
+#: modules/Apbd_wps_settings.php:1325
+msgid "Inactive Tickets"
+msgstr "Etkin Olmayan Biletler"
+
+#: modules/Apbd_wps_incoming_webhook.php:18
+msgid "Incoming Webhook"
+msgstr "Gelen Web Kancası"
+
+#: modules/Apbd_wps_incoming_webhook.php:22
+msgid "Incoming Webhook Settings"
+msgstr "Gelen Web Kancası Ayarları"
+
+#: modules/Apbd_wps_settings.php:1455
+msgid "Incorrect username or password"
+msgstr "Yanlış kullanıcı adı ya da parola"
+
+#: views/apbd_wps_envato_system/main.php:10
+msgid "Integration"
+msgstr "Entegrasyon"
+
+#: views/apbd_wps_woocommerce/main.php:12
+msgid "Integrations"
+msgstr "Entegrasyonlar"
+
+#: modules/Apbd_wps_settings.php:1443
+msgid "Invalid captcha, try again"
+msgstr "Geçersiz güvenlik kodu, tekrar deneyin"
+
+#: api/v1/APBDWPSAPIConfig.php:86
+msgid "Invalid input"
+msgstr "Geçersiz Giriş"
+
+#: modules/APBD_wps_email_template.php:162
+#: modules/APBD_wps_email_template.php:181 modules/Apbd_wps_canned_msg.php:132
+#: modules/Apbd_wps_canned_msg.php:150 modules/Apbd_wps_custom_field.php:160
+#: modules/Apbd_wps_custom_field.php:178 modules/Apbd_wps_custom_field.php:206
+#: modules/Apbd_wps_debug_log.php:101 modules/Apbd_wps_notification.php:134
+#: modules/Apbd_wps_notification.php:152 modules/Apbd_wps_role.php:313
+#: modules/Apbd_wps_role.php:333 modules/Apbd_wps_role.php:362
+#: modules/Apbd_wps_ticket_assign_rule.php:145
+#: modules/Apbd_wps_ticket_assign_rule.php:163
+#: modules/Apbd_wps_ticket_category.php:136
+#: modules/Apbd_wps_ticket_category.php:155
+msgid "Invalid Request"
+msgstr "geçersiz istek"
+
+#: modules/APBD_wps_email_template.php:90
+#: modules/APBD_wps_email_template.php:112 modules/Apbd_wps_canned_msg.php:64
+#: modules/Apbd_wps_canned_msg.php:84 modules/Apbd_wps_custom_field.php:67
+#: modules/Apbd_wps_custom_field.php:90 modules/Apbd_wps_debug_log.php:46
+#: modules/Apbd_wps_debug_log.php:55 modules/Apbd_wps_notification.php:65
+#: modules/Apbd_wps_notification.php:85 modules/Apbd_wps_role.php:185
+#: modules/Apbd_wps_role.php:207 modules/Apbd_wps_ticket_assign_rule.php:64
+#: modules/Apbd_wps_ticket_assign_rule.php:84
+#: modules/Apbd_wps_ticket_category.php:64
+#: modules/Apbd_wps_ticket_category.php:84
+msgid "Invalid request"
+msgstr "Geçersiz istek"
+
+#: models/database/Mapbd_wps_custom_field.php:487
+msgid "Is Half Field"
+msgstr "Yarım Alan mı"
+
+#: models/database/Mapbd_wps_notification.php:273
+msgid "Is Popup Link"
+msgstr "Açılır Bağlantı mı"
+
+#: models/database/Mapbd_wps_custom_field.php:470
+#: views/apbd_wps_envato_system/integration.php:45
+msgid "Is Required"
+msgstr "Gereklidir"
+
+#: libs/jQGrid.php:1385
+msgid "It is not supports bootstrap 3"
+msgstr "Önyükleme 3'ü desteklemiyor"
+
+#: template/popup-msg.php:53
+#, php-format
+msgid "It will redirect within %s second(s)"
+msgstr "%s saniye içinde yönlendirilecek"
+
+#: models/database/Mapbd_wps_support_meta.php:159
+#: models/database/Mapbd_wps_support_meta.php:162
+msgid "Item Id"
+msgstr "Öğe Kimliği"
+
+#: modules/Apbd_wps_settings.php:1381
+msgid "Item Name"
+msgstr "Öğe adı"
+
+#: models/database/Mapbd_wps_notification.php:294
+#: models/database/Mapbd_wps_notification.php:297
+#: models/database/Mapbd_wps_support_meta.php:166
+msgid "Item Type"
+msgstr "Öğe türü"
+
+#: views/apbd_wps_settings/fileupload.php:91
+msgid "JSON"
+msgstr "JSON"
+
+#: views/apbd_wps_settings/general.php:116
+msgid "Keep blank to get default login page"
+msgstr "Varsayılan oturum açma sayfasını almak için boş bırakın"
+
+#: views/apbd_wps_settings/general.php:136
+msgid "Keep blank to get default profile page"
+msgstr "Varsayılan profil sayfasını almak için boş bırakın"
+
+#: views/apbd_wps_settings/general.php:121
+msgid "Keep blank to get default registration page"
+msgstr "Varsayılan kayıt sayfasını almak için boş bırakın"
+
+#: views/apbd_wps_settings/general.php:97
+msgid "Keep empty for default"
+msgstr "Varsayılan olarak boş bırak"
+
+#: views/apbd_wps_settings/general.php:164
+msgid "Keep empty for default."
+msgstr "Varsayılan olarak boş bırakın."
+
+#: views/apbd_wps_custom_field/main.php:14
+msgid "Label"
+msgstr "Etiket"
+
+#: modules/Apbd_wps_settings.php:1277
+msgid "Last Name"
+msgstr "Soy isim"
+
+#: modules/Apbd_wps_settings.php:1278
+msgid "Last name"
+msgstr "Soy isim"
+
+#: modules/Apbd_wps_envato_system.php:288
+msgid "License Type"
+msgstr "Lisans türü"
+
+#: views/apbd_wps_envato_system/integration.php:121
+msgid "List purchases you've made"
+msgstr "Yaptığınız satın alımları listeleyin"
+
+#: modules/Apbd_wps_settings.php:1274
+msgid "Loaded"
+msgstr "Yüklendi"
+
+#: appcore/APBDWPSupportLite.php:236 core/AppsBDKarnelLite.php:1014
+#: libs/jQGrid.php:666
+msgid "Loading"
+msgstr "Yükleniyor"
+
+#: modules/Apbd_wps_settings.php:1399
+msgid "Loading ..."
+msgstr "Yükleniyor ..."
+
+#: appcore/APBDWPSupportLite.php:234 core/AppsBDKarnelLite.php:1012
+msgid "Loading.."
+msgstr "Yükleniyor.."
+
+#: modules/Apbd_wps_settings.php:1321
+msgid "lock screen"
+msgstr "kilit ekranı"
+
+#: models/database/Mapbd_wps_ticket_log.php:205
+#: models/database/Mapbd_wps_ticket_log.php:208
+msgid "Log By"
+msgstr "Giriş Yap"
+
+#: models/database/Mapbd_wps_ticket_log.php:214
+msgid "Log By Type"
+msgstr "Türe Göre Günlük"
+
+#: models/database/Mapbd_wps_debug_log.php:249
+#: models/database/Mapbd_wps_debug_log.php:252
+msgid "Log Data"
+msgstr "Günlük Verileri"
+
+#: models/database/Mapbd_wps_ticket_log.php:224
+#: models/database/Mapbd_wps_ticket_log.php:227
+msgid "Log Msg"
+msgstr "Günlük Mesajı"
+
+#: modules/Apbd_wps_settings.php:1322
+msgid "log out"
+msgstr "çıkış Yap"
+
+#: models/database/Mapbd_wps_debug_log.php:229
+#: views/apbd_wps_debug_log/main.php:13
+#: views/apbd_wps_debug_log/view_dtls.php:19
+msgid "Log Type"
+msgstr "Günlük Türü"
+
+#: modules/Apbd_wps_settings.php:1312
+msgid "Login"
+msgstr "Giriş yapmak"
+
+#: views/apbd_wps_settings/general.php:114
+msgid "Login Page Link"
+msgstr "Giriş Sayfası Bağlantısı"
+
+#: views/apbd_wps_envato_system/main.php:16
+msgid "Login with Envato"
+msgstr "Envato'ya giriş yapın"
+
+#: modules/Apbd_wps_settings.php:1404
+msgid "Lost your password?"
+msgstr "Şifreni mi unuttun?"
+
+#: modules/Apbd_wps_settings.php:1355
+msgid "Low"
+msgstr "Düşük"
+
+#: views/apbd_wps_canned_msg/add.php:6 views/apbd_wps_custom_field/add.php:6
+#: views/apbd_wps_debug_log/add.php:6 views/apbd_wps_email_template/add.php:6
+#: views/apbd_wps_role/add.php:6 views/apbd_wps_ticket_assign_rule/add.php:6
+#: views/apbd_wps_ticket_category/add.php:6
+msgid "Main object has not initialized in controller"
+msgstr "Ana nesne denetleyicide başlatılmadı"
+
+#: modules/Apbd_wps_settings.php:1286
+msgid "Make this ticket public"
+msgstr "Bu bileti herkese açık yap"
+
+#: views/apbd_wps_settings/fileupload.php:28
+msgid "Max Upload File Size"
+msgstr "Maksimum Yükleme Dosyası Boyutu"
+
+#: models/database/Mapbd_wps_custom_field.php:465
+msgid "Maximum 255 character"
+msgstr "Maksimum 255 karakter"
+
+#: views/apbd_wps_settings/fileupload.php:38
+msgid "MB"
+msgstr "MB"
+
+#: modules/Apbd_wps_settings.php:1356
+msgid "Medium"
+msgstr "Orta"
+
+#: models/database/Mapbd_wps_support_meta.php:178
+#: models/database/Mapbd_wps_support_meta.php:181
+msgid "Meta Key"
+msgstr "Meta Anahtarı"
+
+#: models/database/Mapbd_wps_support_meta.php:184
+msgid "Meta Type"
+msgstr "Meta Türü"
+
+#: models/database/Mapbd_wps_support_meta.php:196
+#: models/database/Mapbd_wps_support_meta.php:199
+msgid "Meta Value"
+msgstr "Meta Değer"
+
+#: modules/Apbd_wps_settings.php:1363
+msgid "Month"
+msgstr "Ay"
+
+#: modules/Apbd_wps_settings.php:1372
+msgid "Move To Trash"
+msgstr "Çöp kutusuna taşıyın"
+
+#: models/database/Mapbd_wps_notification.php:238
+#: models/database/Mapbd_wps_notification.php:241
+msgid "Msg"
+msgstr "mesaj"
+
+#: models/database/Mapbd_wps_notification.php:310
+#: models/database/Mapbd_wps_notification.php:313
+msgid "Msg Param"
+msgstr "Mesaj Parametresi"
+
+#: views/apbd_wps_envato_system/integration.php:101
+msgid "My App"
+msgstr "Uygulamam"
+
+#: modules/Apbd_wps_settings.php:1341
+msgid "My Ticket"
+msgstr "Biletim"
+
+#: models/database/Mapbd_wps_notification.php:264
+#: models/database/Mapbd_wps_notification.php:267
+msgid "N Counter"
+msgstr "N Sayaç"
+
+#: models/database/Mapbd_wps_role.php:467
+#: models/database/Mapbd_wps_role.php:471 modules/Apbd_wps_settings.php:1359
+#: views/apbd_wps_role/role-list.php:14
+msgid "Name"
+msgstr "İsim"
+
+#: modules/Apbd_wps_settings.php:1439
+msgid "Need Reply"
+msgstr "Yanıt Gerekiyor"
+
+#: modules/Apbd_wps_settings.php:1449
+msgid "Need reply"
+msgstr "Cevap gerekiyor"
+
+#: modules/Apbd_wps_settings.php:1306
+msgid "New"
+msgstr "Yeni"
+
+#: modules/Apbd_wps_settings.php:1305
+msgid "New Password"
+msgstr "Yeni Şifre"
+
+#: modules/Apbd_wps_settings.php:1456
+msgid "New Ticket Received"
+msgstr "Yeni Bilet Alındı"
+
+#: modules/Apbd_wps_settings.php:1339
+msgid "Newest First"
+msgstr "En yeni ilk"
+
+#: modules/Apbd_wps_settings.php:1421
+msgid "No"
+msgstr "Numara"
+
+#: core/AppsBDLiteModule.php:628 core/AppsBDLiteModule.php:630
+#: core/AppsBDLiteModule.php:634 modules/Apbd_wps_envato_system.php:86
+#: modules/Apbd_wps_envato_system.php:88 modules/Apbd_wps_envato_system.php:93
+#: modules/Apbd_wps_settings.php:1085
+msgid "No change for update"
+msgstr "Güncelleme için değişiklik yok"
+
+#: modules/Apbd_wps_settings.php:1442
+msgid "No data found"
+msgstr "Veri bulunamadı"
+
+#: views/apbd_wps_debug_log/view_dtls.php:29
+msgid "No Log data"
+msgstr "Günlük verisi yok"
+
+#: modules/Apbd_wps_settings.php:1280
+msgid "No Name Found"
+msgstr "İsim Bulunamadı"
+
+#: models/database/Mapbd_wps_role_access.php:153
+#: models/database/Mapbd_wps_ticket.php:929
+msgid "No need to implement"
+msgstr "uygulamaya gerek yok"
+
+#: models/database/Mapbd_wps_ticket_reply.php:318
+msgid "no need to implement"
+msgstr "uygulamaya gerek yok"
+
+#: modules/Apbd_wps_settings.php:1386
+msgid "No notes Found"
+msgstr "Not bulunamadı"
+
+#: libs/jQGrid.php:111
+msgid "No Record Found"
+msgstr "Kayıt Bulunamadı"
+
+#: modules/Apbd_wps_settings.php:1429
+msgid "No Saved Replies Found"
+msgstr "Kaydedilmiş Yanıt Bulunamadı"
+
+#: modules/Apbd_wps_settings.php:1414
+msgid "No Ticket Found"
+msgstr "Bilet Bulunamadı"
+
+#: modules/Apbd_wps_settings.php:1415
+msgid "No ticket found, Search again."
+msgstr "Bilet bulunamadı, Tekrar arayın."
+
+#: appcore/APBDWPDiagnosticData.php:498
+msgid "No, Thanks"
+msgstr "Hayır, teşekkürler"
+
+#: models/database/Mapbd_wps_notes.php:136
+#: models/database/Mapbd_wps_notes.php:139
+msgid "Note Text"
+msgstr "Not Metni"
+
+#: modules/Apbd_wps_notification.php:23 modules/Apbd_wps_notification.php:29
+msgid "Notification"
+msgstr "Bildirim"
+
+#: modules/Apbd_wps_notification.php:33
+msgid "Notification Settings"
+msgstr "Bildirim ayarları"
+
+#: modules/Apbd_wps_settings.php:1315
+msgid "Notifications"
+msgstr "Bildirimler"
+
+#: models/database/Mapbd_wps_custom_field.php:442
+msgid "Numeric"
+msgstr "sayısal"
+
+#: modules/Apbd_wps_settings.php:1445
+msgid "of %{totalPage}"
+msgstr "%{totalPage}"
+
+#: modules/Apbd_wps_settings.php:1307
+msgid "Old Password"
+msgstr "eski Şifre"
+
+#: modules/Apbd_wps_settings.php:1308
+msgid "Old password"
+msgstr "Eski Şifre"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:92
+msgid "On Create Ticket (If not logged in)"
+msgstr "Bilet Oluşturmada (Giriş yapılmamışsa)"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:82
+msgid "On Login Form"
+msgstr "Giriş Formunda"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:102
+msgid "On Registration Ticket"
+msgstr "Kayıt Biletinde"
+
+#: modules/Apbd_wps_settings.php:1346
+msgid "open"
+msgstr "açık"
+
+#: modules/Apbd_wps_settings.php:1448
+msgid "Opening date"
+msgstr "Açılış tarihi"
+
+#: modules/Apbd_wps_settings.php:1337
+msgid "Operators"
+msgstr "Operatörler"
+
+#: models/database/Mapbd_wps_custom_field.php:459
+#: views/apbd_wps_envato_system/integration.php:36
+msgid "Option"
+msgstr "Seçenek"
+
+#: views/apbd_wps_custom_field/main.php:18
+msgid "Order"
+msgstr "Emir"
+
+#: modules/Apbd_wps_webhook.php:18
+msgid "Outgoing Webhook"
+msgstr "Giden Web Kancası"
+
+#: modules/Apbd_wps_webhook.php:22
+msgid "Outgoing Webhook Settings"
+msgstr "Giden Web Kancası Ayarları"
+
+#: modules/Apbd_wps_settings.php:1424
+msgid "Page"
+msgstr "Sayfa"
+
+#: libs/jQGrid.php:667
+#, php-format
+msgid "Page %s of %s"
+msgstr "Sayfa %s / %s"
+
+#: models/database/Mapbd_wps_ticket_category.php:176
+#: views/apbd_wps_ticket_category/main.php:15
+msgid "Parent Category"
+msgstr "aile kategorisi"
+
+#: modules/Apbd_wps_settings.php:1297
+msgid "Password"
+msgstr "Şifre"
+
+#: views/apbd_wps_settings/fileupload.php:77
+msgid "PDF"
+msgstr "PDF'ler"
+
+#: views/apbd_wps_envato_system/integration.php:105
+msgid "Permission"
+msgstr "İzin"
+
+#: core/AppsbdAjaxDataResponse.php:187
+msgid "Permission Denied"
+msgstr "İzin reddedildi"
+
+#: views/apbd_wps_settings/fileupload.php:49
+msgid "Photos"
+msgstr "Fotoğraflar"
+
+#: models/database/Mapbd_wps_custom_field.php:383
+msgid "Placeholder"
+msgstr "Yer tutucu"
+
+#: modules/Apbd_wps_settings.php:1453
+msgid "Powered by"
+msgstr "Tarafından desteklenmektedir"
+
+#: modules/Apbd_wps_settings.php:1343
+msgid "Private Ticket"
+msgstr "Özel Bilet"
+
+#: modules/Apbd_wps_betterdocs.php:30 modules/Apbd_wps_edd.php:30
+#: modules/Apbd_wps_elite_licenser.php:30 modules/Apbd_wps_fluentcrm.php:30
+#: modules/Apbd_wps_incoming_webhook.php:30 modules/Apbd_wps_mailbox.php:30
+#: modules/Apbd_wps_report.php:30 modules/Apbd_wps_slack.php:30
+#: modules/Apbd_wps_tutorlms.php:30 modules/Apbd_wps_webhook.php:30
+#: modules/Apbd_wps_whatsapp.php:30 modules/Apbd_wps_woocommerce.php:30
+#: views/apbd_wps_envato_system/main.php:17
+#: views/apbd_wps_settings/general.php:143
+#: views/apbd_wps_settings/general.php:158
+#: views/apbd_wps_settings/general.php:215
+#: views/apbd_wps_settings/general.php:226
+#: views/apbd_wps_settings/general.php:237
+#: views/apbd_wps_settings/general.php:260
+#: views/apbd_wps_settings/general.php:271 views/apbd_wps_settings/main.php:17
+#: views/apbd_wps_settings/main.php:43
+msgid "Pro"
+msgstr "Profesyonel"
+
+#: views/apbd_wps_settings/app-footer.php:6
+msgid "Pro Edition"
+msgstr "Profesyonel Sürüm"
+
+#: template/popup-msg.php:16 template/popup.php:19
+msgid "Processing"
+msgstr "İşleme"
+
+#: modules/Apbd_wps_envato_system.php:286
+msgid "Product Name"
+msgstr "Ürün adı"
+
+#: modules/Apbd_wps_settings.php:1336
+msgid "Product Types"
+msgstr "Ürün Çeşitleri"
+
+#: modules/Apbd_wps_settings.php:1318
+msgid "profile"
+msgstr "profil"
+
+#: modules/Apbd_wps_settings.php:1289
+msgid "Profile Update"
+msgstr "Profil Güncelleme"
+
+#: models/database/Mapbd_wps_email_templates.php:381
+#: views/apbd_wps_canned_msg/add.php:39
+msgid "Properties"
+msgstr "Özellikleri"
+
+#: libs/jQGrid.php:1403 models/database/Mapbd_wps_email_templates.php:388
+#: views/apbd_wps_canned_msg/add.php:46
+msgid "Property"
+msgstr "Mülk"
+
+#: modules/Apbd_wps_settings.php:1394
+msgid "Public Tickets"
+msgstr "Genel Biletler"
+
+#: modules/Apbd_wps_envato_system.php:232 modules/Apbd_wps_settings.php:1382
+msgid "Purchase Code"
+msgstr "Satın alma kodu"
+
+#: modules/Apbd_wps_envato_system.php:134
+#: modules/Apbd_wps_envato_system.php:149
+msgid "Purchase code is invalid"
+msgstr "Satın alma kodu geçersiz"
+
+#: core/AppsBDModel.php:1799
+msgid "Queries"
+msgstr "Sorguları"
+
+#: models/database/Mapbd_wps_custom_field.php:445
+msgid "Radio"
+msgstr "Radyo"
+
+#: modules/Apbd_wps_settings.php:1340
+msgid "Rating"
+msgstr "Değerlendirme"
+
+#: modules/Apbd_wps_settings.php:1332
+msgid "Re-Open"
+msgstr "Yeniden Aç"
+
+#: views/apbd_wps_settings/main.php:36
+#: views/apbd_wps_settings/recaptcha_v3.php:10
+msgid "reCAPTCHA v3"
+msgstr "reCAPTCHA v3"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:30
+msgid "reCAPTCHA v3 Settings"
+msgstr "reCAPTCHA v3 Ayarları"
+
+#: modules/Apbd_wps_settings.php:1314
+msgid "Register"
+msgstr "Kayıt ol"
+
+#: views/apbd_wps_settings/general.php:119
+msgid "Registration Link"
+msgstr "Kayıt Bağlantısı"
+
+#: modules/Apbd_wps_settings.php:1383
+msgid "Related Link"
+msgstr "İlgili Bağlantı"
+
+#: modules/Apbd_wps_settings.php:1310
+msgid "Related URL"
+msgstr "İlgili URL"
+
+#: libs/jQGrid.php:113
+msgid "Reload"
+msgstr "Tekrar yükle"
+
+#: modules/Apbd_wps_settings.php:1313
+msgid "Remember Me"
+msgstr "Beni hatırla"
+
+#: views/apbd_wps_settings/general.php:177
+msgid "Remove Powered By"
+msgstr "Kaldır"
+
+#: modules/Apbd_wps_settings.php:1331
+msgid "Reopen Tickets"
+msgstr "Biletleri Yeniden Açın"
+
+#: modules/Apbd_wps_settings.php:1427
+msgid "Replied"
+msgstr "Cevap verdi"
+
+#: models/database/Mapbd_wps_canned_msg.php:164
+msgid "Reply user group"
+msgstr "Yanıt kullanıcı grubu"
+
+#: models/database/Mapbd_wps_canned_msg.php:163
+msgid "Reply user name"
+msgstr "kullanıcı adını yanıtla"
+
+#: modules/Apbd_wps_settings.php:1447
+msgid "Reply's date"
+msgstr "Yanıt tarihi"
+
+#: modules/Apbd_wps_report.php:18
+msgid "Report"
+msgstr "Rapor"
+
+#: modules/Apbd_wps_report.php:22
+msgid "Report & Statistics"
+msgstr "Rapor ve İstatistikler"
+
+#: modules/Apbd_wps_custom_field.php:146
+msgid "Required:"
+msgstr "Gerekli:"
+
+#: libs/jQGrid.php:1490
+msgid "Reset"
+msgstr "Sıfırla"
+
+#: views/apbd_wps_custom_field/main.php:13
+msgid "Reset Order"
+msgstr "Siparişi Sıfırla"
+
+#: libs/jQGrid.php:1522
+msgid "Reset Search"
+msgstr "Aramayı Sıfırla"
+
+#: modules/Apbd_wps_settings.php:1379
+msgid "Response Time"
+msgstr "Tepki Süresi"
+
+#: modules/Apbd_wps_settings.php:1402
+msgid "Restore"
+msgstr "Eski haline getirmek"
+
+#: modules/Apbd_wps_settings.php:1395
+msgid "Retype New Password"
+msgstr "Yeni şifrenizi tekrar yazınız"
+
+#: modules/Apbd_wps_settings.php:1396
+msgid "Retype new password"
+msgstr "Yeni şifrenizi tekrar yazınız"
+
+#: modules/Apbd_wps_settings.php:1397
+msgid "Retype New Password2"
+msgstr "Yeni Parolayı Yeniden Yazın2"
+
+#: modules/Apbd_wps_settings.php:1298
+msgid "Retype Password"
+msgstr "Şifrenizi yeniden yazın"
+
+#: modules/Apbd_wps_settings.php:1299
+msgid "Retype password"
+msgstr "Şifrenizi yeniden yazın"
+
+#: modules/Apbd_wps_settings.php:1300
+msgid "Retype Password2"
+msgstr "Parolayı Yeniden Yazın2"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:124
+#: views/apbd_wps_role/role-setting.php:14
+msgid "Role"
+msgstr "rol"
+
+#: views/apbd_wps_role/main.php:16
+msgid "Role Access"
+msgstr "Rol Erişimi"
+
+#: models/database/Mapbd_wps_role.php:491
+#: models/database/Mapbd_wps_role.php:495
+msgid "Role Description"
+msgstr "Rol Tanımı"
+
+#: views/apbd_wps_role/main.php:10
+msgid "Role List"
+msgstr "Rol Listesi"
+
+#: views/apbd_wps_role/role-setting.php:6
+msgid "Role Settings"
+msgstr "Rol Ayarları"
+
+#: models/database/Mapbd_wps_ticket_assign_rule.php:334
+#: views/apbd_wps_ticket_assign_rule/main.php:15
+msgid "Rule Type"
+msgstr "Kural Türü"
+
+#: views/apbd_wps_canned_msg/add.php:73 views/apbd_wps_custom_field/add.php:17
+#: views/apbd_wps_debug_log/add.php:17 views/apbd_wps_email_template/add.php:19
+#: views/apbd_wps_email_template/view_param.php:17
+#: views/apbd_wps_envato_system/integration.php:16
+#: views/apbd_wps_envato_system/integration.php:88
+#: views/apbd_wps_role/add.php:17 views/apbd_wps_settings/fileupload.php:99
+#: views/apbd_wps_settings/general.php:334
+#: views/apbd_wps_settings/recaptcha_v3.php:20
+#: views/apbd_wps_settings/recaptcha_v3.php:112
+#: views/apbd_wps_ticket_assign_rule/add.php:17
+#: views/apbd_wps_ticket_category/add.php:17
+msgid "Save"
+msgstr "Kaydetmek"
+
+#: modules/Apbd_wps_canned_msg.php:23 modules/Apbd_wps_canned_msg.php:28
+#: modules/Apbd_wps_settings.php:1428
+msgid "Saved Replies"
+msgstr "Kayıtlı Yanıtlar"
+
+#: modules/Apbd_wps_canned_msg.php:32
+msgid "Saved Replies Settings"
+msgstr "Kayıtlı Yanıt Ayarları"
+
+#: core/AppsBDLiteModule.php:632 modules/Apbd_wps_envato_system.php:91
+#: modules/Apbd_wps_settings.php:1087
+msgid "Saved Successfully"
+msgstr "Başarıyla kaydedildi"
+
+#: libs/jQGrid.php:1487 libs/jQGrid.php:1516 libs/jQGrid.php:1519
+msgid "Search"
+msgstr "Arama"
+
+#: modules/Apbd_wps_settings.php:1398
+msgid "Search Here"
+msgstr "Burada ara"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:55
+#: views/apbd_wps_settings/recaptcha_v3.php:59
+msgid "Secret Key"
+msgstr "Gizli anahtar"
+
+#: modules/Apbd_wps_settings.php:1437
+msgid "Seen"
+msgstr "Görülen"
+
+#: libs/jQGrid.php:1403 libs/jQGrid.php:1428
+#: models/database/Mapbd_wps_debug_log.php:232
+#: models/database/Mapbd_wps_debug_log.php:261
+#: models/database/Mapbd_wps_ticket_assign_rule.php:356
+#: models/database/Mapbd_wps_ticket_assign_rule.php:369
+#: models/database/Mapbd_wps_ticket_category.php:179
+#: models/database/Mapbd_wps_ticket_log.php:237
+msgid "Select"
+msgstr "Seçme"
+
+#: modules/Apbd_wps_settings.php:1301
+msgid "Select Category"
+msgstr "Kategori seç"
+
+#: modules/Apbd_wps_settings.php:1302
+msgid "Select category"
+msgstr "Kategori seç"
+
+#: models/database/Mapbd_wps_ticket_assign_rule.php:352
+msgid "Select Role"
+msgstr "Rol Seçin"
+
+#: modules/Apbd_wps_settings.php:1370
+msgid "Select Status"
+msgstr "Durum Seç"
+
+#: views/apbd_wps_settings/general.php:21
+msgid "Select Ticket Page"
+msgstr "Bilet Sayfası Seçin"
+
+#: models/database/Mapbd_wps_ticket_assign_rule.php:365
+msgid "Select User"
+msgstr "Kullanıcı seç"
+
+#: appcore/APBDWPDiagnosticData.php:493
+#, php-format
+msgid ""
+"Server information (Web server, PHP version, MySQL version), WordPress "
+"information, site name, site URL, number of plugins, number of users, your "
+"name, and email address. You can rest assured that no sensitive data will be "
+"collected or tracked. %1$sLearn more%2$s."
+msgstr ""
+"Sunucu bilgileri (Web sunucusu, PHP sürümü, MySQL sürümü), WordPress "
+"bilgileri, site adı, site URL'si, eklenti sayısı, kullanıcı sayısı, adınız "
+"ve e-posta adresiniz. Hiçbir hassas verinin toplanmayacağından veya "
+"izlenmeyeceğinden emin olabilirsiniz. %1$sDaha fazla bilgi edinin%2$s."
+
+#: modules/Apbd_wps_settings.php:1320
+msgid "setting"
+msgstr "ayar"
+
+#: core/AppsBDKarnelLite.php:798 modules/Apbd_wps_settings.php:1035
+#: views/apbd_wps_woocommerce/main.php:18
+msgid "Settings"
+msgstr "Ayarlar"
+
+#: views/apbd_wps_settings/general.php:31
+msgid "Shortcode"
+msgstr "Kısa kod"
+
+#: views/apbd_wps_envato_system/integration.php:80
+#| msgid "Show Registration Form"
+msgid "Show in Registration Form"
+msgstr "Kayıt Formunda Göster"
+
+#: views/apbd_wps_envato_system/integration.php:71
+msgid "Show in Ticket Form"
+msgstr "Bilet Formunda Göster"
+
+#: views/apbd_wps_settings/general.php:246
+msgid "Show other tickets in ticket details page"
+msgstr "Bilet ayrıntıları sayfasında diğer biletleri göster"
+
+#: modules/Apbd_wps_settings.php:1290
+msgid "Sign in"
+msgstr "Kayıt olmak"
+
+#: views/apbd_wps_envato_system/integration.php:101
+msgid "Sign In and go to"
+msgstr "Giriş yapın ve şu adrese gidin:"
+
+#: modules/Apbd_wps_envato_system.php:301
+msgid "Site"
+msgstr "Alan"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:44
+#: views/apbd_wps_settings/recaptcha_v3.php:48
+msgid "Site Key"
+msgstr "Site anahtarı"
+
+#: modules/Apbd_wps_settings.php:1374
+msgid "Size"
+msgstr "Boyut"
+
+#: modules/Apbd_wps_slack.php:18
+msgid "Slack"
+msgstr "Slack"
+
+#: modules/Apbd_wps_slack.php:22
+msgid "Slack Settings"
+msgstr "Slack Ayarları"
+
+#: views/apbd_wps_custom_field/main.php:16
+msgid "Slug"
+msgstr "sülük"
+
+#: modules/Apbd_wps_settings.php:1089
+msgid "Something went wrong"
+msgstr "Bir şeyler yanlış gitti"
+
+#: modules/Apbd_wps_settings.php:1358
+msgid "Sort by"
+msgstr "Göre sırala"
+
+#: models/database/Mapbd_wps_canned_msg.php:251
+#: models/database/Mapbd_wps_custom_field.php:478
+#: models/database/Mapbd_wps_debug_log.php:258
+#: models/database/Mapbd_wps_email_templates.php:365
+#: models/database/Mapbd_wps_notification.php:319
+#: models/database/Mapbd_wps_role.php:482
+#: models/database/Mapbd_wps_ticket_assign_rule.php:344
+#: models/database/Mapbd_wps_ticket_category.php:188
+#: views/apbd_wps_canned_msg/add.php:21 views/apbd_wps_canned_msg/main.php:17
+#: views/apbd_wps_debug_log/main.php:16
+#: views/apbd_wps_debug_log/view_dtls.php:23
+#: views/apbd_wps_email_template/main.php:19
+#: views/apbd_wps_role/role-list.php:16
+#: views/apbd_wps_ticket_assign_rule/main.php:17
+#: views/apbd_wps_ticket_category/main.php:16
+msgid "Status"
+msgstr "Durum"
+
+#: modules/Apbd_wps_custom_field.php:146 modules/Apbd_wps_settings.php:1345
+msgid "Status:"
+msgstr "Durum:"
+
+#: models/database/Mapbd_wps_email_templates.php:347
+#: models/database/Mapbd_wps_email_templates.php:352
+#: models/database/Mapbd_wps_email_templates.php:359
+#: modules/Apbd_wps_settings.php:1303 views/apbd_wps_email_template/main.php:18
+msgid "Subject"
+msgstr "Ders"
+
+#: modules/Apbd_wps_settings.php:1284
+msgid "Submit"
+msgstr "Göndermek"
+
+#: modules/Apbd_wps_settings.php:1293
+msgid "Submit A Ticket"
+msgstr "Bilet Gönder"
+
+#: modules/Apbd_wps_settings.php:1292
+msgid "Submit Ticket"
+msgstr "Bilet Gönder"
+
+#: modules/APBD_wps_email_template.php:72 modules/Apbd_wps_canned_msg.php:47
+#: modules/Apbd_wps_custom_field.php:50 modules/Apbd_wps_notification.php:48
+#: modules/Apbd_wps_role.php:166 modules/Apbd_wps_ticket_assign_rule.php:47
+#: modules/Apbd_wps_ticket_category.php:47
+msgid "Successfully added"
+msgstr "Başarıyla Eklendi"
+
+#: modules/Apbd_wps_debug_log.php:121
+msgid "Successfully Cleared"
+msgstr "Başarıyla Temizlendi"
+
+#: modules/APBD_wps_email_template.php:171 modules/Apbd_wps_canned_msg.php:140
+#: modules/Apbd_wps_custom_field.php:168 modules/Apbd_wps_debug_log.php:109
+#: modules/Apbd_wps_notification.php:142 modules/Apbd_wps_role.php:322
+#: modules/Apbd_wps_ticket_assign_rule.php:153
+#: modules/Apbd_wps_ticket_category.php:144
+msgid "Successfully deleted"
+msgstr "Başarıyla silindi"
+
+#: modules/APBD_wps_email_template.php:198 modules/Apbd_wps_canned_msg.php:165
+#: modules/Apbd_wps_custom_field.php:194 modules/Apbd_wps_custom_field.php:222
+#: modules/Apbd_wps_notification.php:168 modules/Apbd_wps_role.php:350
+#: modules/Apbd_wps_role.php:379 modules/Apbd_wps_role.php:399
+#: modules/Apbd_wps_role.php:407 modules/Apbd_wps_settings.php:1432
+#: modules/Apbd_wps_ticket_assign_rule.php:179
+#: modules/Apbd_wps_ticket_category.php:171
+msgid "Successfully Updated"
+msgstr "Başarıyla güncellendi"
+
+#: modules/APBD_wps_email_template.php:102 modules/Apbd_wps_canned_msg.php:75
+#: modules/Apbd_wps_custom_field.php:81 modules/Apbd_wps_notification.php:76
+#: modules/Apbd_wps_role.php:198 modules/Apbd_wps_settings.php:1431
+#: modules/Apbd_wps_ticket_assign_rule.php:75
+#: modules/Apbd_wps_ticket_category.php:75
+msgid "Successfully updated"
+msgstr "Başarıyla güncellendi"
+
+#: modules/Apbd_wps_settings.php:1334
+msgid "Summary"
+msgstr "Özet"
+
+#. Author of the plugin/theme
+#: modules/Apbd_wps_settings.php:253 modules/Apbd_wps_settings.php:1400
+msgid "Support Genix"
+msgstr "Destek Genix"
+
+#: models/database/Mapbd_wps_role.php:476 views/apbd_wps_role/role-list.php:17
+msgid "Support Genix Agent"
+msgstr "Destek Genix Temsilcisi"
+
+#. Plugin Name of the plugin/theme
+msgid "Support Genix Lite"
+msgstr "Destek Genix Lite"
+
+#: views/apbd_wps_settings/general.php:283
+msgid "Support Logo"
+msgstr "Destek Logosu"
+
+#: modules/Apbd_wps_settings.php:234
+msgid "Support Tickets"
+msgstr "destek biletleri"
+
+#: modules/Apbd_wps_envato_system.php:295
+msgid "Support Time"
+msgstr "Destek Süresi"
+
+#: models/database/Mapbd_wps_custom_field.php:444
+msgid "Switch"
+msgstr "Değiştirmek"
+
+#: modules/Apbd_wps_settings.php:1124 modules/Apbd_wps_settings.php:1147
+msgid "System couldn't create directory"
+msgstr "Sistem dizin oluşturamadı"
+
+#: modules/Apbd_wps_settings.php:1338
+msgid "tags"
+msgstr "etiketler"
+
+#: views/apbd_wps_settings/fileupload.php:63
+msgid "Text"
+msgstr "Metin"
+
+#: models/database/Mapbd_wps_custom_field.php:447
+msgid "Text/Instruction"
+msgstr "Metin/Talimat"
+
+#: models/database/Mapbd_wps_custom_field.php:441
+msgid "Textbox"
+msgstr "Metin kutusu"
+
+#: appcore/APBDWPDiagnosticData.php:519
+#, php-format
+msgid "Thank you very much for supporting %2$s%1$s%3$s."
+msgstr "%2$s%1$s%3$s'yi desteklediğiniz için çok teşekkür ederiz."
+
+#: modules/Apbd_wps_settings.php:1376
+msgid "Thank You.Your Ticket Created Successfully."
+msgstr "Teşekkürler. Biletiniz Başarıyla Oluşturuldu."
+
+#: modules/Apbd_wps_settings.php:1436
+msgid "The ticket has been closed!"
+msgstr "Bilet kapatıldı!"
+
+#: models/database/Mapbd_wps_canned_msg.php:161
+msgid "The user who has opened ticket"
+msgstr "Bilet açan kullanıcı"
+
+#: views/apbd_wps_envato_system/integration.php:103
+msgid "Then Click the button named"
+msgstr "Ardından adlı düğmeyi tıklayın"
+
+#: views/apbd_wps_envato_system/integration.php:105
+#| msgid "then please choose minimum"
+msgid "Then please choose minimum"
+msgstr "O zaman lütfen minimum değeri seçin"
+
+#: views/apbd_wps_envato_system/integration.php:102
+msgid "Then scroll down to heading <br>\"Your personal tokens\""
+msgstr "Ardından <br>\"Kişisel belirteçleriniz\" başlığına gidin"
+
+#: views/apbd_wps_envato_system/integration.php:104
+#| msgid "then you will see a"
+msgid "Then you will see a"
+msgstr "Sonra bir göreceksiniz"
+
+#: modules/Apbd_wps_settings.php:733 modules/Apbd_wps_settings.php:1342
+msgid "Ticket"
+msgstr "Bilet"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:28
+msgid "Ticket Assign Rule"
+msgstr "Bilet Atama Kuralı"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:23
+msgid "Ticket Assign Rule List"
+msgstr "Bilet Atama Kural Listesi"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:32
+msgid "Ticket Assign Rule Settings"
+msgstr "Bilet Atama Kuralı Ayarları"
+
+#: modules/Apbd_wps_settings.php:1247
+#, php-format
+msgid "Ticket assigned on %s"
+msgstr "%s tarihinde atanan bilet"
+
+#: modules/Apbd_wps_ticket_category.php:28
+msgid "Ticket Category"
+msgstr "Bilet Kategorisi"
+
+#: modules/Apbd_wps_ticket_category.php:23
+msgid "Ticket Category List"
+msgstr "Bilet Kategori Listesi"
+
+#: modules/Apbd_wps_ticket_category.php:32
+msgid "Ticket Category Settings"
+msgstr "Bilet Kategorisi Ayarları"
+
+#: modules/Apbd_wps_settings.php:1430
+msgid "Ticket created successfully"
+msgstr "Bilet başarıyla oluşturuldu"
+
+#: api/v1/APBDWPSUserAPI.php:281 api/v1/APBDWPSUserAPI.php:330
+msgid "Ticket creation failed"
+msgstr "Bilet oluşturma başarısız oldu"
+
+#: modules/Apbd_wps_settings.php:1344
+msgid "Ticket Details"
+msgstr "Bilet Detayları"
+
+#: models/database/Mapbd_wps_ticket_reply.php:276
+msgid "Ticket doesn't found"
+msgstr "Bilet bulunamadı"
+
+#: views/apbd_wps_settings/fileupload.php:16
+msgid "Ticket File Upload"
+msgstr "Bilet Dosyası Yükleme"
+
+#: modules/Apbd_wps_settings.php:1460
+msgid "Ticket has been assigned to you"
+msgstr "Bilet size atandı"
+
+#: models/database/Mapbd_wps_notes.php:113
+#: models/database/Mapbd_wps_notes.php:116
+msgid "Ticket Id"
+msgstr "Bilet Kimliği"
+
+#: modules/Apbd_wps_settings.php:1384
+msgid "Ticket Logs"
+msgstr "Bilet Günlükleri"
+
+#: models/database/Mapbd_wps_custom_field.php:397
+msgid "Ticket Open Form"
+msgstr "Bilet Açık Formu"
+
+#: models/database/Mapbd_wps_ticket.php:227
+#, php-format
+msgid "Ticket opened by %s"
+msgstr "%s tarafından açılan bilet"
+
+#: views/apbd_wps_settings/general.php:19
+msgid "Ticket Page"
+msgstr "Bilet Sayfası"
+
+#: modules/Apbd_wps_settings.php:1457
+msgid "Ticket replied"
+msgstr "Bilet cevaplandı"
+
+#: modules/Apbd_wps_settings.php:1458
+msgid "Ticket replied by %{user_name}"
+msgstr "Bilet, %{user_name} tarafından yanıtlandı"
+
+#: models/database/Mapbd_wps_ticket_log.php:233
+msgid "Ticket Status"
+msgstr "Bilet Durumu"
+
+#: modules/Apbd_wps_settings.php:1232
+#, php-format
+msgid "Ticket status changed to %s"
+msgstr "Bilet durumu %s olarak değiştirildi"
+
+#: modules/Apbd_wps_settings.php:1237
+#, php-format
+msgid "Ticket status changed to %s Automatically"
+msgstr "Bilet durumu Otomatik olarak %s olarak değiştirildi"
+
+#: views/apbd_wps_settings/main.php:16
+msgid "Ticket Statuses"
+msgstr "Bilet Durumları"
+
+#: modules/Apbd_wps_settings.php:1423
+msgid "Ticket subject"
+msgstr "Bilet konusu"
+
+#: models/database/Mapbd_wps_canned_msg.php:162
+msgid "Ticket title"
+msgstr "Bilet başlığı"
+
+#: models/database/Mapbd_wps_ticket.php:629
+msgid "Ticket track id initialize failed"
+msgstr "Bilet izleme kimliği başlatma başarısız oldu"
+
+#: models/database/Mapbd_wps_canned_msg.php:123
+msgid "Ticket User"
+msgstr "Bilet Kullanıcısı"
+
+#: modules/Apbd_wps_settings.php:1287
+msgid "Ticket Visibility"
+msgstr "Bilet Görünürlüğü"
+
+#: modules/Apbd_wps_settings.php:1368
+msgid "Ticket's Category:"
+msgstr "Bilet Kategorisi:"
+
+#: modules/Apbd_wps_settings.php:1375
+msgid "Ticket's Subject:"
+msgstr "Bilet Konusu:"
+
+#: modules/Apbd_wps_settings.php:1369
+msgid "Ticket's Track Id:"
+msgstr "Bilet Parça Kimliği:"
+
+#: models/database/Mapbd_wps_canned_msg.php:244
+#: models/database/Mapbd_wps_canned_msg.php:247
+#: models/database/Mapbd_wps_debug_log.php:242
+#: models/database/Mapbd_wps_debug_log.php:245
+#: models/database/Mapbd_wps_notification.php:228
+#: models/database/Mapbd_wps_notification.php:231
+#: models/database/Mapbd_wps_ticket_category.php:169
+#: models/database/Mapbd_wps_ticket_category.php:172
+#: views/apbd_wps_canned_msg/add.php:14 views/apbd_wps_canned_msg/add.php:17
+#: views/apbd_wps_canned_msg/main.php:14 views/apbd_wps_debug_log/main.php:15
+#: views/apbd_wps_debug_log/view_dtls.php:15
+#: views/apbd_wps_email_template/main.php:16
+#: views/apbd_wps_ticket_category/main.php:13
+msgid "Title"
+msgstr "Başlık"
+
+#: libs/jQGrid.php:1471 libs/jQGrid.php:1601
+msgid "To"
+msgstr "İle"
+
+#: views/apbd_wps_settings/general.php:149
+msgid ""
+"To maintain the sequential ticket ID, enable this. For random alpha-numeric, "
+"leave it disabled."
+msgstr ""
+"Sıralı bilet kimliğini korumak için bunu etkinleştirin. Rastgele alfasayısal "
+"için devre dışı bırakın."
+
+#: views/apbd_wps_envato_system/integration.php:108
+msgid "to show"
+msgstr "göstermek için"
+
+#: views/apbd_wps_betterdocs/main.php:11 views/apbd_wps_edd/main.php:11
+#: views/apbd_wps_elite_licenser/main.php:11
+#: views/apbd_wps_envato_system/main.php:31
+#: views/apbd_wps_fluentcrm/main.php:11
+#: views/apbd_wps_incoming_webhook/main.php:11
+#: views/apbd_wps_mailbox/main.php:11 views/apbd_wps_report/main.php:11
+#: views/apbd_wps_settings/app-footer.php:13
+#: views/apbd_wps_settings/main.php:57 views/apbd_wps_settings/main.php:69
+#: views/apbd_wps_slack/main.php:11 views/apbd_wps_tutorlms/main.php:11
+#: views/apbd_wps_webhook/main.php:11 views/apbd_wps_whatsapp/main.php:11
+#: views/apbd_wps_woocommerce/main.php:29
+#: views/apbd_wps_woocommerce/main.php:35
+#, php-format
+msgid "To unlock this feature you need %1$s!"
+msgstr "Bu özelliğin kilidini açmak için %1$s'a ihtiyacınız var!"
+
+#: modules/Apbd_wps_settings.php:1361
+msgid "Today"
+msgstr "Bugün"
+
+#: modules/Apbd_wps_settings.php:1446
+msgid "Total: %{totalRecords}"
+msgstr "Toplam: %{totalRecords}"
+
+#: modules/Apbd_wps_settings.php:1373
+msgid "Trash"
+msgstr "Çöp"
+
+#: modules/Apbd_wps_settings.php:1324
+msgid "Trashed Tickets"
+msgstr "Çöpe Atılan Biletler"
+
+#: modules/Apbd_wps_settings.php:1440
+msgid "True"
+msgstr "Doğru"
+
+#: modules/Apbd_wps_tutorlms.php:18
+msgid "Tutor LMS"
+msgstr "Tutor LMS"
+
+#: modules/Apbd_wps_tutorlms.php:22
+msgid "Tutor LMS Settings"
+msgstr "Tutor LMS Ayarları"
+
+#: modules/Apbd_wps_whatsapp.php:22
+msgid "Twilio Settings"
+msgstr "Twilio Ayarları"
+
+#: modules/Apbd_wps_settings.php:1392
+msgid "Type New Password"
+msgstr "Yeni Parolayı Girin"
+
+#: modules/Apbd_wps_settings.php:1393
+msgid "Type new password"
+msgstr "Yeni şifreyi yazın"
+
+#: modules/Apbd_wps_settings.php:1390
+msgid "Type Password"
+msgstr "Şifreyi yaz"
+
+#: modules/Apbd_wps_settings.php:1391
+msgid "Type password"
+msgstr "Şifreyi yaz"
+
+#: modules/Apbd_wps_custom_field.php:146
+msgid "Type:"
+msgstr "Tip:"
+
+#: core/AppsBDModel.php:127
+msgid "Undefined Property"
+msgstr "Tanımsız mülk"
+
+#: modules/Apbd_wps_settings.php:1438
+msgid "Unseen"
+msgstr "görünmeyen"
+
+#: modules/Apbd_wps_settings.php:1285 views/apbd_wps_canned_msg/add.php:73
+#: views/apbd_wps_custom_field/add.php:17 views/apbd_wps_debug_log/add.php:17
+#: views/apbd_wps_email_template/add.php:19
+#: views/apbd_wps_email_template/view_param.php:17
+#: views/apbd_wps_role/add.php:17 views/apbd_wps_ticket_assign_rule/add.php:17
+#: views/apbd_wps_ticket_category/add.php:17
+msgid "Update"
+msgstr "Güncelleme"
+
+#: modules/APBD_wps_email_template.php:200 modules/Apbd_wps_canned_msg.php:167
+#: modules/Apbd_wps_custom_field.php:196 modules/Apbd_wps_custom_field.php:224
+#: modules/Apbd_wps_notification.php:170 modules/Apbd_wps_role.php:352
+#: modules/Apbd_wps_role.php:381 modules/Apbd_wps_ticket_assign_rule.php:181
+#: modules/Apbd_wps_ticket_category.php:173
+msgid "Update failed try again"
+msgstr "Güncelleme başarısız tekrar deneyin"
+
+#: modules/Apbd_wps_settings.php:1378
+msgid "Updated"
+msgstr "Güncellenmiş"
+
+#: models/database/Mapbd_wps_custom_field.php:448
+msgid "URL Input"
+msgstr "URL Girişi"
+
+#: api/v1/APBDWPSUserAPI.php:229 modules/Apbd_wps_ticket_assign_rule.php:126
+#: modules/Apbd_wps_ticket_assign_rule.php:128
+msgid "User"
+msgstr "kullanıcı"
+
+#: models/database/Mapbd_wps_users.php:144
+#: models/database/Mapbd_wps_users.php:148
+msgid "User Activation Key"
+msgstr "Kullanıcı Aktivasyon Anahtarı"
+
+#: api/v1/APBDWPSUserAPI.php:358
+msgid "User creation failed"
+msgstr "Kullanıcı oluşturma başarısız oldu"
+
+#: models/database/Mapbd_wps_users.php:117
+#: models/database/Mapbd_wps_users.php:120
+msgid "User Email"
+msgstr "Kullanıcı e-postası"
+
+#: models/database/Mapbd_wps_notification.php:221
+#: models/database/Mapbd_wps_notification.php:224
+msgid "User Id"
+msgstr "Kullanıcı kimliği"
+
+#: models/database/Mapbd_wps_users.php:94
+#: models/database/Mapbd_wps_users.php:97
+msgid "User Login"
+msgstr "Kullanıcı Girişi"
+
+#: modules/Apbd_wps_settings.php:1279
+msgid "User Name"
+msgstr "Kullanıcı adı"
+
+#: models/database/Mapbd_wps_users.php:110
+#: models/database/Mapbd_wps_users.php:113
+msgid "User Nicename"
+msgstr "kullanıcı adı"
+
+#: views/apbd_wps_ticket_assign_rule/main.php:16
+msgid "User or Role"
+msgstr "Kullanıcı veya Rol"
+
+#: models/database/Mapbd_wps_users.php:101
+#: models/database/Mapbd_wps_users.php:104
+msgid "User Pass"
+msgstr "Kullanıcı geçiş"
+
+#: models/database/Mapbd_wps_users.php:133
+#: models/database/Mapbd_wps_users.php:136
+msgid "User Registered"
+msgstr "Kullanıcı Kayıtlı"
+
+#: modules/Apbd_wps_role.php:86
+msgid "User Role"
+msgstr "Kullanıcı rolü"
+
+#: modules/Apbd_wps_role.php:32
+msgid "User Role List"
+msgstr "Kullanıcı Rol Listesi"
+
+#: modules/Apbd_wps_role.php:91
+msgid "User Role Settings"
+msgstr "Kullanıcı Rolü Ayarları"
+
+#: models/database/Mapbd_wps_users.php:152
+#: models/database/Mapbd_wps_users.php:155
+msgid "User Status"
+msgstr "Kullanıcı durumu"
+
+#: models/database/Mapbd_wps_users.php:126
+#: models/database/Mapbd_wps_users.php:129
+msgid "User Url"
+msgstr "Kullanıcı URL'si"
+
+#: modules/Apbd_wps_settings.php:1281
+msgid "Username"
+msgstr "Kullanıcı adı"
+
+#: modules/Apbd_wps_settings.php:1405
+msgid "Username Email"
+msgstr "Kullanıcı Adı E-postası"
+
+#: modules/Apbd_wps_settings.php:1282
+msgid "Username or Email"
+msgstr "Kullanıcı adı ya da email"
+
+#: modules/Apbd_wps_settings.php:1283
+msgid "Username or email"
+msgstr "Kullanıcı adı ya da email"
+
+#: views/apbd_wps_envato_system/integration.php:120
+msgid "Verify purchases of your items"
+msgstr "Öğelerinizin satın alındığını doğrulayın"
+
+#: views/apbd_wps_envato_system/integration.php:122
+msgid "Verify purchases you've made"
+msgstr "Yaptığınız satın alma işlemlerini doğrulayın"
+
+#: appcore/APBDWPSupportLite.php:318 core/AppsBDKarnelLite.php:1096
+msgid "Version"
+msgstr "Sürüm"
+
+#: libs/jQGrid.php:664
+#, php-format
+msgid "View %s - %s of %s"
+msgstr "%s - %s of %s görüntüle"
+
+#: modules/Apbd_wps_settings.php:1316
+msgid "View All"
+msgstr "Hepsini gör"
+
+#: views/apbd_wps_envato_system/integration.php:113
+msgid "View and search Envato sites"
+msgstr "Envato sitelerini görüntüleyin ve arayın"
+
+#: modules/Apbd_wps_debug_log.php:82
+msgid "View Details"
+msgstr "Detayları göster"
+
+#: modules/Apbd_wps_settings.php:1317
+msgid "View More"
+msgstr "Daha fazla göster"
+
+#: modules/Apbd_wps_settings.php:1388
+msgid "View Notes"
+msgstr "Notları Görüntüle"
+
+#: modules/APBD_wps_email_template.php:144
+msgid "View Param"
+msgstr "Parametreyi Görüntüle"
+
+#: modules/APBD_wps_email_template.php:210
+msgid "View Params "
+msgstr "Parametreleri Görüntüle"
+
+#: models/database/Mapbd_wps_ticket.php:375
+#: models/database/Mapbd_wps_ticket.php:420
+#: models/database/Mapbd_wps_ticket.php:462
+#: models/database/Mapbd_wps_ticket.php:497
+#: models/database/Mapbd_wps_ticket.php:552
+#: models/database/Mapbd_wps_ticket.php:587
+msgid "View Ticket"
+msgstr "Bileti Görüntüle"
+
+#: modules/Apbd_wps_settings.php:1367
+msgid "View Ticket Details"
+msgstr "Bilet Detaylarını Görüntüle"
+
+#: models/database/Mapbd_wps_notification.php:279
+#: models/database/Mapbd_wps_notification.php:282
+msgid "View Time"
+msgstr "Zamanı Görüntüle"
+
+#: views/apbd_wps_envato_system/integration.php:117
+msgid "View your account financial history"
+msgstr "Hesabınızın mali geçmişini görüntüleyin"
+
+#: views/apbd_wps_envato_system/integration.php:116
+msgid "View your account profile details"
+msgstr "Hesap profil ayrıntılarınızı görüntüleyin"
+
+#: views/apbd_wps_envato_system/integration.php:115
+msgid "View your email address"
+msgstr "E-posta adresinizi görüntüleyin"
+
+#: views/apbd_wps_envato_system/integration.php:114
+msgid "View your Envato Account username"
+msgstr "Envato Hesabı kullanıcı adınızı görüntüleyin"
+
+#: views/apbd_wps_envato_system/integration.php:119
+msgid "View your items' sales history"
+msgstr "Öğelerinizin satış geçmişini görüntüleyin"
+
+#: views/apbd_wps_envato_system/integration.php:123
+msgid "View your purchases of the app creator's items"
+msgstr "Uygulama oluşturucunun satın aldığınız öğelerini görüntüleyin"
+
+#: modules/Apbd_wps_settings.php:1433
+msgid "Want to Delete Permanently ?!"
+msgstr "Kalıcı Olarak Silmek İster misiniz?!"
+
+#: modules/Apbd_wps_settings.php:57 template/main/client-main.php:10
+msgid ""
+"We're sorry but wp-support doesn't work properly without JavaScript enabled. "
+"Please enable it to continue"
+msgstr ""
+"Üzgünüz, ancak wp-support, JavaScript etkinleştirilmeden düzgün çalışmıyor. "
+"Devam etmek için lütfen etkinleştirin"
+
+#: modules/Apbd_wps_whatsapp.php:18
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+#: models/database/Mapbd_wps_custom_field.php:392
+#: models/database/Mapbd_wps_custom_field.php:401
+msgid "Where To Create"
+msgstr "Nerede Oluşturulmalı"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:72
+msgid "Where to enable in frontend?"
+msgstr "Ön uçta nerede etkinleştirilir?"
+
+#: modules/Apbd_wps_woocommerce.php:18
+msgid "WooCommerce"
+msgstr "WooCommerce"
+
+#: modules/Apbd_wps_woocommerce.php:22
+msgid "WooCommerce Settings"
+msgstr "WooCommerce Ayarları"
+
+#: views/apbd_wps_role/role-setting.php:11
+msgid "WordPress Role Manage"
+msgstr "WordPress Rol Yönetimi"
+
+#: views/apbd_wps_settings/general.php:134
+msgid "WP Profile Link"
+msgstr "WP Profil Bağlantısı"
+
+#: modules/Apbd_wps_settings.php:1413
+msgid "Write email for searching existing client"
+msgstr "Mevcut müşteriyi aramak için e-posta yazın"
+
+#: modules/Apbd_wps_settings.php:1288
+msgid "Wrong Email Or Password"
+msgstr "Yanlış e-posta veya şifre"
+
+#: modules/Apbd_wps_settings.php:1362
+msgid "Year"
+msgstr "Yıl"
+
+#: modules/Apbd_wps_settings.php:1420
+msgid "Yes !!"
+msgstr "Evet !!"
+
+#: modules/Apbd_wps_settings.php:1434
+msgid "You can't be able to restore this ticket !"
+msgstr "Bu bileti geri yükleyemezsiniz!"
+
+#: models/database/Mapbd_wps_ticket_reply.php:230
+msgid "You do not have permission to reply ticket"
+msgstr "Bilet yanıtlama izniniz yok"
+
+#: models/database/Mapbd_wps_canned_msg.php:121
+#: models/database/Mapbd_wps_canned_msg.php:159
+msgid "Your site name"
+msgstr "site adınız"
+
+#: models/database/Mapbd_wps_canned_msg.php:122
+#: models/database/Mapbd_wps_canned_msg.php:160
+msgid "Your Site URL"
+msgstr "Site URL'niz"
+
+#: views/apbd_wps_settings/fileupload.php:84
+msgid "Zip"
+msgstr "Posta Kodu"
+
+#: appcore/APBDWPDiagnosticData.php:503
+#, php-format
+msgid "🌟 Enhance Your %1$s Experience as a Valued Contributor!"
+msgstr "🌟 Değerli bir Katkıda Bulunan olarak %1$s Deneyiminizi Geliştirin!"

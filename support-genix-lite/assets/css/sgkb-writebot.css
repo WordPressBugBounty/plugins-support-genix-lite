@@ -1,0 +1,221 @@
+/**
+ * Writebot style.
+ */
+
+.sgkb-writebot-hidden {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+}
+
+.sgkb-writebot-button-container {
+    margin-left: 8px;
+}
+
+.sgkb-writebot-button {
+    background: #7229dd;
+    border: 1px solid transparent;
+    color: #fff;
+    box-shadow: none;
+    font-size: 13px;
+    margin-right: 8px;
+    padding: 0 15px;
+    cursor: pointer;
+    border-radius: 3px;
+    height: 33px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sgkb-writebot-modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sgkb-writebot-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.sgkb-writebot-modal {
+    position: relative;
+    width: 600px;
+    max-width: 90%;
+    background: #fff;
+    border-radius: 5px;
+    z-index: 100001;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.sgkb-writebot-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid #ddd;
+}
+
+.sgkb-writebot-modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.sgkb-writebot-close-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sgkb-writebot-modal-content {
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.sgkb-writebot-error {
+    font-size: 14px;
+    color: #842029;
+    background-color: #f8d7da;
+    border: 1px solid #f5c2c7;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 13px 8px;
+}
+
+.sgkb-writebot-form-group:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.sgkb-writebot-form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.sgkb-writebot-form-group input,
+.sgkb-writebot-form-group select,
+.sgkb-writebot-form-group textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.sgkb-writebot-help-text {
+    margin: 4px 0 0 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.sgkb-writebot-checkbox-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.sgkb-writebot-checkbox-label {
+    flex: 1;
+}
+
+.sgkb-writebot-toggle {
+    position: relative;
+    width: 50px;
+    height: 24px;
+}
+
+.sgkb-writebot-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.sgkb-writebot-toggle-label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.sgkb-writebot-form-group label.sgkb-writebot-toggle-label {
+    margin-bottom: 0;
+}
+
+.sgkb-writebot-toggle-label:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.sgkb-writebot-toggle input:checked+.sgkb-writebot-toggle-label {
+    background-color: #7229dd;
+}
+
+.sgkb-writebot-toggle input:checked+.sgkb-writebot-toggle-label:before {
+    transform: translateX(26px);
+}
+
+.sgkb-writebot-modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sgkb-writebot-generate-button {
+    background: #7229dd;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.sgkb-writebot-generate-button svg {
+    height: 14px;
+    width: auto;
+    fill: #fff;
+}
+
+.sgkb-writebot-generate-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}

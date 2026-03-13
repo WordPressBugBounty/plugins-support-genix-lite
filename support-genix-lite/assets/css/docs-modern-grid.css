@@ -1,0 +1,723 @@
+/**
+ * Support Genix - Modern Documentation Grid System
+ * Version: 1.0.0
+ * Description: Custom CSS Grid system for modern documentation layout
+ */
+
+/* ========================================
+   1. CSS Variables & Design Tokens
+   ======================================== */
+
+:root {
+    /* Grid System */
+    --sgkb-grid-columns: 12;
+    --sgkb-grid-gap: 24px;
+    --sgkb-grid-gap-sm: 16px;
+    --sgkb-grid-gap-lg: 32px;
+    --sgkb-container-max: 1280px;
+    --sgkb-container-wide: 1440px;
+
+    /* Layout */
+    --sgkb-sidebar-width: 280px;
+    --sgkb-toc-width: 240px;
+
+    /* Border Radius */
+    --sgkb-radius-sm: 6px;
+    --sgkb-radius-md: 8px;
+    --sgkb-radius-lg: 12px;
+    --sgkb-radius-xl: 16px;
+    --sgkb-radius-2xl: 24px;
+    --sgkb-radius-full: 9999px;
+
+    /* Colors - Light Theme */
+    --sgkb-primary: #7229dd;
+    --sgkb-primary-light: #9452eb;
+    --sgkb-primary-dark: #5a1fb8;
+    --sgkb-primary-rgb: 114, 41, 221;
+
+    --sgkb-secondary: #10b981;
+    --sgkb-secondary-light: #34d399;
+    --sgkb-secondary-dark: #059669;
+
+    --sgkb-accent: #f59e0b;
+    --sgkb-accent-light: #fbbf24;
+    --sgkb-accent-dark: #d97706;
+
+    /* Background Colors */
+    --sgkb-bg-primary: #ffffff;
+    --sgkb-bg-secondary: #f9fafb;
+    --sgkb-bg-tertiary: #f3f4f6;
+    --sgkb-bg-hover: #f9fafb;
+    --sgkb-bg-active: #f3f4f6;
+    --sgkb-bg-overlay: rgba(0, 0, 0, 0.5);
+
+    /* Text Colors */
+    --sgkb-text-primary: #111827;
+    --sgkb-text-secondary: #6b7280;
+    --sgkb-text-tertiary: #9ca3af;
+    --sgkb-text-inverse: #ffffff;
+
+    /* Border Colors */
+    --sgkb-border-light: #f3f4f6;
+    --sgkb-border-default: #e5e7eb;
+    --sgkb-border-dark: #d1d5db;
+
+    /* Shadows */
+    --sgkb-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --sgkb-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --sgkb-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --sgkb-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --sgkb-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --sgkb-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --sgkb-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    --sgkb-shadow-card: 0 0 0 1px rgba(0, 0, 0, 0.05), var(--sgkb-shadow-sm);
+    --sgkb-shadow-card-hover: 0 0 0 1px rgba(114, 41, 221, 0.1), var(--sgkb-shadow-lg);
+
+    /* Transitions */
+    --sgkb-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --sgkb-transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --sgkb-transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --sgkb-transition-slower: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Typography */
+    --sgkb-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --sgkb-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+
+    /* Font Sizes */
+    --sgkb-text-xs: 0.75rem;
+    --sgkb-text-sm: 0.875rem;
+    --sgkb-text-base: 1rem;
+    --sgkb-text-lg: 1.125rem;
+    --sgkb-text-xl: 1.25rem;
+    --sgkb-text-2xl: 1.5rem;
+    --sgkb-text-3xl: 1.875rem;
+    --sgkb-text-4xl: 2.25rem;
+    --sgkb-text-5xl: 3rem;
+
+    /* Font Weights */
+    --sgkb-font-light: 300;
+    --sgkb-font-normal: 400;
+    --sgkb-font-medium: 500;
+    --sgkb-font-semibold: 600;
+    --sgkb-font-bold: 700;
+
+    /* Line Heights */
+    --sgkb-leading-tight: 1.25;
+    --sgkb-leading-normal: 1.5;
+    --sgkb-leading-relaxed: 1.75;
+
+    /* Spacing */
+    --sgkb-space-0: 0;
+    --sgkb-space-1: 0.25rem;
+    --sgkb-space-2: 0.5rem;
+    --sgkb-space-3: 0.75rem;
+    --sgkb-space-4: 1rem;
+    --sgkb-space-5: 1.25rem;
+    --sgkb-space-6: 1.5rem;
+    --sgkb-space-8: 2rem;
+    --sgkb-space-10: 2.5rem;
+    --sgkb-space-12: 3rem;
+    --sgkb-space-16: 4rem;
+    --sgkb-space-20: 5rem;
+    --sgkb-space-24: 6rem;
+
+    /* Z-index */
+    --sgkb-z-dropdown: 1000;
+    --sgkb-z-sticky: 1020;
+    --sgkb-z-fixed: 1030;
+    --sgkb-z-modal-backdrop: 1040;
+    --sgkb-z-modal: 1050;
+    --sgkb-z-popover: 1060;
+    --sgkb-z-tooltip: 1070;
+}
+
+/* Dark Theme Variables */
+[data-sgkb-theme="dark"] {
+    --sgkb-bg-primary: #1a1a1a;
+    --sgkb-bg-secondary: #2d2d2d;
+    --sgkb-bg-tertiary: #404040;
+    --sgkb-bg-hover: #2d2d2d;
+    --sgkb-bg-active: #404040;
+
+    --sgkb-text-primary: #f3f4f6;
+    --sgkb-text-secondary: #9ca3af;
+    --sgkb-text-tertiary: #6b7280;
+
+    --sgkb-border-light: #2d2d2d;
+    --sgkb-border-default: #404040;
+    --sgkb-border-dark: #525252;
+
+    --sgkb-shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    --sgkb-shadow-card-hover: 0 0 0 1px rgba(114, 41, 221, 0.3), 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   2. Container System
+   ======================================== */
+
+.sgkb-container {
+    width: 100%;
+    max-width: var(--sgkb-container-max);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--sgkb-space-6);
+    padding-right: var(--sgkb-space-6);
+    position: relative;
+    overflow: visible;
+}
+
+.sgkb-container-wide {
+    max-width: var(--sgkb-container-wide);
+}
+
+.sgkb-container-fluid {
+    max-width: 100%;
+}
+
+/* ========================================
+   3. Grid System
+   ======================================== */
+
+.sgkb-grid {
+    display: grid;
+    gap: var(--sgkb-grid-gap);
+}
+
+/* Grid Gap Variants */
+.sgkb-grid-gap-0 { gap: 0; }
+.sgkb-grid-gap-sm { gap: var(--sgkb-grid-gap-sm); }
+.sgkb-grid-gap-lg { gap: var(--sgkb-grid-gap-lg); }
+
+/* Fixed Column Grids */
+.sgkb-grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.sgkb-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sgkb-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.sgkb-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.sgkb-grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.sgkb-grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+/* Auto-fit Grids */
+.sgkb-grid-auto {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.sgkb-grid-auto-sm {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.sgkb-grid-auto-md {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.sgkb-grid-auto-lg {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
+
+/* Auto-fill Grids */
+.sgkb-grid-fill {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* Grid Item Spans */
+.sgkb-col-span-1 { grid-column: span 1 / span 1; }
+.sgkb-col-span-2 { grid-column: span 2 / span 2; }
+.sgkb-col-span-3 { grid-column: span 3 / span 3; }
+.sgkb-col-span-4 { grid-column: span 4 / span 4; }
+.sgkb-col-span-full { grid-column: 1 / -1; }
+
+.sgkb-row-span-1 { grid-row: span 1 / span 1; }
+.sgkb-row-span-2 { grid-row: span 2 / span 2; }
+.sgkb-row-span-3 { grid-row: span 3 / span 3; }
+
+/* Grid Alignment */
+.sgkb-grid-center {
+    place-items: center;
+}
+
+.sgkb-grid-start {
+    place-items: start;
+}
+
+.sgkb-grid-end {
+    place-items: end;
+}
+
+.sgkb-grid-stretch {
+    place-items: stretch;
+}
+
+/* ========================================
+   4. Flexbox Utilities
+   ======================================== */
+
+.sgkb-flex {
+    display: flex;
+}
+
+.sgkb-inline-flex {
+    display: inline-flex;
+}
+
+.sgkb-flex-row { flex-direction: row; }
+.sgkb-flex-col { flex-direction: column; }
+.sgkb-flex-wrap { flex-wrap: wrap; }
+.sgkb-flex-nowrap { flex-wrap: nowrap; }
+
+/* Flex Alignment */
+.sgkb-items-start { align-items: flex-start; }
+.sgkb-items-center { align-items: center; }
+.sgkb-items-end { align-items: flex-end; }
+.sgkb-items-stretch { align-items: stretch; }
+
+.sgkb-justify-start { justify-content: flex-start; }
+.sgkb-justify-center { justify-content: center; }
+.sgkb-justify-end { justify-content: flex-end; }
+.sgkb-justify-between { justify-content: space-between; }
+.sgkb-justify-around { justify-content: space-around; }
+.sgkb-justify-evenly { justify-content: space-evenly; }
+
+/* Flex Sizing */
+.sgkb-flex-1 { flex: 1 1 0%; }
+.sgkb-flex-auto { flex: 1 1 auto; }
+.sgkb-flex-initial { flex: 0 1 auto; }
+.sgkb-flex-none { flex: none; }
+
+/* Flex Gap */
+.sgkb-gap-1 { gap: var(--sgkb-space-1); }
+.sgkb-gap-2 { gap: var(--sgkb-space-2); }
+.sgkb-gap-3 { gap: var(--sgkb-space-3); }
+.sgkb-gap-4 { gap: var(--sgkb-space-4); }
+.sgkb-gap-6 { gap: var(--sgkb-space-6); }
+.sgkb-gap-8 { gap: var(--sgkb-space-8); }
+
+/* ========================================
+   5. Responsive Breakpoints
+   ======================================== */
+
+/* Mobile First Approach */
+
+/* Small devices (landscape phones, 640px and up) */
+@media (min-width: 640px) {
+    .sgkb-sm\:container {
+        max-width: 640px;
+    }
+
+    .sgkb-sm\:grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .sgkb-sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sgkb-sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .sgkb-sm\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .sgkb-sm\:col-span-1 { grid-column: span 1 / span 1; }
+    .sgkb-sm\:col-span-2 { grid-column: span 2 / span 2; }
+    .sgkb-sm\:col-span-3 { grid-column: span 3 / span 3; }
+    .sgkb-sm\:col-span-4 { grid-column: span 4 / span 4; }
+    .sgkb-sm\:col-span-full { grid-column: 1 / -1; }
+
+    .sgkb-sm\:flex-row { flex-direction: row; }
+    .sgkb-sm\:flex-col { flex-direction: column; }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .sgkb-md\:container {
+        max-width: 768px;
+    }
+
+    .sgkb-md\:grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .sgkb-md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sgkb-md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .sgkb-md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .sgkb-md\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .sgkb-md\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+    .sgkb-md\:col-span-1 { grid-column: span 1 / span 1; }
+    .sgkb-md\:col-span-2 { grid-column: span 2 / span 2; }
+    .sgkb-md\:col-span-3 { grid-column: span 3 / span 3; }
+    .sgkb-md\:col-span-4 { grid-column: span 4 / span 4; }
+    .sgkb-md\:col-span-5 { grid-column: span 5 / span 5; }
+    .sgkb-md\:col-span-6 { grid-column: span 6 / span 6; }
+    .sgkb-md\:col-span-full { grid-column: 1 / -1; }
+
+    .sgkb-md\:flex-row { flex-direction: row; }
+    .sgkb-md\:flex-col { flex-direction: column; }
+}
+
+/* Large devices (desktops, 1024px and up) */
+@media (min-width: 1024px) {
+    .sgkb-lg\:container {
+        max-width: 1024px;
+    }
+
+    .sgkb-lg\:grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .sgkb-lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sgkb-lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .sgkb-lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .sgkb-lg\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .sgkb-lg\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+    .sgkb-lg\:col-span-1 { grid-column: span 1 / span 1; }
+    .sgkb-lg\:col-span-2 { grid-column: span 2 / span 2; }
+    .sgkb-lg\:col-span-3 { grid-column: span 3 / span 3; }
+    .sgkb-lg\:col-span-4 { grid-column: span 4 / span 4; }
+    .sgkb-lg\:col-span-5 { grid-column: span 5 / span 5; }
+    .sgkb-lg\:col-span-6 { grid-column: span 6 / span 6; }
+    .sgkb-lg\:col-span-full { grid-column: 1 / -1; }
+
+    .sgkb-lg\:flex-row { flex-direction: row; }
+    .sgkb-lg\:flex-col { flex-direction: column; }
+}
+
+/* Extra large devices (large desktops, 1280px and up) */
+@media (min-width: 1280px) {
+    .sgkb-xl\:container {
+        max-width: 1280px;
+    }
+
+    .sgkb-xl\:grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .sgkb-xl\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sgkb-xl\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .sgkb-xl\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .sgkb-xl\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .sgkb-xl\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+    .sgkb-xl\:col-span-1 { grid-column: span 1 / span 1; }
+    .sgkb-xl\:col-span-2 { grid-column: span 2 / span 2; }
+    .sgkb-xl\:col-span-3 { grid-column: span 3 / span 3; }
+    .sgkb-xl\:col-span-4 { grid-column: span 4 / span 4; }
+    .sgkb-xl\:col-span-5 { grid-column: span 5 / span 5; }
+    .sgkb-xl\:col-span-6 { grid-column: span 6 / span 6; }
+    .sgkb-xl\:col-span-full { grid-column: 1 / -1; }
+
+    .sgkb-xl\:flex-row { flex-direction: row; }
+    .sgkb-xl\:flex-col { flex-direction: column; }
+}
+
+/* 2XL devices (1536px and up) */
+@media (min-width: 1536px) {
+    .sgkb-2xl\:container {
+        max-width: 1536px;
+    }
+
+    .sgkb-2xl\:grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .sgkb-2xl\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sgkb-2xl\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .sgkb-2xl\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .sgkb-2xl\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .sgkb-2xl\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+/* ========================================
+   6. Utility Classes
+   ======================================== */
+
+/* Display */
+.sgkb-block { display: block; }
+.sgkb-inline-block { display: inline-block; }
+.sgkb-inline { display: inline; }
+.sgkb-hidden { display: none; }
+
+/* Position */
+.sgkb-relative { position: relative; }
+.sgkb-absolute { position: absolute; }
+.sgkb-fixed { position: fixed; }
+.sgkb-sticky { position: sticky; top: 0; }
+
+/* Overflow */
+.sgkb-overflow-auto { overflow: auto; }
+.sgkb-overflow-hidden { overflow: hidden; }
+.sgkb-overflow-visible { overflow: visible; }
+.sgkb-overflow-scroll { overflow: scroll; }
+
+/* Text Alignment */
+.sgkb-text-left { text-align: left; }
+.sgkb-text-center { text-align: center; }
+.sgkb-text-right { text-align: right; }
+.sgkb-text-justify { text-align: justify; }
+
+/* Spacing Utilities */
+.sgkb-m-0 { margin: 0; }
+.sgkb-m-auto { margin: auto; }
+.sgkb-mx-auto { margin-left: auto; margin-right: auto; }
+.sgkb-my-auto { margin-top: auto; margin-bottom: auto; }
+
+.sgkb-p-0 { padding: 0; }
+.sgkb-p-4 { padding: var(--sgkb-space-4); }
+.sgkb-p-6 { padding: var(--sgkb-space-6); }
+.sgkb-p-8 { padding: var(--sgkb-space-8); }
+
+.sgkb-mt-0 { margin-top: 0; }
+.sgkb-mt-4 { margin-top: var(--sgkb-space-4); }
+.sgkb-mt-8 { margin-top: var(--sgkb-space-8); }
+.sgkb-mt-12 { margin-top: var(--sgkb-space-12); }
+
+.sgkb-mb-0 { margin-bottom: 0; }
+.sgkb-mb-4 { margin-bottom: var(--sgkb-space-4); }
+.sgkb-mb-8 { margin-bottom: var(--sgkb-space-8); }
+.sgkb-mb-12 { margin-bottom: var(--sgkb-space-12); }
+
+/* Width & Height */
+.sgkb-w-full { width: 100%; }
+.sgkb-w-auto { width: auto; }
+.sgkb-h-full { height: 100%; }
+.sgkb-h-auto { height: auto; }
+
+/* Border Radius */
+.sgkb-rounded-none { border-radius: 0; }
+.sgkb-rounded-sm { border-radius: var(--sgkb-radius-sm); }
+.sgkb-rounded { border-radius: var(--sgkb-radius-md); }
+.sgkb-rounded-lg { border-radius: var(--sgkb-radius-lg); }
+.sgkb-rounded-xl { border-radius: var(--sgkb-radius-xl); }
+.sgkb-rounded-2xl { border-radius: var(--sgkb-radius-2xl); }
+.sgkb-rounded-full { border-radius: var(--sgkb-radius-full); }
+
+/* Shadows */
+.sgkb-shadow-none { box-shadow: none; }
+.sgkb-shadow-sm { box-shadow: var(--sgkb-shadow-sm); }
+.sgkb-shadow { box-shadow: var(--sgkb-shadow-md); }
+.sgkb-shadow-lg { box-shadow: var(--sgkb-shadow-lg); }
+.sgkb-shadow-xl { box-shadow: var(--sgkb-shadow-xl); }
+.sgkb-shadow-2xl { box-shadow: var(--sgkb-shadow-2xl); }
+
+/* Transitions */
+.sgkb-transition-none { transition: none; }
+.sgkb-transition-all { transition: all var(--sgkb-transition-base); }
+.sgkb-transition-colors { transition: color var(--sgkb-transition-base), background-color var(--sgkb-transition-base), border-color var(--sgkb-transition-base); }
+.sgkb-transition-opacity { transition: opacity var(--sgkb-transition-base); }
+.sgkb-transition-shadow { transition: box-shadow var(--sgkb-transition-base); }
+.sgkb-transition-transform { transition: transform var(--sgkb-transition-base); }
+
+/* Transform */
+.sgkb-scale-95 { transform: scale(0.95); }
+.sgkb-scale-100 { transform: scale(1); }
+.sgkb-scale-105 { transform: scale(1.05); }
+.sgkb-scale-110 { transform: scale(1.1); }
+
+.sgkb-translate-y-0 { transform: translateY(0); }
+.sgkb-translate-y-1 { transform: translateY(0.25rem); }
+.sgkb-translate-y-2 { transform: translateY(0.5rem); }
+.sgkb--translate-y-1 { transform: translateY(-0.25rem); }
+.sgkb--translate-y-2 { transform: translateY(-0.5rem); }
+
+/* Cursor */
+.sgkb-cursor-pointer { cursor: pointer; }
+.sgkb-cursor-default { cursor: default; }
+.sgkb-cursor-not-allowed { cursor: not-allowed; }
+
+/* User Select */
+.sgkb-select-none { user-select: none; }
+.sgkb-select-text { user-select: text; }
+.sgkb-select-all { user-select: all; }
+
+/* ========================================
+   7. Animation Classes
+   ======================================== */
+
+@keyframes sgkb-fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes sgkb-fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sgkb-fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sgkb-scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes sgkb-slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes sgkb-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes sgkb-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.sgkb-animate-fadeIn {
+    animation: sgkb-fadeIn var(--sgkb-transition-slow) ease-out;
+}
+
+.sgkb-animate-fadeInUp {
+    animation: sgkb-fadeInUp var(--sgkb-transition-slow) ease-out;
+}
+
+.sgkb-animate-fadeInDown {
+    animation: sgkb-fadeInDown var(--sgkb-transition-slow) ease-out;
+}
+
+.sgkb-animate-scaleIn {
+    animation: sgkb-scaleIn var(--sgkb-transition-base) ease-out;
+}
+
+.sgkb-animate-slideInRight {
+    animation: sgkb-slideInRight var(--sgkb-transition-base) ease-out;
+}
+
+.sgkb-animate-pulse {
+    animation: sgkb-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.sgkb-animate-spin {
+    animation: sgkb-spin 1s linear infinite;
+}
+
+/* ========================================
+   8. Responsive Utilities
+   ======================================== */
+
+/* Hide/Show on different screens */
+@media (max-width: 639px) {
+    .sgkb-hide-mobile { display: none !important; }
+}
+
+@media (min-width: 640px) {
+    .sgkb-show-mobile { display: none !important; }
+}
+
+@media (min-width: 768px) {
+    .sgkb-hide-tablet { display: none !important; }
+}
+
+@media (min-width: 1024px) {
+    .sgkb-hide-desktop { display: none !important; }
+}
+
+/* Print Utilities */
+@media print {
+    .sgkb-no-print { display: none !important; }
+
+    .sgkb-print-only {
+        display: block !important;
+    }
+}
+
+/* ========================================
+   9. Accessibility
+   ======================================== */
+
+.sgkb-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.sgkb-sr-only-focusable:focus {
+    position: absolute;
+    width: auto;
+    height: auto;
+    padding: var(--sgkb-space-2) var(--sgkb-space-4);
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    background-color: var(--sgkb-bg-primary);
+    color: var(--sgkb-text-primary);
+    border: 2px solid var(--sgkb-primary);
+    border-radius: var(--sgkb-radius-md);
+    z-index: var(--sgkb-z-tooltip);
+}
+
+/* Focus Visible */
+.sgkb-focus-visible:focus-visible {
+    outline: 2px solid var(--sgkb-primary);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   10. Custom Scrollbar
+   ======================================== */
+
+.sgkb-custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--sgkb-border-default) var(--sgkb-bg-secondary);
+}
+
+.sgkb-custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.sgkb-custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--sgkb-bg-secondary);
+    border-radius: var(--sgkb-radius-full);
+}
+
+.sgkb-custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--sgkb-border-default);
+    border-radius: var(--sgkb-radius-full);
+    border: 2px solid var(--sgkb-bg-secondary);
+}
+
+.sgkb-custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--sgkb-border-dark);
+}
+
+/* ========================================
+   11. Theme Support
+   ======================================== */
+/* Astra */
+.sgkb-astra #content .ast-container {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.sgkb-astra #content #primary {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}

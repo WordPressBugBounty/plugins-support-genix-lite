@@ -1,0 +1,2657 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"Project-Id-Version: Support Genix Lite\n"
+"POT-Creation-Date: 2022-11-23 15:54+0600\n"
+"PO-Revision-Date: 2024-08-28 09:15+0000\n"
+"Last-Translator: \n"
+"Language-Team: French (Canada)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: support-genix-lite.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2;___;_ee;SetTitle;AddInfo;AddError;"
+"SetSubtitle;AddModel;AddModelNonSearchable\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: fr_CA\n"
+"X-Loco-Version: 2.6.7; wp-6.4.3"
+
+#: core/AppsBDModel.php:1050
+#, php-format
+msgid " %s are required"
+msgstr " %s sont requis"
+
+#: core/AppsBDModel.php:1052
+#, php-format
+msgid " %s is required"
+msgstr " %s est requis"
+
+#: core/AppsBDModel.php:1026
+#, php-format
+msgid " %s should be less then %s"
+msgstr " %s doit être inférieur à %s"
+
+#: core/AppsBDModel.php:1039
+msgid " should be hexadecimal"
+msgstr " doit être hexadécimal"
+
+#: libs/jQGrid.php:112
+#, php-format
+msgid "%s CSV"
+msgstr "Fichier CSV %s"
+
+#: models/database/Mapbd_wps_canned_msg.php:248
+#: models/database/Mapbd_wps_custom_field.php:371
+#: models/database/Mapbd_wps_custom_field.php:378
+#: models/database/Mapbd_wps_custom_field.php:463
+#: models/database/Mapbd_wps_debug_log.php:231
+#: models/database/Mapbd_wps_debug_log.php:246
+#: models/database/Mapbd_wps_debug_log.php:253
+#: models/database/Mapbd_wps_debug_log.php:260
+#: models/database/Mapbd_wps_debug_log.php:272
+#: models/database/Mapbd_wps_email_templates.php:353
+#: models/database/Mapbd_wps_email_templates.php:360
+#: models/database/Mapbd_wps_email_templates.php:376
+#: models/database/Mapbd_wps_notes.php:117
+#: models/database/Mapbd_wps_notes.php:133
+#: models/database/Mapbd_wps_notes.php:140
+#: models/database/Mapbd_wps_notification.php:225
+#: models/database/Mapbd_wps_notification.php:232
+#: models/database/Mapbd_wps_notification.php:242
+#: models/database/Mapbd_wps_notification.php:261
+#: models/database/Mapbd_wps_notification.php:268
+#: models/database/Mapbd_wps_notification.php:291
+#: models/database/Mapbd_wps_notification.php:298
+#: models/database/Mapbd_wps_notification.php:307
+#: models/database/Mapbd_wps_notification.php:314
+#: models/database/Mapbd_wps_role.php:472
+#: models/database/Mapbd_wps_support_meta.php:163
+#: models/database/Mapbd_wps_ticket_assign_rule.php:355
+#: models/database/Mapbd_wps_ticket_assign_rule.php:368
+#: models/database/Mapbd_wps_ticket_category.php:173
+#: models/database/Mapbd_wps_ticket_log.php:209
+#: models/database/Mapbd_wps_ticket_log.php:228
+#: models/database/Mapbd_wps_ticket_log.php:236
+#: models/database/Mapbd_wps_ticket_log.php:248
+#: models/database/Mapbd_wps_users.php:98
+#: models/database/Mapbd_wps_users.php:105
+#: models/database/Mapbd_wps_users.php:114
+#: models/database/Mapbd_wps_users.php:121
+#: models/database/Mapbd_wps_users.php:130
+#: models/database/Mapbd_wps_users.php:138
+#: models/database/Mapbd_wps_users.php:149
+#: models/database/Mapbd_wps_users.php:156
+#: models/database/Mapbd_wps_users.php:165 views/apbd_wps_canned_msg/add.php:18
+#: views/apbd_wps_envato_system/integration.php:28
+#: views/apbd_wps_role/role-setting.php:14
+#: views/apbd_wps_settings/fileupload.php:36
+#: views/apbd_wps_settings/recaptcha_v3.php:49
+#: views/apbd_wps_settings/recaptcha_v3.php:60
+#, php-format
+msgid "%s is required"
+msgstr "%s est requis"
+
+#: core/AppsBDModel.php:1033
+#, php-format
+msgid "%s should be a valid email address"
+msgstr "%s doit être une adresse e-mail valide"
+
+#: core/AppsBDModel.php:1013
+#, php-format
+msgid "%s should be digit"
+msgstr "%s doit être un chiffre"
+
+#: core/AppsBDModel.php:1019
+#, php-format
+msgid "%s should be numeric"
+msgstr "%s doit être numérique"
+
+#: modules/Apbd_wps_settings.php:1409
+msgid "%{fld_name} doesn't match with its password"
+msgstr "%{fld_name} ne correspond pas à son mot de passe"
+
+#: modules/Apbd_wps_settings.php:1406
+msgid "%{fld_name} is not valid"
+msgstr "%{fld_name} n'est pas valide"
+
+#: modules/Apbd_wps_settings.php:1408
+msgid "%{fld_name} is required"
+msgstr "%{fld_name} est requis"
+
+#: modules/Apbd_wps_settings.php:1407
+msgid "%{fld_name} not a valid email address"
+msgstr "%{fld_name} n'est pas une adresse e-mail valide"
+
+#: modules/Apbd_wps_ticket_category.php:111
+#, php-format
+msgid "(ID: %d)"
+msgstr "(ID : %d)"
+
+#: modules/Apbd_wps_settings.php:1403
+msgid "2nd Password"
+msgstr "2ème mot de passe"
+
+#: views/apbd_wps_canned_msg/main.php:20
+#: views/apbd_wps_custom_field/main.php:19 views/apbd_wps_debug_log/main.php:21
+#: views/apbd_wps_email_template/main.php:20
+#: views/apbd_wps_role/role-list.php:18
+#: views/apbd_wps_ticket_assign_rule/main.php:18
+#: views/apbd_wps_ticket_category/main.php:17
+msgid "Action"
+msgstr "Action"
+
+#: modules/Apbd_wps_settings.php:1326
+msgid "Active"
+msgstr "Actif"
+
+#: modules/Apbd_wps_settings.php:1323
+msgid "active Tickets"
+msgstr "Billets actifs"
+
+#: modules/Apbd_wps_settings.php:1385
+msgid "Add"
+msgstr "Ajouter"
+
+#: views/apbd_wps_canned_msg/main.php:12
+#: views/apbd_wps_custom_field/main.php:12 views/apbd_wps_role/role-list.php:13
+#: views/apbd_wps_ticket_assign_rule/main.php:12
+#: views/apbd_wps_ticket_category/main.php:12
+msgid "Add New"
+msgstr "Ajouter nouveau"
+
+#: modules/Apbd_wps_ticket_category.php:40
+msgid "Add New Category "
+msgstr "Ajouter une nouvelle catégorie"
+
+#: modules/Apbd_wps_custom_field.php:43
+msgid "Add New Field"
+msgstr "Ajouter un nouveau champ"
+
+#: modules/Apbd_wps_canned_msg.php:40
+msgid "Add New Message "
+msgstr "Ajouter un nouveau message"
+
+#: modules/Apbd_wps_notification.php:41
+msgid "Add New Notification"
+msgstr "Ajouter une nouvelle notification"
+
+#: modules/Apbd_wps_role.php:158
+msgid "Add New Role"
+msgstr "Ajouter un nouveau rôle"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:40
+msgid "Add New Rule"
+msgstr "Ajouter une nouvelle règle"
+
+#: modules/APBD_wps_email_template.php:65
+msgid "Add New Template "
+msgstr "Ajouter un nouveau modèle"
+
+#: models/database/Mapbd_wps_notes.php:129
+#: models/database/Mapbd_wps_notes.php:132
+#: views/apbd_wps_canned_msg/main.php:16
+msgid "Added By"
+msgstr "Ajouté par"
+
+#: modules/Apbd_wps_settings.php:366
+msgid "Administrator"
+msgstr "Administrateur"
+
+#: libs/jQGrid.php:627 libs/jQGrid.php:1494
+msgid "Advance Search"
+msgstr "Recherche avancée"
+
+#: modules/Apbd_wps_settings.php:1304
+msgid "Again New Password"
+msgstr "Encore un nouveau mot de passe"
+
+#: models/database/Mapbd_wps_canned_msg.php:133
+msgid "Agent"
+msgstr "Agent"
+
+#: models/database/Mapbd_wps_custom_field.php:427
+#: models/database/Mapbd_wps_ticket_assign_rule.php:325
+#: modules/Apbd_wps_custom_field.php:113
+#: modules/Apbd_wps_ticket_assign_rule.php:107
+msgid "All Categories"
+msgstr "toutes catégories"
+
+#: appcore/APBDWPSupportLite.php:317 core/AppsBDKarnelLite.php:1095
+msgid "All rights reserved"
+msgstr "Tous les droits sont réservés"
+
+#: modules/Apbd_wps_settings.php:1335
+msgid "All States"
+msgstr "Tous les États"
+
+#: modules/Apbd_wps_settings.php:1333
+msgid "All Tickets"
+msgstr "Tous les billets"
+
+#: views/apbd_wps_settings/fileupload.php:44
+msgid "Allowed File Types"
+msgstr "Types de fichiers autorisés"
+
+#: views/apbd_wps_envato_system/integration.php:95
+msgid "API Description (Personal API Key [Recommended])"
+msgstr "Description de l'API (clé API personnelle [recommandé])"
+
+#: modules/Apbd_wps_envato_system.php:116
+msgid "API Key is invalid<br/>"
+msgstr "La clé API n'est pas valide<br/>"
+
+#: modules/Apbd_wps_envato_system.php:111
+msgid "API Key is required"
+msgstr "La clé API est requise"
+
+#: views/apbd_wps_envato_system/integration.php:23
+#: views/apbd_wps_envato_system/integration.php:27
+msgid "API Token"
+msgstr "Jeton d'API"
+
+#: views/apbd_wps_settings/general.php:314
+msgid "App Loader Image"
+msgstr "Image du chargeur d'applications"
+
+#: views/apbd_wps_settings/general.php:91
+msgid "App Loader Text"
+msgstr "Texte du chargeur d'application"
+
+#: modules/Apbd_wps_custom_field.php:126 modules/Apbd_wps_custom_field.php:127
+msgid "Are you sure to change order?"
+msgstr "Êtes-vous sûr de changer de commande ?"
+
+#: modules/APBD_wps_email_template.php:146 modules/Apbd_wps_canned_msg.php:116
+#: modules/Apbd_wps_custom_field.php:124 modules/Apbd_wps_custom_field.php:125
+#: modules/Apbd_wps_notification.php:116 modules/Apbd_wps_role.php:241
+#: modules/Apbd_wps_role.php:242 modules/Apbd_wps_role.php:268
+#: modules/Apbd_wps_role.php:270 modules/Apbd_wps_role.php:299
+#: modules/Apbd_wps_ticket_assign_rule.php:121
+#: modules/Apbd_wps_ticket_category.php:121
+msgid "Are you sure to change?"
+msgstr "Êtes-vous sûr de changer?"
+
+#: modules/Apbd_wps_canned_msg.php:113 modules/Apbd_wps_custom_field.php:122
+#: modules/Apbd_wps_notification.php:114 modules/Apbd_wps_role.php:237
+#: modules/Apbd_wps_role.php:297 modules/Apbd_wps_ticket_assign_rule.php:114
+#: modules/Apbd_wps_ticket_category.php:119
+msgid "Are you sure to delete?"
+msgstr "Êtes-vous sûr de vouloir supprimer?"
+
+#: modules/Apbd_wps_settings.php:1417
+msgid "Are you sure to make private this ticket?"
+msgstr "Êtes-vous sûr de rendre ce ticket privé ?"
+
+#: modules/Apbd_wps_settings.php:1416
+msgid "Are you sure to make public this ticket?"
+msgstr "Êtes-vous sûr de rendre public ce ticket ?"
+
+#: views/apbd_wps_custom_field/main.php:13
+msgid "Are you sure to reset order?"
+msgstr "Êtes-vous sûr de réinitialiser la commande ?"
+
+#: modules/Apbd_wps_settings.php:1435
+msgid "Are you sure to restore this ticket ?!"
+msgstr "Êtes-vous sûr de restaurer ce ticket ?!"
+
+#: modules/Apbd_wps_settings.php:1419
+msgid "Are you sure to trash it?"
+msgstr "Êtes-vous sûr de le mettre à la poubelle ?"
+
+#: modules/Apbd_wps_settings.php:1418
+msgid "Are you sure?"
+msgstr "Êtes-vous sûr?"
+
+#: modules/Apbd_wps_settings.php:1451
+msgid "Ascending"
+msgstr "Ascendant"
+
+#: modules/Apbd_wps_settings.php:1371
+msgid "Assign Agent"
+msgstr "Attribuer un agent"
+
+#: modules/Apbd_wps_settings.php:1351
+msgid "Assign Me"
+msgstr "Attribuez-moi"
+
+#: modules/Apbd_wps_settings.php:1353
+msgid "Assigned On"
+msgstr "Attribué le"
+
+#: modules/Apbd_wps_settings.php:1352
+msgid "Assigned on"
+msgstr "Attribué le"
+
+#: modules/Apbd_wps_settings.php:1459
+msgid "Assigned Ticket"
+msgstr "Billet attribué"
+
+#: modules/Apbd_wps_settings.php:1350
+msgid "Assigned:"
+msgstr "Attribué:"
+
+#: appcore/APBDWPDiagnosticData.php:492
+#, php-format
+msgid ""
+"At %2$s%1$s%3$s, we prioritize continuous improvement and compatibility. To "
+"achieve this, we gather non-sensitive diagnostic information and details "
+"about plugin usage. This includes your site's URL, the versions of WordPress "
+"and PHP you're using, and a list of your installed plugins and themes. We "
+"also require your email address to provide you with exclusive discount "
+"coupons and updates. This data collection is crucial for ensuring that "
+"%2$s%1$s%3$s remains up-to-date and compatible with the most widely-used "
+"plugins and themes. Rest assured, your privacy is our priority - no spam, "
+"guaranteed. %4$sPrivacy Policy%5$s"
+msgstr ""
+"e amélioration continue et compatibilité. Pour y parvenir, nous collectons "
+"des informations de diagnostic non sensibles et des détails sur "
+"l'utilisation du plugin. Cela inclut l'URL de votre site, les versions de "
+"WordPress et PHP que vous utilisez et une liste de vos plugins et thèmes "
+"installés. Nous avons également besoin de votre adresse e-mail pour vous "
+"fournir des coupons de réduction et des mises à jour exclusifs. Cette "
+"collecte de données est cruciale pour garantir que %2$s%1$s%3$s reste à jour "
+"et compatible avec les plugins et thèmes les plus utilisés. Rassurez-vous, "
+"votre vie privée est notre priorité – pas de spam, garanti. %4$sPolitique de "
+"confidentialité%5$s"
+
+#: modules/Apbd_wps_settings.php:1454 template/popup-msg.php:26
+#: template/popup.php:29
+msgid "Back"
+msgstr "Retour"
+
+#: modules/Apbd_wps_betterdocs.php:18
+msgid "BetterDocs"
+msgstr "BetterDocs"
+
+#: modules/Apbd_wps_betterdocs.php:22
+msgid "BetterDocs Settings"
+msgstr "Paramètres BetterDocs"
+
+#: views/apbd_wps_settings/general.php:67
+#: views/apbd_wps_settings/general.php:84
+msgid "Browse"
+msgstr "Parcourir"
+
+#: modules/Apbd_wps_role.php:239
+msgid "Built-in"
+msgstr "Intégré"
+
+#: modules/Apbd_wps_settings.php:1426
+msgid "By"
+msgstr "Par"
+
+#: modules/Apbd_wps_settings.php:1425
+msgid "by"
+msgstr "par"
+
+#: modules/Apbd_wps_settings.php:1422 views/apbd_wps_canned_msg/add.php:76
+#: views/apbd_wps_custom_field/add.php:18 views/apbd_wps_debug_log/add.php:18
+#: views/apbd_wps_debug_log/view_dtls.php:37
+#: views/apbd_wps_email_template/add.php:20
+#: views/apbd_wps_email_template/view_param.php:18
+#: views/apbd_wps_role/add.php:18 views/apbd_wps_ticket_assign_rule/add.php:18
+#: views/apbd_wps_ticket_category/add.php:18
+msgid "Cancel"
+msgstr "Annuler"
+
+#: models/database/Mapbd_wps_canned_msg.php:261
+#: models/database/Mapbd_wps_canned_msg.php:266
+#: views/apbd_wps_canned_msg/add.php:29 views/apbd_wps_canned_msg/add.php:32
+msgid "Canned Msg"
+msgstr "Msg en conserve"
+
+#: views/apbd_wps_role/role-access.php:13
+msgid "Capabilities"
+msgstr "Capacités"
+
+#: views/apbd_wps_ticket_assign_rule/main.php:13
+msgid "Categories"
+msgstr "Catégories"
+
+#: modules/Apbd_wps_settings.php:1450 views/apbd_wps_custom_field/main.php:17
+msgid "Category"
+msgstr "Catégorie"
+
+#: modules/Apbd_wps_settings.php:1354
+msgid "Category:"
+msgstr "Catégorie:"
+
+#: modules/Apbd_wps_settings.php:1309
+msgid "Change Password"
+msgstr "Changer le mot de passe"
+
+#: views/apbd_wps_envato_system/integration.php:54
+msgid "Check Support Expiry"
+msgstr "Vérifier l'expiration du support"
+
+#: appcore/plugin_helper.php:62
+msgid "Choose"
+msgstr "Choisir"
+
+#: models/database/Mapbd_wps_custom_field.php:421
+#: models/database/Mapbd_wps_ticket_assign_rule.php:319
+msgid "Choose Category"
+msgstr "Choisissez la catégorie"
+
+#: modules/Apbd_wps_settings.php:1295
+msgid "Choose Password"
+msgstr "Choisissez un mot de passe"
+
+#: modules/Apbd_wps_settings.php:1296
+msgid "Choose password"
+msgstr "Choisissez un mot de passe"
+
+#: views/apbd_wps_settings/general.php:60
+#: views/apbd_wps_settings/general.php:77
+msgid "Clear"
+msgstr "Dégager"
+
+#: modules/Apbd_wps_debug_log.php:119
+msgid "Clear failed try again"
+msgstr "Échec de l'effacement, réessayez"
+
+#: views/apbd_wps_debug_log/main.php:12
+msgid "Clear Log"
+msgstr "Effacer le journal"
+
+#: modules/Apbd_wps_settings.php:1412
+msgid "Click Attach File"
+msgstr "Cliquez sur Joindre un fichier"
+
+#: views/apbd_wps_envato_system/integration.php:108
+msgid "Click here"
+msgstr "Cliquez ici"
+
+#: views/apbd_wps_settings/general.php:322
+msgid "Click image to change it."
+msgstr "Cliquez sur l'image pour la modifier."
+
+#: views/apbd_wps_settings/general.php:291
+msgid "Click image to change it. Recommended height: 40 px."
+msgstr "Cliquez sur l'image pour la modifier. Hauteur recommandée : 40 px."
+
+#: models/database/Mapbd_wps_email_templates.php:396
+#: views/apbd_wps_canned_msg/add.php:53
+#, php-format
+msgid "Click to insert {{%s}} to editor"
+msgstr "Cliquez pour insérer {{%s}} dans l'éditeur"
+
+#: views/apbd_wps_settings/general.php:55
+msgid "Client & Reg. Page Image"
+msgstr "Client & Rég. Image de la page"
+
+#: modules/Apbd_wps_settings.php:1444
+msgid "Client loading"
+msgstr "Chargement des clients"
+
+#: views/apbd_wps_settings/general.php:39
+msgid "Client Role"
+msgstr "Rôle client"
+
+#. Description of the plugin/theme
+msgid "Client ticketing app for Wordpress"
+msgstr "Application de billetterie client pour Wordpress"
+
+#: modules/Apbd_wps_settings.php:1348 template/popup-msg.php:97
+msgid "Close"
+msgstr "proche"
+
+#: modules/Apbd_wps_settings.php:1347
+msgid "close"
+msgstr "proche"
+
+#: template/popup-msg.php:71
+#, php-format
+msgid "Close in %s second(s)"
+msgstr "Fermer dans %s seconde(s)"
+
+#: modules/Apbd_wps_settings.php:1330
+msgid "Close Ticket"
+msgstr "Fermer le ticket"
+
+#: modules/Apbd_wps_settings.php:1349
+msgid "Closed"
+msgstr "Fermé"
+
+#: modules/Apbd_wps_settings.php:1329
+msgid "Closed Tickets"
+msgstr "Billets fermés"
+
+#: models/database/Mapbd_wps_custom_field.php:464
+msgid "Comma( , ) separated. Ex: OptionA,OptionB,OptionC"
+msgstr "Séparées par des virgules. Ex : option A, option B, option C"
+
+#: models/database/Mapbd_wps_email_templates.php:373
+#: models/database/Mapbd_wps_email_templates.php:375
+msgid "Content"
+msgstr "Contenu"
+
+#: modules/Apbd_wps_settings.php:1462
+msgid "Copied"
+msgstr "Copié"
+
+#: modules/Apbd_wps_settings.php:1461
+msgid "Copy"
+msgstr "Copie"
+
+#: appcore/APBDWPSupportLite.php:316 core/AppsBDKarnelLite.php:1094
+msgid "Copyright"
+msgstr "droits d'auteur"
+
+#: modules/Apbd_wps_settings.php:244 views/apbd_wps_settings/general.php:162
+#, php-format
+msgid "Copyright %s © %s"
+msgstr "Droits d'auteur %s © %s"
+
+#: appcore/APBDWPDiagnosticData.php:495
+msgid "Count Me In"
+msgstr "Compte sur moi"
+
+#: views/apbd_wps_envato_system/integration.php:103
+msgid "Create a new token"
+msgstr "Créer un nouveau jeton"
+
+#: modules/Apbd_wps_settings.php:1366
+msgid "Create Another Ticket"
+msgstr "Créer un autre ticket"
+
+#: models/database/Mapbd_wps_custom_field.php:407
+msgid "Create for"
+msgstr "Créer pour"
+
+#: modules/Apbd_wps_settings.php:1291
+msgid "Create Ticket"
+msgstr "Créer un billet"
+
+#: modules/Apbd_wps_settings.php:1380
+msgid "Create Time:"
+msgstr "Créer du temps:"
+
+#: modules/Apbd_wps_settings.php:1377
+msgid "Created Date"
+msgstr "Date de création"
+
+#: views/apbd_wps_settings/fileupload.php:70
+msgid "CSV"
+msgstr "CSV"
+
+#: modules/Apbd_wps_custom_field.php:31
+msgid "Custom Field"
+msgstr "Champ personnalisé"
+
+#: modules/Apbd_wps_custom_field.php:26
+msgid "Custom Field List"
+msgstr "Liste de champs personnalisés"
+
+#: modules/Apbd_wps_custom_field.php:35
+msgid "Custom Field Settings"
+msgstr "Paramètres de champ personnalisé"
+
+#: modules/Apbd_wps_settings.php:1387
+msgid "Customer Notes"
+msgstr "Remarques client"
+
+#: views/apbd_wps_settings/main.php:42
+msgid "Customization"
+msgstr "Personnalisation"
+
+#: views/apbd_wps_settings/general.php:72
+msgid "Dashboard Image"
+msgstr "Image du tableau de bord"
+
+#: models/database/Mapbd_wps_custom_field.php:443
+#: modules/Apbd_wps_settings.php:1360
+msgid "Date"
+msgstr "Date"
+
+#: modules/Apbd_wps_settings.php:1364
+msgid "Days ago"
+msgstr "Il y a quelques jours"
+
+#: modules/Apbd_wps_debug_log.php:29
+msgid "Debug Log"
+msgstr "Journal de débogage"
+
+#: modules/Apbd_wps_debug_log.php:24
+msgid "Debug Log List"
+msgstr "Liste des journaux de débogage"
+
+#: modules/Apbd_wps_debug_log.php:33
+msgid "Debug Log Settings"
+msgstr "Paramètres du journal de débogage"
+
+#: modules/Apbd_wps_canned_msg.php:113 modules/Apbd_wps_custom_field.php:122
+#: modules/Apbd_wps_notification.php:114 modules/Apbd_wps_role.php:237
+#: modules/Apbd_wps_role.php:297 modules/Apbd_wps_settings.php:1401
+#: modules/Apbd_wps_ticket_assign_rule.php:114
+#: modules/Apbd_wps_ticket_category.php:119
+msgid "Delete"
+msgstr "Effacer"
+
+#: modules/APBD_wps_email_template.php:173 modules/Apbd_wps_canned_msg.php:142
+#: modules/Apbd_wps_custom_field.php:170 modules/Apbd_wps_debug_log.php:111
+#: modules/Apbd_wps_notification.php:144 modules/Apbd_wps_role.php:324
+#: modules/Apbd_wps_ticket_assign_rule.php:155
+#: modules/Apbd_wps_ticket_category.php:146
+msgid "Delete failed try again"
+msgstr "Échec de la suppression, réessayez"
+
+#: modules/APBD_wps_email_template.php:158 modules/Apbd_wps_debug_log.php:98
+#: modules/Apbd_wps_notification.php:131
+msgid "Delete is temporary disabled"
+msgstr "La suppression est temporairement désactivée"
+
+#: modules/Apbd_wps_settings.php:1389
+msgid "Delete Ticket"
+msgstr "Supprimer le billet"
+
+#: modules/Apbd_wps_settings.php:1328
+msgid "Deleted"
+msgstr "Supprimé"
+
+#: modules/Apbd_wps_settings.php:1452
+msgid "Descending"
+msgstr "Descendant"
+
+#: models/database/Mapbd_wps_email_templates.php:389
+#: modules/Apbd_wps_settings.php:1311 views/apbd_wps_canned_msg/add.php:47
+msgid "Description"
+msgstr "La description"
+
+#: modules/Apbd_wps_debug_log.php:50
+msgid "Details Debug Log"
+msgstr "Détails du journal de débogage"
+
+#: views/apbd_wps_debug_log/view_dtls.php:27
+msgid "Details Log"
+msgstr "Journal des détails"
+
+#: views/apbd_wps_settings/general.php:272
+msgid "Disable auto-scroll to the latest response on ticket details"
+msgstr ""
+"Désactivez le défilement automatique jusqu'à la dernière réponse sur les "
+"détails du ticket"
+
+#: views/apbd_wps_settings/general.php:238
+msgid "Disable closed ticket reply"
+msgstr "Désactiver la réponse au ticket fermé"
+
+#: views/apbd_wps_settings/general.php:207
+msgid "Disable Guest Ticket Creation"
+msgstr "Désactiver la création de tickets invités"
+
+#: views/apbd_wps_settings/general.php:201
+msgid "Disable Registration Form"
+msgstr "Désactiver le formulaire d'inscription"
+
+#: views/apbd_wps_settings/general.php:261
+msgid "Disable ticket search by value of custom field"
+msgstr "Désactiver la recherche de tickets par valeur du champ personnalisé"
+
+#: models/database/Mapbd_wps_users.php:161
+#: models/database/Mapbd_wps_users.php:164
+msgid "Display Name"
+msgstr "Afficher un nom"
+
+#: views/apbd_wps_envato_system/integration.php:62
+msgid "Display On"
+msgstr "Affichage activé"
+
+#: views/apbd_wps_settings/fileupload.php:56
+msgid "Docs"
+msgstr "Documents"
+
+#: libs/jQGrid.php:112
+msgid "Download"
+msgstr "Télécharger"
+
+#: libs/jQGrid.php:997 libs/jQGrid.php:1500
+msgid "Download CSV"
+msgstr "Télécharger CSV"
+
+#: views/apbd_wps_envato_system/integration.php:118
+msgid "Download your purchased items"
+msgstr "Téléchargez vos articles achetés"
+
+#: models/database/Mapbd_wps_custom_field.php:446
+msgid "Dropdown"
+msgstr "Menu déroulant"
+
+#: views/apbd_wps_settings/general.php:165
+msgid "Dynamic data:"
+msgstr "Données dynamiques :"
+
+#: core/AppsBDModel.php:1710
+msgid "E004"
+msgstr "E004"
+
+#: modules/Apbd_wps_edd.php:22
+msgid "Easy Digital Downloads"
+msgstr "Easy Digital Downloads"
+
+#: modules/Apbd_wps_edd.php:18
+msgid "EDD"
+msgstr "EDD"
+
+#: modules/APBD_wps_email_template.php:142 modules/Apbd_wps_canned_msg.php:112
+#: modules/Apbd_wps_custom_field.php:121 modules/Apbd_wps_notification.php:113
+#: modules/Apbd_wps_role.php:236 modules/Apbd_wps_role.php:296
+#: modules/Apbd_wps_ticket_assign_rule.php:113
+#: modules/Apbd_wps_ticket_category.php:118
+msgid "Edit"
+msgstr "Éditer"
+
+#: modules/Apbd_wps_canned_msg.php:68
+msgid "Edit Canned Msg"
+msgstr "Modifier le message en conserve"
+
+#: modules/Apbd_wps_custom_field.php:71
+msgid "Edit Custom Field"
+msgstr "Modifier le champ personnalisé"
+
+#: modules/APBD_wps_email_template.php:95
+msgid "Edit Email Template"
+msgstr "Modifier le modèle d'e-mail"
+
+#: modules/Apbd_wps_notification.php:69
+msgid "Edit Notification"
+msgstr "Modifier la notification"
+
+#: modules/Apbd_wps_role.php:189
+msgid "Edit Role"
+msgstr "Modifier le rôle"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:68
+msgid "Edit Ticket Assign Rule"
+msgstr "Modifier la règle d'attribution des tickets"
+
+#: modules/Apbd_wps_ticket_category.php:68
+msgid "Edit Ticket Category"
+msgstr "Modifier la catégorie de billet"
+
+#: modules/Apbd_wps_elite_licenser.php:18
+msgid "Elite Licenser"
+msgstr "Licence Élite"
+
+#: modules/Apbd_wps_elite_licenser.php:22
+msgid "Elite Licenser Settings"
+msgstr "Paramètres du titulaire de licence Elite"
+
+#: modules/Apbd_wps_settings.php:1294
+msgid "Email"
+msgstr "E-mail"
+
+#: libs/Apbd_WPS_User.php:61 libs/Apbd_WPS_User.php:93
+#: modules/Apbd_wps_settings.php:1410
+msgid "Email or username is already exists"
+msgstr "L'adresse e-mail ou le nom d'utilisateur existe déjà"
+
+#: modules/Apbd_wps_mailbox.php:22
+msgid "Email Piping Settings"
+msgstr "Paramètres de canalisation des e-mails"
+
+#: modules/APBD_wps_email_template.php:48
+#: modules/APBD_wps_email_template.php:53
+msgid "Email Template"
+msgstr "Modèle d'e-mail"
+
+#: modules/APBD_wps_email_template.php:57
+msgid "Email Template Settings"
+msgstr "Paramètres du modèle d'e-mail"
+
+#: modules/Apbd_wps_mailbox.php:18
+msgid "Email to Ticket"
+msgstr "Envoyer un e-mail au ticket"
+
+#: views/apbd_wps_settings/general.php:306
+msgid "Enable App Loader"
+msgstr "Activer le chargeur d'applications"
+
+#: views/apbd_wps_settings/general.php:227
+msgid "Enable auto ticket close"
+msgstr "Activer la fermeture automatique du ticket"
+
+#: views/apbd_wps_envato_system/integration.php:13
+msgid "Enable it to setup api settings"
+msgstr "Activez-le pour configurer les paramètres de l'API"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:16
+msgid "Enable it to setup recaptcha v3 settings"
+msgstr "Activez-le pour configurer les paramètres recaptcha v3"
+
+#: views/apbd_wps_settings/general.php:183
+msgid "Enable public ticket option (on creation)"
+msgstr "Activer l'option de ticket public (à la création)"
+
+#: views/apbd_wps_settings/general.php:189
+msgid "Enable public ticket option (on details)"
+msgstr "Activer l'option de ticket public (sur les détails)"
+
+#: views/apbd_wps_settings/general.php:144
+msgid "Enable Sequential Ticket Track ID"
+msgstr "Activer l'ID de suivi de ticket séquentiel"
+
+#: views/apbd_wps_settings/general.php:216
+msgid "Enable ticket close option for customer"
+msgstr "Activer l'option de clôture du ticket pour le client"
+
+#: views/apbd_wps_settings/general.php:195
+msgid "Enable to show public tickets"
+msgstr "Activer l'affichage des billets publics"
+
+#: views/apbd_wps_settings/general.php:106
+msgid "Enable Wordpress Login Register"
+msgstr "Activer le registre de connexion Wordpress"
+
+#: views/apbd_wps_settings/general.php:126
+msgid "Enable Wordpress Profile Link"
+msgstr "Activer le lien de profil WordPress"
+
+#: modules/Apbd_wps_envato_system.php:235
+msgid "Enter your purchase code"
+msgstr "Entrez votre code d'achat"
+
+#: models/database/Mapbd_wps_notes.php:120
+#: models/database/Mapbd_wps_notes.php:123
+msgid "Entry Date"
+msgstr "Date d'entrée"
+
+#: models/database/Mapbd_wps_notification.php:257
+#: models/database/Mapbd_wps_notification.php:260
+msgid "Entry Link"
+msgstr "Lien d'entrée"
+
+#: models/database/Mapbd_wps_debug_log.php:268
+#: models/database/Mapbd_wps_debug_log.php:271
+#: models/database/Mapbd_wps_notification.php:287
+#: models/database/Mapbd_wps_notification.php:290
+#: models/database/Mapbd_wps_ticket_log.php:244
+#: models/database/Mapbd_wps_ticket_log.php:247
+#: views/apbd_wps_debug_log/main.php:18
+msgid "Entry Time"
+msgstr "Heure d'entrée"
+
+#: models/database/Mapbd_wps_debug_log.php:218
+#: models/database/Mapbd_wps_notification.php:245
+#: views/apbd_wps_debug_log/main.php:17
+#: views/apbd_wps_debug_log/view_dtls.php:11
+msgid "Entry Type"
+msgstr "Type d'entrée"
+
+#: modules/Apbd_wps_envato_system.php:56
+#: views/apbd_wps_envato_system/integration.php:7
+msgid "Envato"
+msgstr "Envato"
+
+#: modules/Apbd_wps_envato_system.php:50 modules/Apbd_wps_envato_system.php:61
+msgid "Envato Settings"
+msgstr "Paramètres Envato"
+
+#: libs/Apbd_imap.php:60
+msgid "Error Message:"
+msgstr "Message d'erreur:"
+
+#: models/database/Mapbd_wps_notification.php:303
+#: models/database/Mapbd_wps_notification.php:306
+msgid "Extra Param"
+msgstr "Paramètre supplémentaire"
+
+#: modules/Apbd_wps_role.php:401 modules/Apbd_wps_role.php:409
+msgid "Failed to update"
+msgstr "Échec de mise à jour"
+
+#: modules/Apbd_wps_settings.php:1441
+msgid "False"
+msgstr "Faux"
+
+#: views/apbd_wps_settings/general.php:295
+msgid "Favicon"
+msgstr "Icône de favori"
+
+#: models/database/Mapbd_wps_custom_field.php:367
+#: models/database/Mapbd_wps_custom_field.php:370
+msgid "Field Label"
+msgstr "Étiquette de champ"
+
+#: models/database/Mapbd_wps_custom_field.php:461
+msgid "Field Option"
+msgstr "Option de champ"
+
+#: models/database/Mapbd_wps_custom_field.php:377
+msgid "Field Slug"
+msgstr "Limace des champs"
+
+#: models/database/Mapbd_wps_custom_field.php:374
+#, php-format
+msgid "Field Slug %1$s(leave blank for auto generate)%2$s"
+msgstr "Slug de champ %1$s(laisser vide pour générer automatiquement)%2$s"
+
+#: models/database/Mapbd_wps_custom_field.php:436
+#: models/database/Mapbd_wps_custom_field.php:452
+msgid "Field Type"
+msgstr "Type de champ"
+
+#: core/AppsBDLiteModule.php:297
+msgid "File Missing"
+msgstr "Dossier manquant"
+
+#: core/AppsBDLiteModule.php:298
+#, php-format
+msgid "File not exists: %s"
+msgstr "Le fichier n'existe pas : %s"
+
+#: modules/Apbd_wps_settings.php:1411
+msgid "File size is larger then %{allowed_size}"
+msgstr "La taille du fichier est supérieure à %{allowed_size}"
+
+#: views/apbd_wps_settings/main.php:23
+msgid "File Upload"
+msgstr "Téléchargement de fichiers"
+
+#: views/apbd_wps_settings/fileupload.php:11
+msgid "File Upload Settings"
+msgstr "Paramètres de téléchargement de fichiers"
+
+#: views/apbd_wps_settings/fileupload.php:35
+msgid "File Upload Size"
+msgstr "Taille de téléchargement de fichier"
+
+#: modules/Apbd_wps_settings.php:1275
+msgid "First Name"
+msgstr "Prénom"
+
+#: modules/Apbd_wps_settings.php:1276
+msgid "First name"
+msgstr "Prénom"
+
+#: modules/Apbd_wps_fluentcrm.php:18
+msgid "FluentCRM"
+msgstr "FluentCRM"
+
+#: modules/Apbd_wps_fluentcrm.php:22
+msgid "FluentCRM Settings"
+msgstr "Paramètres FluentCRM"
+
+#: views/apbd_wps_settings/general.php:159
+msgid "Footer Copyright Text"
+msgstr "Texte du pied de page du droit d'auteur"
+
+#: views/apbd_wps_envato_system/integration.php:107
+msgid ""
+"For some bug of CodeCanyon API it required these permission which is shown "
+"in the hover image or"
+msgstr ""
+"Pour certains bogues de l'API CodeCanyon, il fallait ces autorisations qui "
+"sont affichées dans l'image de survol ou"
+
+#: libs/jQGrid.php:1457 libs/jQGrid.php:1566
+msgid "Form"
+msgstr "Formulaire"
+
+#: views/apbd_wps_envato_system/integration.php:104
+msgid "form"
+msgstr "formulaire"
+
+#: views/apbd_wps_settings/main.php:10
+msgid "General"
+msgstr "Général"
+
+#: modules/Apbd_wps_settings.php:1040 views/apbd_wps_settings/general.php:7
+msgid "General Settings"
+msgstr "réglages généraux"
+
+#: views/apbd_wps_envato_system/integration.php:29
+msgid "Generate an API key in your envato account and enter here"
+msgstr "Générez une clé API dans votre compte envato et entrez ici"
+
+#: views/apbd_wps_betterdocs/main.php:12 views/apbd_wps_edd/main.php:12
+#: views/apbd_wps_elite_licenser/main.php:12
+#: views/apbd_wps_envato_system/main.php:32
+#: views/apbd_wps_fluentcrm/main.php:12
+#: views/apbd_wps_incoming_webhook/main.php:12
+#: views/apbd_wps_mailbox/main.php:12 views/apbd_wps_report/main.php:12
+#: views/apbd_wps_settings/app-footer.php:14
+#: views/apbd_wps_settings/main.php:58 views/apbd_wps_settings/main.php:70
+#: views/apbd_wps_slack/main.php:12 views/apbd_wps_tutorlms/main.php:12
+#: views/apbd_wps_webhook/main.php:12 views/apbd_wps_whatsapp/main.php:12
+#: views/apbd_wps_woocommerce/main.php:30
+#: views/apbd_wps_woocommerce/main.php:36
+msgid "Get Pro Now"
+msgstr "Devenez Pro maintenant"
+
+#: views/apbd_wps_envato_system/integration.php:100
+msgid "Go to"
+msgstr "Aller à"
+
+#: modules/Apbd_wps_custom_field.php:146
+msgid "Half Field: "
+msgstr "Demi-terrain :"
+
+#: models/database/Mapbd_wps_custom_field.php:386
+msgid "Help Text"
+msgstr "Texte d'aide"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:37
+msgid "Hide reCAPTCHA Badge"
+msgstr "Masquer le badge reCAPTCHA"
+
+#: views/apbd_wps_settings/general.php:252
+msgid "Hide ticket details info by default"
+msgstr "Masquer les informations sur les détails du billet par défaut"
+
+#: modules/Apbd_wps_settings.php:1357
+msgid "High"
+msgstr "Haute"
+
+#: modules/Apbd_wps_settings.php:1365
+msgid "Home"
+msgstr "Maison"
+
+#. Plugin URI of the plugin/theme
+msgid "http://supportgenix.com"
+msgstr "http://supportgenix.com"
+
+#. Author URI of the plugin/theme
+msgid "https://supportgenix.com"
+msgstr "https://supportgenix.com"
+
+#: views/apbd_wps_settings/fileupload.php:23
+msgid ""
+"If you enable it Then user can upload file when they open ticket and reply "
+"any ticket"
+msgstr ""
+"Si vous l'activez, l'utilisateur peut télécharger le fichier lorsqu'il ouvre "
+"le ticket et répondre à n'importe quel ticket"
+
+#: views/apbd_wps_settings/general.php:64
+#: views/apbd_wps_settings/general.php:81
+msgid "Img Url"
+msgstr "URL d'image"
+
+#: modules/Apbd_wps_settings.php:1319
+msgid "In Progress"
+msgstr "En cours"
+
+#: models/database/Mapbd_wps_custom_field.php:398
+msgid "In Registration Form"
+msgstr "Dans le formulaire d'inscription"
+
+#: modules/Apbd_wps_settings.php:1327
+msgid "Inactive"
+msgstr "Inactif"
+
+#: modules/Apbd_wps_settings.php:1325
+msgid "Inactive Tickets"
+msgstr "Billets inactifs"
+
+#: modules/Apbd_wps_incoming_webhook.php:18
+msgid "Incoming Webhook"
+msgstr "Webhook entrant"
+
+#: modules/Apbd_wps_incoming_webhook.php:22
+msgid "Incoming Webhook Settings"
+msgstr "Paramètres du webhook entrant"
+
+#: modules/Apbd_wps_settings.php:1455
+msgid "Incorrect username or password"
+msgstr "identifiant ou mot de passe incorrect"
+
+#: views/apbd_wps_envato_system/main.php:10
+msgid "Integration"
+msgstr "L'intégration"
+
+#: views/apbd_wps_woocommerce/main.php:12
+msgid "Integrations"
+msgstr "Intégrations"
+
+#: modules/Apbd_wps_settings.php:1443
+msgid "Invalid captcha, try again"
+msgstr "Captcha invalide, réessayez"
+
+#: api/v1/APBDWPSAPIConfig.php:86
+msgid "Invalid input"
+msgstr "Entrée invalide"
+
+#: modules/APBD_wps_email_template.php:162
+#: modules/APBD_wps_email_template.php:181 modules/Apbd_wps_canned_msg.php:132
+#: modules/Apbd_wps_canned_msg.php:150 modules/Apbd_wps_custom_field.php:160
+#: modules/Apbd_wps_custom_field.php:178 modules/Apbd_wps_custom_field.php:206
+#: modules/Apbd_wps_debug_log.php:101 modules/Apbd_wps_notification.php:134
+#: modules/Apbd_wps_notification.php:152 modules/Apbd_wps_role.php:313
+#: modules/Apbd_wps_role.php:333 modules/Apbd_wps_role.php:362
+#: modules/Apbd_wps_ticket_assign_rule.php:145
+#: modules/Apbd_wps_ticket_assign_rule.php:163
+#: modules/Apbd_wps_ticket_category.php:136
+#: modules/Apbd_wps_ticket_category.php:155
+msgid "Invalid Request"
+msgstr "requête invalide"
+
+#: modules/APBD_wps_email_template.php:90
+#: modules/APBD_wps_email_template.php:112 modules/Apbd_wps_canned_msg.php:64
+#: modules/Apbd_wps_canned_msg.php:84 modules/Apbd_wps_custom_field.php:67
+#: modules/Apbd_wps_custom_field.php:90 modules/Apbd_wps_debug_log.php:46
+#: modules/Apbd_wps_debug_log.php:55 modules/Apbd_wps_notification.php:65
+#: modules/Apbd_wps_notification.php:85 modules/Apbd_wps_role.php:185
+#: modules/Apbd_wps_role.php:207 modules/Apbd_wps_ticket_assign_rule.php:64
+#: modules/Apbd_wps_ticket_assign_rule.php:84
+#: modules/Apbd_wps_ticket_category.php:64
+#: modules/Apbd_wps_ticket_category.php:84
+msgid "Invalid request"
+msgstr "Requête invalide"
+
+#: models/database/Mapbd_wps_custom_field.php:487
+msgid "Is Half Field"
+msgstr "Est demi-champ"
+
+#: models/database/Mapbd_wps_notification.php:273
+msgid "Is Popup Link"
+msgstr "Est un lien contextuel"
+
+#: models/database/Mapbd_wps_custom_field.php:470
+#: views/apbd_wps_envato_system/integration.php:45
+msgid "Is Required"
+msgstr "Est requis"
+
+#: libs/jQGrid.php:1385
+msgid "It is not supports bootstrap 3"
+msgstr "Il ne prend pas en charge bootstrap 3"
+
+#: template/popup-msg.php:53
+#, php-format
+msgid "It will redirect within %s second(s)"
+msgstr "Il redirigera dans %s seconde(s)"
+
+#: models/database/Mapbd_wps_support_meta.php:159
+#: models/database/Mapbd_wps_support_meta.php:162
+msgid "Item Id"
+msgstr "ID de l'article"
+
+#: modules/Apbd_wps_settings.php:1381
+msgid "Item Name"
+msgstr "Nom de l'article"
+
+#: models/database/Mapbd_wps_notification.php:294
+#: models/database/Mapbd_wps_notification.php:297
+#: models/database/Mapbd_wps_support_meta.php:166
+msgid "Item Type"
+msgstr "Type d'élément"
+
+#: views/apbd_wps_settings/fileupload.php:91
+msgid "JSON"
+msgstr "JSON"
+
+#: views/apbd_wps_settings/general.php:116
+msgid "Keep blank to get default login page"
+msgstr "Laissez vide pour obtenir la page de connexion par défaut"
+
+#: views/apbd_wps_settings/general.php:136
+msgid "Keep blank to get default profile page"
+msgstr "Laissez vide pour obtenir la page de profil par défaut"
+
+#: views/apbd_wps_settings/general.php:121
+msgid "Keep blank to get default registration page"
+msgstr "Laissez vide pour obtenir la page d'inscription par défaut"
+
+#: views/apbd_wps_settings/general.php:97
+msgid "Keep empty for default"
+msgstr "Garder vide par défaut"
+
+#: views/apbd_wps_settings/general.php:164
+msgid "Keep empty for default."
+msgstr "Gardez vide par défaut."
+
+#: views/apbd_wps_custom_field/main.php:14
+msgid "Label"
+msgstr "Étiquette"
+
+#: modules/Apbd_wps_settings.php:1277
+msgid "Last Name"
+msgstr "Nom de famille"
+
+#: modules/Apbd_wps_settings.php:1278
+msgid "Last name"
+msgstr "Nom de famille"
+
+#: modules/Apbd_wps_envato_system.php:288
+msgid "License Type"
+msgstr "Type de licence"
+
+#: views/apbd_wps_envato_system/integration.php:121
+msgid "List purchases you've made"
+msgstr "Lister les achats que vous avez effectués"
+
+#: modules/Apbd_wps_settings.php:1274
+msgid "Loaded"
+msgstr "Chargé"
+
+#: appcore/APBDWPSupportLite.php:236 core/AppsBDKarnelLite.php:1014
+#: libs/jQGrid.php:666
+msgid "Loading"
+msgstr "Chargement"
+
+#: modules/Apbd_wps_settings.php:1399
+msgid "Loading ..."
+msgstr "Chargement ..."
+
+#: appcore/APBDWPSupportLite.php:234 core/AppsBDKarnelLite.php:1012
+msgid "Loading.."
+msgstr "Chargement.."
+
+#: modules/Apbd_wps_settings.php:1321
+msgid "lock screen"
+msgstr "écran verrouillé"
+
+#: models/database/Mapbd_wps_ticket_log.php:205
+#: models/database/Mapbd_wps_ticket_log.php:208
+msgid "Log By"
+msgstr "Se connecter par"
+
+#: models/database/Mapbd_wps_ticket_log.php:214
+msgid "Log By Type"
+msgstr "Journal par type"
+
+#: models/database/Mapbd_wps_debug_log.php:249
+#: models/database/Mapbd_wps_debug_log.php:252
+msgid "Log Data"
+msgstr "Données de journal"
+
+#: models/database/Mapbd_wps_ticket_log.php:224
+#: models/database/Mapbd_wps_ticket_log.php:227
+msgid "Log Msg"
+msgstr "Journal des messages"
+
+#: modules/Apbd_wps_settings.php:1322
+msgid "log out"
+msgstr "Se déconnecter"
+
+#: models/database/Mapbd_wps_debug_log.php:229
+#: views/apbd_wps_debug_log/main.php:13
+#: views/apbd_wps_debug_log/view_dtls.php:19
+msgid "Log Type"
+msgstr "Type de journal"
+
+#: modules/Apbd_wps_settings.php:1312
+msgid "Login"
+msgstr "Connexion"
+
+#: views/apbd_wps_settings/general.php:114
+msgid "Login Page Link"
+msgstr "Lien vers la page de connexion"
+
+#: views/apbd_wps_envato_system/main.php:16
+msgid "Login with Envato"
+msgstr "Connectez-vous avec Envato"
+
+#: modules/Apbd_wps_settings.php:1404
+msgid "Lost your password?"
+msgstr "Mot de passe perdu?"
+
+#: modules/Apbd_wps_settings.php:1355
+msgid "Low"
+msgstr "Bas"
+
+#: views/apbd_wps_canned_msg/add.php:6 views/apbd_wps_custom_field/add.php:6
+#: views/apbd_wps_debug_log/add.php:6 views/apbd_wps_email_template/add.php:6
+#: views/apbd_wps_role/add.php:6 views/apbd_wps_ticket_assign_rule/add.php:6
+#: views/apbd_wps_ticket_category/add.php:6
+msgid "Main object has not initialized in controller"
+msgstr "L'objet principal n'a pas été initialisé dans le contrôleur"
+
+#: modules/Apbd_wps_settings.php:1286
+msgid "Make this ticket public"
+msgstr "Rendre ce ticket public"
+
+#: views/apbd_wps_settings/fileupload.php:28
+msgid "Max Upload File Size"
+msgstr "Taille maximale du fichier de téléchargement"
+
+#: models/database/Mapbd_wps_custom_field.php:465
+msgid "Maximum 255 character"
+msgstr "255 caractères maximum"
+
+#: views/apbd_wps_settings/fileupload.php:38
+msgid "MB"
+msgstr "Mo"
+
+#: modules/Apbd_wps_settings.php:1356
+msgid "Medium"
+msgstr "Moyen"
+
+#: models/database/Mapbd_wps_support_meta.php:178
+#: models/database/Mapbd_wps_support_meta.php:181
+msgid "Meta Key"
+msgstr "Clé méta"
+
+#: models/database/Mapbd_wps_support_meta.php:184
+msgid "Meta Type"
+msgstr "Type de méta"
+
+#: models/database/Mapbd_wps_support_meta.php:196
+#: models/database/Mapbd_wps_support_meta.php:199
+msgid "Meta Value"
+msgstr "Méta valeur"
+
+#: modules/Apbd_wps_settings.php:1363
+msgid "Month"
+msgstr "Mois"
+
+#: modules/Apbd_wps_settings.php:1372
+msgid "Move To Trash"
+msgstr "Mettre à la corbeille"
+
+#: models/database/Mapbd_wps_notification.php:238
+#: models/database/Mapbd_wps_notification.php:241
+msgid "Msg"
+msgstr "Msg"
+
+#: models/database/Mapbd_wps_notification.php:310
+#: models/database/Mapbd_wps_notification.php:313
+msgid "Msg Param"
+msgstr "Paramètre de message"
+
+#: views/apbd_wps_envato_system/integration.php:101
+msgid "My App"
+msgstr "Mon application"
+
+#: modules/Apbd_wps_settings.php:1341
+msgid "My Ticket"
+msgstr "Mon billet"
+
+#: models/database/Mapbd_wps_notification.php:264
+#: models/database/Mapbd_wps_notification.php:267
+msgid "N Counter"
+msgstr "Compteur N"
+
+#: models/database/Mapbd_wps_role.php:467
+#: models/database/Mapbd_wps_role.php:471 modules/Apbd_wps_settings.php:1359
+#: views/apbd_wps_role/role-list.php:14
+msgid "Name"
+msgstr "Nom"
+
+#: modules/Apbd_wps_settings.php:1439
+msgid "Need Reply"
+msgstr "Besoin de réponse"
+
+#: modules/Apbd_wps_settings.php:1449
+msgid "Need reply"
+msgstr "Besoin de réponse"
+
+#: modules/Apbd_wps_settings.php:1306
+msgid "New"
+msgstr "Nouveau"
+
+#: modules/Apbd_wps_settings.php:1305
+msgid "New Password"
+msgstr "nouveau mot de passe"
+
+#: modules/Apbd_wps_settings.php:1456
+msgid "New Ticket Received"
+msgstr "Nouveau ticket reçu"
+
+#: modules/Apbd_wps_settings.php:1339
+msgid "Newest First"
+msgstr "Le plus récent d'abord"
+
+#: modules/Apbd_wps_settings.php:1421
+msgid "No"
+msgstr "Non"
+
+#: core/AppsBDLiteModule.php:628 core/AppsBDLiteModule.php:630
+#: core/AppsBDLiteModule.php:634 modules/Apbd_wps_envato_system.php:86
+#: modules/Apbd_wps_envato_system.php:88 modules/Apbd_wps_envato_system.php:93
+#: modules/Apbd_wps_settings.php:1085
+msgid "No change for update"
+msgstr "Pas de changement pour la mise à jour"
+
+#: modules/Apbd_wps_settings.php:1442
+msgid "No data found"
+msgstr "Aucune donnée disponible"
+
+#: views/apbd_wps_debug_log/view_dtls.php:29
+msgid "No Log data"
+msgstr "Aucune donnée de journal"
+
+#: modules/Apbd_wps_settings.php:1280
+msgid "No Name Found"
+msgstr "Aucun nom trouvé"
+
+#: models/database/Mapbd_wps_role_access.php:153
+#: models/database/Mapbd_wps_ticket.php:929
+msgid "No need to implement"
+msgstr "Pas besoin de mettre en œuvre"
+
+#: models/database/Mapbd_wps_ticket_reply.php:318
+msgid "no need to implement"
+msgstr "pas besoin d'implémenter"
+
+#: modules/Apbd_wps_settings.php:1386
+msgid "No notes Found"
+msgstr "Aucune note trouvée"
+
+#: libs/jQGrid.php:111
+msgid "No Record Found"
+msgstr "Aucun Enregistrement Trouvé"
+
+#: modules/Apbd_wps_settings.php:1429
+msgid "No Saved Replies Found"
+msgstr "Aucune réponse enregistrée n'a été trouvée"
+
+#: modules/Apbd_wps_settings.php:1414
+msgid "No Ticket Found"
+msgstr "Aucun billet trouvé"
+
+#: modules/Apbd_wps_settings.php:1415
+msgid "No ticket found, Search again."
+msgstr "Aucun billet trouvé, recherchez à nouveau."
+
+#: appcore/APBDWPDiagnosticData.php:498
+msgid "No, Thanks"
+msgstr "Non merci"
+
+#: models/database/Mapbd_wps_notes.php:136
+#: models/database/Mapbd_wps_notes.php:139
+msgid "Note Text"
+msgstr "Remarque Texte"
+
+#: modules/Apbd_wps_notification.php:23 modules/Apbd_wps_notification.php:29
+msgid "Notification"
+msgstr "Notification"
+
+#: modules/Apbd_wps_notification.php:33
+msgid "Notification Settings"
+msgstr "Paramètres de notification"
+
+#: modules/Apbd_wps_settings.php:1315
+msgid "Notifications"
+msgstr "Avis"
+
+#: models/database/Mapbd_wps_custom_field.php:442
+msgid "Numeric"
+msgstr "Numérique"
+
+#: modules/Apbd_wps_settings.php:1445
+msgid "of %{totalPage}"
+msgstr "de %{totalPage}"
+
+#: modules/Apbd_wps_settings.php:1307
+msgid "Old Password"
+msgstr "ancien mot de passe"
+
+#: modules/Apbd_wps_settings.php:1308
+msgid "Old password"
+msgstr "Ancien mot de passe"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:92
+msgid "On Create Ticket (If not logged in)"
+msgstr "Lors de la création d'un ticket (si vous n'êtes pas connecté)"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:82
+msgid "On Login Form"
+msgstr "Sur le formulaire de connexion"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:102
+msgid "On Registration Ticket"
+msgstr "Sur le billet d'inscription"
+
+#: modules/Apbd_wps_settings.php:1346
+msgid "open"
+msgstr "ouvert"
+
+#: modules/Apbd_wps_settings.php:1448
+msgid "Opening date"
+msgstr "Date d'ouverture"
+
+#: modules/Apbd_wps_settings.php:1337
+msgid "Operators"
+msgstr "Les opérateurs"
+
+#: models/database/Mapbd_wps_custom_field.php:459
+#: views/apbd_wps_envato_system/integration.php:36
+msgid "Option"
+msgstr "Option"
+
+#: views/apbd_wps_custom_field/main.php:18
+msgid "Order"
+msgstr "Ordre"
+
+#: modules/Apbd_wps_webhook.php:18
+msgid "Outgoing Webhook"
+msgstr "Webhook sortant"
+
+#: modules/Apbd_wps_webhook.php:22
+msgid "Outgoing Webhook Settings"
+msgstr "Paramètres du webhook sortant"
+
+#: modules/Apbd_wps_settings.php:1424
+msgid "Page"
+msgstr "Page"
+
+#: libs/jQGrid.php:667
+#, php-format
+msgid "Page %s of %s"
+msgstr "Page %s sur %s"
+
+#: models/database/Mapbd_wps_ticket_category.php:176
+#: views/apbd_wps_ticket_category/main.php:15
+msgid "Parent Category"
+msgstr "Catégorie Parentale"
+
+#: modules/Apbd_wps_settings.php:1297
+msgid "Password"
+msgstr "Mot de passe"
+
+#: views/apbd_wps_settings/fileupload.php:77
+msgid "PDF"
+msgstr "PDF"
+
+#: views/apbd_wps_envato_system/integration.php:105
+msgid "Permission"
+msgstr "Autorisation"
+
+#: core/AppsbdAjaxDataResponse.php:187
+msgid "Permission Denied"
+msgstr "Permission refusée"
+
+#: views/apbd_wps_settings/fileupload.php:49
+msgid "Photos"
+msgstr "Photos"
+
+#: models/database/Mapbd_wps_custom_field.php:383
+msgid "Placeholder"
+msgstr "Espace réservé"
+
+#: modules/Apbd_wps_settings.php:1453
+msgid "Powered by"
+msgstr "Alimenté par"
+
+#: modules/Apbd_wps_settings.php:1343
+msgid "Private Ticket"
+msgstr "Billet Privé"
+
+#: modules/Apbd_wps_betterdocs.php:30 modules/Apbd_wps_edd.php:30
+#: modules/Apbd_wps_elite_licenser.php:30 modules/Apbd_wps_fluentcrm.php:30
+#: modules/Apbd_wps_incoming_webhook.php:30 modules/Apbd_wps_mailbox.php:30
+#: modules/Apbd_wps_report.php:30 modules/Apbd_wps_slack.php:30
+#: modules/Apbd_wps_tutorlms.php:30 modules/Apbd_wps_webhook.php:30
+#: modules/Apbd_wps_whatsapp.php:30 modules/Apbd_wps_woocommerce.php:30
+#: views/apbd_wps_envato_system/main.php:17
+#: views/apbd_wps_settings/general.php:143
+#: views/apbd_wps_settings/general.php:158
+#: views/apbd_wps_settings/general.php:215
+#: views/apbd_wps_settings/general.php:226
+#: views/apbd_wps_settings/general.php:237
+#: views/apbd_wps_settings/general.php:260
+#: views/apbd_wps_settings/general.php:271 views/apbd_wps_settings/main.php:17
+#: views/apbd_wps_settings/main.php:43
+msgid "Pro"
+msgstr "Pro"
+
+#: views/apbd_wps_settings/app-footer.php:6
+msgid "Pro Edition"
+msgstr "Édition Pro"
+
+#: template/popup-msg.php:16 template/popup.php:19
+msgid "Processing"
+msgstr "Traitement"
+
+#: modules/Apbd_wps_envato_system.php:286
+msgid "Product Name"
+msgstr "Nom du produit"
+
+#: modules/Apbd_wps_settings.php:1336
+msgid "Product Types"
+msgstr "Types de produits"
+
+#: modules/Apbd_wps_settings.php:1318
+msgid "profile"
+msgstr "profil"
+
+#: modules/Apbd_wps_settings.php:1289
+msgid "Profile Update"
+msgstr "Mise à jour du profil"
+
+#: models/database/Mapbd_wps_email_templates.php:381
+#: views/apbd_wps_canned_msg/add.php:39
+msgid "Properties"
+msgstr "Propriétés"
+
+#: libs/jQGrid.php:1403 models/database/Mapbd_wps_email_templates.php:388
+#: views/apbd_wps_canned_msg/add.php:46
+msgid "Property"
+msgstr "Propriété"
+
+#: modules/Apbd_wps_settings.php:1394
+msgid "Public Tickets"
+msgstr "Billets publics"
+
+#: modules/Apbd_wps_envato_system.php:232 modules/Apbd_wps_settings.php:1382
+msgid "Purchase Code"
+msgstr "Code d'achat"
+
+#: modules/Apbd_wps_envato_system.php:134
+#: modules/Apbd_wps_envato_system.php:149
+msgid "Purchase code is invalid"
+msgstr "Le code d'achat n'est pas valide"
+
+#: core/AppsBDModel.php:1799
+msgid "Queries"
+msgstr "Requêtes"
+
+#: models/database/Mapbd_wps_custom_field.php:445
+msgid "Radio"
+msgstr "Radio"
+
+#: modules/Apbd_wps_settings.php:1340
+msgid "Rating"
+msgstr "Évaluation"
+
+#: modules/Apbd_wps_settings.php:1332
+msgid "Re-Open"
+msgstr "Rouvrir"
+
+#: views/apbd_wps_settings/main.php:36
+#: views/apbd_wps_settings/recaptcha_v3.php:10
+msgid "reCAPTCHA v3"
+msgstr "reCAPTCHA v3"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:30
+msgid "reCAPTCHA v3 Settings"
+msgstr "Paramètres reCAPTCHA v3"
+
+#: modules/Apbd_wps_settings.php:1314
+msgid "Register"
+msgstr "S'inscrire"
+
+#: views/apbd_wps_settings/general.php:119
+msgid "Registration Link"
+msgstr "Lien d'inscription"
+
+#: modules/Apbd_wps_settings.php:1383
+msgid "Related Link"
+msgstr "Lien connexe"
+
+#: modules/Apbd_wps_settings.php:1310
+msgid "Related URL"
+msgstr "URL associée"
+
+#: libs/jQGrid.php:113
+msgid "Reload"
+msgstr "Recharger"
+
+#: modules/Apbd_wps_settings.php:1313
+msgid "Remember Me"
+msgstr "Souviens-toi de moi"
+
+#: views/apbd_wps_settings/general.php:177
+msgid "Remove Powered By"
+msgstr "Supprimer Propulsé par"
+
+#: modules/Apbd_wps_settings.php:1331
+msgid "Reopen Tickets"
+msgstr "Rouvrir les billets"
+
+#: modules/Apbd_wps_settings.php:1427
+msgid "Replied"
+msgstr "A répondu"
+
+#: models/database/Mapbd_wps_canned_msg.php:164
+msgid "Reply user group"
+msgstr "Répondre au groupe d'utilisateurs"
+
+#: models/database/Mapbd_wps_canned_msg.php:163
+msgid "Reply user name"
+msgstr "Répondre nom d'utilisateur"
+
+#: modules/Apbd_wps_settings.php:1447
+msgid "Reply's date"
+msgstr "Date de réponse"
+
+#: modules/Apbd_wps_report.php:18
+msgid "Report"
+msgstr "Rapport"
+
+#: modules/Apbd_wps_report.php:22
+msgid "Report & Statistics"
+msgstr "Rapport et statistiques"
+
+#: modules/Apbd_wps_custom_field.php:146
+msgid "Required:"
+msgstr "Obligatoire:"
+
+#: libs/jQGrid.php:1490
+msgid "Reset"
+msgstr "Réinitialiser"
+
+#: views/apbd_wps_custom_field/main.php:13
+msgid "Reset Order"
+msgstr "Réinitialiser la commande"
+
+#: libs/jQGrid.php:1522
+msgid "Reset Search"
+msgstr "Réinitialiser la recherche"
+
+#: modules/Apbd_wps_settings.php:1379
+msgid "Response Time"
+msgstr "Temps de réponse"
+
+#: modules/Apbd_wps_settings.php:1402
+msgid "Restore"
+msgstr "Restaurer"
+
+#: modules/Apbd_wps_settings.php:1395
+msgid "Retype New Password"
+msgstr "Re-taper le nouveau mot de passe"
+
+#: modules/Apbd_wps_settings.php:1396
+msgid "Retype new password"
+msgstr "Re-taper le nouveau mot de passe"
+
+#: modules/Apbd_wps_settings.php:1397
+msgid "Retype New Password2"
+msgstr "Retaper le nouveau mot de passe2"
+
+#: modules/Apbd_wps_settings.php:1298
+msgid "Retype Password"
+msgstr "Retaper le mot de passe"
+
+#: modules/Apbd_wps_settings.php:1299
+msgid "Retype password"
+msgstr "retaper le mot de passe"
+
+#: modules/Apbd_wps_settings.php:1300
+msgid "Retype Password2"
+msgstr "Retaper le mot de passe2"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:124
+#: views/apbd_wps_role/role-setting.php:14
+msgid "Role"
+msgstr "Rôle"
+
+#: views/apbd_wps_role/main.php:16
+msgid "Role Access"
+msgstr "Accès aux rôles"
+
+#: models/database/Mapbd_wps_role.php:491
+#: models/database/Mapbd_wps_role.php:495
+msgid "Role Description"
+msgstr "Description du rôle"
+
+#: views/apbd_wps_role/main.php:10
+msgid "Role List"
+msgstr "Liste des rôles"
+
+#: views/apbd_wps_role/role-setting.php:6
+msgid "Role Settings"
+msgstr "Paramètres de rôle"
+
+#: models/database/Mapbd_wps_ticket_assign_rule.php:334
+#: views/apbd_wps_ticket_assign_rule/main.php:15
+msgid "Rule Type"
+msgstr "Type de règle"
+
+#: views/apbd_wps_canned_msg/add.php:73 views/apbd_wps_custom_field/add.php:17
+#: views/apbd_wps_debug_log/add.php:17 views/apbd_wps_email_template/add.php:19
+#: views/apbd_wps_email_template/view_param.php:17
+#: views/apbd_wps_envato_system/integration.php:16
+#: views/apbd_wps_envato_system/integration.php:88
+#: views/apbd_wps_role/add.php:17 views/apbd_wps_settings/fileupload.php:99
+#: views/apbd_wps_settings/general.php:334
+#: views/apbd_wps_settings/recaptcha_v3.php:20
+#: views/apbd_wps_settings/recaptcha_v3.php:112
+#: views/apbd_wps_ticket_assign_rule/add.php:17
+#: views/apbd_wps_ticket_category/add.php:17
+msgid "Save"
+msgstr "sauvegarder"
+
+#: modules/Apbd_wps_canned_msg.php:23 modules/Apbd_wps_canned_msg.php:28
+#: modules/Apbd_wps_settings.php:1428
+msgid "Saved Replies"
+msgstr "Réponses enregistrées"
+
+#: modules/Apbd_wps_canned_msg.php:32
+msgid "Saved Replies Settings"
+msgstr "Paramètres des réponses enregistrées"
+
+#: core/AppsBDLiteModule.php:632 modules/Apbd_wps_envato_system.php:91
+#: modules/Apbd_wps_settings.php:1087
+msgid "Saved Successfully"
+msgstr "Enregistré avec succès"
+
+#: libs/jQGrid.php:1487 libs/jQGrid.php:1516 libs/jQGrid.php:1519
+msgid "Search"
+msgstr "Chercher"
+
+#: modules/Apbd_wps_settings.php:1398
+msgid "Search Here"
+msgstr "Cherche ici"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:55
+#: views/apbd_wps_settings/recaptcha_v3.php:59
+msgid "Secret Key"
+msgstr "Clef secrète"
+
+#: modules/Apbd_wps_settings.php:1437
+msgid "Seen"
+msgstr "Vu"
+
+#: libs/jQGrid.php:1403 libs/jQGrid.php:1428
+#: models/database/Mapbd_wps_debug_log.php:232
+#: models/database/Mapbd_wps_debug_log.php:261
+#: models/database/Mapbd_wps_ticket_assign_rule.php:356
+#: models/database/Mapbd_wps_ticket_assign_rule.php:369
+#: models/database/Mapbd_wps_ticket_category.php:179
+#: models/database/Mapbd_wps_ticket_log.php:237
+msgid "Select"
+msgstr "Sélectionner"
+
+#: modules/Apbd_wps_settings.php:1301
+msgid "Select Category"
+msgstr "Choisir une catégorie"
+
+#: modules/Apbd_wps_settings.php:1302
+msgid "Select category"
+msgstr "Choisir une catégorie"
+
+#: models/database/Mapbd_wps_ticket_assign_rule.php:352
+msgid "Select Role"
+msgstr "Sélectionnez un rôle"
+
+#: modules/Apbd_wps_settings.php:1370
+msgid "Select Status"
+msgstr "Sélectionnez le statut"
+
+#: views/apbd_wps_settings/general.php:21
+msgid "Select Ticket Page"
+msgstr "Sélectionnez la page du billet"
+
+#: models/database/Mapbd_wps_ticket_assign_rule.php:365
+msgid "Select User"
+msgstr "Sélectionnez l'utilisateur"
+
+#: appcore/APBDWPDiagnosticData.php:493
+#, php-format
+msgid ""
+"Server information (Web server, PHP version, MySQL version), WordPress "
+"information, site name, site URL, number of plugins, number of users, your "
+"name, and email address. You can rest assured that no sensitive data will be "
+"collected or tracked. %1$sLearn more%2$s."
+msgstr ""
+"Informations sur le serveur (serveur Web, version PHP, version MySQL), "
+"informations WordPress, nom du site, URL du site, nombre de plugins, nombre "
+"d'utilisateurs, votre nom et votre adresse e-mail. Vous pouvez être assuré "
+"qu'aucune donnée sensible ne sera collectée ou suivie. %1$sEn savoir "
+"plus%2$s."
+
+#: modules/Apbd_wps_settings.php:1320
+msgid "setting"
+msgstr "paramètre"
+
+#: core/AppsBDKarnelLite.php:798 modules/Apbd_wps_settings.php:1035
+#: views/apbd_wps_woocommerce/main.php:18
+msgid "Settings"
+msgstr "Réglages"
+
+#: views/apbd_wps_settings/general.php:31
+msgid "Shortcode"
+msgstr "Petit code"
+
+#: views/apbd_wps_envato_system/integration.php:80
+#| msgid "Show Registration Form"
+msgid "Show in Registration Form"
+msgstr "Afficher dans le formulaire d'inscription"
+
+#: views/apbd_wps_envato_system/integration.php:71
+msgid "Show in Ticket Form"
+msgstr "Spectacle sous forme de billet"
+
+#: views/apbd_wps_settings/general.php:246
+msgid "Show other tickets in ticket details page"
+msgstr "Afficher d'autres billets dans la page des détails du billet"
+
+#: modules/Apbd_wps_settings.php:1290
+msgid "Sign in"
+msgstr "S'identifier"
+
+#: views/apbd_wps_envato_system/integration.php:101
+msgid "Sign In and go to"
+msgstr "Connectez-vous et accédez à"
+
+#: modules/Apbd_wps_envato_system.php:301
+msgid "Site"
+msgstr "Placer"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:44
+#: views/apbd_wps_settings/recaptcha_v3.php:48
+msgid "Site Key"
+msgstr "Clé du site"
+
+#: modules/Apbd_wps_settings.php:1374
+msgid "Size"
+msgstr "Taille"
+
+#: modules/Apbd_wps_slack.php:18
+msgid "Slack"
+msgstr "Slack"
+
+#: modules/Apbd_wps_slack.php:22
+msgid "Slack Settings"
+msgstr "Paramètres Slack"
+
+#: views/apbd_wps_custom_field/main.php:16
+msgid "Slug"
+msgstr "Limace"
+
+#: modules/Apbd_wps_settings.php:1089
+msgid "Something went wrong"
+msgstr "Quelque chose s'est mal passé"
+
+#: modules/Apbd_wps_settings.php:1358
+msgid "Sort by"
+msgstr "Trier par"
+
+#: models/database/Mapbd_wps_canned_msg.php:251
+#: models/database/Mapbd_wps_custom_field.php:478
+#: models/database/Mapbd_wps_debug_log.php:258
+#: models/database/Mapbd_wps_email_templates.php:365
+#: models/database/Mapbd_wps_notification.php:319
+#: models/database/Mapbd_wps_role.php:482
+#: models/database/Mapbd_wps_ticket_assign_rule.php:344
+#: models/database/Mapbd_wps_ticket_category.php:188
+#: views/apbd_wps_canned_msg/add.php:21 views/apbd_wps_canned_msg/main.php:17
+#: views/apbd_wps_debug_log/main.php:16
+#: views/apbd_wps_debug_log/view_dtls.php:23
+#: views/apbd_wps_email_template/main.php:19
+#: views/apbd_wps_role/role-list.php:16
+#: views/apbd_wps_ticket_assign_rule/main.php:17
+#: views/apbd_wps_ticket_category/main.php:16
+msgid "Status"
+msgstr "Statut"
+
+#: modules/Apbd_wps_custom_field.php:146 modules/Apbd_wps_settings.php:1345
+msgid "Status:"
+msgstr "Statut:"
+
+#: models/database/Mapbd_wps_email_templates.php:347
+#: models/database/Mapbd_wps_email_templates.php:352
+#: models/database/Mapbd_wps_email_templates.php:359
+#: modules/Apbd_wps_settings.php:1303 views/apbd_wps_email_template/main.php:18
+msgid "Subject"
+msgstr "Matière"
+
+#: modules/Apbd_wps_settings.php:1284
+msgid "Submit"
+msgstr "Soumettre"
+
+#: modules/Apbd_wps_settings.php:1293
+msgid "Submit A Ticket"
+msgstr "Soumettre un ticket"
+
+#: modules/Apbd_wps_settings.php:1292
+msgid "Submit Ticket"
+msgstr "Envoyer le ticket"
+
+#: modules/APBD_wps_email_template.php:72 modules/Apbd_wps_canned_msg.php:47
+#: modules/Apbd_wps_custom_field.php:50 modules/Apbd_wps_notification.php:48
+#: modules/Apbd_wps_role.php:166 modules/Apbd_wps_ticket_assign_rule.php:47
+#: modules/Apbd_wps_ticket_category.php:47
+msgid "Successfully added"
+msgstr "Ajouté avec succès"
+
+#: modules/Apbd_wps_debug_log.php:121
+msgid "Successfully Cleared"
+msgstr "Effacé avec succès"
+
+#: modules/APBD_wps_email_template.php:171 modules/Apbd_wps_canned_msg.php:140
+#: modules/Apbd_wps_custom_field.php:168 modules/Apbd_wps_debug_log.php:109
+#: modules/Apbd_wps_notification.php:142 modules/Apbd_wps_role.php:322
+#: modules/Apbd_wps_ticket_assign_rule.php:153
+#: modules/Apbd_wps_ticket_category.php:144
+msgid "Successfully deleted"
+msgstr "Supprimé avec succès"
+
+#: modules/APBD_wps_email_template.php:198 modules/Apbd_wps_canned_msg.php:165
+#: modules/Apbd_wps_custom_field.php:194 modules/Apbd_wps_custom_field.php:222
+#: modules/Apbd_wps_notification.php:168 modules/Apbd_wps_role.php:350
+#: modules/Apbd_wps_role.php:379 modules/Apbd_wps_role.php:399
+#: modules/Apbd_wps_role.php:407 modules/Apbd_wps_settings.php:1432
+#: modules/Apbd_wps_ticket_assign_rule.php:179
+#: modules/Apbd_wps_ticket_category.php:171
+msgid "Successfully Updated"
+msgstr "Mise à jour réussie"
+
+#: modules/APBD_wps_email_template.php:102 modules/Apbd_wps_canned_msg.php:75
+#: modules/Apbd_wps_custom_field.php:81 modules/Apbd_wps_notification.php:76
+#: modules/Apbd_wps_role.php:198 modules/Apbd_wps_settings.php:1431
+#: modules/Apbd_wps_ticket_assign_rule.php:75
+#: modules/Apbd_wps_ticket_category.php:75
+msgid "Successfully updated"
+msgstr "Mise à jour réussie"
+
+#: modules/Apbd_wps_settings.php:1334
+msgid "Summary"
+msgstr "Sommaire"
+
+#. Author of the plugin/theme
+#: modules/Apbd_wps_settings.php:253 modules/Apbd_wps_settings.php:1400
+msgid "Support Genix"
+msgstr "Soutenir Genix"
+
+#: models/database/Mapbd_wps_role.php:476 views/apbd_wps_role/role-list.php:17
+msgid "Support Genix Agent"
+msgstr "Assistance Genix Agent"
+
+#. Plugin Name of the plugin/theme
+msgid "Support Genix Lite"
+msgstr "Prise en charge de Genix Lite"
+
+#: views/apbd_wps_settings/general.php:283
+msgid "Support Logo"
+msgstr "Logo de soutien"
+
+#: modules/Apbd_wps_settings.php:234
+msgid "Support Tickets"
+msgstr "Billets d'assistance"
+
+#: modules/Apbd_wps_envato_system.php:295
+msgid "Support Time"
+msgstr "Temps d'assistance"
+
+#: models/database/Mapbd_wps_custom_field.php:444
+msgid "Switch"
+msgstr "Changer"
+
+#: modules/Apbd_wps_settings.php:1124 modules/Apbd_wps_settings.php:1147
+msgid "System couldn't create directory"
+msgstr "Le système n'a pas pu créer le répertoire"
+
+#: modules/Apbd_wps_settings.php:1338
+msgid "tags"
+msgstr "Mots clés"
+
+#: views/apbd_wps_settings/fileupload.php:63
+msgid "Text"
+msgstr "Texte"
+
+#: models/database/Mapbd_wps_custom_field.php:447
+msgid "Text/Instruction"
+msgstr "Texte/Instruction"
+
+#: models/database/Mapbd_wps_custom_field.php:441
+msgid "Textbox"
+msgstr "Zone de texte"
+
+#: appcore/APBDWPDiagnosticData.php:519
+#, php-format
+msgid "Thank you very much for supporting %2$s%1$s%3$s."
+msgstr "Merci beaucoup de soutenir %2$s%1$s%3$s."
+
+#: modules/Apbd_wps_settings.php:1376
+msgid "Thank You.Your Ticket Created Successfully."
+msgstr "Merci. Votre ticket a été créé avec succès."
+
+#: modules/Apbd_wps_settings.php:1436
+msgid "The ticket has been closed!"
+msgstr "Le ticket est fermé !"
+
+#: models/database/Mapbd_wps_canned_msg.php:161
+msgid "The user who has opened ticket"
+msgstr "L'utilisateur qui a ouvert le ticket"
+
+#: views/apbd_wps_envato_system/integration.php:103
+msgid "Then Click the button named"
+msgstr "Cliquez ensuite sur le bouton nommé"
+
+#: views/apbd_wps_envato_system/integration.php:105
+#| msgid "then please choose minimum"
+msgid "Then please choose minimum"
+msgstr "Alors veuillez choisir le minimum"
+
+#: views/apbd_wps_envato_system/integration.php:102
+msgid "Then scroll down to heading <br>\"Your personal tokens\""
+msgstr ""
+"Faites ensuite défiler vers le bas jusqu'à la rubrique <br>\"Vos jetons "
+"personnels\""
+
+#: views/apbd_wps_envato_system/integration.php:104
+#| msgid "then you will see a"
+msgid "Then you will see a"
+msgstr "Ensuite, vous verrez un"
+
+#: modules/Apbd_wps_settings.php:733 modules/Apbd_wps_settings.php:1342
+msgid "Ticket"
+msgstr "Billet"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:28
+msgid "Ticket Assign Rule"
+msgstr "Règle d'attribution de ticket"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:23
+msgid "Ticket Assign Rule List"
+msgstr "Liste des règles d'attribution des tickets"
+
+#: modules/Apbd_wps_ticket_assign_rule.php:32
+msgid "Ticket Assign Rule Settings"
+msgstr "Paramètres des règles d'attribution des tickets"
+
+#: modules/Apbd_wps_settings.php:1247
+#, php-format
+msgid "Ticket assigned on %s"
+msgstr "Ticket attribué le %s"
+
+#: modules/Apbd_wps_ticket_category.php:28
+msgid "Ticket Category"
+msgstr "Catégorie de billet"
+
+#: modules/Apbd_wps_ticket_category.php:23
+msgid "Ticket Category List"
+msgstr "Liste des catégories de billets"
+
+#: modules/Apbd_wps_ticket_category.php:32
+msgid "Ticket Category Settings"
+msgstr "Paramètres de catégorie de billet"
+
+#: modules/Apbd_wps_settings.php:1430
+msgid "Ticket created successfully"
+msgstr "Ticket créé avec succès"
+
+#: api/v1/APBDWPSUserAPI.php:281 api/v1/APBDWPSUserAPI.php:330
+msgid "Ticket creation failed"
+msgstr "La création du ticket a échoué"
+
+#: modules/Apbd_wps_settings.php:1344
+msgid "Ticket Details"
+msgstr "Détails du billet"
+
+#: models/database/Mapbd_wps_ticket_reply.php:276
+msgid "Ticket doesn't found"
+msgstr "Le ticket n'a pas été trouvé"
+
+#: views/apbd_wps_settings/fileupload.php:16
+msgid "Ticket File Upload"
+msgstr "Téléchargement du fichier de ticket"
+
+#: modules/Apbd_wps_settings.php:1460
+msgid "Ticket has been assigned to you"
+msgstr "Le billet vous a été attribué"
+
+#: models/database/Mapbd_wps_notes.php:113
+#: models/database/Mapbd_wps_notes.php:116
+msgid "Ticket Id"
+msgstr "ID de billets"
+
+#: modules/Apbd_wps_settings.php:1384
+msgid "Ticket Logs"
+msgstr "Journaux des tickets"
+
+#: models/database/Mapbd_wps_custom_field.php:397
+msgid "Ticket Open Form"
+msgstr "Formulaire d'ouverture de billet"
+
+#: models/database/Mapbd_wps_ticket.php:227
+#, php-format
+msgid "Ticket opened by %s"
+msgstr "Ticket ouvert par %s"
+
+#: views/apbd_wps_settings/general.php:19
+msgid "Ticket Page"
+msgstr "Billetterie"
+
+#: modules/Apbd_wps_settings.php:1457
+msgid "Ticket replied"
+msgstr "Le ticket a répondu"
+
+#: modules/Apbd_wps_settings.php:1458
+msgid "Ticket replied by %{user_name}"
+msgstr "Ticket répondu par %{user_name}"
+
+#: models/database/Mapbd_wps_ticket_log.php:233
+msgid "Ticket Status"
+msgstr "Statut du ticket"
+
+#: modules/Apbd_wps_settings.php:1232
+#, php-format
+msgid "Ticket status changed to %s"
+msgstr "Le statut du ticket a été modifié en %s"
+
+#: modules/Apbd_wps_settings.php:1237
+#, php-format
+msgid "Ticket status changed to %s Automatically"
+msgstr "Le statut du ticket est devenu %s automatiquement"
+
+#: views/apbd_wps_settings/main.php:16
+msgid "Ticket Statuses"
+msgstr "Statuts des billets"
+
+#: modules/Apbd_wps_settings.php:1423
+msgid "Ticket subject"
+msgstr "Objet du billet"
+
+#: models/database/Mapbd_wps_canned_msg.php:162
+msgid "Ticket title"
+msgstr "Titre du billet"
+
+#: models/database/Mapbd_wps_ticket.php:629
+msgid "Ticket track id initialize failed"
+msgstr "Échec de l'initialisation de l'identifiant de la piste du ticket"
+
+#: models/database/Mapbd_wps_canned_msg.php:123
+msgid "Ticket User"
+msgstr "Utilisateur du billet"
+
+#: modules/Apbd_wps_settings.php:1287
+msgid "Ticket Visibility"
+msgstr "Visibilité des billets"
+
+#: modules/Apbd_wps_settings.php:1368
+msgid "Ticket's Category:"
+msgstr "Catégorie de billet :"
+
+#: modules/Apbd_wps_settings.php:1375
+msgid "Ticket's Subject:"
+msgstr "Objet du billet :"
+
+#: modules/Apbd_wps_settings.php:1369
+msgid "Ticket's Track Id:"
+msgstr "Identifiant de piste du ticket :"
+
+#: models/database/Mapbd_wps_canned_msg.php:244
+#: models/database/Mapbd_wps_canned_msg.php:247
+#: models/database/Mapbd_wps_debug_log.php:242
+#: models/database/Mapbd_wps_debug_log.php:245
+#: models/database/Mapbd_wps_notification.php:228
+#: models/database/Mapbd_wps_notification.php:231
+#: models/database/Mapbd_wps_ticket_category.php:169
+#: models/database/Mapbd_wps_ticket_category.php:172
+#: views/apbd_wps_canned_msg/add.php:14 views/apbd_wps_canned_msg/add.php:17
+#: views/apbd_wps_canned_msg/main.php:14 views/apbd_wps_debug_log/main.php:15
+#: views/apbd_wps_debug_log/view_dtls.php:15
+#: views/apbd_wps_email_template/main.php:16
+#: views/apbd_wps_ticket_category/main.php:13
+msgid "Title"
+msgstr "Titre"
+
+#: libs/jQGrid.php:1471 libs/jQGrid.php:1601
+msgid "To"
+msgstr "À"
+
+#: views/apbd_wps_settings/general.php:149
+msgid ""
+"To maintain the sequential ticket ID, enable this. For random alpha-numeric, "
+"leave it disabled."
+msgstr ""
+"Pour conserver l’ID de ticket séquentiel, activez cette option. Pour les "
+"caractères alphanumériques aléatoires, laissez-le désactivé."
+
+#: views/apbd_wps_envato_system/integration.php:108
+msgid "to show"
+msgstr "montrer"
+
+#: views/apbd_wps_betterdocs/main.php:11 views/apbd_wps_edd/main.php:11
+#: views/apbd_wps_elite_licenser/main.php:11
+#: views/apbd_wps_envato_system/main.php:31
+#: views/apbd_wps_fluentcrm/main.php:11
+#: views/apbd_wps_incoming_webhook/main.php:11
+#: views/apbd_wps_mailbox/main.php:11 views/apbd_wps_report/main.php:11
+#: views/apbd_wps_settings/app-footer.php:13
+#: views/apbd_wps_settings/main.php:57 views/apbd_wps_settings/main.php:69
+#: views/apbd_wps_slack/main.php:11 views/apbd_wps_tutorlms/main.php:11
+#: views/apbd_wps_webhook/main.php:11 views/apbd_wps_whatsapp/main.php:11
+#: views/apbd_wps_woocommerce/main.php:29
+#: views/apbd_wps_woocommerce/main.php:35
+#, php-format
+msgid "To unlock this feature you need %1$s!"
+msgstr "Pour débloquer cette fonctionnalité, vous avez besoin de %1$s !"
+
+#: modules/Apbd_wps_settings.php:1361
+msgid "Today"
+msgstr "Aujourd'hui"
+
+#: modules/Apbd_wps_settings.php:1446
+msgid "Total: %{totalRecords}"
+msgstr "Total : %{totalRecords}"
+
+#: modules/Apbd_wps_settings.php:1373
+msgid "Trash"
+msgstr "Poubelle"
+
+#: modules/Apbd_wps_settings.php:1324
+msgid "Trashed Tickets"
+msgstr "Billets saccagés"
+
+#: modules/Apbd_wps_settings.php:1440
+msgid "True"
+msgstr "Vrai"
+
+#: modules/Apbd_wps_tutorlms.php:18
+msgid "Tutor LMS"
+msgstr "Tutor LMS"
+
+#: modules/Apbd_wps_tutorlms.php:22
+msgid "Tutor LMS Settings"
+msgstr "Paramètres Tutor LMS"
+
+#: modules/Apbd_wps_whatsapp.php:22
+msgid "Twilio Settings"
+msgstr "Paramètres Twilio"
+
+#: modules/Apbd_wps_settings.php:1392
+msgid "Type New Password"
+msgstr "Tapez le nouveau mot de passe"
+
+#: modules/Apbd_wps_settings.php:1393
+msgid "Type new password"
+msgstr "Tapez un nouveau mot de passe"
+
+#: modules/Apbd_wps_settings.php:1390
+msgid "Type Password"
+msgstr "Tapez votre mot de passe"
+
+#: modules/Apbd_wps_settings.php:1391
+msgid "Type password"
+msgstr "Tapez votre mot de passe"
+
+#: modules/Apbd_wps_custom_field.php:146
+msgid "Type:"
+msgstr "Taper:"
+
+#: core/AppsBDModel.php:127
+msgid "Undefined Property"
+msgstr "Propriété non définie"
+
+#: modules/Apbd_wps_settings.php:1438
+msgid "Unseen"
+msgstr "Invisible"
+
+#: modules/Apbd_wps_settings.php:1285 views/apbd_wps_canned_msg/add.php:73
+#: views/apbd_wps_custom_field/add.php:17 views/apbd_wps_debug_log/add.php:17
+#: views/apbd_wps_email_template/add.php:19
+#: views/apbd_wps_email_template/view_param.php:17
+#: views/apbd_wps_role/add.php:17 views/apbd_wps_ticket_assign_rule/add.php:17
+#: views/apbd_wps_ticket_category/add.php:17
+msgid "Update"
+msgstr "Mise à jour"
+
+#: modules/APBD_wps_email_template.php:200 modules/Apbd_wps_canned_msg.php:167
+#: modules/Apbd_wps_custom_field.php:196 modules/Apbd_wps_custom_field.php:224
+#: modules/Apbd_wps_notification.php:170 modules/Apbd_wps_role.php:352
+#: modules/Apbd_wps_role.php:381 modules/Apbd_wps_ticket_assign_rule.php:181
+#: modules/Apbd_wps_ticket_category.php:173
+msgid "Update failed try again"
+msgstr "La mise à jour a échoué, réessayez"
+
+#: modules/Apbd_wps_settings.php:1378
+msgid "Updated"
+msgstr "Actualisé"
+
+#: models/database/Mapbd_wps_custom_field.php:448
+msgid "URL Input"
+msgstr "Saisie d'URL"
+
+#: api/v1/APBDWPSUserAPI.php:229 modules/Apbd_wps_ticket_assign_rule.php:126
+#: modules/Apbd_wps_ticket_assign_rule.php:128
+msgid "User"
+msgstr "Utilisateur"
+
+#: models/database/Mapbd_wps_users.php:144
+#: models/database/Mapbd_wps_users.php:148
+msgid "User Activation Key"
+msgstr "Clé d'activation utilisateur"
+
+#: api/v1/APBDWPSUserAPI.php:358
+msgid "User creation failed"
+msgstr "La création de l'utilisateur a échoué"
+
+#: models/database/Mapbd_wps_users.php:117
+#: models/database/Mapbd_wps_users.php:120
+msgid "User Email"
+msgstr "Courriel de l'utilisateur"
+
+#: models/database/Mapbd_wps_notification.php:221
+#: models/database/Mapbd_wps_notification.php:224
+msgid "User Id"
+msgstr "Identifiant d'utilisateur"
+
+#: models/database/Mapbd_wps_users.php:94
+#: models/database/Mapbd_wps_users.php:97
+msgid "User Login"
+msgstr "Utilisateur en ligne"
+
+#: modules/Apbd_wps_settings.php:1279
+msgid "User Name"
+msgstr "Nom d'utilisateur"
+
+#: models/database/Mapbd_wps_users.php:110
+#: models/database/Mapbd_wps_users.php:113
+msgid "User Nicename"
+msgstr "Nom d'utilisateur"
+
+#: views/apbd_wps_ticket_assign_rule/main.php:16
+msgid "User or Role"
+msgstr "Utilisateur ou Rôle"
+
+#: models/database/Mapbd_wps_users.php:101
+#: models/database/Mapbd_wps_users.php:104
+msgid "User Pass"
+msgstr "Passe d'utilisateur"
+
+#: models/database/Mapbd_wps_users.php:133
+#: models/database/Mapbd_wps_users.php:136
+msgid "User Registered"
+msgstr "Utilisateur enregistré"
+
+#: modules/Apbd_wps_role.php:86
+msgid "User Role"
+msgstr "Rôle d'utilisateur"
+
+#: modules/Apbd_wps_role.php:32
+msgid "User Role List"
+msgstr "Liste des rôles d'utilisateur"
+
+#: modules/Apbd_wps_role.php:91
+msgid "User Role Settings"
+msgstr "Paramètres du rôle utilisateur"
+
+#: models/database/Mapbd_wps_users.php:152
+#: models/database/Mapbd_wps_users.php:155
+msgid "User Status"
+msgstr "Statut de l'utilisateur"
+
+#: models/database/Mapbd_wps_users.php:126
+#: models/database/Mapbd_wps_users.php:129
+msgid "User Url"
+msgstr "URL de l'utilisateur"
+
+#: modules/Apbd_wps_settings.php:1281
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: modules/Apbd_wps_settings.php:1405
+msgid "Username Email"
+msgstr "Nom d'utilisateur Courriel"
+
+#: modules/Apbd_wps_settings.php:1282
+msgid "Username or Email"
+msgstr "Nom d'utilisateur ou email"
+
+#: modules/Apbd_wps_settings.php:1283
+msgid "Username or email"
+msgstr "Nom d'utilisateur ou email"
+
+#: views/apbd_wps_envato_system/integration.php:120
+msgid "Verify purchases of your items"
+msgstr "Vérifiez les achats de vos articles"
+
+#: views/apbd_wps_envato_system/integration.php:122
+msgid "Verify purchases you've made"
+msgstr "Vérifier les achats que vous avez effectués"
+
+#: appcore/APBDWPSupportLite.php:318 core/AppsBDKarnelLite.php:1096
+msgid "Version"
+msgstr "Version"
+
+#: libs/jQGrid.php:664
+#, php-format
+msgid "View %s - %s of %s"
+msgstr "Afficher %s - %s sur %s"
+
+#: modules/Apbd_wps_settings.php:1316
+msgid "View All"
+msgstr "Voir tout"
+
+#: views/apbd_wps_envato_system/integration.php:113
+msgid "View and search Envato sites"
+msgstr "Afficher et rechercher des sites Envato"
+
+#: modules/Apbd_wps_debug_log.php:82
+msgid "View Details"
+msgstr "Voir les détails"
+
+#: modules/Apbd_wps_settings.php:1317
+msgid "View More"
+msgstr "Voir plus"
+
+#: modules/Apbd_wps_settings.php:1388
+msgid "View Notes"
+msgstr "Afficher les remarques"
+
+#: modules/APBD_wps_email_template.php:144
+msgid "View Param"
+msgstr "Afficher les paramètres"
+
+#: modules/APBD_wps_email_template.php:210
+msgid "View Params "
+msgstr "Afficher les paramètres"
+
+#: models/database/Mapbd_wps_ticket.php:375
+#: models/database/Mapbd_wps_ticket.php:420
+#: models/database/Mapbd_wps_ticket.php:462
+#: models/database/Mapbd_wps_ticket.php:497
+#: models/database/Mapbd_wps_ticket.php:552
+#: models/database/Mapbd_wps_ticket.php:587
+msgid "View Ticket"
+msgstr "Voir le billet"
+
+#: modules/Apbd_wps_settings.php:1367
+msgid "View Ticket Details"
+msgstr "Afficher les détails du billet"
+
+#: models/database/Mapbd_wps_notification.php:279
+#: models/database/Mapbd_wps_notification.php:282
+msgid "View Time"
+msgstr "Afficher l'heure"
+
+#: views/apbd_wps_envato_system/integration.php:117
+msgid "View your account financial history"
+msgstr "Afficher l'historique financier de votre compte"
+
+#: views/apbd_wps_envato_system/integration.php:116
+msgid "View your account profile details"
+msgstr "Afficher les détails du profil de votre compte"
+
+#: views/apbd_wps_envato_system/integration.php:115
+msgid "View your email address"
+msgstr "Afficher votre adresse e-mail"
+
+#: views/apbd_wps_envato_system/integration.php:114
+msgid "View your Envato Account username"
+msgstr "Afficher le nom d'utilisateur de votre compte Envato"
+
+#: views/apbd_wps_envato_system/integration.php:119
+msgid "View your items' sales history"
+msgstr "Afficher l'historique des ventes de vos articles"
+
+#: views/apbd_wps_envato_system/integration.php:123
+msgid "View your purchases of the app creator's items"
+msgstr "Afficher vos achats d'articles du créateur de l'application"
+
+#: modules/Apbd_wps_settings.php:1433
+msgid "Want to Delete Permanently ?!"
+msgstr "Vous voulez supprimer définitivement ? !"
+
+#: modules/Apbd_wps_settings.php:57 template/main/client-main.php:10
+msgid ""
+"We're sorry but wp-support doesn't work properly without JavaScript enabled. "
+"Please enable it to continue"
+msgstr ""
+"Nous sommes désolés mais wp-support ne fonctionne pas correctement sans "
+"JavaScript activé. S'il vous plait, activez le pour continuer"
+
+#: modules/Apbd_wps_whatsapp.php:18
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+#: models/database/Mapbd_wps_custom_field.php:392
+#: models/database/Mapbd_wps_custom_field.php:401
+msgid "Where To Create"
+msgstr "Où créer"
+
+#: views/apbd_wps_settings/recaptcha_v3.php:72
+msgid "Where to enable in frontend?"
+msgstr "Où activer en frontend ?"
+
+#: modules/Apbd_wps_woocommerce.php:18
+msgid "WooCommerce"
+msgstr "WooCommerce"
+
+#: modules/Apbd_wps_woocommerce.php:22
+msgid "WooCommerce Settings"
+msgstr "Paramètres WooCommerce"
+
+#: views/apbd_wps_role/role-setting.php:11
+msgid "WordPress Role Manage"
+msgstr "Gestion des rôles WordPress"
+
+#: views/apbd_wps_settings/general.php:134
+msgid "WP Profile Link"
+msgstr "Lien de profil WP"
+
+#: modules/Apbd_wps_settings.php:1413
+msgid "Write email for searching existing client"
+msgstr "Écrire un e-mail pour rechercher un client existant"
+
+#: modules/Apbd_wps_settings.php:1288
+msgid "Wrong Email Or Password"
+msgstr "Mauvais e-mail ou mot de passe"
+
+#: modules/Apbd_wps_settings.php:1362
+msgid "Year"
+msgstr "An"
+
+#: modules/Apbd_wps_settings.php:1420
+msgid "Yes !!"
+msgstr "Oui !!"
+
+#: modules/Apbd_wps_settings.php:1434
+msgid "You can't be able to restore this ticket !"
+msgstr "Vous ne pouvez pas restaurer ce ticket !"
+
+#: models/database/Mapbd_wps_ticket_reply.php:230
+msgid "You do not have permission to reply ticket"
+msgstr "Vous n'êtes pas autorisé à répondre au ticket"
+
+#: models/database/Mapbd_wps_canned_msg.php:121
+#: models/database/Mapbd_wps_canned_msg.php:159
+msgid "Your site name"
+msgstr "Nom de votre site"
+
+#: models/database/Mapbd_wps_canned_msg.php:122
+#: models/database/Mapbd_wps_canned_msg.php:160
+msgid "Your Site URL"
+msgstr "URL de votre site"
+
+#: views/apbd_wps_settings/fileupload.php:84
+msgid "Zip"
+msgstr "Fermeture éclair"
+
+#: appcore/APBDWPDiagnosticData.php:503
+#, php-format
+msgid "🌟 Enhance Your %1$s Experience as a Valued Contributor!"
+msgstr "🌟 Améliorez votre expérience %1$s en tant que contributeur estimé !"
