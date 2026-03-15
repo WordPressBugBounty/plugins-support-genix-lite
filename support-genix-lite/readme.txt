@@ -5,7 +5,7 @@ Tags: helpdesk, support ticket, customer support, ai chatbot, knowledge base, li
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 1.4.42
+Stable tag: 1.4.43
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -427,6 +427,10 @@ Yes, Support Genix has pricing plans that allow usage on multiple websites. Depe
 
 == Changelog ==
 
+= Version: 1.4.43 - Date: 15 March, 2026 =
+* Improved: Overall plugin performance and stability for smoother, more reliable usage.
+* Fixed: Minor bugs and issues to enhance functionality and user experience.
+
 = Version: 1.4.42 - Date: 12 March, 2026 =
 * Added: Change ticket user from the ticket details sidebar.
 * Added: Edit ticket user info from the ticket details sidebar.
@@ -543,8 +547,3 @@ Yes, Support Genix has pricing plans that allow usage on multiple websites. Depe
 = Version: 1.4.24 - Date: 26 August, 2025 =
 * Improved: Overall plugin performance and stability for smoother, more reliable usage.
 * Fixed: Minor bugs and issues to enhance functionality and user experience.
-
-= Version: 1.4.23 - Date: 06 August, 2025 =
-* Added: Ticket migration system to import tickets from "Fluent Support".
-* Improved: Overall plugin performance and stability for smoother, more reliable usage.
-* Fixed: Various minor issues to enhance functionality and user experience.

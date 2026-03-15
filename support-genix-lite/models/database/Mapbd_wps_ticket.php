@@ -1537,7 +1537,8 @@ class Mapbd_wps_ticket extends ApbdWpsModel
                       `mailbox_id` char(11) NOT NULL DEFAULT '0',
                       `mailbox_type` char(1) NOT NULL DEFAULT '' COMMENT 'radio(M=Modern,T=Traditional)',
                       PRIMARY KEY (`id`) USING BTREE,
-                      UNIQUE KEY `ticket_track_id` (`ticket_track_id`) USING BTREE
+                      UNIQUE KEY `ticket_track_id` (`ticket_track_id`) USING BTREE,
+                      FULLTEXT KEY `ft_title` (`title`)
                     ) $charsetCollate;";
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);

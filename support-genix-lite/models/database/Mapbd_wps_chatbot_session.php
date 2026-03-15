@@ -97,13 +97,17 @@ class Mapbd_wps_chatbot_session extends ApbdWpsModel
                 `session_type` char(1) NOT NULL DEFAULT 'T' COMMENT 'drop(T=Text,V=Voice)',
                 `duration` int(11) DEFAULT NULL,
                 `is_starred` tinyint(1) NOT NULL DEFAULT 0,
+                `source` char(1) NOT NULL DEFAULT '' COMMENT 'drop(M=Main Site,E=Embed)',
+                `embed_token_id` int(11) NOT NULL DEFAULT 0,
+                `page_url` varchar(500) NOT NULL DEFAULT '',
                 `started_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 `last_activity_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `idx_session_id` (`session_id`),
                 KEY `idx_started_at` (`started_at`),
                 KEY `idx_user_id` (`user_id`),
-                KEY `idx_is_starred` (`is_starred`)
+                KEY `idx_is_starred` (`is_starred`),
+                KEY `idx_source` (`source`)
             ) $charsetCollate;";
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);

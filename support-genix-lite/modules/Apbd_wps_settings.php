@@ -1434,6 +1434,13 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     Apbd_wps_woocommerce::MigrateDisplayOpts();
                     Apbd_wps_envato_system::MigrateDisplayOpts();
                 }
+
+                // When pro version is less than 1.8.43
+                if (1 === version_compare('1.8.43', $last_pro_version)) {
+                    // From version 1.4.43
+                    Mapbd_wps_chatbot_session::UpdateDBTable3();
+                    Mapbd_wps_ticket::UpdateDBTable7();
+                }
             } else {
                 // From version 1.1.0
                 $this->CreateTicketPage();
@@ -1727,6 +1734,15 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     Mapbd_wps_docs_searches_events::UpdateDBTable();
                     Apbd_wps_woocommerce::MigrateDisplayOpts();
                     Apbd_wps_envato_system::MigrateDisplayOpts();
+                }
+            }
+
+            // From version 1.4.43
+            if (1 === version_compare('1.4.43', $previous_version)) {
+                // When pro version is empty or less than 1.8.43
+                if (empty($last_pro_version) || (1 === version_compare('1.8.43', $last_pro_version))) {
+                    Mapbd_wps_chatbot_session::UpdateDBTable3();
+                    Mapbd_wps_ticket::UpdateDBTable7();
                 }
             }
         }
