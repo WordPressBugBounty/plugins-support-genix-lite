@@ -449,7 +449,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
         $chatbot_label = sprintf('%s | %s', $chatbot_title, get_the_title());
 
         $hide_cp_text = Apbd_wps_settings::GetModuleOption('is_hide_cp_text', 'N');
-        $footer_cp_text = 'Y' !== $hide_cp_text ? sprintf($this->__('Powered by %s'), '<a target="_blank" href="https://supportgenix.com">Support Genix</a>') : '';
+        $footer_cp_text = 'Y' !== $hide_cp_text ? sprintf($this->__('Powered by %s'), '<a target="_blank" rel="noopener noreferrer" href="https://supportgenix.com">Support Genix</a>') : '';
 
         $support_genix_chatbot_config = [
             'captcha' => Apbd_wps_settings::GetCaptchaSetting(),
@@ -458,7 +458,9 @@ trait Apbd_wps_knowledge_base_chatbot_trait
             'lang' => $this->multiLangActive ? $this->multiLangCode : '',
             'logged_in' => $logged_in,
             'logged_user' => $logged_user,
+            'is_master' => Apbd_wps_settings::isAgentLoggedIn(),
             'create_ticket' => $create_ticket,
+            'weekend_notice' => '',
             'docs_resources' => $docs_resources,
             'enable_clear_history' => 'Y' === $this->GetOption('chatbot_enable_clear_history', 'Y'),
             'multiple_kb' => false,
@@ -627,7 +629,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
                 <style id="support-genix-chatbot-main-inline-css">
                     <?php echo ApbdWps_KsesCss($custom_css); ?>
                 </style>
-                <link rel="stylesheet" id="support-genix-chatbot-main-css" href="<?php echo esc_url($this->chatbot_asset_url("dist/main.CD_9i_vz.1773217267786.css")); ?>" media="" />
+                <link rel="stylesheet" id="support-genix-chatbot-main-css" href="<?php echo esc_url($this->chatbot_asset_url("dist/main.BpSEh8y_.1775456895861.css")); ?>" media="" />
                 <?php
             }
 
@@ -648,7 +650,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
                 <script id="support-genix-chatbot-main-js-extra">
                     var support_genix_chatbot_config = <?php echo json_encode($support_genix_chatbot_config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
                 </script>
-                <script type="module" src="<?php echo esc_url($this->chatbot_asset_url("dist/main.Dw5FQUrR.1773217267786.js")); ?>" id="support-genix-chatbot-main-js"></script>
+                <script type="module" src="<?php echo esc_url($this->chatbot_asset_url("dist/main.B3oxIE8i.1775456895861.js")); ?>" id="support-genix-chatbot-main-js"></script>
             <?php
             }
             ?>

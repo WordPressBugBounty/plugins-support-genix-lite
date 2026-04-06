@@ -815,6 +815,12 @@ trait Apbd_wps_knowledge_base_chatquery_trait
         // Get page URL where the chat session started (strip query params server-side as extra safety)
         $source_data['page_url'] = sanitize_url(strtok(ApbdWps_PostValue('page_url', ''), '?'));
 
+        // Get custom data from embed (JSON or plain text, max 2000 chars)
+        $raw_custom_data = sanitize_textarea_field(wp_unslash(ApbdWps_PostValue('custom_data', '')));
+        if (!empty($raw_custom_data)) {
+            $source_data['custom_data'] = mb_substr($raw_custom_data, 0, 2000);
+        }
+
         // Get guest identifier from frontend (localStorage) or fallback to server-generated
         $guest_identifier = null;
         if (!$logged_in) {
@@ -941,6 +947,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                 'source' => isset($source_data['source']) ? $source_data['source'] : 'M',
                 'embed_token_id' => isset($source_data['embed_token_id']) ? $source_data['embed_token_id'] : 0,
                 'page_url' => isset($source_data['page_url']) ? $source_data['page_url'] : '',
+                'custom_data' => isset($source_data['custom_data']) ? $source_data['custom_data'] : '',
             ));
 
             // Prepare return object
@@ -998,6 +1005,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                 'source' => isset($source_data['source']) ? $source_data['source'] : 'M',
                 'embed_token_id' => isset($source_data['embed_token_id']) ? $source_data['embed_token_id'] : 0,
                 'page_url' => isset($source_data['page_url']) ? $source_data['page_url'] : '',
+                'custom_data' => isset($source_data['custom_data']) ? $source_data['custom_data'] : '',
             ));
 
             // Prepare return object

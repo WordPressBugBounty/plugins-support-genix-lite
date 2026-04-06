@@ -30,6 +30,7 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
 
     function agent_list()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         $response_agent = [];
         $agent_list = Mapbd_wps_role::getAgentRoles();
 
@@ -50,11 +51,12 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
             $response_agent[] = $usersObj;
         }
         $response_agent = apply_filters('apbd-wps/filter/before-get-agent-list', $response_agent);
-        $this->response->SetResponse(true, "Agent List", $response_agent);
+        $this->response->SetResponse(true, $settingsObj->__("Agent List"), $response_agent);
         return $this->response;
     }
     function get_client()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($this->payload['email']) && filter_var($this->payload['email'], FILTER_VALIDATE_EMAIL) !== false) {
             $clients = get_user_by('email', $this->payload['email']);
             if ($clients) {
@@ -63,18 +65,19 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
                 $client->first_name = $clients->first_name;
                 $client->last_name  = $clients->last_name;
                 $client->username   = $clients->user_nicename;
-                $this->response->SetResponse(true, "client found", $client);
+                $this->response->SetResponse(true, $settingsObj->__("client found"), $client);
             } else {
-                $this->response->SetResponse(false, "No client found with this email, enter user details below", null);
+                $this->response->SetResponse(false, $settingsObj->__("No client found with this email, enter user details below"), null);
             }
         } else {
-            $this->response->SetResponse(false, "Invalid email address", null);
+            $this->response->SetResponse(false, $settingsObj->__("Invalid email address"), null);
         }
         return $this->response;
     }
 
     public function user_login()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         $credentials = [];
         $credentials['user_login'] = $this->payload['username'];
         $credentials['user_password'] = $this->payload['password'];
@@ -82,14 +85,14 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
         if (Apbd_wps_settings::GetModuleOption("recaptcha_v3_status", "I") == "A" && Apbd_wps_settings::GetModuleOption("captcha_on_login_form", "Y") == "Y") {
             $grcToken = $this->GetPayload('grcToken');
             if (!Apbd_wps_settings::CheckCaptcha($grcToken)) {
-                $this->response->SetResponse(false, "Invalid captcha, try again");
+                $this->response->SetResponse(false, $settingsObj->__("Invalid captcha, try again"));
                 return $this->response;
             }
         }
 
         $user = wp_signon($credentials);
         if (is_wp_error($user)) {
-            $this->response->SetResponse(false, "Incorrect username or password", $credentials);
+            $this->response->SetResponse(false, $settingsObj->__("Incorrect username or password"), $credentials);
             return $this->response;
         } else {
             $remember = isset($this->payload['remember']) ? rest_sanitize_boolean($this->payload['remember']) : false;
@@ -109,61 +112,64 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
             $responseData->img = get_user_meta($user->ID, 'supportgenix_avatar', true) ? get_user_meta($user->ID, 'supportgenix_avatar', true) : get_avatar_url($user->ID);
             $responseData->wpsnonce =  wp_create_nonce('wp_rest');
             $responseData = apply_filters('apbd-wps/filter/logged-user', $responseData, $user);
-            $this->response->SetResponse(true, "Logged in successfully", $responseData);
+            $this->response->SetResponse(true, $settingsObj->__("Logged in successfully"), $responseData);
             return $this->response;
         }
     }
 
     function check_unique()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($this->payload) && ! empty($this->payload['fld_name'])) {
             $this->payload['fld_name'] = strtolower($this->payload['fld_name']);
             if ($this->payload['fld_name'] == "email") {
                 if (email_exists($this->payload['fld_value'])) {
-                    $this->response->SetResponse(false, "Email exist / not valid");
+                    $this->response->SetResponse(false, $settingsObj->__("Email exist / not valid"));
                     return $this->response;
                 } else {
-                    $this->response->SetResponse(true, "Valid email");
+                    $this->response->SetResponse(true, $settingsObj->__("Valid email"));
                     return $this->response;
                 }
             } elseif ($this->payload['fld_name'] == "username") {
                 if (username_exists($this->payload['fld_value'])) {
-                    $this->response->SetResponse(false, "Username exist / not valid");
+                    $this->response->SetResponse(false, $settingsObj->__("Username exist / not valid"));
                     return $this->response;
                 } else {
-                    $this->response->SetResponse(true, "Valid username");
+                    $this->response->SetResponse(true, $settingsObj->__("Valid username"));
                     return $this->response;
                 }
             } else {
-                $this->response->SetResponse(false, "No valid field checking");
+                $this->response->SetResponse(false, $settingsObj->__("No valid field checking"));
                 return $this->response;
             }
         } else {
-            $this->response->SetResponse(false, "Empty field");
+            $this->response->SetResponse(false, $settingsObj->__("Empty field"));
             return $this->response;
         }
     }
 
     function user_logout()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         wp_logout();
         if (is_user_logged_in()) {
-            $this->response->SetResponse(false, "Logout failed");
+            $this->response->SetResponse(false, $settingsObj->__("Logout failed"));
             return $this->response;
         } else {
-            $this->response->SetResponse(true, "Logout successful");
+            $this->response->SetResponse(true, $settingsObj->__("Logout successful"));
             return $this->response;
         }
     }
 
     function change_pass()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($this->payload['newPass']) && ! empty($this->payload['oldPass'])) {
             $userData = wp_get_current_user();
             if (! empty($userData->ID)) {
                 if (wp_check_password($this->payload['oldPass'], $userData->user_pass, $userData->ID)) {
                     if ($userData->user_pass == $this->payload['newPass']) {
-                        $this->response->SetResponse(true, "Password changed successfully");
+                        $this->response->SetResponse(true, $settingsObj->__("Password changed successfully"));
                         return $this->response;
                     } else {
                         wp_set_password($this->payload['newPass'], $userData->ID);
@@ -177,16 +183,16 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
                         } else {
                             $responseData->logout = true;
                         }
-                        $this->response->SetResponse(true, "Password changed successfully", $responseData);
+                        $this->response->SetResponse(true, $settingsObj->__("Password changed successfully"), $responseData);
                         do_action('apbd-wps/action/change-password');
                         return $this->response;
                     }
                 } else {
-                    $this->response->SetResponse(false, "Old password not matched");
+                    $this->response->SetResponse(false, $settingsObj->__("Old password not matched"));
                     return $this->response;
                 }
             } else {
-                $this->response->SetResponse(false, "Invalid request");
+                $this->response->SetResponse(false, $settingsObj->__("Invalid request"));
                 return $this->response;
             }
         }
@@ -204,6 +210,7 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
 
     private function getUserObjectById($id)
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         $user = get_user_by('ID', $id);
         if (! empty($user)) {
             $userObj = new stdClass();
@@ -215,7 +222,7 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
             if (Apbd_wps_settings::isAgentLoggedIn($user)) {
                 $userObj->role = Apbd_wps_settings::getSupportGenixRole($user);
             } else {
-                $userObj->role = Apbd_wps_settings::GetModuleInstance()->__("User");
+                $userObj->role = $settingsObj->__("User");
             }
             $userObj->image = get_user_meta($user->ID, 'supportgenix_avatar', true) ? get_user_meta($user->ID, 'supportgenix_avatar', true) : get_avatar_url($user->user_email);
             $userObj->custom_fields = apply_filters('apbd-wps/filter/user-custom-properties', [], $userObj->id);
@@ -226,23 +233,25 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
 
     function user_details($data)
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($data['id'])) {
             $id = intval($data['id']);
             $userObj = $this->getUserObjectById($id);
             $userObj = apply_filters('apbd-wps/filter/before-get-user-details', $userObj);
-            $this->SetResponse(true, "data found", $userObj);
+            $this->SetResponse(true, $settingsObj->__("data found"), $userObj);
             return $this->response;
         }
-        $this->SetResponse(false, "data not found or invalid param");
+        $this->SetResponse(false, $settingsObj->__("data not found or invalid param"));
         return $this->response;
     }
 
     function create_user()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (!is_user_logged_in() && Apbd_wps_settings::GetModuleOption("recaptcha_v3_status", "I") == "A" && Apbd_wps_settings::GetModuleOption("captcha_on_create_tckt", "Y") == "Y") {
             $grcToken = $this->GetPayload('grcToken');
             if (!Apbd_wps_settings::CheckCaptcha($grcToken)) {
-                $this->response->SetResponse(false, "Invalid captcha, try again");
+                $this->response->SetResponse(false, $settingsObj->__("Invalid captcha, try again"));
                 return $this->response;
             }
         }
@@ -268,10 +277,10 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
             if (! empty($customFields)) {
                 $isValidCustomField = apply_filters('apbd-wps/filter/ticket-custom-field-valid', true, $customFields, $userEmail);
                 if (!$isValidCustomField) {
-                    $this->response->SetResponse(false, "User email is invalid");
+                    $this->response->SetResponse(false, $settingsObj->__("User email is invalid"));
                     $msg = ApbdWps_GetMsgAPI();
                     if (empty($msg)) {
-                        $msg = Apbd_wps_settings::GetModuleInstance()->__("Ticket creation failed");
+                        $msg = $settingsObj->__("Ticket creation failed");
                     }
                     $this->response->SetResponse(false, $msg);
                     return $this->response;
@@ -282,7 +291,7 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
                     $userId = $this->get_current_user_id();
                 } else {
                     if (empty($userEmail) || filter_var($userEmail, FILTER_VALIDATE_EMAIL) === false) {
-                        $this->response->SetResponse(false, "User email is invalid");
+                        $this->response->SetResponse(false, $settingsObj->__("User email is invalid"));
                         return $this->response;
                     } else {
                         if (!email_exists($userEmail)) {
@@ -297,7 +306,7 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
                             if ($exists_user instanceof WP_User) {
                                 $userId = $exists_user->ID;
                             } else {
-                                $this->response->SetResponse(false, "Invalid existing user");
+                                $this->response->SetResponse(false, $settingsObj->__("Invalid existing user"));
                                 return $this->response;
                             }
                         }
@@ -314,29 +323,30 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
             }
             if (! empty($userId)) {
                 if (Mapbd_wps_ticket::create_ticket_by_payload($ticketPayload, $userId, $ticketObj, true)) {
-                    $this->response->SetResponse(true, "Ticket created successfully", $ticketObj);
+                    $this->response->SetResponse(true, $settingsObj->__("Ticket created successfully"), $ticketObj);
                 } else {
                     $msg = ApbdWps_GetMsgAPI();
                     if (empty($msg)) {
-                        $msg = Apbd_wps_settings::GetModuleInstance()->__("Ticket creation failed");
+                        $msg = $settingsObj->__("Ticket creation failed");
                     }
                     $this->response->SetResponse(false, $msg);
                 }
             } else {
-                $this->response->SetResponse(false, "User creation failed");
+                $this->response->SetResponse(false, $settingsObj->__("User creation failed"));
             }
             return $this->response;
         } else {
-            $this->response->SetResponse(false, "User creation and ticket creation failed");
+            $this->response->SetResponse(false, $settingsObj->__("User creation and ticket creation failed"));
             return $this->response;
         }
     }
     function create_client()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (Apbd_wps_settings::GetModuleOption("recaptcha_v3_status", "I") == "A" && Apbd_wps_settings::GetModuleOption("captcha_on_reg_form", "Y") == "Y") {
             $grcToken = $this->GetPayload('grcToken');
             if (!Apbd_wps_settings::CheckCaptcha($grcToken)) {
-                $this->response->SetResponse(false, "Invalid captcha, try again");
+                $this->response->SetResponse(false, $settingsObj->__("Invalid captcha, try again"));
                 return $this->response;
             }
         }
@@ -346,7 +356,7 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
             if (!$isValidCustomField) {
                 $msg = ApbdWps_GetMsgAPI();
                 if (empty($msg)) {
-                    $msg = Apbd_wps_settings::GetModuleInstance()->__("User creation failed");
+                    $msg = $settingsObj->__("User creation failed");
                 }
                 $this->response->SetResponse(false, $msg);
                 return $this->response;
@@ -362,26 +372,27 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
                     }
                     $userId = Apbd_Wps_User::create_ticket_user($userPayload, false);
                     if (! empty($userId)) {
-                        $this->response->SetResponse(true, "User created successfully");
+                        $this->response->SetResponse(true, $settingsObj->__("User created successfully"));
                         return $this->response;
                     } else {
                         $this->response->SetResponse(false, ApbdWps_GetMsgAPI());
                         return $this->response;
                     }
                 } else {
-                    $this->response->SetResponse(false, "Empty form");
+                    $this->response->SetResponse(false, $settingsObj->__("Empty form"));
                     return $this->response;
                 }
             } else {
-                $this->response->SetResponse(false, "Email address is already exists");
+                $this->response->SetResponse(false, $settingsObj->__("Email address is already exists"));
             }
         } else {
-            $this->response->SetResponse(false, "Empty email address");
+            $this->response->SetResponse(false, $settingsObj->__("Empty email address"));
         }
         return $this->response;
     }
     function update_client()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($this->payload['id'])) {
 
             if (isset($this->payload['imgSrc'])) {
@@ -395,7 +406,7 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
                 $file_extension = pathinfo($uploadedfile["name"], PATHINFO_EXTENSION);
 
                 if (! in_array($file_extension, $allowed_image_extension)) {
-                    $this->response->SetResponse(false, "Invaliid images file. Only PNG and JPEG are allowed");
+                    $this->response->SetResponse(false, $settingsObj->__("Invalid images file. Only PNG and JPEG are allowed"));
                     return $this->response;
                 }
 
@@ -406,7 +417,7 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
                 $movefile = wp_handle_upload($uploadedfile, $upload_overrides);
 
                 if ($movefile && isset($movefile['error'])) {
-                    $this->response->SetResponse(false, "Invalid image file");
+                    $this->response->SetResponse(false, $settingsObj->__("Invalid image file"));
                     return $this->response;
                 }
 
@@ -429,23 +440,24 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
                         if ($userObj->Update()) {
                             $ruserObj = $this->getUserObjectById($this->payload['id']);
                             do_action('apbd-wps/action/user-updated', $ruserObj, $customFields);
-                            $this->response->SetResponse(true, "Successfully updated", $ruserObj);
+                            $this->response->SetResponse(true, $settingsObj->__("Successfully updated"), $ruserObj);
                         } else {
                             $this->response->SetResponse(false, ApbdWps_GetMsgAPI(), $userObj);
                         }
                     }
                 } else {
-                    $this->response->SetResponse(false, "Validation failed", $userObj);
+                    $this->response->SetResponse(false, $settingsObj->__("Validation failed"), $userObj);
                 }
                 return $this->response;
             }
         } else {
-            $this->response->SetResponse(false, "No id found to update user");
+            $this->response->SetResponse(false, $settingsObj->__("No id found to update user"));
             return $this->response;
         }
     }
     function reset_password()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         $credentials = [];
         $user_login = $this->payload['username'];
         $credentials['user_login'] = $user_login;
@@ -453,7 +465,7 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
         if (Apbd_wps_settings::GetModuleOption("recaptcha_v3_status", "I") == "A" && Apbd_wps_settings::GetModuleOption("captcha_on_login_form", "Y") == "Y") {
             $grcToken = $this->GetPayload('grcToken');
             if (!Apbd_wps_settings::CheckCaptcha($grcToken)) {
-                $this->response->SetResponse(false, "Invalid captcha, try again");
+                $this->response->SetResponse(false, $settingsObj->__("Invalid captcha, try again"));
                 return $this->response;
             }
         }
@@ -464,7 +476,7 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
             return $this->response;
         } else {
             $responseData = new stdClass();
-            $this->response->SetResponse(true, "Password reset email has been sent", $responseData);
+            $this->response->SetResponse(true, $settingsObj->__("Password reset email has been sent"), $responseData);
             return $this->response;
         }
     }

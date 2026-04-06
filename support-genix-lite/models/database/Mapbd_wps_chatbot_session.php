@@ -21,11 +21,12 @@ class Mapbd_wps_chatbot_session extends ApbdWpsModel
     public $source;
     public $embed_token_id;
     public $page_url;
+    public $custom_data;
     public $started_at;
     public $last_activity_at;
 
     /**
-     * @property id,session_id,user_id,guest_identifier,first_query,message_count,last_feedback,session_type,duration,is_starred,source,embed_token_id,page_url,started_at,last_activity_at
+     * @property id,session_id,user_id,guest_identifier,first_query,message_count,last_feedback,session_type,duration,is_starred,source,embed_token_id,page_url,custom_data,started_at,last_activity_at
      */
     function __construct()
     {
@@ -36,6 +37,7 @@ class Mapbd_wps_chatbot_session extends ApbdWpsModel
         $this->uniqueKey = array(array("session_id"));
         $this->multiKey = array();
         $this->autoIncField = array("id");
+        $this->htmlInputField = ['custom_data'];
         $this->app_base_name = "support-genix";
     }
 
@@ -55,6 +57,7 @@ class Mapbd_wps_chatbot_session extends ApbdWpsModel
             "source" => array("Text" => "Source", "Rule" => "max_length[1]"),
             "embed_token_id" => array("Text" => "Embed Token Id", "Rule" => "max_length[11]|integer"),
             "page_url" => array("Text" => "Page URL", "Rule" => "max_length[500]"),
+            "custom_data" => array("Text" => "Custom Data", "Rule" => "max_length[2000]"),
             "started_at" => array("Text" => "Started At", "Rule" => "max_length[20]"),
             "last_activity_at" => array("Text" => "Last Activity At", "Rule" => "max_length[20]"),
         );
@@ -100,6 +103,7 @@ class Mapbd_wps_chatbot_session extends ApbdWpsModel
                 `source` char(1) NOT NULL DEFAULT '' COMMENT 'drop(M=Main Site,E=Embed)',
                 `embed_token_id` int(11) NOT NULL DEFAULT 0,
                 `page_url` varchar(500) NOT NULL DEFAULT '',
+                `custom_data` text DEFAULT NULL,
                 `started_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 `last_activity_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (`id`),
@@ -169,6 +173,13 @@ class Mapbd_wps_chatbot_session extends ApbdWpsModel
         }
     }
 
+    static function UpdateDBTable4()
+    {
+        $thisObj = new static();
+        // Add custom_data column for storing custom embed data (JSON or plain text)
+        $thisObj->DBColumnAddOrModify('custom_data', 'text', 0, 'NULL', 'NULL', 'page_url', '');
+    }
+
     function DropDBTable()
     {
         global $wpdb;
@@ -231,6 +242,7 @@ class Mapbd_wps_chatbot_session extends ApbdWpsModel
         $session->source(isset($data['source']) ? sanitize_text_field($data['source']) : 'M');
         $session->embed_token_id(isset($data['embed_token_id']) ? absint($data['embed_token_id']) : 0);
         $session->page_url(isset($data['page_url']) ? self::normalizePageUrl($data['page_url']) : '');
+        $session->custom_data(isset($data['custom_data']) && !empty($data['custom_data']) ? mb_substr($data['custom_data'], 0, 2000) : null);
         $session->started_at(gmdate('Y-m-d H:i:s'));
         $session->last_activity_at(gmdate('Y-m-d H:i:s'));
         $session->Save();

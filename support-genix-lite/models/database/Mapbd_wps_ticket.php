@@ -144,16 +144,16 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $settingsObj = Apbd_wps_settings::GetModuleInstance();
         switch ($property) {
             case "re_open_by_type":
-                $returnObj = array("A" => "Staff", "U" => "Ticket User", "G" => "Guest Ticke User");
+                $returnObj = array("A" => "Agent", "U" => "Ticket User", "G" => "Guest Ticke User");
                 break;
             case "user_type":
-                $returnObj = array("G" => "Guest", "U" => "User", "A" => "Staff");
+                $returnObj = array("G" => "Guest", "U" => "User", "A" => "Agent");
                 break;
             case "status":
                 $returnObj = array("N" => $this->__("New"), "C" => $this->__("Closed"), "P" => $this->__("In-progress"), "R" => $this->__("Re-open"), "A" => $this->__("Active"), "I" => $this->__("Inactive"), "D" => $this->__("Deleted"));
                 break;
             case "last_replied_by_type":
-                $returnObj = array("G" => "Guest", "U" => "User", "A" => "Staff");
+                $returnObj = array("G" => "Guest", "U" => "User", "A" => "Agent");
                 break;
             case "priority":
                 $returnObj = array("N" => "Normal", "M" => "Medium", "H" => "High");
@@ -535,6 +535,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $params["ticket_category_title"] = $category_title; //Ticket category title
         $params["ticket_body"] = $ticketObj->ticket_body; //Ticket body
         $params["ticket_open_app_time"] = $ticketObj->opened_time; //Ticket open time in app timezone (UTC)
+        $params["ticket_priority"] = $ticketObj->getTextByKey("priority"); //Ticket priority
 
         $params = self::getCustomFieldsToEmailParams($ticketObj->id, $params);
 
@@ -589,6 +590,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $params["ticket_category_title"] = $category_title; //Ticket category title
         $params["ticket_body"] = $ticketObj->ticket_body; //Ticket body
         $params["ticket_open_app_time"] = $ticketObj->opened_time; //Ticket open time in app timezone (UTC)
+        $params["ticket_priority"] = $ticketObj->getTextByKey("priority"); //Ticket priority
 
         $params = self::getCustomFieldsToEmailParams($ticketObj->id, $params);
 
@@ -614,7 +616,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $cateogry = Mapbd_wps_ticket_category::FindBy("id", $cat_id);
         $category_title = ((is_object($cateogry) && isset($cateogry->title)) ? sanitize_text_field($cateogry->title) : '');
 
-        $ticket_link = self::getTicketLink($ticketObj);
+        $ticket_link = self::getTicketAdminLink($ticketObj);
         $view_ticket_anchor = '<a href="' . esc_url($ticket_link) . '">' . $ticketObj->__("View Ticket") . '</a>';
 
         $params = [];
@@ -629,6 +631,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $params["ticket_category_title"] = $category_title; //Ticket category title
         $params["ticket_body"] = $ticketObj->ticket_body; //Ticket body
         $params["ticket_open_app_time"] = $ticketObj->opened_time; //Ticket open time in app timezone (UTC)
+        $params["ticket_priority"] = $ticketObj->getTextByKey("priority"); //Ticket priority
         $params["ticket_replied_user"] = ApbdWps_GetUserTitleById($replied_obj->replied_by); //User who replied
         $params["ticket_replied_user_id"] = absint($replied_obj->replied_by); //User ID who replied
         $params["replied_text"] = $replied_obj->reply_text; //Replied Text
@@ -680,6 +683,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             $params["ticket_category_title"] = $category_title; //Ticket category title
             $params["ticket_body"] = $ticketObj->ticket_body; //Ticket body
             $params["ticket_open_app_time"] = $ticketObj->opened_time; //Ticket open time in app timezone (UTC)
+            $params["ticket_priority"] = $ticketObj->getTextByKey("priority"); //Ticket priority
             $params["ticket_replied_user"] = ApbdWps_GetUserTitleById($replied_obj->replied_by); //User who replied
             $params["ticket_replied_user_id"] = absint($replied_obj->replied_by); //User ID who replied
             $params["replied_text"] = $replied_obj->reply_text; //Replied Text
@@ -706,6 +710,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             }
         }
     }
+
     /**
      * @param self $ticketObj
      */
@@ -721,7 +726,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $cateogry = Mapbd_wps_ticket_category::FindBy("id", $cat_id);
         $category_title = ((is_object($cateogry) && isset($cateogry->title)) ? sanitize_text_field($cateogry->title) : '');
 
-        $ticket_link = self::getTicketLink($ticketObj);
+        $ticket_link = self::getTicketAdminLink($ticketObj);
         $view_ticket_anchor = '<a href="' . esc_url($ticket_link) . '">' . $ticketObj->__("View Ticket") . '</a>';
 
         if (! empty($assigned_on->ID)) {
@@ -737,6 +742,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             $params["ticket_category_title"] = $category_title; //Ticket category title
             $params["ticket_body"] = $ticketObj->ticket_body; //Ticket body
             $params["ticket_open_app_time"] = $ticketObj->opened_time; //Ticket open time in app timezone (UTC)
+            $params["ticket_priority"] = $ticketObj->getTextByKey("priority"); //Ticket priority
             $params["ticket_assigned_user"] = ApbdWps_GetUserTitleByUser($assigned_on);
             $params["ticket_assigned_user_id"] = absint($ticketObj->assigned_on);
 
@@ -776,6 +782,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             $params["ticket_category_title"] = $category_title; //Ticket category title
             $params["ticket_body"] = $ticketObj->ticket_body; //Ticket body
             $params["ticket_open_app_time"] = $ticketObj->opened_time; //Ticket open time in app timezone (UTC)
+            $params["ticket_priority"] = $ticketObj->getTextByKey("priority"); //Ticket priority
             $params["ticket_assigned_user"] = "";
             $params["ticket_assigned_user_id"] = 0;
 
@@ -1118,7 +1125,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             $supported_until = (! empty($supported_until) ? ApbdWps_GetWPDateWithFormat($supported_until) : '');
 
             $html = '';
-            $html .= '<div class="envato-item-name"><a target="_blank" href="' . esc_url($item_url) . '" rel="noopener">' . esc_html($item_name) . '</a></div>';
+            $html .= '<div class="envato-item-name"><a target="_blank" href="' . esc_url($item_url) . '" rel="noopener noreferrer">' . esc_html($item_name) . '</a></div>';
             $html .= '<div class="envato-item-license">' . esc_html($license) . '</div>';
             $html .= '<div class="envato-item-purchased-at">' . sprintf('%1$s:<br>%2$s', $mainObj->__('Purchase'), esc_html($sold_at)) . '</div>';
             $html .= '<div class="envato-item-supported-until">' . sprintf('%1$s:<br>%2$s', $mainObj->__('Support'), esc_html($supported_until)) . '</div>';
@@ -1192,7 +1199,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
                     $status_text = sprintf('%1$s (%2$s)', $status_text, $mainobj->__('Need Reply'));
                 }
 
-                $html = '<div class="user-ticket-name"><a href="' . esc_url($ticket_link) . '" rel="noopener">' . esc_html($title) . '</a></div>';
+                $html = '<div class="user-ticket-name"><a href="' . esc_url($ticket_link) . '">' . esc_html($title) . '</a></div>';
                 $html .= '<div class="user-ticket-status">' . esc_html($status_text) . '</div>';
 
                 $items[] = $html;
@@ -1434,7 +1441,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $thisObj = new static();
 
         $thisObj->DBColumnAddOrModify('opened_by', 'char', 10);
-        $thisObj->DBColumnAddOrModify('opened_by_type', 'char', 1, '', 'NOT NULL', '', 'radio(G=Guest,U=User,A=Staff)');
+        $thisObj->DBColumnAddOrModify('opened_by_type', 'char', 1, '', 'NOT NULL', '', 'radio(G=Guest,U=User,A=Agent)');
     }
 
     /**
@@ -1515,13 +1522,13 @@ class Mapbd_wps_ticket extends ApbdWpsModel
                       `opened_time` timestamp NOT NULL DEFAULT current_timestamp(),
                       `re_open_time` timestamp NULL DEFAULT NULL,
                       `re_open_by` char(10) NOT NULL DEFAULT '',
-                      `re_open_by_type` char(1) NOT NULL DEFAULT '' COMMENT 'radio(A=Staff,U=Ticket User,G=Guest Ticket User)',
-                      `user_type` char(1) NOT NULL DEFAULT 'U' COMMENT 'radio(G=Guest,U=User,A=Staff)',
+                      `re_open_by_type` char(1) NOT NULL DEFAULT '' COMMENT 'radio(A=Agent,U=Ticket User,G=Guest Ticket User)',
+                      `user_type` char(1) NOT NULL DEFAULT 'U' COMMENT 'radio(G=Guest,U=User,A=Agent)',
                       `status` char(1) NOT NULL DEFAULT 'N' COMMENT 'drop(N=New,C=Closed,P=In-progress,R=Re-open,A=Active,I=Inactive,D=Deleted)',
                       `assigned_on` char(11) NOT NULL DEFAULT '',
                       `assigned_date` timestamp NULL DEFAULT NULL,
                       `last_replied_by` char(10) NOT NULL DEFAULT '',
-                      `last_replied_by_type` char(1) NOT NULL DEFAULT '' COMMENT 'radio(G=Guest,U=User,A=Staff)',
+                      `last_replied_by_type` char(1) NOT NULL DEFAULT '' COMMENT 'radio(G=Guest,U=User,A=Agent)',
                       `last_reply_time` timestamp NULL DEFAULT NULL,
                       `ticket_rating` decimal(1,0) unsigned NOT NULL DEFAULT 0,
                       `priority` char(1) NOT NULL DEFAULT 'N' COMMENT 'drop(N=Normal,M=Medium,H=High)',
@@ -1533,7 +1540,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
                       `last_status_update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
                       `email_notification` char(1) NOT NULL DEFAULT 'Y' COMMENT 'bool(Y=Yes,N=No)',
                       `opened_by` char(10) NOT NULL DEFAULT '',
-                      `opened_by_type` char(1) NOT NULL DEFAULT '' COMMENT 'radio(G=Guest,U=User,A=Staff)',
+                      `opened_by_type` char(1) NOT NULL DEFAULT '' COMMENT 'radio(G=Guest,U=User,A=Agent)',
                       `mailbox_id` char(11) NOT NULL DEFAULT '0',
                       `mailbox_type` char(1) NOT NULL DEFAULT '' COMMENT 'radio(M=Modern,T=Traditional)',
                       PRIMARY KEY (`id`) USING BTREE,
@@ -1643,7 +1650,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             $log_by_type,
             $log_msg,
             $ticketObj->status,
-            'A' // Log visible to staff only
+            'A' // Log visible to agent only
         );
 
         return true;

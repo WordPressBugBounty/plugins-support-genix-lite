@@ -1087,7 +1087,7 @@ if (!class_exists("ApbdWpsModel")) {
                         if (! empty($this->$key) && in_array("hexcode", $rules)) {
                             if (! ctype_xdigit($this->$key)) {
                                 $isOk = false;
-                                $this->AddError($value["Text"] . " should be hexadecimal");
+                                $this->AddError("%s should be hexadecimal", $value["Text"]);
                             }
                         }
                     }
@@ -1731,7 +1731,7 @@ if (!class_exists("ApbdWpsModel")) {
         {
             $re = count($this->setProperties) > 0;
             if (! $re && $isShowMsg) {
-                ApbdWps_AddWarning("No change for update");
+                ApbdWps_AddWarning($this->__("No change for update"));
             }
 
             return $re;
@@ -1831,7 +1831,7 @@ if (!class_exists("ApbdWpsModel")) {
                 }
             } else {
                 if ($isShowMsg && ! $this->IsSetDataForSaveUpdate()) {
-                    ApbdWps_AddError("No data found for update");
+                    ApbdWps_AddError($this->__("No data found for update"));
                 } elseif (count($this->updateWhereExtraField) == 0) {
                     ApbdWps_AddModelErrorsCode("E004");
                 }

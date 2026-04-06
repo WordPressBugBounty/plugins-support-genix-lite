@@ -963,15 +963,15 @@ if (!class_exists("ApbdWpsKarnelLite")) {
                 // Navigation buttons for classic UI screens (exclude current page)
                 $nav_items = array(
                     'edit-sgkb-docs' => array(
-                        'label' => 'Docs',
+                        'label' => $this->__('Docs'),
                         'url'   => admin_url('edit.php?post_type=sgkb-docs'),
                     ),
                     'edit-sgkb-docs-category' => array(
-                        'label' => 'Categories',
+                        'label' => $this->__('Categories'),
                         'url'   => admin_url('edit-tags.php?taxonomy=sgkb-docs-category&post_type=sgkb-docs'),
                     ),
                     'edit-sgkb-docs-tag' => array(
-                        'label' => 'Tags',
+                        'label' => $this->__('Tags'),
                         'url'   => admin_url('edit-tags.php?taxonomy=sgkb-docs-tag&post_type=sgkb-docs'),
                     ),
                 );
@@ -1034,8 +1034,8 @@ if (!class_exists("ApbdWpsKarnelLite")) {
                 add_action('all_admin_notices', function () use ($nav_items, $screen_id, $safe_url) {
                     ?>
                     <div class="sgkb-nav-bar" id="sgkb-nav-bar" style="display:none;">
-                        <h3 class="sgkb-nav-bar-label">Quick Nav:</h3>
-                        <a href="<?php echo $safe_url; ?>" class="sgkb-btn sgkb-modern-ui-btn" id="sgkb-modern-ui-btn"><span class="dashicons dashicons-grid-view"></span> Modern UI</a>
+                        <h3 class="sgkb-nav-bar-label"><?php esc_html_e('Quick Nav:', 'support-genix-lite'); ?></h3>
+                        <a href="<?php echo $safe_url; ?>" class="sgkb-btn sgkb-modern-ui-btn" id="sgkb-modern-ui-btn"><span class="dashicons dashicons-grid-view"></span> <?php esc_html_e('Modern UI', 'support-genix-lite'); ?></a>
                         <span class="sgkb-nav-bar-divider"></span>
                         <?php foreach ($nav_items as $sid => $item) :
                             if ($sid === $screen_id) continue;

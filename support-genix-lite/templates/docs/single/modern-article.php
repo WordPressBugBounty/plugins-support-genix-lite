@@ -426,7 +426,7 @@ $related_articles = new WP_Query($related_args);
                     <?php if ($hide_powered_by !== 'Y') : ?>
                         <!-- Powerd By -->
                         <div class="sgkb-article-powered-by">
-                            <span><?php printf(__('Powered by %s', 'support-genix'), '<a href="https://supportgenix.com" target="_blank">Support Genix</a>'); ?></span>
+                            <span><?php printf(__('Powered by %s', 'support-genix'), '<a href="https://supportgenix.com" target="_blank" rel="noopener noreferrer">Support Genix</a>'); ?></span>
                         </div>
                     <?php endif; ?>
                 </main>

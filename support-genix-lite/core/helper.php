@@ -75,6 +75,10 @@ if (!function_exists("ApbdWps_KsesEmailHtml")) {
      */
     function ApbdWps_KsesEmailHtml($html)
     {
+        if (null === $html) {
+            return '';
+        }
+
         $add_display = function ($styles) {
             if (!in_array('display', $styles, true)) {
                 $styles[] = 'display';

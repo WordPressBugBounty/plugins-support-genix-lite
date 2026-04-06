@@ -602,7 +602,7 @@ if (! class_exists('ApbdWps_DiagnosticData')) {
         private function show_core_notice()
         {
             /* translators: %1$s: Opening anchor tag, %2$s: Closing anchor tag */
-            $message_l2 = sprintf(esc_html__('Server information (Web server, PHP version, MySQL version), WordPress information, site name, site URL, number of plugins, number of users, your name, and email address. You can rest assured that no sensitive data will be collected or tracked. %1$sPrivacy Policy%2$s', 'support-genix-lite'), '<a target="_blank" href="' . esc_url($this->privacy_policy) . '">', '</a>');
+            $message_l2 = sprintf(esc_html__('Server information (Web server, PHP version, MySQL version), WordPress information, site name, site URL, number of plugins, number of users, your name, and email address. You can rest assured that no sensitive data will be collected or tracked. %1$sPrivacy Policy%2$s', 'support-genix-lite'), '<a target="_blank" rel="noopener noreferrer" href="' . esc_url($this->privacy_policy) . '">', '</a>');
 
             $button_text_1 = esc_html__('Count Me In', 'support-genix-lite');
             $button_link_1 = add_query_arg(array('support-genix-lite-diagnostic-data-agreed' => 1));

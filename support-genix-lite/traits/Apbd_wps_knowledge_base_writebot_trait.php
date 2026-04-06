@@ -232,7 +232,7 @@ trait Apbd_wps_knowledge_base_writebot_trait
             'messages' => [
                 [
                     'role' => 'system',
-                    'content' => 'You are a documentation expert who writes documentation for users with proper HTML formatting. Create actionable documentation that naturally uses keywords, includes step-by-step instructions, and helps users solve real problems.'
+                    'content' => $this->build_writebot_system_prompt()
                 ],
                 [
                     'role' => 'user',
@@ -315,7 +315,7 @@ trait Apbd_wps_knowledge_base_writebot_trait
                     'content' => $prompt
                 ]
             ],
-            'system' => 'You are a documentation expert who writes documentation for users with proper HTML formatting. Create actionable documentation that naturally uses keywords, includes step-by-step instructions, and helps users solve real problems.'
+            'system' => $this->build_writebot_system_prompt()
         ];
 
         $request_args = [
@@ -379,7 +379,7 @@ trait Apbd_wps_knowledge_base_writebot_trait
      */
     private function generate_writebot_ai_proxy_response($prompt, $keywords, $max_tokens)
     {
-        $system_prompt = 'You are a documentation expert who writes documentation for users with proper HTML formatting. Create actionable documentation that naturally uses keywords, includes step-by-step instructions, and helps users solve real problems.';
+        $system_prompt = $this->build_writebot_system_prompt();
 
         // Build messages array
         $messages = [
@@ -467,5 +467,10 @@ trait Apbd_wps_knowledge_base_writebot_trait
         }
 
         return false;
+    }
+
+    private function build_writebot_system_prompt()
+    {
+        return 'You are a documentation expert who writes documentation for users with proper HTML formatting. Create actionable documentation that naturally uses keywords, includes step-by-step instructions, and helps users solve real problems.';
     }
 }

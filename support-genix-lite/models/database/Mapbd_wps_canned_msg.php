@@ -181,6 +181,8 @@ class Mapbd_wps_canned_msg extends ApbdWpsModel
                 $params["ticket_user_id"] = absint($user->ID);
             }
             $params["ticket_title"] = esc_html($obj->__($ticket->title));
+            $params["ticket_track_id"] = apply_filters('apbd-wps/filter/display-track-id', $ticket->ticket_track_id);
+            $params["ticket_priority"] = $ticket->getTextByKey("priority");
             $params["reply_user"] = esc_html($obj->__("Agent"));
             $params["reply_user_id"] = esc_html($obj->__("Agent ID"));
             $params["reply_user_grp"] = "";
@@ -214,6 +216,8 @@ class Mapbd_wps_canned_msg extends ApbdWpsModel
         $return_obj["site_url"] = esc_html($obj->__("Your Site URL"));
         $return_obj["ticket_user"] = esc_html($obj->__("The user who has opened ticket"));
         $return_obj["ticket_title"] = esc_html($obj->__("Ticket title"));
+        $return_obj["ticket_track_id"] = esc_html($obj->__("Ticket track id"));
+        $return_obj["ticket_priority"] = esc_html($obj->__("Ticket priority"));
         $return_obj["reply_user"] = esc_html($obj->__("Reply user name"));
         $return_obj["reply_user_grp"] = esc_html($obj->__("Reply user group"));
         return $return_obj;

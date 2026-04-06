@@ -46,7 +46,7 @@ class Apbd_Wps_HtmlToMarkdown
 
         self::loadAutoloader();
 
-        $converter = new \ApbdWps\HTMLToMarkdown\HtmlConverter([
+        $converter = new \ApbdWps\Vendor\League\HTMLToMarkdown\HtmlConverter([
             'header_style'    => 'atx',
             'use_autolinks'   => true,
             'hard_break'      => false,
@@ -56,7 +56,7 @@ class Apbd_Wps_HtmlToMarkdown
 
         // TableConverter is not included by default — register it.
         $converter->getEnvironment()->addConverter(
-            new \ApbdWps\HTMLToMarkdown\Converter\TableConverter()
+            new \ApbdWps\Vendor\League\HTMLToMarkdown\Converter\TableConverter()
         );
 
         $markdown = $converter->convert($html);
@@ -80,7 +80,7 @@ class Apbd_Wps_HtmlToMarkdown
             return;
         }
 
-        $autoloader = __DIR__ . '/html-to-markdown/autoload.php';
+        $autoloader = __DIR__ . '/third-party/autoload.php';
         if (file_exists($autoloader)) {
             require_once $autoloader;
         }

@@ -99,7 +99,7 @@ class Mapbd_wps_ticket_log extends ApbdWpsModel
         $settingsObj = Apbd_wps_settings::GetModuleInstance();
         switch ($property) {
             case "log_by_type":
-                $returnObj = array("A" => "Staff", "U" => "Ticket User", "G" => "Guest Ticke User");
+                $returnObj = array("A" => "Agent", "U" => "Ticket User", "G" => "Guest Ticke User");
                 break;
             case "ticket_status":
                 $returnObj = array("N" => $this->__("New"), "C" => $this->__("Closed"), "P" => $this->__("In-progress"), "R" => $this->__("Re-open"), "W" => $this->__("Waiting For User"));
@@ -193,7 +193,7 @@ class Mapbd_wps_ticket_log extends ApbdWpsModel
      */
     static function UpdateDBTable()
     {
-        self::DBColumnAddOrModify('log_for', 'char', 1, "'B'", 'NOT NULL', '', 'bool(B=Both,U=User,A=Staff)');
+        self::DBColumnAddOrModify('log_for', 'char', 1, "'B'", 'NOT NULL', '', 'bool(B=Both,U=User,A=Agent)');
     }
 
     static function CreateDBTable()
@@ -207,9 +207,9 @@ class Mapbd_wps_ticket_log extends ApbdWpsModel
                       `ticket_id` int(11) NOT NULL DEFAULT 0,
                       `log_id` int(11) NOT NULL DEFAULT 0,
                       `log_by` int(11) unsigned NOT NULL DEFAULT 0,
-                      `log_by_type` char(1) NOT NULL DEFAULT 'A' COMMENT 'radio(A=Staff,U=Ticket User,G=Guest Ticket User)',
+                      `log_by_type` char(1) NOT NULL DEFAULT 'A' COMMENT 'radio(A=Agent,U=Ticket User,G=Guest Ticket User)',
                       `log_msg` char(150) NOT NULL DEFAULT '',
-                      `log_for` char(1) NOT NULL DEFAULT 'B' COMMENT 'bool(B=Both,U=User,A=Staff)',
+                      `log_for` char(1) NOT NULL DEFAULT 'B' COMMENT 'bool(B=Both,U=User,A=Agent)',
                       `ticket_status` char(1) NOT NULL DEFAULT 'P' COMMENT 'drop(N=New,C=Closed,P=In-progress,R=Re-open,D=Deleted)',
                       `entry_time` timestamp NOT NULL DEFAULT current_timestamp(),
                       UNIQUE KEY `ticket_id` (`ticket_id`,`log_id`) USING BTREE,

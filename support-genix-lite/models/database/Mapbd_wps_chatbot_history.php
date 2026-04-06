@@ -35,6 +35,7 @@ class Mapbd_wps_chatbot_history extends ApbdWpsModel
         $this->uniqueKey = array();
         $this->multiKey = array();
         $this->autoIncField = array("id");
+        $this->htmlInputField = ['query', 'content'];
         $this->app_base_name = "support-genix";
     }
 
@@ -558,7 +559,7 @@ class Mapbd_wps_chatbot_history extends ApbdWpsModel
             'session_id',
             'varchar',
             64,
-            '',
+            'NULL',
             'NULL',
             'user_id',
             'Session ID for grouping conversations'
@@ -569,7 +570,7 @@ class Mapbd_wps_chatbot_history extends ApbdWpsModel
             'guest_identifier',
             'varchar',
             64,
-            '',
+            'NULL',
             'NULL',
             'session_id',
             'Hashed guest identifier'

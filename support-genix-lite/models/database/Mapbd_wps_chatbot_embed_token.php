@@ -47,6 +47,7 @@ class Mapbd_wps_chatbot_embed_token extends ApbdWpsModel
         $this->uniqueKey = array(array("token"));
         $this->multiKey = array();
         $this->autoIncField = array("id");
+        $this->htmlInputField = ['allowed_domains', 'feature_opts'];
         $this->app_base_name = "support-genix-lite";
     }
 

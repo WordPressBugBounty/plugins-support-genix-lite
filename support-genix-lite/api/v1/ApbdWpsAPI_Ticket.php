@@ -64,7 +64,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
     }
     function notifications()
     {
-
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         $page = (int)$this->GetPayload("page", 1);
         $limit = (int)$this->GetPayload("limit", 10);
         if (! empty($limit)) {
@@ -103,7 +103,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
             $data->msg_body = $msg_body;
             $data->user_name = ((is_string($data->msg_param) && ! empty($data->msg_param)) ? $data->msg_param : '');
             $data->msg_param = array_merge([$data->msg], explode('|', $data->msg_param));
-            $data->msg = call_user_func_array([Apbd_wps_settings::GetModuleInstance(), '__'], $data->msg_param);
+            $data->msg = call_user_func_array([$settingsObj, '__'], $data->msg_param);
             unset($data->msg_param);
         }
         $responseData = apply_filters('apbd-wps/filter/before-notification', $responseData);
@@ -113,13 +113,14 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
 
     function update_notification($data)
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($data['notification_id'])) {
             $notification = new Mapbd_wps_notification();
             $notification->status('V');
             $notification->SetWhereUpdate('id', intval($data['notification_id']));
             $notification->UnsetAllExcepts('status');
             if ($notification->Update()) {
-                $this->response->SetResponse(true, "Successfully updated");
+                $this->response->SetResponse(true, $settingsObj->__("Successfully updated"));
                 do_action('apbd-wps/action/ticket-notification-updated');
                 do_action('apbd-wps/action/data-change');
                 return $this->response;
@@ -127,7 +128,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                 $this->response->SetResponse(false, ApbdWps_GetMsgAPI());
             }
         } else {
-            $this->SetResponse(true, "data not found");
+            $this->SetResponse(true, $settingsObj->__("data not found"));
             return $this->response;
         }
     }
@@ -412,6 +413,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
 
     function move_to_trash($data)
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($data['ticketId'])) {
             $ticket_id = intval($data['ticketId']);
             $Mainticket = new Mapbd_wps_ticket();
@@ -426,7 +428,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                         $updatedObj = Mapbd_wps_ticket::FindBy("id", intval($data['ticketId']));
                         $response = new stdClass();
                         $response->ticket_stat = Mapbd_wps_ticket::getTicketStat();
-                        $this->response->SetResponse(true, "Successfully deleted", $response->ticket_stat);
+                        $this->response->SetResponse(true, $settingsObj->__("Successfully deleted"), $response->ticket_stat);
                         do_action('apbd-wps/action/ticket-soft-deleted', $updatedObj);
                         do_action('apbd-wps/action/data-change');
                         return $this->response;
@@ -434,21 +436,22 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                         $this->response->SetResponse(false, ApbdWps_GetMsgAPI());
                     }
                 } else {
-                    $this->response->SetResponse(true, "Successfully deleted");
+                    $this->response->SetResponse(true, $settingsObj->__("Successfully deleted"));
                     return $this->response;
                 }
                 return $this->response;
             } else {
-                $this->SetResponse(true, "Invalid request param");
+                $this->SetResponse(true, $settingsObj->__("Invalid request param"));
             }
         } else {
-            $this->SetResponse(true, "data not found");
+            $this->SetResponse(true, $settingsObj->__("data not found"));
             return $this->response;
         }
     }
 
     function update_privacy()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($this->payload['ticketId'])) {
             $ticket = new Mapbd_wps_ticket();
             $ticket->is_public($this->payload['privacy']);
@@ -458,7 +461,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                 $updatedObj = Mapbd_wps_ticket::FindBy("id", intval($this->payload['ticketId']));
                 $response = new stdClass();
                 $response->ticket_stat = Mapbd_wps_ticket::getTicketStat();
-                $this->response->SetResponse(true, "Successfully updated", $response);
+                $this->response->SetResponse(true, $settingsObj->__("Successfully updated"), $response);
                 do_action('apbd-wps/action/ticket-privacy-updated', $updatedObj);
                 do_action('apbd-wps/action/data-change');
                 return $this->response;
@@ -466,13 +469,14 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                 $this->response->SetResponse(false, ApbdWps_GetMsgAPI());
             }
         } else {
-            $this->SetResponse(true, "data not found");
+            $this->SetResponse(true, $settingsObj->__("data not found"));
             return $this->response;
         }
     }
 
     function restore_ticket($data)
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($data['ticketId'])) {
             $ticket_id = intval($data['ticketId']);
             $Mainticket = new Mapbd_wps_ticket();
@@ -487,7 +491,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                         $updatedObj = Mapbd_wps_ticket::FindBy("id", intval($data['ticketId']));
                         $response = new stdClass();
                         $response->ticket_stat = Mapbd_wps_ticket::getTicketStat();
-                        $this->response->SetResponse(true, "Successfully restored", $response);
+                        $this->response->SetResponse(true, $settingsObj->__("Successfully restored"), $response);
                         do_action('apbd-wps/action/restore-deleted-ticket', $updatedObj);
                         do_action('apbd-wps/action/data-change');
                         return $this->response;
@@ -495,21 +499,22 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                         $this->response->SetResponse(false, ApbdWps_GetMsgAPI());
                     }
                 } else {
-                    $this->response->SetResponse(true, "This is already restored");
+                    $this->response->SetResponse(true, $settingsObj->__("This is already restored"));
                     return $this->response;
                 }
                 return $this->response;
             } else {
-                $this->SetResponse(true, "Invalid request param");
+                $this->SetResponse(true, $settingsObj->__("Invalid request param"));
             }
         } else {
-            $this->SetResponse(true, "data not found");
+            $this->SetResponse(true, $settingsObj->__("data not found"));
             return $this->response;
         }
     }
 
     function delete_ticket($data)
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($data['ticketId'])) {
             $ticket_id = intval($data['ticketId']);
             $Mainticket = new Mapbd_wps_ticket();
@@ -519,7 +524,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                 if (Mapbd_wps_ticket::DeleteByID($Mainticket->id)) {
                     $response = new stdClass();
                     $response->ticket_stat = Mapbd_wps_ticket::getTicketStat();
-                    $this->response->SetResponse(true, "Successfully deleted", $response);
+                    $this->response->SetResponse(true, $settingsObj->__("Successfully deleted"), $response);
                     do_action('apbd-wps/action/ticket-deleted', $Mainticket);
                     do_action('apbd-wps/action/data-change');
                     return $this->response;
@@ -528,16 +533,17 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                 }
                 return $this->response;
             } else {
-                $this->SetResponse(true, "Invalid request param");
+                $this->SetResponse(true, $settingsObj->__("Invalid request param"));
             }
         } else {
-            $this->SetResponse(true, "data not found");
+            $this->SetResponse(true, $settingsObj->__("data not found"));
             return $this->response;
         }
     }
 
     function ticket_details($data)
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($data['ticketId'])) {
             $user_id = "";
             if (!Apbd_wps_settings::isAgentLoggedIn()) {
@@ -545,7 +551,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                 if (! empty($user->ID)) {
                     $user_id = $user->ID;
                 } else {
-                    $this->SetResponse(false, "data not found or invalid param");
+                    $this->SetResponse(false, $settingsObj->__("data not found or invalid param"));
                     return $this->response;
                 }
             }
@@ -563,12 +569,12 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                         $ticketDetailsObj->hotlink = '';
                     }
                 }
-                $this->SetResponse(true, "data found", $ticketDetailsObj);
+                $this->SetResponse(true, $settingsObj->__("data found"), $ticketDetailsObj);
             } else {
-                $this->SetResponse(false, "data not found or invalid param");
+                $this->SetResponse(false, $settingsObj->__("data not found or invalid param"));
             }
         } else {
-            $this->SetResponse(false, "data not found or invalid param");
+            $this->SetResponse(false, $settingsObj->__("data not found or invalid param"));
         }
         return $this->response;
     }
@@ -646,17 +652,19 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
 
     function search_ticket()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if ($this->payload) {
             //Search
             return $this->ticket_list();
         } else {
-            $this->response->SetResponse(false, "Ticket search failed", null);
+            $this->response->SetResponse(false, $settingsObj->__("Ticket search failed"), null);
             return $this->response;
         }
     }
 
     function update_ticket()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         $allowedProps = ['status', 'cat_id', 'assigned_on', 'priority', 'related_url', 'email_notification'];
         if (! empty($this->payload['ticketId']) && ! empty($this->payload['propName']) && in_array($this->payload['propName'], $allowedProps)) {
             $prop = $this->payload['propName'];
@@ -664,11 +672,11 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                 if (! current_user_can('edit-assigned')) {
                     if (current_user_can('assign-me')) {
                         if ($this->payload['value'] != $this->get_current_user_id()) {
-                            $this->response->SetResponse(false, "Permission denied", null);
+                            $this->response->SetResponse(false, $settingsObj->__("Permission denied"), null);
                             return $this->response;
                         }
                     } else {
-                        $this->response->SetResponse(false, "Permission denied", null);
+                        $this->response->SetResponse(false, $settingsObj->__("Permission denied"), null);
                         return $this->response;
                     }
                 }
@@ -709,7 +717,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                             do_action('apbd-wps/action/ticket-email-notification-change', $updatedObj, $this->get_current_user_id());
                         }
                         $updatedObj->ticket_stat = Mapbd_wps_ticket::getTicketStat();
-                        $this->response->SetResponse(true, "Successfully updated", $updatedObj);
+                        $this->response->SetResponse(true, $settingsObj->__("Successfully updated"), $updatedObj);
                         do_action('apbd-wps/action/ticket-property-update', $updatedObj, $prop);
                         do_action('apbd-wps/action/data-change');
                         return $this->response;
@@ -718,33 +726,35 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                     }
                 } else {
                     $updatedObj = Mapbd_wps_ticket::FindBy("id", intval($this->payload['ticketId']));
-                    $this->response->SetResponse(true, "Successfully updated", $updatedObj);
+                    $this->response->SetResponse(true, $settingsObj->__("Successfully updated"), $updatedObj);
                     return $this->response;
                 }
             }
         } else {
-            $this->response->SetResponse(false, $this->payload['propName'] . " Is empty or don't have proper permission", null);
+            $this->response->SetResponse(false, $this->payload['propName'] . " " . $settingsObj->__("is empty or doesn't have proper permission"), null);
         }
         return $this->response;
     }
 
     function update_custom_field()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($this->payload['ticket_id']) && ! empty($this->payload['propName'])) {
             $value = sanitize_text_field(! empty($this->payload['value']) ? $this->payload['value'] : "");
             do_action('apbd-wps/action/ticket-custom-field-update', $this->payload['ticket_id'], $this->payload['propName'], $value);
             do_action('apbd-wps/action/data-change');
             $custom_fields = apply_filters('apbd-wps/filter/ticket-custom-properties', [], $this->payload['ticket_id']);
             $custom_fields = apply_filters('apbd-wps/filter/ticket-details-custom-properties', $custom_fields, $this->payload['ticket_id']);
-            $this->response->SetResponse(true, $this->payload['propName'] . " Changed successfully ", $custom_fields);
+            $this->response->SetResponse(true, $this->payload['propName'] . " " . $settingsObj->__("changed successfully"), $custom_fields);
         } else {
-            $this->response->SetResponse(false, $this->payload['propName'] . " Is empty or don't have proper permission", null);
+            $this->response->SetResponse(false, $this->payload['propName'] . " " . $settingsObj->__("is empty or doesn't have proper permission"), null);
         }
         return $this->response;
     }
 
     function create_ticket()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($this->payload['title'] && $this->payload['ticket_body'])) {
             if (is_user_logged_in()) {
                 $currentUserID = $this->get_current_user_id();
@@ -766,7 +776,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
 
             $userId = $this->payload['ticket_user'];
             if (Mapbd_wps_ticket::create_ticket_by_payload($this->payload, $userId, $ticketObj, true)) {
-                $this->response->SetResponse(true, "Ticket created successfully", ((object)$ticketObj->getPropertiesArray('ticket_body,re_open_time,re_open_by,re_open_by_type,user_type,assigned_on,assigned_date,last_replied_by,last_replied_by_type,last_reply_time,ticket_rating,priority,is_public,is_open_using_email,reply_counter,is_user_seen_last_reply,email_notification')));
+                $this->response->SetResponse(true, $settingsObj->__("Ticket created successfully"), ((object)$ticketObj->getPropertiesArray('ticket_body,re_open_time,re_open_by,re_open_by_type,user_type,assigned_on,assigned_date,last_replied_by,last_replied_by_type,last_reply_time,ticket_rating,priority,is_public,is_open_using_email,reply_counter,is_user_seen_last_reply,email_notification')));
                 return $this->response;
             } else {
                 $msg = trim(ApbdWps_GetMsgAPI());
@@ -778,12 +788,13 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                 return $this->response;
             }
         } else {
-            $this->response->SetResponse(false, "Fields are empty");
+            $this->response->SetResponse(false, $settingsObj->__("Fields are empty"));
             return $this->response;
         }
     }
     function create_note()
     {
+        $settingsObj = Apbd_wps_settings::GetModuleInstance();
         if (! empty($this->payload['ticket_id']) && ! empty($this->payload['note_text'])) {
             $note = new Mapbd_wps_notes();
             $note->SetFromArray($this->payload);
@@ -793,7 +804,7 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                 if ($note->Save()) {
                     do_action('apbd-wps/action/create-note', $note);
                     do_action('apbd-wps/action/data-change');
-                    $this->response->SetResponse(true, "successfully created", Mapbd_wps_notes::getNoteString($note));
+                    $this->response->SetResponse(true, $settingsObj->__("successfully created"), Mapbd_wps_notes::getNoteString($note));
                 } else {
                     $this->response->SetResponse(false, ApbdWps_GetMsgAPI(), $note);
                 }

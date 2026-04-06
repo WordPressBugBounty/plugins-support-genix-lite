@@ -160,7 +160,7 @@ if (! class_exists('ApbdWps_Promo')) {
 
             $banner_html = sprintf(
                 '<div class="notice notice-info is-dismissible support-genix-promo-banner" data-notice="%s">
-                    <a href="%s" target="_blank">
+                    <a href="%s" target="_blank" rel="noopener noreferrer">
                         <img src="%s" alt="Promotional Banner">
                     </a>',
                 esc_attr($this->notice_key),

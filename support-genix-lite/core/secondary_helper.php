@@ -345,7 +345,7 @@ if (! function_exists("ApbdWps_RemoveAllNotice")) {
 if (! function_exists("ApbdWps_AddModelErrorsCode")) {
     function ApbdWps_AddModelErrorsCode($msg)
     {
-        return ApbdWps_AddError("Error Code:" . $msg);
+        return ApbdWps_AddError(__("Error Code:", "support-genix-lite") . $msg);
     }
 }
 
@@ -851,7 +851,7 @@ if (!function_exists("SUPPORT_GENIX_StartPlugin")) {
                 $screen = get_current_screen();
 
                 if ($screen && ('toplevel_page_support-genix' === $screen->id)) {
-                    $text = '<span id="footer-thankyou">' . $coreObject->___('Thank you for using %s.', '<a target="_blank" href="https://supportgenix.com/">' . $coreObject->pluginName . '</a>') . '</span>';
+                    $text = '<span id="footer-thankyou">' . $coreObject->___('Thank you for using %s.', '<a target="_blank" rel="noopener noreferrer" href="https://supportgenix.com/">' . $coreObject->pluginName . '</a>') . '</span>';
                 }
 
                 return $text;

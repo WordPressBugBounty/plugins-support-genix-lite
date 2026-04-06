@@ -45,6 +45,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $this->AddAjaxAction("api_keys_claude", [$this, "AjaxRequestCallbackApiKeysClaude"]);
         $this->AddAjaxAction("api_keys_ai_proxy", [$this, "AjaxRequestCallbackApiKeysAIProxy"]);
         $this->AddAjaxAction("setup_wizard", [$this, "AjaxRequestCallbackSetupWizard"]);
+        $this->AddAjaxAction("setup_wizard_portal", [$this, "setup_wizard_portal"]);
         $this->AddAjaxAction("data_api_keys_elevenlabs", [$this, "dataApiKeysElevenLabs"]);
         $this->AddAjaxAction("api_keys_elevenlabs", [$this, "AjaxRequestCallbackApiKeysElevenLabs"]);
         $this->AddAjaxAction("elevenlabs_voices", [$this, "AjaxRequestCallbackElevenLabsVoices"]);
@@ -240,7 +241,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 }
             }
         } else {
-            $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->get_portal_url("dist/main.BipHL1nv.1773217519036.css")) . '" media=""';
+            $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->get_portal_url("dist/main.CQQWSnKH.1775456940473.css")) . '" media=""';
             ?>
             <link <?php echo wp_kses_post($ats); ?> />
         <?php
@@ -329,6 +330,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'copy_text' => $this->copyright_text(),
             'primary_color' => $this->get_primary_brand_color(),
             'weekend_notice' => '',
+            'weekend_notice_show_on_login' => false,
             'tinymce_base' => includes_url('js/tinymce'),
             'wp_version' => get_bloginfo('version'),
             'version' => $coreObject->pluginVersion,
@@ -360,7 +362,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 }
             }
         } else {
-            $ats = 'type="module" src="' . esc_url($this->get_portal_url("dist/main.DRU-CvRX.1773217519036.js")) . '" id="support-genix-portal-main-js"';
+            $ats = 'type="module" src="' . esc_url($this->get_portal_url("dist/main.ASsScegt.1775456940473.js")) . '" id="support-genix-portal-main-js"';
             ?>
             <script <?php echo wp_kses_post($ats); ?>></script>
         <?php
@@ -675,10 +677,10 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
         if ("Y" !== $shortcode_mode) {
             if ("Y" !== $hide_pb_text) {
-                $footer_cp_text = sprintf('%s | %s', $footer_cp_text, sprintf($this->__('Powered by %s'), '<a target="_blank" href="https://supportgenix.com">Support Genix</a>'));
+                $footer_cp_text = sprintf('%s | %s', $footer_cp_text, sprintf($this->__('Powered by %s'), '<a target="_blank" rel="noopener noreferrer" href="https://supportgenix.com">Support Genix</a>'));
             }
         } elseif ("Y" !== $hide_pb_text) {
-            $footer_cp_text = sprintf($this->__('Powered by %s'), '<a target="_blank" href="https://supportgenix.com">Support Genix</a>');
+            $footer_cp_text = sprintf($this->__('Powered by %s'), '<a target="_blank" rel="noopener noreferrer" href="https://supportgenix.com">Support Genix</a>');
         } else {
             $footer_cp_text = '';
         }
@@ -1192,7 +1194,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             }
             $responseData->caps = $user->caps;
             $responseData->img  = get_user_meta($user->ID, 'supportgenix_avatar', true) ? get_user_meta($user->ID, 'supportgenix_avatar', true) : get_avatar_url($user->ID);
-            $response->SetResponse(true, "logged in Successfully", $responseData);
+            $response->SetResponse(true, $this->__("Login successful."), $responseData);
             wp_send_json($response);
         }
     }
@@ -1441,9 +1443,12 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     Mapbd_wps_chatbot_session::UpdateDBTable3();
                     Mapbd_wps_ticket::UpdateDBTable7();
                 }
-            } else {
-                // From version 1.1.0
-                $this->CreateTicketPage();
+
+                // When pro version is less than 1.8.44
+                if (1 === version_compare('1.8.44', $last_pro_version)) {
+                    // From version 1.4.44
+                    Mapbd_wps_chatbot_session::UpdateDBTable4();
+                }
             }
 
             // From version 1.4.0
@@ -1745,6 +1750,14 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     Mapbd_wps_ticket::UpdateDBTable7();
                 }
             }
+
+            // From version 1.4.44
+            if (1 === version_compare('1.4.44', $previous_version)) {
+                // When pro version is empty or less than 1.8.44
+                if (empty($last_pro_version) || (1 === version_compare('1.8.44', $last_pro_version))) {
+                    Mapbd_wps_chatbot_session::UpdateDBTable4();
+                }
+            }
         }
 
         // From version 1.4.4
@@ -1796,6 +1809,54 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         Mapbd_wps_email_templates::AddDefaultTemplates();
     }
 
+    public function setup_wizard_portal()
+    {
+        $apiResponse = new Apbd_Wps_APIResponse();
+        $apiResponse->SetResponse(false, $this->__('Invalid request.'));
+
+        if (ApbdWps_IsPostBack && current_user_can('manage_options')) {
+            $ticket_page = sanitize_text_field(ApbdWps_PostValue('ticket_page', ''));
+
+            if ('new' === $ticket_page) {
+                $pageArgs = array(
+                    'post_title'   => $this->__('Ticket'),
+                    'post_content' => '<!-- wp:shortcode -->[supportgenix]<!-- /wp:shortcode -->',
+                    'post_status'  => 'publish',
+                    'post_type'    => 'page',
+                );
+
+                $createdPageId = wp_insert_post($pageArgs);
+
+                if ($createdPageId && !is_wp_error($createdPageId)) {
+                    update_option('apbd_wps_ticket_page_id', $createdPageId);
+                    $this->AddIntoOption('ticket_page', $createdPageId);
+
+                    if ($this->UpdateOption()) {
+                        $apiResponse->SetResponse(true, $this->__('Page created and saved successfully.'), ['ticket_page' => strval($createdPageId)]);
+                    } else {
+                        $apiResponse->SetResponse(false, $this->__('Failed to save.'));
+                    }
+                } else {
+                    $apiResponse->SetResponse(false, $this->__('Failed to create page.'));
+                }
+            } else {
+                $ticket_page = absint($ticket_page);
+
+                if ($ticket_page > 0 && 'page' === get_post_type($ticket_page)) {
+                    update_option('apbd_wps_ticket_page_id', $ticket_page);
+                    $this->AddIntoOption('ticket_page', $ticket_page);
+                    $this->UpdateOption();
+
+                    $apiResponse->SetResponse(true, $this->__('Saved successfully.'));
+                } else {
+                    $apiResponse->SetResponse(false, $this->__('Invalid page selected.'));
+                }
+            }
+        }
+
+        echo wp_json_encode($apiResponse);
+    }
+
     function CreateTicketPage()
     {
         $pageId = absint(get_option('apbd_wps_ticket_page_id'));
@@ -1811,7 +1872,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
             $createdPageId = wp_insert_post($pageArgs);
 
-            if ($createdPageId) {
+            if ($createdPageId && !is_wp_error($createdPageId)) {
                 update_option('apbd_wps_ticket_page_id', $createdPageId);
                 $this->AddOption("ticket_page", $createdPageId);
             }
@@ -2193,6 +2254,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $data = [
             'client_role' => $client_role,
             'ticket_page' => $ticket_page,
+            'ticket_page_url' => $ticket_page ? get_permalink(absint($ticket_page)) : '',
             'ticket_page_shortcode' => $ticket_page_shortcode,
             'footer_cp_text' => $footer_cp_text,
             'is_wp_login_reg' => $is_wp_login_reg,
@@ -2241,6 +2303,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $data = [
             'setup_wizard_step' => $setup_wizard_step,
             'setup_wizard_finished' => $setup_wizard_finished,
+            'ticket_page' => strval($this->GetOption('ticket_page', '')),
         ];
 
         $apiResponse->SetResponse(true, "", $data);
@@ -2486,6 +2549,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $apiResponse->SetResponse(true, "", [
             'result' => $result,
             'total' => count($result),
+            'is_plain_permalink' => empty(get_option('permalink_structure')),
         ]);
 
         echo wp_json_encode($apiResponse);
@@ -4293,8 +4357,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Login with Envato' => $core->__('Login with Envato'),
             'Learn more' => $core->__('Learn more'),
             'Documentation' => $core->__('Documentation'),
-            'Ticket Page' => $core->__('Ticket Page'),
-            'Enable shortcode mode for ticket page.' => $core->__('Enable shortcode mode for ticket page.'),
             'Footer Copyright Text' => $core->__('Footer Copyright Text'),
             'Remove powered-by.' => $core->__('Remove powered-by.'),
             'Enable Wordpress Login Register.' => $core->__('Enable Wordpress Login Register.'),
@@ -4344,8 +4406,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             '%s (Status Label)' => $core->__('%s (Status Label)'),
             '%s (status label)' => $core->__('%s (status label)'),
             'Primary Brand Color' => $core->__('Primary Brand Color'),
-            'primary' => $core->__('primary'),
-            'secondary' => $core->__('secondary'),
             'Custom CSS' => $core->__('Custom CSS'),
             'Click to disable file upload.' => $core->__('Click to disable file upload.'),
             'Login Page Link' => $core->__('Login Page Link'),
@@ -4499,7 +4559,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'WooCommerce Integrations Settings' => $core->__('WooCommerce Integrations Settings'),
             'Get Support' => $core->__('Get Support'),
             'Order Info Required' => $core->__('Order Info Required'),
-            'Show in Ticket Form' => $core->__('Show in Ticket Form'),
             'Show support menu in my account page.' => $core->__('Show support menu in my account page.'),
             'Menu Title' => $core->__('Menu Title'),
             'Menu title' => $core->__('Menu title'),
@@ -4507,7 +4566,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'A new Order #{{order_id}} has been placed by {{user_full_name}} in your store {{store_title}}.' => $core->__('A new Order #{{order_id}} has been placed by {{user_full_name}} in your store {{store_title}}.'),
             'Collect order info from customer.' => $core->__('Collect order info from customer.'),
             'When disabled, customer won\'t need to provide order info. Agents will automatically see the customer\'s latest orders.' => $core->__('When disabled, customer won\'t need to provide order info. Agents will automatically see the customer\'s latest orders.'),
-            'WooCommerce Orders (%d)' => $core->__('WooCommerce Orders (%d)'),
             'WooCommerce in same site' => $core->__('WooCommerce in same site'),
             'WooCommerce in external site' => $core->__('WooCommerce in external site'),
             'Store Title' => $core->__('Store Title'),
@@ -4630,7 +4688,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Holiday' => $core->__('Holiday'),
             'Other Tickets (%d)' => $core->__('Other Tickets (%d)'),
             'Host:' => $core->__('Host:'),
-            'Email:' => $core->__('Email:'),
             'Report Schedule' => $core->__('Report Schedule'),
             'Report schedule' => $core->__('Report schedule'),
             'Custom Minutes' => $core->__('Custom Minutes'),
@@ -4655,14 +4712,12 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Day of Month' => $core->__('Day of Month'),
             'Day of month' => $core->__('Day of month'),
             'Enter a value between 1 and 31.' => $core->__('Enter a value between 1 and 31.'),
-            'Please note that our support team is currently out of office for the weekend. While you\'re welcome to submit your ticket, it will be reviewed when we return on the next business day. We appreciate your patience and will address your inquiry as soon as possible.' => $core->__('Please note that our support team is currently out of office for the weekend. While you\'re welcome to submit your ticket, it will be reviewed when we return on the next business day. We appreciate your patience and will address your inquiry as soon as possible.'),
             'Weekend Days' => $core->__('Weekend Days'),
             'Enable portal notice.' => $core->__('Enable portal notice.'),
             'Enable email notification.' => $core->__('Enable email notification.'),
             'Day' => $core->__('Day'),
             'Time range' => $core->__('Time range'),
             'Add More' => $core->__('Add More'),
-            'Our office is currently closed for the holiday. While you\'re welcome to submit your ticket, please be aware that our team will review it when we return to the office. We thank you for your understanding and will respond to your request promptly upon our return.' => $core->__('Our office is currently closed for the holiday. While you\'re welcome to submit your ticket, please be aware that our team will review it when we return to the office. We thank you for your understanding and will respond to your request promptly upon our return.'),
             'Date Ranges' => $core->__('Date Ranges'),
             'Date range' => $core->__('Date range'),
             'Portal Notice Content' => $core->__('Portal Notice Content'),
@@ -4688,7 +4743,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Set Tag' => $core->__('Set Tag'),
             'Tags:' => $core->__('Tags:'),
             '%d Tags' => $core->__('%d Tags'),
-            'Please ensure you add the shortcode %s to your designated ticket page for proper functionality.' => $core->__('Please ensure you add the shortcode %s to your designated ticket page for proper functionality.'),
             'Days' => $core->__('Days'),
             'Create ticket' => $core->__('Create ticket'),
             'Create ticket user' => $core->__('Create ticket user'),
@@ -4725,7 +4779,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Please enter your license key to activate.' => $core->__('Please enter your license key to activate.'),
             'Skip Setup' => $core->__('Skip Setup'),
             'Activate & Continue' => $core->__('Activate & Continue'),
-            'Create %s' => $core->__('Create %s'),
             'Just enter title of the categories and click save & next!' => $core->__('Just enter title of the categories and click save & next!'),
             'Skip' => $core->__('Skip'),
             'Save & Next' => $core->__('Save & Next'),
@@ -4826,7 +4879,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'No Result Search Queries' => $core->__('No Result Search Queries'),
             'Permissions' => $core->__('Permissions'),
             'Design Layout' => $core->__('Design Layout'),
-            'Base' => $core->__('Base'),
             'Archive' => $core->__('Archive'),
             'Single' => $core->__('Single'),
             'AI Docs Writer' => $core->__('AI Docs Writer'),
@@ -4855,7 +4907,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Icon' => $core->__('Icon'),
             'Parent' => $core->__('Parent'),
             'Color' => $core->__('Color'),
-            'Doc' => $core->__('Doc'),
             'Masonry' => $core->__('Masonry'),
             'Grid' => $core->__('Grid'),
             'List' => $core->__('List'),
@@ -4881,7 +4932,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Modified date.' => $core->__('Modified date.'),
             'Image lightbox.' => $core->__('Image lightbox.'),
             'Comment.' => $core->__('Comment.'),
-            'AI Docs Writer' => $core->__('AI Docs Writer'),
             'Set Max Tokens' => $core->__('Set Max Tokens'),
             'Set max token' => $core->__('Set max token'),
             'AI Tool' => $core->__('AI Tool'),
@@ -4927,7 +4977,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Visit:' => $core->__('Visit:'),
             'Docs Archive' => $core->__('Docs Archive'),
             'Please confirm before proceeding.' => $core->__('Please confirm before proceeding.'),
-            "Once you migrate from %s to %s, all your docs will be fully transferred (your post slugs for docs will remain the same). It will transfer up to 100 docs (posts) at a time to ensure a smooth process and prevent errors. If you have more than 100 docs (posts), you'll need to migrate more than once." => $core->__("Once you migrate from %s to %s, all your docs will be fully transferred (your post slugs for docs will remain the same). It will transfer up to 100 docs (posts) at a time to ensure a smooth process and prevent errors. If you have more than 100 docs (posts), you'll need to migrate more than once."),
             'Migration cannot be undone. So, we strongly recommend creating a full backup before starting the migration.' => $core->__('Migration cannot be undone. So, we strongly recommend creating a full backup before starting the migration.'),
             'System Requirements' => $core->__('System Requirements'),
             'Setting' => $core->__('Setting'),
@@ -4962,7 +5011,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Default Email' => $core->__('Default Email'),
             'From Email' => $core->__('From Email'),
             'From email' => $core->__('From email'),
-            "Once you migrate from %s to %s, all your support tickets will be fully copied or transferred (including responses, notes, and attachments). It will copy or transfer up to 100 support tickets at a time to ensure a smooth process and prevent errors. If you have more than 100 support tickets, you'll need to migrate more than once." => $core->__("Once you migrate from %s to %s, all your support tickets will be fully copied or transferred (including responses, notes, and attachments). It will copy or transfer up to 100 support tickets at a time to ensure a smooth process and prevent errors. If you have more than 100 support tickets, you'll need to migrate more than once."),
             'Please note that integration-related data will not be migrated.' => $core->__('Please note that integration-related data will not be migrated.'),
             'Delete the successfully migrated tickets from Fluent Support (optional).' => $core->__('Delete the successfully migrated tickets from Fluent Support (optional).'),
             'Migrate from Fluent Support' => $core->__('Migrate from Fluent Support'),
@@ -5019,12 +5067,10 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Allow Support Genix to create user accounts even if WordPress "Anyone can register" is off.' => $core->__('Allow Support Genix to create user accounts even if WordPress "Anyone can register" is off.'),
             'Turn OFF to strictly follow WordPress\'s global setting.' => $core->__('Turn OFF to strictly follow WordPress\'s global setting.'),
             'Client User Default Role' => $core->__('Client User Default Role'),
-            'Ticket Portal Page' => $core->__('Ticket Portal Page'),
             'Ticket track ID minimum length' => $core->__('Ticket track ID minimum length'),
             'Email to ticket' => $core->__('Email to ticket'),
             'Incoming webhook' => $core->__('Incoming webhook'),
             'Login system' => $core->__('Login system'),
-            'Auto-create ticket on new order.' => $core->__('Auto-create ticket on new order.'),
             '%s requires user registration to be enabled to create tickets for non-registered users.' => $core->__('%s requires user registration to be enabled to create tickets for non-registered users.'),
             '%s requires user registration to be enabled for non-registered users.' => $core->__('%s requires user registration to be enabled for non-registered users.'),
             'Please enable "Override WordPress registration setting" or allow WordPress registration to use this feature.' => $core->__('Please enable "Override WordPress registration setting" or allow WordPress registration to use this feature.'),
@@ -5079,12 +5125,10 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Hero Title' => $core->__('Hero Title'),
             'Hero Subtitle' => $core->__('Hero Subtitle'),
             'AI Providers' => $core->__('AI Providers'),
-            'Manage your API keys centrally in the API Keys settings.' => $core->__('Manage your API keys centrally in the API Keys settings.'),
             'Manage' => $core->__('Manage'),
             'Feature Options' => $core->__('Feature Options'),
             'Enable create ticket' => $core->__('Enable create ticket'),
             'Enable docs resources' => $core->__('Enable docs resources'),
-            'Allow smart search for related docs.' => $core->__('Allow smart search for related docs.'),
             'Respond to greetings even when no resource matches' => $core->__('Respond to greetings even when no resource matches'),
             'Disable auto ticket assignment to first responder.' => $core->__('Disable auto ticket assignment to first responder.'),
             'Disable smart need reply sorting.' => $core->__('Disable smart need reply sorting.'),
@@ -5139,7 +5183,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Custom Cleanup Schedule' => $core->__('Custom Cleanup Schedule'),
             'Set a custom cleanup threshold. The shorter period between this and retention above will be used.' => $core->__('Set a custom cleanup threshold. The shorter period between this and retention above will be used.'),
             'Save Settings' => $core->__('Save Settings'),
-            'Delete this conversation?' => $core->__('Delete this conversation?'),
             'Delete Conversations Older Than' => $core->__('Delete Conversations Older Than'),
             'Conversations older than this will be deleted. Cleanup runs automatically twice daily.' => $core->__('Conversations older than this will be deleted. Cleanup runs automatically twice daily.'),
             'days' => $core->__('days'),
@@ -5181,7 +5224,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Select an agent for voice-to-voice conversations or fetch agents from your account.' => $core->__('Select an agent for voice-to-voice conversations or fetch agents from your account.'),
             'Fetch Agents' => $core->__('Fetch Agents'),
             'Enable Voice Override' => $core->__('Enable Voice Override'),
-            'Use the AI Voice selected above instead of agent\'s default voice. Requires "Voice" override to be enabled in ElevenLabs Agent Security settings.' => $core->__('Use the AI Voice selected above instead of agent\'s default voice. Requires "Voice" override to be enabled in ElevenLabs Agent Security settings.'),
             'Public Agent' => $core->__('Public Agent'),
             'Enable this if your ElevenLabs agent is public and does not require authentication. Disable for private agents that require server-side authentication.' => $core->__('Enable this if your ElevenLabs agent is public and does not require authentication. Disable for private agents that require server-side authentication.'),
             'Note: ElevenLabs API key is not configured. Please configure it in Settings > API Keys > ElevenLabs.' => $core->__('Note: ElevenLabs API key is not configured. Please configure it in Settings > API Keys > ElevenLabs.'),
@@ -5202,7 +5244,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Choose Knowledge Base' => $core->__('Choose Knowledge Base'),
             'Choose Knowledge Base Category' => $core->__('Choose Knowledge Base Category'),
             'Clear History' => $core->__('Clear History'),
-            'Code' => $core->__('Code'),
             'Code:' => $core->__('Code:'),
             'Copied' => $core->__('Copied'),
             'Copied to clipboard' => $core->__('Copied to clipboard'),
@@ -5239,7 +5280,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Generated Reply' => $core->__('Generated Reply'),
             'Generating...' => $core->__('Generating...'),
             'Get Code' => $core->__('Get Code'),
-            'Get Embed Code' => $core->__('Get Embed Code'),
             'Grid Columns' => $core->__('Grid Columns'),
             'Guest' => $core->__('Guest'),
             'Helpful:' => $core->__('Helpful:'),
@@ -5356,7 +5396,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Unstarred' => $core->__('Unstarred'),
             'Voices fetched successfully! Found %s voices.' => $core->__('Voices fetched successfully! Found %s voices.'),
             'Also viewing:' => $core->__('Also viewing:'),
-            'Please select at least one tool.' => $core->__('Please select at least one tool.'),
             'All Sources' => $core->__('All Sources'),
             'Learn from related docs via smart search' => $core->__('Learn from related docs via smart search'),
             'Learn from ticket replies' => $core->__('Learn from ticket replies'),
@@ -5398,6 +5437,43 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'More' => $core->__('More'),
             'This ticket already belongs to the selected user.' => $core->__('This ticket already belongs to the selected user.'),
             'attribute to set the page URL when embedding inside nested iframes.' => $core->__('attribute to set the page URL when embedding inside nested iframes.'),
+            'AI providers must be enabled in API Keys settings before they can be used here.' => $core->__('AI providers must be enabled in API Keys settings before they can be used here.'),
+            'Add specific instructions to customize how the AI generates documentation. For example: writing style, target audience, topics to focus on, or business-specific context.' => $core->__('Add specific instructions to customize how the AI generates documentation. For example: writing style, target audience, topics to focus on, or business-specific context.'),
+            'Add specific instructions to customize how the AI generates ticket replies. For example: tone of voice, topics to focus on, things to avoid, or business-specific context.' => $core->__('Add specific instructions to customize how the AI generates ticket replies. For example: tone of voice, topics to focus on, things to avoid, or business-specific context.'),
+            'Add specific instructions to customize how the AI responds. For example: tone of voice, topics to focus on, things to avoid, or business-specific context.' => $core->__('Add specific instructions to customize how the AI responds. For example: tone of voice, topics to focus on, things to avoid, or business-specific context.'),
+            'Are you sure you want to change the ticket user to following?' => $core->__('Are you sure you want to change the ticket user to following?'),
+            'Create a ticket page automatically as the support portal.' => $core->__('Create a ticket page automatically as the support portal.'),
+            'Custom Instructions' => $core->__('Custom Instructions'),
+            'Enable shortcode mode for support portal page.' => $core->__('Enable shortcode mode for support portal page.'),
+            'Help & Docs' => $core->__('Help & Docs'),
+            'Hide Custom Data' => $core->__('Hide Custom Data'),
+            'Hide portal notice from login & register page.' => $core->__('Hide portal notice from login & register page.'),
+            'Includes free AI credits to get started' => $core->__('Includes free AI credits to get started'),
+            'Once you migrate from %s to %s, all your docs will be fully transferred (your post slugs for docs will remain the same). It will transfer up to 100 docs (posts) at a time to ensure a smooth process and prevent errors. If you have more than 100 docs (posts), you\'ll need to migrate more than once.' => $core->__('Once you migrate from %s to %s, all your docs will be fully transferred (your post slugs for docs will remain the same). It will transfer up to 100 docs (posts) at a time to ensure a smooth process and prevent errors. If you have more than 100 docs (posts), you\'ll need to migrate more than once.'),
+            'Once you migrate from %s to %s, all your support tickets will be fully copied or transferred (including responses, notes, and attachments). It will copy or transfer up to 100 support tickets at a time to ensure a smooth process and prevent errors. If you have more than 100 support tickets, you\'ll need to migrate more than once.' => $core->__('Once you migrate from %s to %s, all your support tickets will be fully copied or transferred (including responses, notes, and attachments). It will copy or transfer up to 100 support tickets at a time to ensure a smooth process and prevent errors. If you have more than 100 support tickets, you\'ll need to migrate more than once.'),
+            'Please ensure you add the shortcode %s to your designated support portal page for proper functionality.' => $core->__('Please ensure you add the shortcode %s to your designated support portal page for proper functionality.'),
+            'Please select a page or create one automatically.' => $core->__('Please select a page or create one automatically.'),
+            'Please select at least one AI provider.' => $core->__('Please select at least one AI provider.'),
+            'Portal' => $core->__('Portal'),
+            'Prevent sending email notification on reply.' => $core->__('Prevent sending email notification on reply.'),
+            'Prompt' => $core->__('Prompt'),
+            'Select Page' => $core->__('Select Page'),
+            'Select an existing page or create a ticket page automatically!' => $core->__('Select an existing page or create a ticket page automatically!'),
+            'Show Custom Data' => $core->__('Show Custom Data'),
+            'Support Portal' => $core->__('Support Portal'),
+            'Support Portal Page' => $core->__('Support Portal Page'),
+            'Ticket Tags' => $core->__('Ticket Tags'),
+            'When checked, the email notification will only be sent when a new ticket is created.' => $core->__('When checked, the email notification will only be sent when a new ticket is created.'),
+            'When checked, the portal notice will only appear on ticket creation and reply forms.' => $core->__('When checked, the portal notice will only appear on ticket creation and reply forms.'),
+            'Your permalink structure is set to Plain. The ticket portal requires pretty permalinks to work properly. Please' => $core->__('Your permalink structure is set to Plain. The ticket portal requires pretty permalinks to work properly. Please'),
+            'attribute to pass custom data (JSON recommended) that will be visible in chat history.' => $core->__('attribute to pass custom data (JSON recommended) that will be visible in chat history.'),
+            'before continuing.' => $core->__('before continuing.'),
+            'e.g., Always greet customers by name. We are a hosting company — focus on server-related solutions. Avoid suggesting customers contact other providers. Always include relevant documentation links when available.' => $core->__('e.g., Always greet customers by name. We are a hosting company — focus on server-related solutions. Avoid suggesting customers contact other providers. Always include relevant documentation links when available.'),
+            'e.g., Always respond in a friendly and professional tone. We are a SaaS company that provides project management tools. Focus on helping users with onboarding and feature usage. Avoid discussing competitor products.' => $core->__('e.g., Always respond in a friendly and professional tone. We are a SaaS company that provides project management tools. Focus on helping users with onboarding and feature usage. Avoid discussing competitor products.'),
+            'e.g., Write documentation for a technical audience familiar with web development. Use clear headings and code examples where applicable. Focus on practical how-to guides rather than conceptual explanations.' => $core->__('e.g., Write documentation for a technical audience familiar with web development. Use clear headings and code examples where applicable. Focus on practical how-to guides rather than conceptual explanations.'),
+            'hCaptcha' => $core->__('hCaptcha'),
+            'update your permalink settings' => $core->__('update your permalink settings'),
+            'Use the AI Voice selected above instead of agent\'s default voice. Requires "Voice" override to be enabled in ElevenLabs Agent Security settings.' => $core->__('Use the AI Voice selected above instead of agent\'s default voice. Requires "Voice" override to be enabled in ElevenLabs Agent Security settings.'),
         ];
 
         return $texts;
@@ -5689,6 +5765,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'For the best performance and reliability, we recommend selecting no more than 20 tickets at a time.' => $core->__('For the best performance and reliability, we recommend selecting no more than 20 tickets at a time.'),
             'Also viewing:' => $core->__('Also viewing:'),
             'Change Ticket User' => $core->__('Change Ticket User'),
+            'Are you sure you want to change the ticket user to following?' => $core->__('Are you sure you want to change the ticket user to following?'),
             'Edit Ticket User' => $core->__('Edit Ticket User'),
             'Edit User' => $core->__('Edit User'),
             'More' => $core->__('More'),

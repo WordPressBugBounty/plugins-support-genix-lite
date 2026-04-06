@@ -604,6 +604,11 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
                         'woocommerce_reset_order' => 'all',
                         'woocommerce_confirm' => 'all',
                         'woocommerce_data' => 'read',
+                        // Help me write.
+                        'help_me_write_data' => 'all',
+                        'help_me_write' => 'all',
+                        // 'help_me_write_reply_generate' => 'all',
+                        // 'help_me_write_reply_refine' => 'all',
                         // Knowledge base.
                         'knowledge_base_docs_data' => 'write_docs',
                         'knowledge_base_docs_group_data' => 'write_docs',

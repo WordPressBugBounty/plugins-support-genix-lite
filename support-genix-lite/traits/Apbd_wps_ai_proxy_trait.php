@@ -45,8 +45,9 @@ trait Apbd_wps_ai_proxy_trait
         // First, try to verify the license
         $verify_result = $this->ai_proxy_verify_license($config);
 
-        // If license not found, try to register free again
-        if (isset($verify_result['error']) && isset($verify_result['error_code']) && 'INVALID_LICENSE' === $verify_result['error_code']) {
+        // If license not found or site not authorized, try to register free again
+        $retryable_codes = ['INVALID_LICENSE', 'SITE_NOT_IN_ACTIVE_DOMAINS'];
+        if (isset($verify_result['error']) && isset($verify_result['error_code']) && in_array($verify_result['error_code'], $retryable_codes, true)) {
             $register_result = $this->ai_proxy_register_free($config);
 
             if (isset($register_result['error'])) {

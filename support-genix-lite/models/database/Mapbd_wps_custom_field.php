@@ -44,6 +44,7 @@ class Mapbd_wps_custom_field extends ApbdWpsModel
         $this->uniqueKey = array();
         $this->multiKey = array();
         $this->autoIncField = array("id");
+        $this->htmlInputField = ['fld_option', 'conditions'];
         $this->app_base_name = "support-genix-lite";
     }
 

@@ -405,6 +405,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
             'embed_token_id' => isset($session->embed_token_id) ? (int) $session->embed_token_id : 0,
             'embed_title' => $embed_title,
             'page_url' => isset($session->page_url) ? $session->page_url : '',
+            'custom_data' => isset($session->custom_data) ? $session->custom_data : '',
             'messages' => $messages,
         ));
 

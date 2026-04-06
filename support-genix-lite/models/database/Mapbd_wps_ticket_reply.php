@@ -68,7 +68,7 @@ class Mapbd_wps_ticket_reply extends ApbdWpsModel
         $settingsObj = Apbd_wps_settings::GetModuleInstance();
         switch ($property) {
             case "replied_by_type":
-                $returnObj = array("A" => "Staff", "U" => "Ticket User", "G" => "Guest Ticke User");
+                $returnObj = array("A" => "Agent", "U" => "Ticket User", "G" => "Guest Ticke User");
                 break;
             case "ticket_status":
                 $returnObj = array("N" => $this->__("New"), "C" => $this->__("Closed"), "P" => $this->__("In-progress"), "R" => $this->__("Re-open"));
@@ -167,7 +167,7 @@ class Mapbd_wps_ticket_reply extends ApbdWpsModel
                       `reply_id` int(11) NOT NULL DEFAULT 0,
                       `asigned_by` char(11) NOT NULL DEFAULT '' COMMENT 'Ticket current asigned by',
                       `replied_by` char(11) NOT NULL DEFAULT '',
-                      `replied_by_type` char(1) NOT NULL DEFAULT 'A' COMMENT 'radio(A=Staff,U=Ticket User,G=Guest Ticke User)',
+                      `replied_by_type` char(1) NOT NULL DEFAULT 'A' COMMENT 'radio(A=Agent,U=Ticket User,G=Guest Ticke User)',
                       `reply_text` longtext NOT NULL COMMENT 'textarea',
                       `reply_time` timestamp NOT NULL DEFAULT current_timestamp(),
                       `ticket_status` char(1) NOT NULL DEFAULT 'P' COMMENT 'drop(N=New,C=Closed,P=In-progress,R=Re-open)',

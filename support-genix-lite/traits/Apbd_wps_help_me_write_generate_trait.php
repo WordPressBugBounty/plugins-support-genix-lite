@@ -290,7 +290,7 @@ trait Apbd_wps_help_me_write_generate_trait
                          IMPORTANT: Format your response using ONLY these HTML tags: <p>, <strong>, <em>, <a>, <ul>, <ol>, <li>, <br>
                          - Use <p> tags for paragraphs
                          - Use <strong> for bold text and <em> for italic text
-                         - Use <a> tags for links and ALWAYS include target=\"_blank\" attribute (e.g., <a href=\"https://example.com\" target=\"_blank\">Link</a>)
+                         - Use <a> tags for links and ALWAYS include target=\"_blank\" and rel=\"noopener noreferrer\" attributes (e.g., <a href=\"https://example.com\" target=\"_blank\" rel=\"noopener noreferrer\">Link</a>)
                          - Use <ul>, <ol>, and <li> for lists
                          - Use <br> for line breaks
                          - Do NOT use any other HTML tags or attributes
@@ -358,7 +358,7 @@ trait Apbd_wps_help_me_write_generate_trait
                 IMPORTANT: Format your response using ONLY these HTML tags: <p>, <strong>, <em>, <a>, <ul>, <ol>, <li>, <br>
                 - Use <p> tags for paragraphs
                 - Use <strong> for bold text and <em> for italic text
-                - Use <a> tags for links and ALWAYS include target=\"_blank\" attribute (e.g., <a href=\"https://example.com\" target=\"_blank\">Link</a>)
+                - Use <a> tags for links and ALWAYS include target=\"_blank\" and rel=\"noopener noreferrer\" attributes (e.g., <a href=\"https://example.com\" target=\"_blank\" rel=\"noopener noreferrer\">Link</a>)
                 - Use <ul>, <ol>, and <li> for lists
                 - Use <br> for line breaks
                 - Do NOT use any other HTML tags or attributes
