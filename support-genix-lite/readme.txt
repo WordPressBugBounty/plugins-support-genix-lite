@@ -1,15 +1,15 @@
 === Support Genix – Helpdesk, AI Chatbot, Knowledge Base & Customer Support Ticketing System ===
 Contributors: nazmulhudadev, aslamhasib, tarekht
 Author link: https://supportgenix.com
-Tags: helpdesk, support ticket, customer support, ai chatbot, knowledge base, live chat, ai assistant, support automation, chatbot, help center, docs, documentation, ai support
+Tags: helpdesk, support ticket, customer support, ai chatbot, knowledge base, support automation, live chat, ai assistant, chatbot, help center, docs, documentation, ai support
 Requires at least: 5.0
 Tested up to: 6.9
-Requires PHP: 7.2
+Requires PHP: 7.4
 Stable tag: 1.4.44
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Manage customer support with a powerful helpdesk & support ticket system — track customer tickets, resolve, and streamline your support workflow.
+AI-powered helpdesk & support ticket system with chatbot, knowledge base, and smart automation for WordPress.
 
 == Description ==
 
@@ -190,10 +190,10 @@ Watch this video tutorial and learn how to set up a professional support ticket 
 Stay organized and on top of your customer service with an intuitive, easy-to-use ticket management system. Track, prioritize, and manage support tickets in real-time, ensuring no customer query goes unanswered.
 
 **🛠️ Customizable Support System**
-Tailor your support process or help desk software to your exact needs. Add custom ticket fields, define ticket categories, and set up personalized email notifications to streamline communication with both customers and the support management team.
+Tailor your support process to your exact needs. Add custom ticket fields, define ticket categories, and set up personalized email notifications to streamline communication with your customers and team.
 
 **👥 Multi-Agent Support**
-Collaborate with your team efficiently. With Support Genix ticketing plugin, multiple agents can work on tickets simultaneously, improving response time and ensuring customer issues are resolved quickly and professionally.
+Collaborate with your team efficiently. Multiple agents can work on tickets simultaneously, improving response time and ensuring customer issues are resolved quickly.
 
 **📱 Email Notifications & Auto-Updates**
 Keep everyone informed with automatic email updates. Agents receive notifications when new support tickets are created or when there's an update, ensuring prompt attention to every customer support request.
@@ -234,7 +234,7 @@ Keep everyone informed with automatic email updates. Agents receive notification
 
 **✅ Category Order Management** - Easily reorder support ticket categories with drag-and-drop functionality for better organization.
 
-**✅ Automatic Agent Assignment** - Automatically assign tickets to agents based on predefined assignment rules. If no agent is initially assigned, the system will automatically assign the ticket to the first replying agent.
+**✅ Automatic Agent Assignment** - Automatically assign tickets to agents based on predefined rules. If no agent is assigned, the system assigns the ticket to the first replying agent.
 
 **Knowledge Base & Documentation:**
 
@@ -274,7 +274,7 @@ Keep everyone informed with automatic email updates. Agents receive notification
 
 **✅ WPML Compatibility** - Support Genix integrates with WPML, making it easy to run multilingual support systems for global customers.
 
-**✅ Multilingual Support** - Easily translate the plugin into any language using your preferred translation tool or system. It’s fully compatible with popular translation plugins, ensuring seamless localization for global users.
+**✅ Multilingual Support** - Easily translate the plugin into any language. Fully compatible with popular translation plugins for seamless localization.
 
 **Setup & Design:**
 
@@ -286,39 +286,39 @@ Keep everyone informed with automatic email updates. Agents receive notification
 
 **AI & Automation:**
 
-**✅ Ticket Creation via Chatbot (New)** – Allow customers to create support tickets directly from the chatbot interface when their questions require human assistance, ensuring seamless escalation with full conversation context.
+**✅ Ticket Creation via Chatbot (New)** – Allow customers to create support tickets directly from the chatbot when questions require human assistance, with full conversation context.
 
-**✅ Smart Documentation Suggestions (New)** – Display relevant help articles from your knowledge base automatically while customers create tickets, empowering self-service and reducing incoming support volume by up to 40%.
+**✅ Smart Documentation Suggestions (New)** – Display relevant help articles from your knowledge base while customers create tickets, reducing incoming support volume by up to 40%.
 
-**✅ Auto Close Inactive Ticket** - Automatically close resolved tickets after a set period, keeping your online helpdesk clean and your workflow organized without manual intervention.
+**✅ Auto Close Inactive Ticket** - Automatically close resolved tickets after a set period, keeping your helpdesk clean and workflow organized.
 
-**✅ Auto-Trash & Auto-Delete Tickets** – Automatically clean up old or resolved tickets after a set period, keeping your helpdesk organized and database optimized for better performance.
+**✅ Auto-Trash & Auto-Delete Tickets** – Automatically clean up old or resolved tickets after a set period, keeping your helpdesk organized and database optimized.
 
-**✅ Conditional Logic for Custom Fields (New)** – Create dynamic ticket forms with fields that appear or disappear based on user selections, collecting exactly the information you need without overwhelming customers.
+**✅ Conditional Logic for Custom Fields (New)** – Create dynamic ticket forms with fields that appear or disappear based on user selections, collecting exactly the information you need.
 
 **Ticket Management:**
 
-**✅ Email to Ticket Conversion** - Convert incoming emails into tickets automatically via email piping, streamlining your support workflow and reducing manual input for faster response times.
+**✅ Email to Ticket Conversion** - Convert incoming emails into tickets automatically via email piping, streamlining your workflow for faster response times.
 
-**✅ Mailbox Binding & Management (New)** – Associate specific email addresses directly with support tickets, enabling organized multi-mailbox management, automatic routing, and department-based email handling.
+**✅ Mailbox Binding & Management (New)** – Associate email addresses with support tickets for organized multi-mailbox management, automatic routing, and department-based handling.
 
-**✅ Ticket Transfer Between Mailboxes** – Move tickets across different mailbox categories for better organization, departmental routing, and workload distribution across your support team.
+**✅ Ticket Transfer Between Mailboxes** – Move tickets across mailbox categories for better organization, departmental routing, and workload distribution.
 
-**✅ Ticket Tags** - Organize and prioritize tickets better with customizable tags for quick sorting and easy identification of various customer queries and issue types.
+**✅ Ticket Tags** - Organize and prioritize tickets with customizable tags for quick sorting and easy identification of customer issues.
 
-**✅ Ticket Hotlink** - Provide customers with secure, one-click access to their tickets directly. Each hotlink automatically logs the customer into the support portal, allowing them to view and manage their tickets without manually signing in.
+**✅ Ticket Hotlink** - Provide customers with secure, one-click access to their tickets. Each hotlink automatically logs the customer into the support portal without manual sign-in.
 
-**✅ Customizable Text Editor Height** – Adjust the initial height of the text editor to match your team's preferences for more comfortable ticket creation and reply workflows.
+**✅ Customizable Text Editor Height** – Adjust the text editor height to match your team's preferences for comfortable ticket creation and replies.
 
 **Integrations:**
 
 **✅ WooCommerce Integration (Advanced)** – Connect external WooCommerce stores and auto-create tickets from WooCommerce events like new orders.
 
-**✅ Webhook Integration** - Integrate with external services like Zapier, HubSpot, and more, improving communication and automating ticket updates across your entire tech stack.
+**✅ Webhook Integration** - Integrate with external services like Zapier, HubSpot, and more to automate ticket updates across your tech stack.
 
 **Analytics & Performance:**
 
-**✅ Performance Insights** - Schedule automated performance reports at your preferred frequency—hourly, daily, weekly, monthly, or custom intervals. Track key support metrics delivered directly to your inbox to drive data-informed decisions.
+**✅ Performance Insights** - Schedule automated performance reports at your preferred frequency—hourly, daily, weekly, or monthly. Key support metrics delivered directly to your inbox.
 
 **✅ Weekend & Holiday Settings** - Set special hours for weekends and holidays, ensuring smooth support management during off hours with automated away messages and schedule control.
 
@@ -330,13 +330,13 @@ Keep everyone informed with automatic email updates. Agents receive notification
 
 **✅ Priority Support** - Get priority support from our team of experts with faster response times and dedicated assistance for Pro customers.
 
-More features and enhancements are coming on regular updates! 🚀 Upgrade today to unlock all these powerful tools and future enhancements that will take your customer support to the next level!
+More features and enhancements coming with regular updates! 🚀 Upgrade today to unlock all these powerful tools and take your customer support to the next level!
 
 👉 **Explore the full power!** [Upgrade to Support Genix Pro](https://supportgenix.com/pricing/?utm_source=wprepo&utm_medium=freeplugin&utm_campaign=purchasepro).
 
 == ⚡ Powerful Integrations Available in Support Genix ==
 
-Connect with the tools you already use! Verify purchase codes, communicate with customers, and manage queries faster with powerful integrations. 🚀
+Connect with the tools you already use! Manage queries faster with powerful integrations. 🚀
 
 **🛒 Connect Your Digital Marketplace**
 
@@ -361,9 +361,16 @@ Connect with the tools you already use! Verify purchase codes, communicate with 
 
 * **BetterDocs Integration (Pro)** - Auto-suggest relevant articles before tickets are created to reduce volume.
 
-All integrations work out of the box with no technical expertise needed. Improve team efficiency and customer satisfaction effortlessly.
+All integrations work out of the box with no technical expertise needed.
 
 👉 **Explore the full power!** [Upgrade to Support Genix Pro](https://supportgenix.com/pricing/?utm_source=wprepo&utm_medium=freeplugin&utm_campaign=purchasepro).
+
+== 🎬 Community Tutorials ==
+
+Learn from our amazing community members who've created helpful tutorials:
+
+[youtube https://www.youtube.com/watch?v=uhL2hkjnBb0]
+[youtube https://www.youtube.com/watch?v=a4-TINcT7Zg]
 
 
 == Installation ==
@@ -383,15 +390,47 @@ All integrations work out of the box with no technical expertise needed. Improve
 
 = Is there a limit to how many support tickets I can manage? =
 
-**Absolutely not!** Both the free and Pro versions support unlimited tickets. Your support capacity will never be restricted by our plugin.
+**Absolutely not!** Both the free and Pro versions support unlimited tickets, unlimited customers, and unlimited agents. Your support capacity will never be restricted by our plugin.
+
+= How does the AI Chatbot work? =
+
+The AI Chatbot uses your Knowledge Base content to provide instant answers to customer questions 24/7. When a visitor asks a question, the chatbot intelligently searches your documentation and delivers relevant answers automatically. It can be displayed as a floating widget across your entire site. You can also track chatbot performance with built-in analytics including conversation history, daily trends, and helpfulness rates.
+
+= What AI providers does Support Genix support? =
+
+Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Anthropic)** for AI-powered features like AI Ticket Reply, AI Docs Writer, and AI Chatbot. Support Genix AI is our built-in AI service that includes free credits, so you can start using AI features immediately without setting up external API keys.
+
+= Does Support Genix include a Knowledge Base? =
+
+**Yes!** Support Genix includes a full-featured Knowledge Base system in the free version. You can create and organize help documentation with categories, tags, and authors. It includes an **AI Docs Writer** to generate professional help articles quickly, Full Site Editing (FSE) compatibility, style customization, and built-in analytics to track content performance and user search behavior. The Knowledge Base also powers the AI Chatbot for automated support.
+
+= Can I migrate from other helpdesk or documentation plugins? =
+
+**Yes!** Support Genix includes built-in migration tools for both tickets and documentation. You can import tickets, customers, and conversation history from other helpdesk plugins, and migrate your existing documentation into the Support Genix Knowledge Base — with one-click migration that preserves your existing data structure.
+
+= Is there a customer-facing support portal? =
+
+**Yes!** Support Genix includes a modern, React-based customer portal that you can embed on any page using the `[supportgenix]` shortcode. Customers can submit new tickets, track existing ones, and manage their support requests — all from a responsive, easy-to-use interface. Guest ticket submission is also supported.
+
+= Does it work with WooCommerce? =
+
+**Yes!** Support Genix integrates with WooCommerce, allowing agents to view customer order history directly within support tickets for instant purchase context and faster resolution.
+
+= Does Support Genix support multiple languages? =
+
+**Yes!** Support Genix is fully compatible with **WPML** and **Polylang** for multilingual support. The plugin already includes translations for 10 languages — German, Spanish, French, Italian, Polish, Portuguese, Turkish, and Ukrainian — and is fully translation-ready for any additional language.
 
 = Is Support Genix GDPR compliant? =
 
-**Yes, 100%.** All customer data is stored securely within your WordPress database with no external services required. Users maintain complete control over their personal information and can remove personal information from the account at any time.
+**Yes, 100%.** Core ticket functionality stores all data securely within your WordPress database. Users maintain complete control over their personal information and can remove personal data from their account at any time. Optional AI and third-party integrations (OpenAI, Claude, Google, etc.) may transmit data to external services when enabled.
 
 = Can I use Support Genix on multiple websites? =
 
-Yes, Support Genix has pricing plans that allow usage on multiple websites. Depending on the chosen plan (developer or agency plan), it can be used on 5 websites or up to 100 websites, respectively.
+**Yes!** The free version can be used on unlimited websites with no restrictions. The Pro version has pricing plans for multiple websites — depending on the chosen plan (developer or agency plan), it can be used on 5 websites or up to 100 websites, respectively.
+
+= Does Support Genix work with my theme? =
+
+**Yes!** Support Genix is designed to work with any WordPress theme. The admin dashboard and customer portal are built as self-contained React applications, so they are not affected by your theme's styling. The Knowledge Base supports both classic themes and modern Full Site Editing (FSE) themes with dedicated Gutenberg blocks.
 
 = Can I customize the ticket submission form? =
 
