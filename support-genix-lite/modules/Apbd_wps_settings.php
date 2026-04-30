@@ -241,7 +241,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 }
             }
         } else {
-            $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->get_portal_url("dist/main.CQQWSnKH.1775456940473.css")) . '" media=""';
+            $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->get_portal_url("dist/main.CQQWSnKH.1777453756852.css")) . '" media=""';
             ?>
             <link <?php echo wp_kses_post($ats); ?> />
         <?php
@@ -335,6 +335,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'wp_version' => get_bloginfo('version'),
             'version' => $coreObject->pluginVersion,
             'is_rtl' => is_rtl(),
+            'wp_locale' => is_textdomain_loaded('support-genix-lite') ? get_user_locale() : '',
             'texts' => Apbd_wps_settings::portal_texts(),
             'debug' => defined('WP_DEBUG') ? !!WP_DEBUG : false,
         ];
@@ -362,7 +363,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 }
             }
         } else {
-            $ats = 'type="module" src="' . esc_url($this->get_portal_url("dist/main.ASsScegt.1775456940473.js")) . '" id="support-genix-portal-main-js"';
+            $ats = 'type="module" src="' . esc_url($this->get_portal_url("dist/main.BPpES49K.1777453756852.js")) . '" id="support-genix-portal-main-js"';
             ?>
             <script <?php echo wp_kses_post($ats); ?>></script>
         <?php
@@ -1449,6 +1450,12 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     // From version 1.4.44
                     Mapbd_wps_chatbot_session::UpdateDBTable4();
                 }
+
+                // When pro version is less than 1.8.45
+                if (1 === version_compare('1.8.45', $last_pro_version)) {
+                    // From version 1.4.45
+                    $this->UpdateBaseFolder();
+                }
             }
 
             // From version 1.4.0
@@ -1756,6 +1763,14 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 // When pro version is empty or less than 1.8.44
                 if (empty($last_pro_version) || (1 === version_compare('1.8.44', $last_pro_version))) {
                     Mapbd_wps_chatbot_session::UpdateDBTable4();
+                }
+            }
+
+            // From version 1.4.45
+            if (1 === version_compare('1.4.45', $previous_version)) {
+                // When pro version is empty or less than 1.8.45
+                if (empty($last_pro_version) || (1 === version_compare('1.8.45', $last_pro_version))) {
+                    $this->UpdateBaseFolder();
                 }
             }
         }
@@ -2217,7 +2232,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $email_to_ticket_rich_html = 'N';
         $close_ticket_opt_for_customer = 'N';
         $disable_auto_ticket_assignment = $this->GetOption('disable_auto_ticket_assignment', 'N');
-        $disable_need_reply_sorting = $this->GetOption('disable_need_reply_sorting', 'N');
+        $enable_need_reply_sorting = $this->GetOption('enable_need_reply_sorting', 'N');
         $disable_ticket_hotlink = $this->GetOption('disable_ticket_hotlink', 'N');
         $disable_undo_submit = $this->GetOption('disable_undo_submit', 'N');
         $disable_current_viewers = $this->GetOption('disable_current_viewers', 'N');
@@ -2241,7 +2256,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $email_to_ticket_rich_html = ('Y' === $email_to_ticket_rich_html) ? true : false;
         $close_ticket_opt_for_customer = ('Y' === $close_ticket_opt_for_customer) ? true : false;
         $disable_auto_ticket_assignment = ('Y' === $disable_auto_ticket_assignment) ? true : false;
-        $disable_need_reply_sorting = ('Y' === $disable_need_reply_sorting) ? true : false;
+        $enable_need_reply_sorting = ('Y' === $enable_need_reply_sorting) ? true : false;
         $disable_ticket_hotlink = ('Y' === $disable_ticket_hotlink) ? true : false;
         $disable_undo_submit = ('Y' === $disable_undo_submit) ? true : false;
         $disable_current_viewers = ('Y' === $disable_current_viewers) ? true : false;
@@ -2282,7 +2297,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'email_to_ticket_rich_html' => $email_to_ticket_rich_html,
             'close_ticket_opt_for_customer' => $close_ticket_opt_for_customer,
             'disable_auto_ticket_assignment' => $disable_auto_ticket_assignment,
-            'disable_need_reply_sorting' => $disable_need_reply_sorting,
+            'enable_need_reply_sorting' => $enable_need_reply_sorting,
             'disable_ticket_hotlink' => $disable_ticket_hotlink,
             'disable_undo_submit' => $disable_undo_submit,
             'disable_current_viewers' => $disable_current_viewers,
@@ -2593,7 +2608,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             $email_to_ticket_rich_html = sanitize_text_field($this->GetOption('email_to_ticket_rich_html', 'N'));
             $close_ticket_opt_for_customer = sanitize_text_field($this->GetOption('close_ticket_opt_for_customer', 'N'));
             $disable_auto_ticket_assignment = sanitize_text_field(ApbdWps_PostValue('disable_auto_ticket_assignment', ''));
-            $disable_need_reply_sorting = sanitize_text_field(ApbdWps_PostValue('disable_need_reply_sorting', ''));
+            $enable_need_reply_sorting = sanitize_text_field(ApbdWps_PostValue('enable_need_reply_sorting', ''));
             $disable_ticket_hotlink = sanitize_text_field(ApbdWps_PostValue('disable_ticket_hotlink', ''));
             $disable_undo_submit = sanitize_text_field(ApbdWps_PostValue('disable_undo_submit', ''));
             $disable_current_viewers = sanitize_text_field(ApbdWps_PostValue('disable_current_viewers', ''));
@@ -2617,7 +2632,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             $email_to_ticket_rich_html = 'Y' === $email_to_ticket_rich_html ? 'Y' : 'N';
             $close_ticket_opt_for_customer = 'Y' === $close_ticket_opt_for_customer ? 'Y' : 'N';
             $disable_auto_ticket_assignment = 'Y' === $disable_auto_ticket_assignment ? 'Y' : 'N';
-            $disable_need_reply_sorting = 'Y' === $disable_need_reply_sorting ? 'Y' : 'N';
+            $enable_need_reply_sorting = 'Y' === $enable_need_reply_sorting ? 'Y' : 'N';
             $disable_ticket_hotlink = 'Y' === $disable_ticket_hotlink ? 'Y' : 'N';
             $disable_undo_submit = 'Y' === $disable_undo_submit ? 'Y' : 'N';
             $disable_current_viewers = 'Y' === $disable_current_viewers ? 'Y' : 'N';
@@ -2668,7 +2683,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             $this->AddIntoOption('email_to_ticket_rich_html', $email_to_ticket_rich_html);
             $this->AddIntoOption('close_ticket_opt_for_customer', $close_ticket_opt_for_customer);
             $this->AddIntoOption('disable_auto_ticket_assignment', $disable_auto_ticket_assignment);
-            $this->AddIntoOption('disable_need_reply_sorting', $disable_need_reply_sorting);
+            $this->AddIntoOption('enable_need_reply_sorting', $enable_need_reply_sorting);
             $this->AddIntoOption('disable_ticket_hotlink', $disable_ticket_hotlink);
             $this->AddIntoOption('disable_undo_submit', $disable_undo_submit);
             $this->AddIntoOption('disable_current_viewers', $disable_current_viewers);
@@ -3124,19 +3139,17 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         echo wp_json_encode($apiResponse);
     }
 
-    function CreateBaseFolder()
+    /**
+     * Build the hardened .htaccess content used by the upload directory.
+     *
+     * Why: a remote-URL attachment flow (incoming webhook / HT contact form) was
+     * able to land .php files in this directory before validation. Defense-in-depth:
+     * even if a script slips in, Apache/LiteSpeed must refuse to execute it.
+     */
+    private static function GetUploadHtaccessContent()
     {
-        // Create directory if it doesn't exist
-        if (!is_dir(self::$uploadBasePath)) {
-            wp_mkdir_p(self::$uploadBasePath);
-        }
-
-        // Create .htaccess if it doesn't exist
-        $htaccessFile = self::$uploadBasePath . "/.htaccess";
-        if (!file_exists($htaccessFile)) {
-            ApbdWps_FilePutContents(
-                $htaccessFile,
-                '# Block access to hidden/system files
+        return '# Support Genix - upload directory hardening (do not edit; managed by plugin)
+# Block access to hidden/system files
 <FilesMatch "^\.">
     <IfModule authz_core_module>
         Require all denied
@@ -3145,8 +3158,59 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         Order allow,deny
         Deny from all
     </IfModule>
-</FilesMatch>'
-            );
+</FilesMatch>
+
+# Deny direct access to executable / script files of any kind
+<FilesMatch "(?i)\.(php|phtml|phar|phps|pht|php[3-8]|js|mjs|html|htm|shtml|sh|bash|zsh|csh|ksh|cgi|pl|py|rb|asp|aspx|jsp|jspx|svg|htaccess|htpasswd)$">
+    <IfModule authz_core_module>
+        Require all denied
+    </IfModule>
+    <IfModule !authz_core_module>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Disable PHP handlers if mod_php / mod_mime is loaded
+<IfModule mod_php5.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_mime.c>
+    RemoveHandler .php .phtml .phar .phps .pht .php3 .php4 .php5 .php6 .php7 .php8
+    RemoveType .php .phtml .phar .phps .pht .php3 .php4 .php5 .php6 .php7 .php8
+    AddType text/plain .php .phtml .phar .phps .pht .php3 .php4 .php5 .php6 .php7 .php8 .js .mjs .html .htm .shtml .sh .cgi .pl .py .svg
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes -ExecCGI
+
+# Strip any X-Powered-By disclosure
+<IfModule mod_headers.c>
+    Header unset X-Powered-By
+</IfModule>
+';
+    }
+
+    function CreateBaseFolder()
+    {
+        // Create directory if it doesn't exist
+        if (!is_dir(self::$uploadBasePath)) {
+            wp_mkdir_p(self::$uploadBasePath);
+        }
+
+        // Always (re)write .htaccess so existing installs pick up the hardened rules.
+        // Cheap I/O on a single file and avoids needing a version-gated migration.
+        $htaccessFile = self::$uploadBasePath . "/.htaccess";
+        $desired = self::GetUploadHtaccessContent();
+        $current = file_exists($htaccessFile) ? @file_get_contents($htaccessFile) : '';
+        if ($current !== $desired) {
+            ApbdWps_FilePutContents($htaccessFile, $desired);
         }
 
         // Create index.php if it doesn't exist
@@ -3172,19 +3236,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
         // Always update .htaccess with latest security rules
         $htaccessFile = self::$uploadBasePath . "/.htaccess";
-        ApbdWps_FilePutContents(
-            $htaccessFile,
-            '# Block access to hidden/system files
-<FilesMatch "^\.">
-    <IfModule authz_core_module>
-        Require all denied
-    </IfModule>
-    <IfModule !authz_core_module>
-        Order allow,deny
-        Deny from all
-    </IfModule>
-</FilesMatch>'
-        );
+        ApbdWps_FilePutContents($htaccessFile, self::GetUploadHtaccessContent());
 
         // Create index.php if it doesn't exist
         $indexFile = self::$uploadBasePath . "/index.php";
@@ -3587,8 +3639,23 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             }
 
             if (is_dir($ticketDir)) {
+                $allowedExts = $this->GetAllowedFileType();
                 foreach ($ticket_files['name'] as $ind => $name) {
-                    $fname = md5(uniqid(rand())) . '___' . sanitize_file_name($name);
+                    // Hardcoded denylist is non-negotiable, even if checkUploadedFiles was bypassed somehow.
+                    if (ApbdWps_IsBlockedFileExtension($name)) {
+                        continue;
+                    }
+
+                    $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+                    if (!in_array($ext, $allowedExts, true)) {
+                        continue;
+                    }
+
+                    if (empty($ticket_files['tmp_name'][$ind]) || !is_uploaded_file($ticket_files['tmp_name'][$ind])) {
+                        continue;
+                    }
+
+                    $fname = md5(uniqid((string) wp_rand(), true)) . '___' . sanitize_file_name($name);
 
                     global $wp_filesystem;
 
@@ -3618,12 +3685,12 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
     function fileCheck($isOk, $name, $error, $type, $size)
     {
-        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-        $allowed = Apbd_wps_settings::GetModuleAllowedFileType();
-        if (in_array($ext, ['php', 'js', 'sh', 'bash', 'cgi'])) {
+        if (ApbdWps_IsBlockedFileExtension($name)) {
             return false;
         }
-        if (!in_array($ext, $allowed)) {
+        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+        $allowed = Apbd_wps_settings::GetModuleAllowedFileType();
+        if (!in_array($ext, $allowed, true)) {
             $isOk = false;
         }
         return $isOk;
@@ -4330,7 +4397,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'General' => $core->__('General'),
             'User Roles' => $core->__('User Roles'),
             'Categories' => $core->__('Categories'),
-            'Assign Rules' => $core->__('Assign Rules'),
+            'Automation Rules' => $core->__('Automation Rules'),
             'Custom Fields' => $core->__('Custom Fields'),
             'Email to Ticket' => $core->__('Email to Ticket'),
             'Modern' => $core->__('Modern'),
@@ -4450,12 +4517,14 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Edit Purchase Code' => $core->__('Edit Purchase Code'),
             'Update' => $core->__('Update'),
             'Parent Category' => $core->__('Parent Category'),
-            'Assign Rule' => $core->__('Assign Rule'),
+            'Automation Rule' => $core->__('Automation Rule'),
             'Rule Type' => $core->__('Rule Type'),
             'Assign to role' => $core->__('Assign to role'),
             'Assign to agent' => $core->__('Assign to agent'),
             'Rule type' => $core->__('Rule type'),
             'Notify to agent' => $core->__('Notify to agent'),
+            'Delivery of this notification depends on an active "Notify to agent" rule under %s.' => $core->__('Delivery of this notification depends on an active "Notify to agent" rule under %s.'),
+            'Without one, no admin or agent will receive it.' => $core->__('Without one, no admin or agent will receive it.'),
             'Select Role' => $core->__('Select Role'),
             'Role' => $core->__('Role'),
             'Choose Category' => $core->__('Choose Category'),
@@ -5131,7 +5200,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'Enable docs resources' => $core->__('Enable docs resources'),
             'Respond to greetings even when no resource matches' => $core->__('Respond to greetings even when no resource matches'),
             'Disable auto ticket assignment to first responder.' => $core->__('Disable auto ticket assignment to first responder.'),
-            'Disable smart need reply sorting.' => $core->__('Disable smart need reply sorting.'),
+            'Enable smart sorting for need reply filter.' => $core->__('Enable smart sorting for need reply filter.'),
             'Ticket Mailbox ID' => $core->__('Ticket Mailbox ID'),
             'Ticket Mailbox Type' => $core->__('Ticket Mailbox Type'),
             'Use "M" for modern or "T" for traditional. Default is modern.' => $core->__('Use "M" for modern or "T" for traditional. Default is modern.'),

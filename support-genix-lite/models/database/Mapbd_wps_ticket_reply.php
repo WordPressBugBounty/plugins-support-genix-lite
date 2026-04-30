@@ -243,6 +243,11 @@ class Mapbd_wps_ticket_reply extends ApbdWpsModel
                     return false;
                 }
             }
+            $disable_closed_ticket_reply = Apbd_wps_settings::GetModuleOption('disable_closed_ticket_reply', 'N');
+            if ('Y' === $disable_closed_ticket_reply && 'C' === $ticket->status && in_array($replied_by_type, ['U', 'G'], true)) {
+                $replyObj->AddError("Replies are disabled on closed tickets.");
+                return false;
+            }
             $replyObj->ticket_id($ticket_id);
             $replyObj->ticket_status($ticket->status);
             $replyObj->is_private($is_private);

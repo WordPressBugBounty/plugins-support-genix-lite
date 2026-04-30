@@ -229,37 +229,78 @@ class Apbd_wps_ht_contact_form extends ApbdWpsBaseModuleLite
         if (is_array($ticket_attachments) && ! empty($ticket_attachments)) {
             $ticket_path = Apbd_wps_settings::GetModuleInstance()->getTicketAttachedPath($ticketObj->id);
 
+            if (empty($ticket_path)) {
+                Mapbd_wps_debug_log::AddGeneralLog("Attachment path unavailable; skipping");
+                return;
+            }
+
             $allowed_type = Apbd_wps_settings::GetModuleAllowedFileType();
-            $allowed_type = array_map(function ($value) {
-                return strtoupper($value);
-            }, $allowed_type);
+            $allowed_type = array_map('strtolower', $allowed_type);
+
+            $allowedFileSize = Apbd_wps_settings::GetModuleOption("file_upload_size", "2");
+            $allowedFileSize = (int) (floatval($allowedFileSize) * 1024 * 1024);
 
             foreach ($ticket_attachments as $file_url) {
-                $file_name = pathinfo($file_url, PATHINFO_BASENAME);
+                if (empty($file_url) || !is_string($file_url)) {
+                    continue;
+                }
 
-                $file_extension = pathinfo($file_url, PATHINFO_EXTENSION);
-                $file_extension = strtoupper($file_extension);
-                $file_extension = ("JPEG" === $file_extension ? "JPG" : $file_extension);
+                // Parse the URL path BEFORE pathinfo so query strings (e.g. S3 presigned URLs)
+                // do not strip the real extension — `pathinfo("a.jpg?token=x", ...)` returns
+                // "jpg?token=x" which fails the allow-list check for legitimate downloads.
+                $url_path = wp_parse_url($file_url, PHP_URL_PATH);
+                $url_path = is_string($url_path) ? $url_path : '';
+                $file_name = pathinfo($url_path, PATHINFO_BASENAME);
+                $file_extension = strtolower(pathinfo($url_path, PATHINFO_EXTENSION));
+                $normalised_ext = ("jpeg" === $file_extension) ? "jpg" : $file_extension;
 
-                if (!empty($ticket_path) && !empty($file_url)) {
-                    $file_content = file_get_contents($file_url);
+                // Hardcoded denylist (script/executable types) takes precedence over admin config.
+                if (ApbdWps_IsBlockedFileExtension($file_name)) {
+                    Mapbd_wps_debug_log::AddGeneralLog("Blocked extension rejected: {$file_name}", $file_name);
+                    continue;
+                }
 
-                    if ($file_content) {
-                        $file_path = $ticket_path . $file_name;
-                        $file_pointer = fopen($file_path, 'wb');
-                        fwrite($file_pointer, $file_content);
-                        fclose($file_pointer);
+                if (!in_array($normalised_ext, $allowed_type, true)) {
+                    Mapbd_wps_debug_log::AddGeneralLog("Disallowed extension rejected: {$file_name}", $file_name);
+                    continue;
+                }
 
-                        if (in_array($file_extension, $allowed_type)) {
-                            $file_save_name = md5(uniqid(rand())) . '___' . sanitize_file_name($file_name);
-                            rename($file_path, $ticket_path . $file_save_name);
-                        } else {
-                            unlink($file_path);
-                            Mapbd_wps_debug_log::AddGeneralLog("Unauthorized file type, {$file_name} Deleted", $file_name);
-                        }
-                    } else {
-                        Mapbd_wps_debug_log::AddGeneralLog("File is not readable", $file_name);
-                    }
+                // SSRF guard before any outbound request.
+                if (!ApbdWps_IsSafeRemoteUrl($file_url)) {
+                    Mapbd_wps_debug_log::AddGeneralLog("Unsafe attachment URL rejected", $file_url);
+                    continue;
+                }
+
+                // Generate the safe destination filename BEFORE writing — never touch disk
+                // with the attacker-controlled basename.
+                $file_save_name = md5(uniqid((string) wp_rand(), true)) . '___' . sanitize_file_name($file_name);
+                $file_path = $ticket_path . $file_save_name;
+
+                $response = wp_safe_remote_get($file_url, array(
+                    'timeout' => 30,
+                    'redirection' => 3,
+                    'limit_response_size' => $allowedFileSize > 0 ? $allowedFileSize : null,
+                ));
+
+                if (is_wp_error($response)) {
+                    Mapbd_wps_debug_log::AddGeneralLog("Attachment download failed: " . $response->get_error_message(), $file_name);
+                    continue;
+                }
+
+                $file_content = wp_remote_retrieve_body($response);
+
+                if ('' === $file_content || false === $file_content) {
+                    Mapbd_wps_debug_log::AddGeneralLog("File is not readable", $file_name);
+                    continue;
+                }
+
+                if ($allowedFileSize > 0 && strlen($file_content) > $allowedFileSize) {
+                    Mapbd_wps_debug_log::AddGeneralLog("Attachment exceeds size limit", $file_name);
+                    continue;
+                }
+
+                if (false === file_put_contents($file_path, $file_content)) {
+                    Mapbd_wps_debug_log::AddGeneralLog("Attachment write failed", $file_name);
                 }
             }
         }

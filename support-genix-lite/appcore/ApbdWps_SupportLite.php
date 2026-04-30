@@ -177,7 +177,7 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
                 }
             }
         } else {
-            $this->AddAdminStyle($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/main.Bq9-r_DJ.1775456915286.css", true);
+            $this->AddAdminStyle($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/main.Bq9-r_DJ.1777453728224.css", true);
         }
 
         foreach ($this->moduleList as $moduleObject) {
@@ -199,7 +199,7 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
                 }
             }
         } else {
-            $this->AddAdminScript($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/main.Cpjpca-K.1775456915286.js", true);
+            $this->AddAdminScript($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/main.Dkl17Gg3.1777453728224.js", true);
         }
 
         $userObj = wp_get_current_user();
@@ -225,6 +225,7 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
             'wp_version' => get_bloginfo('version'),
             'version' => $this->pluginVersion,
             'is_rtl' => is_rtl(),
+            'wp_locale' => is_textdomain_loaded('support-genix-lite') ? get_user_locale() : '',
             'pricing_url' => 'https://supportgenix.com/pricing/?utm_source=admin&utm_medium=mainmenu&utm_campaign=free',
             'texts' => Apbd_wps_settings::dashboard_texts(),
             'debug' => defined('WP_DEBUG') ? !!WP_DEBUG : false,

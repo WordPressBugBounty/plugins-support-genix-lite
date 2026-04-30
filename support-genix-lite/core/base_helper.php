@@ -119,6 +119,7 @@ if (! function_exists("ApbdWps_CleanDomainName")) {
         if (strtolower($iswww) == "www.") {
             $url = substr($url, 4);
         }
+        $url = untrailingslashit($url);
         return $url;
     }
 }
@@ -255,6 +256,120 @@ if (! function_exists("ApbdWps_GetRemoteIP")) {
         } else {
             return ! empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : "-";
         }
+    }
+}
+
+if (! function_exists("ApbdWps_IsSafeRemoteUrl")) {
+    /**
+     * SSRF guard for remote URLs that the plugin downloads (webhooks, email-to-ticket attachments).
+     *
+     * Rejects:
+     *  - Non-http(s) schemes (file://, php://, gopher://, ftp://, data://, etc.)
+     *  - URLs with userinfo (user:pass@host) — DNS rebinding/credential leak vector
+     *  - Hosts that resolve to private/loopback/link-local/reserved ranges
+     *  - Hostnames that look like internal-only metadata services
+     *
+     * @param string $url
+     * @return bool true if URL is safe to fetch
+     */
+    function ApbdWps_IsSafeRemoteUrl($url)
+    {
+        if (!is_string($url) || $url === '') {
+            return false;
+        }
+
+        $parts = wp_parse_url($url);
+        if (empty($parts) || empty($parts['scheme']) || empty($parts['host'])) {
+            return false;
+        }
+
+        $scheme = strtolower($parts['scheme']);
+        if (!in_array($scheme, array('http', 'https'), true)) {
+            return false;
+        }
+
+        if (!empty($parts['user']) || !empty($parts['pass'])) {
+            return false;
+        }
+
+        $host = strtolower($parts['host']);
+
+        // Strip brackets from IPv6 hosts.
+        if (strpos($host, '[') === 0 && substr($host, -1) === ']') {
+            $host = substr($host, 1, -1);
+        }
+
+        // Block obvious internal-only hostnames.
+        $blockedHosts = array('localhost', 'localhost.localdomain', 'ip6-localhost', 'ip6-loopback', 'metadata.google.internal');
+        if (in_array($host, $blockedHosts, true)) {
+            return false;
+        }
+
+        // Resolve host to IP(s). If host is already an IP, gethostbynamel returns it.
+        $ips = array();
+        if (filter_var($host, FILTER_VALIDATE_IP)) {
+            $ips = array($host);
+        } else {
+            $resolved = @gethostbynamel($host);
+            if (is_array($resolved) && !empty($resolved)) {
+                $ips = $resolved;
+            }
+        }
+
+        if (empty($ips)) {
+            // Could not resolve — refuse rather than risk SSRF.
+            return false;
+        }
+
+        foreach ($ips as $ip) {
+            if (!filter_var(
+                $ip,
+                FILTER_VALIDATE_IP,
+                FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+            )) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+if (! function_exists("ApbdWps_IsBlockedFileExtension")) {
+    /**
+     * Hardcoded denylist of executable/script extensions that must NEVER land in the
+     * plugin upload directory regardless of admin-configured allowed file types.
+     *
+     * @param string $filename
+     * @return bool true if extension is blocked
+     */
+    function ApbdWps_IsBlockedFileExtension($filename)
+    {
+        $base = strtolower(basename((string) $filename));
+
+        // Dot-files like ".htaccess" / ".htpasswd" have no PATHINFO_EXTENSION,
+        // so match them by basename before falling through to extension check.
+        $blockedNames = array('.htaccess', '.htpasswd');
+        if (in_array($base, $blockedNames, true)) {
+            return true;
+        }
+
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        if ($ext === '') {
+            return false;
+        }
+
+        $blocked = array(
+            'php', 'phtml', 'phar', 'phps', 'pht', 'php3', 'php4', 'php5', 'php6', 'php7', 'php8',
+            'js', 'mjs', 'html', 'htm', 'shtml',
+            'sh', 'bash', 'zsh', 'csh', 'ksh',
+            'cgi', 'pl', 'py', 'rb',
+            'asp', 'aspx', 'jsp', 'jspx',
+            'htaccess', 'htpasswd',
+            'svg',
+        );
+
+        return in_array($ext, $blocked, true);
     }
 }
 

@@ -5,7 +5,7 @@ Tags: helpdesk, support ticket, customer support, ai chatbot, knowledge base, su
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.4.44
+Stable tag: 1.4.45
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -466,6 +466,13 @@ Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Ant
 
 == Changelog ==
 
+= Version: 1.4.45 - Date: 30 April, 2026 =
+* Improved: Handling of "Disable replies on closed tickets" for customer and email replies.
+* Improved: Overall translation coverage and locale handling for a more consistent multilingual experience.
+* Improved: File upload and download validation for better security.
+* Improved: Overall plugin performance and stability for smoother, more reliable usage.
+* Fixed: Minor bugs and issues to enhance functionality and user experience.
+
 = Version: 1.4.44 - Date: 06 April, 2026 =
 * Added: New email template placeholders for ticket track ID, priority, and assigned user.
 * Improved: Email template rendering with CSS inlining for better email client compatibility.
@@ -580,12 +587,5 @@ Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Ant
 * Fixed: Minor bugs and issues to enhance functionality and user experience.
 
 = Version: 1.4.26 - Date: 18 September, 2025 =
-* Improved: Overall plugin performance and stability for smoother, more reliable usage.
-* Fixed: Minor bugs and issues to enhance functionality and user experience.
-
-= Version: 1.4.25 - Date: 27 August, 2025 =
-* Added: Ticket priority system with options to set and filter by priority.
-* Added: Multiple role selector support for users.
-* Added: Undo feature for agents when creating replies and notes.
 * Improved: Overall plugin performance and stability for smoother, more reliable usage.
 * Fixed: Minor bugs and issues to enhance functionality and user experience.

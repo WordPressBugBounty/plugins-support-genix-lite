@@ -521,6 +521,13 @@ class Apbd_Wps_Imap
         $decodedName = imap_mime_header_decode($partStruct->dparameters[0]->value);
         $filename = $this->convert_to_utf8($decodedName[0]->text);
 
+        // Sender-controlled filename: never trust it on disk. Generate a safe
+        // randomised name and refuse blocked script extensions outright.
+        if (ApbdWps_IsBlockedFileExtension($filename)) {
+            return FALSE;
+        }
+        $filename = md5(uniqid((string) wp_rand(), true)) . '___' . sanitize_file_name($filename);
+
         $message = imap_fetchbody($this->stream, $id, $attachment['partNum']); // FT_UID ?
 
         switch ($attachment['enc']) {

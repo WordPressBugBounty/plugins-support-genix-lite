@@ -118,7 +118,7 @@ class ApbdWpsAPI_Config extends Apbd_Wps_APIBase
         $disable_registration_form = Apbd_wps_settings::GetModuleOption('disable_registration_form', 'N');
         $disable_guest_ticket_creation = Apbd_wps_settings::GetModuleOption('disable_guest_ticket_creation', 'N');
         $disable_auto_ticket_assignment = Apbd_wps_settings::GetModuleOption('disable_auto_ticket_assignment', 'N');
-        $disable_need_reply_sorting = Apbd_wps_settings::GetModuleOption('disable_need_reply_sorting', 'N');
+        $enable_need_reply_sorting = Apbd_wps_settings::GetModuleOption('enable_need_reply_sorting', 'N');
         $disable_undo_submit = Apbd_wps_settings::GetModuleOption('disable_undo_submit', 'N');
         $disable_current_viewers = Apbd_wps_settings::GetModuleOption('disable_current_viewers', 'N');
 
@@ -144,7 +144,7 @@ class ApbdWpsAPI_Config extends Apbd_Wps_APIBase
         $disable_registration_form = 'Y' === $disable_registration_form ? 'Y' : 'N';
         $disable_guest_ticket_creation = 'Y' === $disable_guest_ticket_creation ? 'Y' : 'N';
         $disable_auto_ticket_assignment = 'Y' === $disable_auto_ticket_assignment ? 'Y' : 'N';
-        $disable_need_reply_sorting = 'Y' === $disable_need_reply_sorting ? 'Y' : 'N';
+        $enable_need_reply_sorting = 'Y' === $enable_need_reply_sorting ? 'Y' : 'N';
         $disable_undo_submit = 'Y' === $disable_undo_submit ? 'Y' : 'N';
         $disable_current_viewers = 'Y' === $disable_current_viewers ? 'Y' : 'N';
         $docs_suggestions_status = 'A' === $docs_suggestions_status ? 'A' : 'I';
@@ -186,7 +186,7 @@ class ApbdWpsAPI_Config extends Apbd_Wps_APIBase
         $settings->disable_registration_form = $disable_registration_form;
         $settings->disable_guest_ticket_creation = $disable_guest_ticket_creation;
         $settings->disable_auto_ticket_assignment = $disable_auto_ticket_assignment;
-        $settings->disable_need_reply_sorting = $disable_need_reply_sorting;
+        $settings->enable_need_reply_sorting = $enable_need_reply_sorting;
         $settings->disable_undo_submit = $disable_undo_submit;
         $settings->disable_current_viewers = $disable_current_viewers;
         $settings->enable_docs_suggestions = $enable_docs_suggestions;

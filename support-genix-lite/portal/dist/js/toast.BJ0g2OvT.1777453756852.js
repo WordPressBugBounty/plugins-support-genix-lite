@@ -1,0 +1,1 @@
+import{s}from"./antd.DqMF4xqu.1777453756852.js";const c=()=>{window==null||window.scrollTo({top:0,behavior:"smooth"})},r=()=>{const o=document==null?void 0:document.querySelector(".sgenix-ant-modal-wrap");o&&(o==null||o.scrollTo({top:0,behavior:"smooth"}))};s.config({top:"32px"});export{c as a,r as s};

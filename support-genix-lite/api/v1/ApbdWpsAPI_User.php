@@ -400,18 +400,37 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
                     require_once(ABSPATH . 'wp-admin/includes/file.php');
                 }
 
+                if (empty($_FILES['file']) || !is_array($_FILES['file'])) {
+                    $this->response->SetResponse(false, $settingsObj->__("No file uploaded"));
+                    return $this->response;
+                }
+
                 $uploadedfile = $_FILES['file'];
+                $uploadedName = isset($uploadedfile['name']) ? (string) $uploadedfile['name'] : '';
+
+                // Hardcoded denylist takes precedence — script extensions never allowed regardless of MIME.
+                if (ApbdWps_IsBlockedFileExtension($uploadedName)) {
+                    $this->response->SetResponse(false, $settingsObj->__("Invalid image file"));
+                    return $this->response;
+                }
+
                 $allowed_image_extension = array("png", "jpg", "jpeg");
 
-                $file_extension = pathinfo($uploadedfile["name"], PATHINFO_EXTENSION);
+                // Lowercase before compare so legitimate uploads like cat.PNG are not rejected,
+                // and so case-spoofed names like shell.PHP cannot squeak through.
+                $file_extension = strtolower(pathinfo($uploadedName, PATHINFO_EXTENSION));
 
-                if (! in_array($file_extension, $allowed_image_extension)) {
+                if (! in_array($file_extension, $allowed_image_extension, true)) {
                     $this->response->SetResponse(false, $settingsObj->__("Invalid images file. Only PNG and JPEG are allowed"));
                     return $this->response;
                 }
 
                 $upload_overrides = array(
-                    'test_form' => false
+                    'test_form' => false,
+                    'mimes' => array(
+                        'png' => 'image/png',
+                        'jpg|jpeg' => 'image/jpeg',
+                    ),
                 );
 
                 $movefile = wp_handle_upload($uploadedfile, $upload_overrides);
