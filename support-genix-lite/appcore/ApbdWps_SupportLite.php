@@ -177,7 +177,7 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
                 }
             }
         } else {
-            $this->AddAdminStyle($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/main.Bq9-r_DJ.1777453728224.css", true);
+            $this->AddAdminStyle($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/main.Bq9-r_DJ.1779599007436.css", true);
         }
 
         foreach ($this->moduleList as $moduleObject) {
@@ -199,7 +199,7 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
                 }
             }
         } else {
-            $this->AddAdminScript($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/main.Dkl17Gg3.1777453728224.js", true);
+            $this->AddAdminScript($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/main.B6aDe83e.1779599007436.js", true);
         }
 
         $userObj = wp_get_current_user();

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Support Genix Lite\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-29 09:16+0000\n"
+"POT-Creation-Date: 2026-05-24 04:47+0000\n"
 "PO-Revision-Date: 2026-04-29 09:17+0000\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.3; wp-6.9.4; php-8.3.30\n"
+"X-Loco-Version: 2.8.4; wp-7.0; php-8.3.31\n"
 "X-Domain: support-genix-lite\n"
 
 #: core/ApbdWpsModel.php:1099
@@ -1825,7 +1825,7 @@ msgid "Disable auto ticket assignment to first responder."
 msgstr "Disabilita l'assegnazione automatica del ticket al primo risponditore."
 
 #: modules/Apbd_wps_settings.php:4875
-msgid "Disable chatbot ticket creation for non-registered user."
+msgid "Disable chatbot ticket creation for non-registered users."
 msgstr ""
 "Disabilita la creazione di ticket tramite chatbot per gli utenti non "
 "registrati."
@@ -1840,7 +1840,7 @@ msgstr ""
 "Disabilita la visualizzazione degli utenti correnti nei dettagli del ticket."
 
 #: modules/Apbd_wps_settings.php:4873
-msgid "Disable email to ticket creation for non-registered user."
+msgid "Disable email-to-ticket creation for non-registered users."
 msgstr ""
 "Disabilita la creazione di ticket tramite e-mail per gli utenti non "
 "registrati."
@@ -2310,7 +2310,7 @@ msgid "Enable email notification."
 msgstr "Abilita la notifica e-mail."
 
 #: modules/Apbd_wps_settings.php:5101
-msgid "Enable multiple role selector for user."
+msgid "Enable multiple role selector for users."
 msgstr "Abilita il selettore di ruoli multipli per l'utente."
 
 #: modules/Apbd_wps_settings.php:5040
@@ -2330,7 +2330,7 @@ msgid "Enable public ticket option (on details)."
 msgstr "Abilita l'opzione ticket pubblico (nei dettagli)."
 
 #: modules/Apbd_wps_settings.php:4874
-msgid "Enable rich HTML for email to ticket content."
+msgid "Enable rich HTML for email-to-ticket content."
 msgstr "Abilita HTML avanzato per il contenuto delle e-mail a ticket."
 
 #: modules/Apbd_wps_settings.php:4431
@@ -2357,15 +2357,15 @@ msgstr ""
 "autenticazione lato server."
 
 #: modules/Apbd_wps_settings.php:4436
-msgid "Enable ticket close option for customer."
+msgid "Enable ticket close option for customers."
 msgstr "Abilita l'opzione di chiusura del ticket per il cliente."
 
 #: modules/Apbd_wps_settings.php:5209
-msgid "Enable tickets auto refresh."
+msgid "Enable ticket list auto-refresh."
 msgstr "Abilita l'aggiornamento automatico dei ticket."
 
 #: modules/Apbd_wps_settings.php:4433
-msgid "Enable to show public tickets."
+msgid "Enable public tickets display."
 msgstr "Abilita la visualizzazione dei ticket pubblici."
 
 #: modules/Apbd_wps_settings.php:5263
@@ -2389,11 +2389,11 @@ msgid "Enable voice playback (listen to responses)"
 msgstr "Abilita riproduzione vocale (ascolta le risposte)"
 
 #: modules/Apbd_wps_settings.php:4429
-msgid "Enable Wordpress Login Register."
+msgid "Enable WordPress login & registration."
 msgstr "Abilita accesso e registrazione WordPress."
 
 #: modules/Apbd_wps_settings.php:4430
-msgid "Enable Wordpress Profile Link."
+msgid "Enable WordPress profile link."
 msgstr "Abilita link al profilo WordPress."
 
 #: traits/Apbd_wps_knowledge_base_chatbot_trait.php:512
@@ -5105,7 +5105,7 @@ msgid "Remote URL"
 msgstr "URL remoto"
 
 #: modules/Apbd_wps_settings.php:4428
-msgid "Remove powered-by."
+msgid "Remove 'powered by' branding."
 msgstr "Rimuovi powered-by."
 
 #: modules/Apbd_wps_settings.php:5392

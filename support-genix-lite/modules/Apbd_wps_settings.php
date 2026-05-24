@@ -241,7 +241,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 }
             }
         } else {
-            $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->get_portal_url("dist/main.CQQWSnKH.1777453756852.css")) . '" media=""';
+            $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->get_portal_url("dist/main.CQQWSnKH.1779599044768.css")) . '" media=""';
             ?>
             <link <?php echo wp_kses_post($ats); ?> />
         <?php
@@ -363,7 +363,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 }
             }
         } else {
-            $ats = 'type="module" src="' . esc_url($this->get_portal_url("dist/main.BPpES49K.1777453756852.js")) . '" id="support-genix-portal-main-js"';
+            $ats = 'type="module" src="' . esc_url($this->get_portal_url("dist/main.CaWCwXKd.1779599044768.js")) . '" id="support-genix-portal-main-js"';
             ?>
             <script <?php echo wp_kses_post($ats); ?>></script>
         <?php
@@ -4425,15 +4425,15 @@ Options -Indexes -ExecCGI
             'Learn more' => $core->__('Learn more'),
             'Documentation' => $core->__('Documentation'),
             'Footer Copyright Text' => $core->__('Footer Copyright Text'),
-            'Remove powered-by.' => $core->__('Remove powered-by.'),
-            'Enable Wordpress Login Register.' => $core->__('Enable Wordpress Login Register.'),
-            'Enable Wordpress Profile Link.' => $core->__('Enable Wordpress Profile Link.'),
+            "Remove 'powered by' branding." => $core->__("Remove 'powered by' branding."),
+            'Enable WordPress login & registration.' => $core->__('Enable WordPress login & registration.'),
+            'Enable WordPress profile link.' => $core->__('Enable WordPress profile link.'),
             'Enable Sequential Ticket Track ID.' => $core->__('Enable Sequential Ticket Track ID.'),
             'Disable closed ticket reply.' => $core->__('Disable closed ticket reply.'),
-            'Enable to show public tickets.' => $core->__('Enable to show public tickets.'),
+            'Enable public tickets display.' => $core->__('Enable public tickets display.'),
             'Disable registration form.' => $core->__('Disable registration form.'),
             'Disable guest ticket creation.' => $core->__('Disable guest ticket creation.'),
-            'Enable ticket close option for customer.' => $core->__('Enable ticket close option for customer.'),
+            'Enable ticket close option for customers.' => $core->__('Enable ticket close option for customers.'),
             'Disable ticket hotlink (except guest ticket).' => $core->__('Disable ticket hotlink (except guest ticket).'),
             'Discard' => $core->__('Discard'),
             'Translatable' => $core->__('Translatable'),
@@ -4870,9 +4870,9 @@ Options -Indexes -ExecCGI
             'Unlock Premium Features' => $core->__('Unlock Premium Features'),
             'Take your experience to the next level with our Pro features' => $core->__('Take your experience to the next level with our Pro features'),
             'Upgrade Now' => $core->__('Upgrade Now'),
-            'Disable email to ticket creation for non-registered user.' => $core->__('Disable email to ticket creation for non-registered user.'),
-            'Enable rich HTML for email to ticket content.' => $core->__('Enable rich HTML for email to ticket content.'),
-            'Disable chatbot ticket creation for non-registered user.' => $core->__('Disable chatbot ticket creation for non-registered user.'),
+            'Disable email-to-ticket creation for non-registered users.' => $core->__('Disable email-to-ticket creation for non-registered users.'),
+            'Enable rich HTML for email-to-ticket content.' => $core->__('Enable rich HTML for email-to-ticket content.'),
+            'Disable chatbot ticket creation for non-registered users.' => $core->__('Disable chatbot ticket creation for non-registered users.'),
             'Text Editor' => $core->__('Text Editor'),
             'Reset' => $core->__('Reset'),
             'Agents:' => $core->__('Agents:'),
@@ -5098,7 +5098,7 @@ Options -Indexes -ExecCGI
             'Select Priority' => $core->__('Select Priority'),
             'Set Priority' => $core->__('Set Priority'),
             'Auto Close & Delete' => $core->__('Auto Close & Delete'),
-            'Enable multiple role selector for user.' => $core->__('Enable multiple role selector for user.'),
+            'Enable multiple role selector for users.' => $core->__('Enable multiple role selector for users.'),
             'Disable undo for reply & note submission.' => $core->__('Disable undo for reply & note submission.'),
             'Conditional Field' => $core->__('Conditional Field'),
             'Enable conditional logics.' => $core->__('Enable conditional logics.'),
@@ -5206,7 +5206,7 @@ Options -Indexes -ExecCGI
             'Use "M" for modern or "T" for traditional. Default is modern.' => $core->__('Use "M" for modern or "T" for traditional. Default is modern.'),
             'Ticket Priority' => $core->__('Ticket Priority'),
             'Use "N" for normal, "M" for medium, or "H" for high. Default is normal.' => $core->__('Use "N" for normal, "M" for medium, or "H" for high. Default is normal.'),
-            'Enable tickets auto refresh.' => $core->__('Enable tickets auto refresh.'),
+            'Enable ticket list auto-refresh.' => $core->__('Enable ticket list auto-refresh.'),
             'Auto refresh interval' => $core->__('Auto refresh interval'),
             'Minimum value is 5 seconds.' => $core->__('Minimum value is 5 seconds.'),
             'Seconds' => $core->__('Seconds'),

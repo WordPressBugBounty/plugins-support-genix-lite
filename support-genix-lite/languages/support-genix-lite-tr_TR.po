@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Support Genix Lite\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-29 09:16+0000\n"
+"POT-Creation-Date: 2026-05-24 04:47+0000\n"
 "PO-Revision-Date: 2026-04-29 09:17+0000\n"
 "Last-Translator: \n"
 "Language-Team: Turkish\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.3; wp-6.9.4; php-8.3.30\n"
+"X-Loco-Version: 2.8.4; wp-7.0; php-8.3.31\n"
 "X-Domain: support-genix-lite\n"
 
 #: core/ApbdWpsModel.php:1099
@@ -1826,7 +1826,7 @@ msgid "Disable auto ticket assignment to first responder."
 msgstr "İlk yanıtlayıcıya otomatik talep atamasını devre dışı bırak."
 
 #: modules/Apbd_wps_settings.php:4875
-msgid "Disable chatbot ticket creation for non-registered user."
+msgid "Disable chatbot ticket creation for non-registered users."
 msgstr ""
 "Kayıtlı olmayan kullanıcılar için chatbot talep oluşturmayı devre dışı bırak."
 
@@ -1839,7 +1839,7 @@ msgid "Disable current viewers on ticket details."
 msgstr "Talep detaylarında mevcut görüntüleyenleri devre dışı bırak."
 
 #: modules/Apbd_wps_settings.php:4873
-msgid "Disable email to ticket creation for non-registered user."
+msgid "Disable email-to-ticket creation for non-registered users."
 msgstr ""
 "Kayıtlı olmayan kullanıcılar için e-postadan talep oluşturmayı devre dışı "
 "bırak."
@@ -2309,7 +2309,7 @@ msgid "Enable email notification."
 msgstr "E-posta bildirimini etkinleştir."
 
 #: modules/Apbd_wps_settings.php:5101
-msgid "Enable multiple role selector for user."
+msgid "Enable multiple role selector for users."
 msgstr "Kullanıcı için çoklu rol seçiciyi etkinleştir."
 
 #: modules/Apbd_wps_settings.php:5040
@@ -2329,7 +2329,7 @@ msgid "Enable public ticket option (on details)."
 msgstr "Herkese açık talep seçeneğini etkinleştir (detaylarda)."
 
 #: modules/Apbd_wps_settings.php:4874
-msgid "Enable rich HTML for email to ticket content."
+msgid "Enable rich HTML for email-to-ticket content."
 msgstr "E-postadan talebe içeriği için zengin HTML'yi etkinleştir."
 
 #: modules/Apbd_wps_settings.php:4431
@@ -2355,15 +2355,15 @@ msgstr ""
 "temsilciler için devre dışı bırakın."
 
 #: modules/Apbd_wps_settings.php:4436
-msgid "Enable ticket close option for customer."
+msgid "Enable ticket close option for customers."
 msgstr "Müşteri için talep kapatma seçeneğini etkinleştir."
 
 #: modules/Apbd_wps_settings.php:5209
-msgid "Enable tickets auto refresh."
+msgid "Enable ticket list auto-refresh."
 msgstr "Taleplerin otomatik yenilenmesini etkinleştir."
 
 #: modules/Apbd_wps_settings.php:4433
-msgid "Enable to show public tickets."
+msgid "Enable public tickets display."
 msgstr "Herkese açık talepleri göstermeyi etkinleştir."
 
 #: modules/Apbd_wps_settings.php:5263
@@ -2387,11 +2387,11 @@ msgid "Enable voice playback (listen to responses)"
 msgstr "Ses oynatmayı etkinleştir (yanıtları dinle)"
 
 #: modules/Apbd_wps_settings.php:4429
-msgid "Enable Wordpress Login Register."
+msgid "Enable WordPress login & registration."
 msgstr "WordPress Giriş ve Kayıt'ı etkinleştir."
 
 #: modules/Apbd_wps_settings.php:4430
-msgid "Enable Wordpress Profile Link."
+msgid "Enable WordPress profile link."
 msgstr "WordPress Profil Bağlantısını etkinleştir."
 
 #: traits/Apbd_wps_knowledge_base_chatbot_trait.php:512
@@ -5096,7 +5096,7 @@ msgid "Remote URL"
 msgstr "Uzak URL"
 
 #: modules/Apbd_wps_settings.php:4428
-msgid "Remove powered-by."
+msgid "Remove 'powered by' branding."
 msgstr "Powered-by ifadesini kaldır."
 
 #: modules/Apbd_wps_settings.php:5392

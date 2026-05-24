@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Support Genix Lite\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-29 09:16+0000\n"
+"POT-Creation-Date: 2026-05-24 04:47+0000\n"
 "PO-Revision-Date: 2026-04-29 09:18+0000\n"
 "Last-Translator: \n"
 "Language-Team: Ukrainian\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
 "n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.3; wp-6.9.4; php-8.3.30\n"
+"X-Loco-Version: 2.8.4; wp-7.0; php-8.3.31\n"
 "X-Domain: support-genix-lite\n"
 
 #: core/ApbdWpsModel.php:1099
@@ -1828,7 +1828,7 @@ msgid "Disable auto ticket assignment to first responder."
 msgstr "Вимкнути автоматичне призначення тікета першому відповідачу."
 
 #: modules/Apbd_wps_settings.php:4875
-msgid "Disable chatbot ticket creation for non-registered user."
+msgid "Disable chatbot ticket creation for non-registered users."
 msgstr ""
 "Вимкнути створення тікетів чат-ботом для незареєстрованих користувачів."
 
@@ -1841,7 +1841,7 @@ msgid "Disable current viewers on ticket details."
 msgstr "Вимкнути відображення поточних глядачів у деталях тікета."
 
 #: modules/Apbd_wps_settings.php:4873
-msgid "Disable email to ticket creation for non-registered user."
+msgid "Disable email-to-ticket creation for non-registered users."
 msgstr "Вимкнути створення тікетів з email для незареєстрованих користувачів."
 
 #: modules/Apbd_wps_settings.php:4435
@@ -2309,7 +2309,7 @@ msgid "Enable email notification."
 msgstr "Увімкнути сповіщення електронною поштою."
 
 #: modules/Apbd_wps_settings.php:5101
-msgid "Enable multiple role selector for user."
+msgid "Enable multiple role selector for users."
 msgstr "Увімкнути вибір кількох ролей для користувача."
 
 #: modules/Apbd_wps_settings.php:5040
@@ -2329,7 +2329,7 @@ msgid "Enable public ticket option (on details)."
 msgstr "Увімкнути опцію публічного тікета (у деталях)."
 
 #: modules/Apbd_wps_settings.php:4874
-msgid "Enable rich HTML for email to ticket content."
+msgid "Enable rich HTML for email-to-ticket content."
 msgstr "Увімкнути розширений HTML для контенту email-тікетів."
 
 #: modules/Apbd_wps_settings.php:4431
@@ -2355,15 +2355,15 @@ msgstr ""
 "автентифікації."
 
 #: modules/Apbd_wps_settings.php:4436
-msgid "Enable ticket close option for customer."
+msgid "Enable ticket close option for customers."
 msgstr "Увімкнути опцію закриття тікета для клієнта."
 
 #: modules/Apbd_wps_settings.php:5209
-msgid "Enable tickets auto refresh."
+msgid "Enable ticket list auto-refresh."
 msgstr "Увімкнути автооновлення тікетів."
 
 #: modules/Apbd_wps_settings.php:4433
-msgid "Enable to show public tickets."
+msgid "Enable public tickets display."
 msgstr "Увімкнути відображення публічних тікетів."
 
 #: modules/Apbd_wps_settings.php:5263
@@ -2387,11 +2387,11 @@ msgid "Enable voice playback (listen to responses)"
 msgstr "Увімкнути голосове відтворення (прослуховування відповідей)"
 
 #: modules/Apbd_wps_settings.php:4429
-msgid "Enable Wordpress Login Register."
+msgid "Enable WordPress login & registration."
 msgstr "Увімкнути вхід та реєстрацію WordPress."
 
 #: modules/Apbd_wps_settings.php:4430
-msgid "Enable Wordpress Profile Link."
+msgid "Enable WordPress profile link."
 msgstr "Увімкнути посилання на профіль WordPress."
 
 #: traits/Apbd_wps_knowledge_base_chatbot_trait.php:512
@@ -5105,7 +5105,7 @@ msgid "Remote URL"
 msgstr "Віддалений URL"
 
 #: modules/Apbd_wps_settings.php:4428
-msgid "Remove powered-by."
+msgid "Remove 'powered by' branding."
 msgstr "Видалити напис «Працює на»."
 
 #: modules/Apbd_wps_settings.php:5392

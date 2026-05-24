@@ -629,7 +629,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
                 <style id="support-genix-chatbot-main-inline-css">
                     <?php echo ApbdWps_KsesCss($custom_css); ?>
                 </style>
-                <link rel="stylesheet" id="support-genix-chatbot-main-css" href="<?php echo esc_url($this->chatbot_asset_url("dist/main.BpSEh8y_.1777453702851.css")); ?>" media="" />
+                <link rel="stylesheet" id="support-genix-chatbot-main-css" href="<?php echo esc_url($this->chatbot_asset_url("dist/main.BpSEh8y_.1779598979526.css")); ?>" media="" />
                 <?php
             }
 
@@ -650,7 +650,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
                 <script id="support-genix-chatbot-main-js-extra">
                     var support_genix_chatbot_config = <?php echo json_encode($support_genix_chatbot_config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
                 </script>
-                <script type="module" src="<?php echo esc_url($this->chatbot_asset_url("dist/main.a0prxLyX.1777453702851.js")); ?>" id="support-genix-chatbot-main-js"></script>
+                <script type="module" src="<?php echo esc_url($this->chatbot_asset_url("dist/main.BGn0poSh.1779598979526.js")); ?>" id="support-genix-chatbot-main-js"></script>
             <?php
             }
             ?>
