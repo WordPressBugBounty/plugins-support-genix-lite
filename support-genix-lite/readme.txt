@@ -5,7 +5,7 @@ Tags: helpdesk, support ticket, customer support, ai chatbot, knowledge base, su
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.46
+Stable tag: 1.4.47
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -465,6 +465,14 @@ Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Ant
 
 
 == Changelog ==
+
+= Version: 1.4.47 - Date: 14 June, 2026 =
+* Improved: Support for handling content in tickets and replies reliably.
+* Improved: Ticket list loading speed for a lighter, faster response.
+* Improved: Reply rendering performance for tickets with large content.
+* Improved: Overall plugin performance and stability for smoother, more reliable usage.
+* Fixed: Text colors and alignment not displaying correctly in tickets.
+* Fixed: Minor bugs and issues to enhance functionality and user experience.
 
 = Version: 1.4.46 - Date: 24 May, 2026 =
 * Improved: Overall plugin performance and stability for smoother, more reliable usage.

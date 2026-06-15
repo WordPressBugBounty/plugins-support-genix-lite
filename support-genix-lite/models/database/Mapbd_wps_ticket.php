@@ -109,7 +109,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             "ticket_track_id" => array("Text" => "Ticket Track Id", "Rule" => "max_length[100]"),
             "cat_id" => array("Text" => "Cat Id", "Rule" => "max_length[11]"),
             "title" => array("Text" => "Title", "Rule" => "max_length[500]"),
-            "ticket_body" => array("Text" => "Ticket Body", "Rule" => "required"),
+            "ticket_body" => array("Text" => "Ticket Body", "Rule" => "required|max_length[5242880]"),
             "ticket_user" => array("Text" => "Ticket User", "Rule" => "max_length[11]|integer"),
             "opened_time" => array("Text" => "Opened Time", "Rule" => "max_length[20]"),
             "re_open_time" => array("Text" => "Re Open Time", "Rule" => "max_length[20]"),

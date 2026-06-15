@@ -75,8 +75,8 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
             "title" => array("Text" => "Title", "Rule" => "required|max_length[100]"),
             "status" => array("Text" => "Status", "Rule" => "max_length[1]"),
             "subject" => array("Text" => "Subject", "Rule" => "required|max_length[150]"),
-            "props" => array("Text" => "Props"),
-            "content" => array("Text" => "Content", "Rule" => "required")
+            "props" => array("Text" => "Props", "Rule" => "max_length[5242880]"),
+            "content" => array("Text" => "Content", "Rule" => "required|max_length[5242880]")
 
         );
     }
@@ -461,18 +461,6 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
                 border-top: 1px dotted #ccc;
                 font-size: 12px;
             }
-            .ql-align-left {
-                text-align: left;
-            }
-            .ql-align-right {
-                text-align: right;
-            }
-            .ql-align-center {
-                text-align: center;
-            }
-            .ql-align-justify {
-                text-align: justify;
-            }
 
             /* Reply text content styles */
             .sg-reply-text {
@@ -640,6 +628,18 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
                 padding: 0;
                 border-radius: 0;
                 font-size: inherit;
+            }
+            .sg-reply-text .ql-align-left {
+                text-align: left;
+            }
+            .sg-reply-text .ql-align-right {
+                text-align: right;
+            }
+            .sg-reply-text .ql-align-center {
+                text-align: center;
+            }
+            .sg-reply-text .ql-align-justify {
+                text-align: justify;
             }
         ';
 

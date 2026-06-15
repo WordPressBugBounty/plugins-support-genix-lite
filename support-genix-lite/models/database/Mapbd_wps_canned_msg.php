@@ -63,6 +63,7 @@ class Mapbd_wps_canned_msg extends ApbdWpsModel
             "id" => array("Text" => "Id", "Rule" => "max_length[10]|integer"),
             "user_id" => array("Text" => "User Id", "Rule" => "max_length[3]"),
             "title" => array("Text" => "Title", "Rule" => "max_length[150]"),
+            "canned_msg" => array("Text" => "Message", "Rule" => "max_length[5242880]"),
             "entry_date" => array("Text" => "Entry Date", "Rule" => "max_length[20]"),
             "added_by" => array("Text" => "Added By", "Rule" => "max_length[3]"),
             "canned_type" => array("Text" => "Canned Type", "Rule" => "max_length[1]"),

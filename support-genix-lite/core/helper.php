@@ -32,6 +32,7 @@ if (!function_exists('ApbdWps_OldDataArrayMerge')) {
 if (!function_exists("ApbdWps_KsesHtml")) {
     function ApbdWps_KsesHtml($html)
     {
+        $html = ApbdWps_ConvertRgbToHex($html);
         $allowedposttags = wp_kses_allowed_html('post');
         $allowed_atts = array('align' => true, 'class' => true, 'type' => true, 'id' => true, 'dir' => true, 'lang' => true, 'style' => true, 'xml:lang' => true, 'src' => true, 'alt' => true, 'href' => true, 'rel' => true, 'rev' => true, 'target' => true, 'novalidate' => true, 'value' => true, 'name' => true, 'tabindex' => true, 'action' => true, 'method' => true, 'for' => true, 'width' => true, 'height' => true, 'data-*' => true, 'selected' => true, "checked" => true, 'title' => true,);
         $allowedTags = ['address', 'a', 'abbr', 'acronym', 'area', 'article', 'aside', 'audio', 'b', 'bdo', 'big', 'blockquote', 'br', 'button', 'caption', 'cite', 'code', 'col', 'colgroup', 'del', 'dd', 'dfn', 'details', 'div', 'dl', 'dt', 'em', 'fieldset', 'section', 'figure', 'figcaption', 'font', 'footer', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'hgroup', 'hr', 'i', 'img', 'ins', 'kbd', 'label', 'legend', 'li', 'main', 'map', 'mark', 'menu', 'nav', 'p', 'pre', 'q', 's', 'samp', 'span', 'section', 'small', 'strike', 'strong', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'textarea', 'tfoot', 'th', 'thead', 'title', 'tr', 'track', 'tt', 'u', 'ul', 'ol', 'var', 'video', 'form', 'input', 'iframe', 'script', 'style', 'option', 'select'];
@@ -79,6 +80,8 @@ if (!function_exists("ApbdWps_KsesEmailHtml")) {
             return '';
         }
 
+        $html = ApbdWps_ConvertRgbToHex($html);
+
         $add_display = function ($styles) {
             if (!in_array('display', $styles, true)) {
                 $styles[] = 'display';
@@ -91,6 +94,27 @@ if (!function_exists("ApbdWps_KsesEmailHtml")) {
         remove_filter('safe_style_css', $add_display, 99);
 
         return $result;
+    }
+}
+
+if (!function_exists('ApbdWps_ConvertRgbToHex')) {
+    /**
+     * Convert rgb()/rgba() color values in inline styles to hex
+     * so that wp_kses does not strip them (parentheses are removed by KSES).
+     * Must be called BEFORE wp_kses / ApbdWps_KsesEmailHtml.
+     */
+    function ApbdWps_ConvertRgbToHex($html)
+    {
+        return preg_replace_callback(
+            '/rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*[\d.]+\s*)?\)/',
+            function ($m) {
+                $r = max(0, min(255, (int) $m[1]));
+                $g = max(0, min(255, (int) $m[2]));
+                $b = max(0, min(255, (int) $m[3]));
+                return sprintf('#%02x%02x%02x', $r, $g, $b);
+            },
+            $html
+        );
     }
 }
 

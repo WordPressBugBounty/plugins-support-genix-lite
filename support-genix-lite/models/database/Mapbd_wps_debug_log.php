@@ -51,7 +51,7 @@ class Mapbd_wps_debug_log extends ApbdWpsModel
             "entry_type" => array("Text" => "Entry Type", "Rule" => "max_length[1]"),
             "log_type" => array("Text" => "Log Type", "Rule" => "max_length[4]"),
             "title" => array("Text" => "Title", "Rule" => "required|max_length[255]"),
-            "log_data" => array("Text" => "Log Data", "Rule" => "required"),
+            "log_data" => array("Text" => "Log Data", "Rule" => "required|max_length[5242880]"),
             "status" => array("Text" => "Status", "Rule" => "max_length[1]"),
             "entry_time" => array("Text" => "Entry Time", "Rule" => "max_length[20]")
 

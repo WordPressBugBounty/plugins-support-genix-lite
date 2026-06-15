@@ -40,7 +40,7 @@ class Mapbd_wps_notes extends ApbdWpsModel
             "id" => array("Text" => "Id", "Rule" => "max_length[11]|integer"),
             "ticket_id" => array("Text" => "Ticket Id", "Rule" => "required|max_length[11]|integer"),
             "added_by" => array("Text" => "Added By", "Rule" => "required|max_length[11]|integer"),
-            "note_text" => array("Text" => "Note Text", "Rule" => "required")
+            "note_text" => array("Text" => "Note Text", "Rule" => "required|max_length[5242880]")
 
         );
     }

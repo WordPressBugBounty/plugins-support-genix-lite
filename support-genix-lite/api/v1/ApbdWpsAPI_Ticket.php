@@ -325,11 +325,16 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
             $mainobj->last_replied_by_type($nrconds, true);
         }
 
-        $select_fields = "*,user_login,display_name";
+        // NOTE: ticket_body / reply_text are LONGTEXT and may hold multi-MB content
+        // (Quill embeds pasted images as inline base64). The listing only shows a
+        // short preview under the title, so we truncate both here to keep the list
+        // payload small and avoid slow JSON encoding. The aliased LEFT(ticket_body)
+        // is placed after "*" so it overrides the full column in the wpdb result row.
+        $select_fields = "*,user_login,display_name,LEFT(ticket_body, 500) AS ticket_body";
 
-        // Add subquery for last reply text
+        // Add subquery for last reply text (truncated to a preview length)
         $select_fields .= ",(
-            SELECT reply_text
+            SELECT LEFT(reply_text, 500)
             FROM {$replyTableName} r
             WHERE r.ticket_id = {$tableName}.id
             ORDER BY r.reply_id DESC

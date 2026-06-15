@@ -52,7 +52,7 @@ class Mapbd_wps_ticket_reply extends ApbdWpsModel
             "asigned_by" => array("Text" => "Asigned By", "Rule" => "max_length[11]"),
             "replied_by" => array("Text" => "Replied By", "Rule" => "max_length[11]"),
             "replied_by_type" => array("Text" => "Replied By Type", "Rule" => "max_length[1]"),
-            "reply_text" => array("Text" => "Reply Text", "Rule" => "required"),
+            "reply_text" => array("Text" => "Reply Text", "Rule" => "required|max_length[5242880]"),
             "reply_time" => array("Text" => "Reply Time", "Rule" => "max_length[20]"),
             "ticket_status" => array("Text" => "Ticket Status", "Rule" => "max_length[1]"),
             "is_private" => array("Text" => "Is Private", "Rule" => "max_length[1]"),

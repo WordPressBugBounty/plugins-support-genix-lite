@@ -1,0 +1,1 @@
+const s=()=>{window==null||window.scrollTo({top:0,behavior:"smooth"})},t=()=>{const o=document==null?void 0:document.querySelector(".sgenix-ant-modal-wrap");o&&(o==null||o.scrollTo({top:0,behavior:"smooth"}))};export{s as a,t as s};

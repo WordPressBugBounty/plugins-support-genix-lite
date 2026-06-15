@@ -3,7 +3,7 @@
 Plugin Name: Support Genix Lite
 Plugin URI: http://supportgenix.com
 Description: Helpdesk, AI Chatbot, Knowledge Base & Customer Support Ticketing System.
-Version: 1.4.46
+Version: 1.4.47
 Author: Support Genix
 Author URI: https://supportgenix.com
 License: GPL v2 or later
@@ -18,7 +18,7 @@ global $wpdb;
 $apbdWpSupportLiteLoad = false;
 $apbdWpSupportLiteFile = __FILE__;
 $apbdWpSupportLitePath = dirname($apbdWpSupportLiteFile);
-$apbdWpSupportLiteVersion = '1.4.46';
+$apbdWpSupportLiteVersion = '1.4.47';
 
 if (!defined('SUPPORT_GENIX_LITE_FILE_PATH')) {
     define('SUPPORT_GENIX_LITE_FILE_PATH', $apbdWpSupportLitePath);

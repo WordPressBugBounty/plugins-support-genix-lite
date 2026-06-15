@@ -241,7 +241,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 }
             }
         } else {
-            $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->get_portal_url("dist/main.CQQWSnKH.1779599044768.css")) . '" media=""';
+            $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->get_portal_url("dist/main.CJjRaX8a.1781434317879.css")) . '" media=""';
             ?>
             <link <?php echo wp_kses_post($ats); ?> />
         <?php
@@ -363,7 +363,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 }
             }
         } else {
-            $ats = 'type="module" src="' . esc_url($this->get_portal_url("dist/main.CaWCwXKd.1779599044768.js")) . '" id="support-genix-portal-main-js"';
+            $ats = 'type="module" src="' . esc_url($this->get_portal_url("dist/main.DRhhiRkS.1781434317879.js")) . '" id="support-genix-portal-main-js"';
             ?>
             <script <?php echo wp_kses_post($ats); ?>></script>
         <?php

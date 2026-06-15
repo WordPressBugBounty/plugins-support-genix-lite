@@ -40,7 +40,7 @@ class Mapbd_wps_support_meta extends ApbdWpsModel
             "item_type" => array("Text" => "Item Type", "Rule" => "max_length[1]"),
             "meta_key" => array("Text" => "Meta Key", "Rule" => "max_length[255]"),
             "meta_type" => array("Text" => "Meta Type", "Rule" => "max_length[1]"),
-            "meta_value" => array("Text" => "Meta Value", "Rule" => "")
+            "meta_value" => array("Text" => "Meta Value", "Rule" => "max_length[5242880]")
 
         );
     }
