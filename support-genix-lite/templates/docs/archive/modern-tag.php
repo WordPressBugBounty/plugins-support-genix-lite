@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View partial linted in isolation; its template-scoped variables are not global and cannot be individually prefixed.
 
 /**
  * Modern Tag Archive Template
@@ -33,13 +34,13 @@ $tag_posts = new WP_Query(array(
     'post_type' => 'sgkb-docs',
     'posts_per_page' => -1,
     'fields' => 'ids',
-    'tax_query' => array(
+    'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
         array(
             'taxonomy' => 'sgkb-docs-tag',
             'terms' => $current_tag->term_id
         )
     ),
-    'meta_query' => array(
+    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
         'relation' => 'OR',
         array(
             'key' => 'only_for_chatbot',
@@ -59,7 +60,7 @@ if ($tag_posts->have_posts()) {
 
     // Get all tags for these posts, excluding current tag
     $all_related_tags = wp_get_object_terms($post_ids, 'sgkb-docs-tag', array(
-        'exclude' => array($current_tag->term_id)
+        'exclude' => array($current_tag->term_id)  // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- Small, bounded exclusion set.
     ));
 
     // Filter and limit related tags
@@ -72,13 +73,13 @@ if ($tag_posts->have_posts()) {
             'post_status' => 'publish',
             'posts_per_page' => 1,
             'fields' => 'ids',
-            'tax_query' => array(
+            'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                 array(
                     'taxonomy' => 'sgkb-docs-tag',
                     'terms' => $related_tag->term_id
                 )
             ),
-            'meta_query' => array(
+            'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                 'relation' => 'OR',
                 array(
                     'key' => 'only_for_chatbot',
@@ -150,14 +151,14 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                         'post_status' => 'publish',
                                         'posts_per_page' => -1,
                                         'fields' => 'ids',
-                                        'tax_query' => array(
+                                        'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                                             array(
                                                 'taxonomy' => 'sgkb-docs-tag', // Changed to tag
                                                 'field' => 'term_id',
                                                 'terms' => $current_tag->term_id,
                                             )
                                         ),
-                                        'meta_query' => array(
+                                        'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                                             'relation' => 'OR',
                                             array(
                                                 'key' => 'only_for_chatbot',
@@ -174,8 +175,9 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                     wp_reset_postdata();
 
                                     echo sprintf(
-                                        esc_html(_n('%d article', '%d articles', $post_count, 'support-genix')),
-                                        $post_count
+                                        // translators: %d: number of articles.
+                                        esc_html(_n('%d article', '%d articles', $post_count, 'support-genix-lite')),
+                                        esc_html($post_count)
                                     );
                                     ?>
                                 </span>
@@ -196,7 +198,7 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                 </span>
                                 <input type="search"
                                     class="sgkb-search-input-modern"
-                                    placeholder="<?php esc_attr_e('Search for articles...', 'support-genix'); ?>"
+                                    placeholder="<?php esc_attr_e('Search for articles...', 'support-genix-lite'); ?>"
                                     data-category="<?php echo esc_attr($current_tag->slug); ?>">
                                 <button type="button" class="sgkb-search-clear" style="display: none;">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -227,7 +229,7 @@ if (!function_exists('sgkb_adjust_brightness')) {
                             <!-- Related Tags (changed from Related Categories) -->
                             <?php if (!empty($related_tags)) : ?>
                                 <div class="sgkb-sidebar-section">
-                                    <h3 class="sgkb-sidebar-title"><?php esc_html_e('Related Tags', 'support-genix'); ?></h3>
+                                    <h3 class="sgkb-sidebar-title"><?php esc_html_e('Related Tags', 'support-genix-lite'); ?></h3>
                                     <ul class="sgkb-related-list">
                                         <?php foreach ($related_tags as $related) :
                                             // Get the actual count of non-chatbot posts for this tag
@@ -236,14 +238,14 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                                 'post_status' => 'publish',
                                                 'posts_per_page' => -1,
                                                 'fields' => 'ids',
-                                                'tax_query' => array(
+                                                'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                                                     array(
                                                         'taxonomy' => 'sgkb-docs-tag', // Changed to tag
                                                         'field' => 'term_id',
                                                         'terms' => $related->term_id,
                                                     )
                                                 ),
-                                                'meta_query' => array(
+                                                'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                                                     'relation' => 'OR',
                                                     array(
                                                         'key' => 'only_for_chatbot',
@@ -264,7 +266,7 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                             $related_color = get_term_meta($related->term_id, '_sg_color', true) ?: '#7229dd';
                                         ?>
                                             <li class="sgkb-related-item">
-                                                <a href="<?php echo get_term_link($related); ?>" class="sgkb-related-link">
+                                                <a href="<?php echo esc_url(get_term_link($related)); ?>" class="sgkb-related-link">
                                                     <span class="sgkb-nav-indicator" style="background-color: <?php echo esc_attr($related_color); ?>;"></span>
                                                     <span class="sgkb-nav-text"><?php echo esc_html($related->name); ?></span>
                                                     <span class="sgkb-nav-count"><?php echo esc_html($related_count); ?></span>
@@ -285,7 +287,7 @@ if (!function_exists('sgkb_adjust_brightness')) {
 
                             <div class="sgkb-articles-header">
                                 <h2 class="sgkb-articles-title">
-                                    <?php esc_html_e('Articles', 'support-genix'); ?>
+                                    <?php esc_html_e('Articles', 'support-genix-lite'); ?>
                                 </h2>
                                 <div class="sgkb-articles-count">
                                     <?php
@@ -296,10 +298,11 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                     $end = min($paged * $posts_per_page, $wp_query->found_posts);
 
                                     echo sprintf(
-                                        esc_html__('Showing %1$d-%2$d of %3$d articles', 'support-genix'),
-                                        $start,
-                                        $end,
-                                        $wp_query->found_posts
+                                        // translators: %1$d: first item number, %2$d: last item number, %3$d: total number of articles.
+                                        esc_html__('Showing %1$d-%2$d of %3$d articles', 'support-genix-lite'),
+                                        esc_html($start),
+                                        esc_html($end),
+                                        esc_html($wp_query->found_posts)
                                     );
                                     ?>
                                 </div>
@@ -316,8 +319,8 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                                     </a>
                                                 </h3>
                                                 <div class="sgkb-article-meta">
-                                                    <time class="sgkb-article-date" datetime="<?php echo get_the_modified_date('c'); ?>">
-                                                        <?php echo human_time_diff(get_the_modified_time('U'), current_time('timestamp')) . ' ' . __('ago', 'support-genix'); ?>
+                                                    <time class="sgkb-article-date" datetime="<?php echo esc_attr(get_the_modified_date('c')); ?>">
+                                                        <?php echo esc_html(human_time_diff(get_the_modified_time('U'), current_time('timestamp')) . ' ' . __('ago', 'support-genix-lite')); ?>
                                                     </time>
                                                     <?php
                                                     $views = get_post_meta(get_the_ID(), 'sgkb_views', true);
@@ -325,7 +328,7 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                                     ?>
                                                         <span class="sgkb-meta-separator">•</span>
                                                         <span class="sgkb-article-views">
-                                                            <?php echo sprintf(esc_html__('%s views', 'support-genix'), number_format_i18n($views)); ?>
+                                                            <?php /* translators: %s: number of views. */ echo sprintf(esc_html__('%s views', 'support-genix-lite'), esc_html(number_format_i18n($views))); ?>
                                                         </span>
                                                     <?php endif; ?>
                                                 </div>
@@ -337,13 +340,13 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                                 </div>
                                             <?php else : ?>
                                                 <div class="sgkb-article-excerpt">
-                                                    <?php echo wp_trim_words(get_the_content(), 30); ?>
+                                                    <?php echo esc_html(wp_trim_words(get_the_content(), 30)); ?>
                                                 </div>
                                             <?php endif; ?>
 
                                             <footer class="sgkb-article-footer">
                                                 <a href="<?php the_permalink(); ?>" class="sgkb-article-read-more">
-                                                    <?php esc_html_e('Read article', 'support-genix'); ?>
+                                                    <?php esc_html_e('Read article', 'support-genix-lite'); ?>
                                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                                         <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                     </svg>
@@ -364,11 +367,11 @@ if (!function_exists('sgkb_adjust_brightness')) {
 
                             if ($pagination) :
                             ?>
-                                <nav class="sgkb-pagination" aria-label="<?php esc_attr_e('Articles navigation', 'support-genix'); ?>">
+                                <nav class="sgkb-pagination" aria-label="<?php esc_attr_e('Articles navigation', 'support-genix-lite'); ?>">
                                     <ul class="sgkb-pagination-list">
                                         <?php foreach ($pagination as $page) : ?>
                                             <li class="sgkb-pagination-item">
-                                                <?php echo $page; ?>
+                                                <?php echo wp_kses_post($page); ?>
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>
@@ -382,13 +385,13 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                     <path d="M9 12H15M9 16H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L18.7071 8.70711C18.8946 8.89464 19 9.149 19 9.41421V19C19 20.1046 18.1046 21 17 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 <h2 class="sgkb-no-articles-title">
-                                    <?php esc_html_e('No articles found', 'support-genix'); ?>
+                                    <?php esc_html_e('No articles found', 'support-genix-lite'); ?>
                                 </h2>
                                 <p class="sgkb-no-articles-text">
-                                    <?php esc_html_e('There are no articles with this tag yet.', 'support-genix'); ?>
+                                    <?php esc_html_e('There are no articles with this tag yet.', 'support-genix-lite'); ?>
                                 </p>
-                                <a href="<?php echo get_post_type_archive_link('sgkb-docs'); ?>" class="sgkb-btn sgkb-btn-primary">
-                                    <?php esc_html_e('Browse all articles', 'support-genix'); ?>
+                                <a href="<?php echo esc_url(get_post_type_archive_link('sgkb-docs')); ?>" class="sgkb-btn sgkb-btn-primary">
+                                    <?php esc_html_e('Browse all articles', 'support-genix-lite'); ?>
                                 </a>
                             </div>
 

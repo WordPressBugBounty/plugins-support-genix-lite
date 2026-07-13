@@ -148,14 +148,14 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         }
 
         $taxonomies = array(
-            'sgkb-docs-category' => __('All Categories', 'support-genix'),
-            'sgkb-docs-tag'      => __('All Tags', 'support-genix'),
+            'sgkb-docs-category' => __('All Categories', 'support-genix-lite'),
+            'sgkb-docs-tag'      => __('All Tags', 'support-genix-lite'),
         );
 
         // Add space taxonomy if multiple KB is enabled (pro-only feature)
         $multiple_kb = 'N'; // Multiple KB is a pro-only feature
         if ('Y' === $multiple_kb) {
-            $taxonomies['sgkb-docs-space'] = __('All Knowledge Bases', 'support-genix');
+            $taxonomies['sgkb-docs-space'] = __('All Knowledge Bases', 'support-genix-lite');
         }
 
         foreach ($taxonomies as $taxonomy => $default_label) {
@@ -551,16 +551,20 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         $sanitized_ids = array_map('sanitize_text_field', $session_ids);
 
         // Delete history records for all selected sessions
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $wpdb->query($wpdb->prepare(
             "DELETE FROM {$history_table} WHERE session_id IN ({$placeholders})",
             $sanitized_ids
         ));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
         // Delete session records for all selected sessions
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $deleted_count = $wpdb->query($wpdb->prepare(
             "DELETE FROM {$session_table} WHERE session_id IN ({$placeholders})",
             $sanitized_ids
         ));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
         $apiResponse->SetResponse(true, $this->__('Conversations deleted successfully.'), array(
             'deleted_count' => $deleted_count,
@@ -648,13 +652,15 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         $table = $wpdb->prefix . 'apbd_wps_chatbot_embed_token';
 
         // Check if table exists
-        if ($wpdb->get_var("SHOW TABLES LIKE '{$table}'") !== $table) {
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+        if ($wpdb->get_var("SHOW TABLES LIKE '{$table}'") !== $table) {  // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- Internal $wpdb->prefix table name; SHOW TABLES cannot use placeholders.
             $apiResponse->SetResponse(true, '', array('sources' => array()));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             echo wp_json_encode($apiResponse);
             return;
         }
 
-        $results = $wpdb->get_results("SELECT id, title FROM {$table} WHERE status = 'A' ORDER BY title ASC");
+        $results = $wpdb->get_results("SELECT id, title FROM {$table} WHERE status = 'A' ORDER BY title ASC");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
         $sources = array();
         if (!empty($results)) {
@@ -780,19 +786,10 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
             // Add GLightbox for image lightbox feature
             $show_lightbox = $this->GetOption('single_doc_image_lightbox', 'Y');
             if ($show_lightbox === 'Y') {
-                wp_enqueue_style(
-                    'glightbox',
-                    'https://cdn.jsdelivr.net/npm/glightbox@3.2.0/dist/css/glightbox.min.css',
-                    array(),
-                    '3.2.0'
-                );
-                wp_enqueue_script(
-                    'glightbox',
-                    'https://cdn.jsdelivr.net/npm/glightbox@3.2.0/dist/js/glightbox.min.js',
-                    array(),
-                    '3.2.0',
-                    true
-                );
+                // Bundled locally (GLightbox 3.2.0) to comply with the no-offloading policy.
+                $glightbox_version = '3.2.0';
+                wp_enqueue_style('glightbox', ApbdWps_GetAssetsUrl('libs/glightbox/glightbox.min.css'), array(), $glightbox_version);
+                wp_enqueue_script('glightbox', ApbdWps_GetAssetsUrl('libs/glightbox/glightbox.min.js'), array(), $glightbox_version, true);
             }
         }
 
@@ -1094,7 +1091,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         if ($shouldFlush) {
             flush_rewrite_rules();
             update_option('sg_flush_rewrite_rules', false);
-            wp_redirect(add_query_arg(array(), $_SERVER['REQUEST_URI']), 301);
+            wp_safe_redirect(add_query_arg(array(), isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : ''), 301);
             exit;
         }
     }
@@ -1120,7 +1117,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
             if (!$canWriteDocs) {
                 $archive_link = get_post_type_archive_link('sgkb-docs');
                 $redirect_link = $archive_link ? $archive_link : home_url();
-                wp_redirect($redirect_link);
+                wp_safe_redirect($redirect_link);
                 exit;
             }
         }
@@ -1235,33 +1232,33 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         $rewrite_slug = (!empty($docs_single_slug) ? untrailingslashit($docs_single_slug) : 'sgkb-docs');
 
         $labels = array(
-            'name' => _x('Docs', 'Post Type General Name', 'support-genix'),
-            'singular_name' => _x('Docs', 'Post Type Singular Name', 'support-genix'),
-            'menu_name' => _x('Docs', 'Admin Menu text', 'support-genix'),
-            'name_admin_bar' => _x('Docs', 'Add New on Toolbar', 'support-genix'),
-            'archives' => __('Docs Archives', 'support-genix'),
-            'attributes' => __('Docs Attributes', 'support-genix'),
-            'parent_item_colon' => __('Parent Docs:', 'support-genix'),
-            'all_items' => __('All Docs', 'support-genix'),
-            'add_new_item' => __('Add New Docs', 'support-genix'),
-            'add_new' => __('Add New', 'support-genix'),
-            'new_item' => __('New Docs', 'support-genix'),
-            'edit_item' => __('Edit Docs', 'support-genix'),
-            'update_item' => __('Update Docs', 'support-genix'),
-            'view_item' => __('View Docs', 'support-genix'),
-            'view_items' => __('View Docs', 'support-genix'),
-            'search_items' => __('Search Docs', 'support-genix'),
-            'not_found' => __('Not found', 'support-genix'),
-            'not_found_in_trash' => __('Not found in Trash', 'support-genix'),
-            'featured_image' => __('Featured Image', 'support-genix'),
-            'set_featured_image' => __('Set featured image', 'support-genix'),
-            'remove_featured_image' => __('Remove featured image', 'support-genix'),
-            'use_featured_image' => __('Use as featured image', 'support-genix'),
-            'insert_into_item' => __('Insert into Docs', 'support-genix'),
-            'uploaded_to_this_item' => __('Uploaded to this Docs', 'support-genix'),
-            'items_list' => __('Docs list', 'support-genix'),
-            'items_list_navigation' => __('Docs list navigation', 'support-genix'),
-            'filter_items_list' => __('Filter Docs list', 'support-genix'),
+            'name' => _x('Docs', 'Post Type General Name', 'support-genix-lite'),
+            'singular_name' => _x('Docs', 'Post Type Singular Name', 'support-genix-lite'),
+            'menu_name' => _x('Docs', 'Admin Menu text', 'support-genix-lite'),
+            'name_admin_bar' => _x('Docs', 'Add New on Toolbar', 'support-genix-lite'),
+            'archives' => __('Docs Archives', 'support-genix-lite'),
+            'attributes' => __('Docs Attributes', 'support-genix-lite'),
+            'parent_item_colon' => __('Parent Docs:', 'support-genix-lite'),
+            'all_items' => __('All Docs', 'support-genix-lite'),
+            'add_new_item' => __('Add New Docs', 'support-genix-lite'),
+            'add_new' => __('Add New', 'support-genix-lite'),
+            'new_item' => __('New Docs', 'support-genix-lite'),
+            'edit_item' => __('Edit Docs', 'support-genix-lite'),
+            'update_item' => __('Update Docs', 'support-genix-lite'),
+            'view_item' => __('View Docs', 'support-genix-lite'),
+            'view_items' => __('View Docs', 'support-genix-lite'),
+            'search_items' => __('Search Docs', 'support-genix-lite'),
+            'not_found' => __('Not found', 'support-genix-lite'),
+            'not_found_in_trash' => __('Not found in Trash', 'support-genix-lite'),
+            'featured_image' => __('Featured Image', 'support-genix-lite'),
+            'set_featured_image' => __('Set featured image', 'support-genix-lite'),
+            'remove_featured_image' => __('Remove featured image', 'support-genix-lite'),
+            'use_featured_image' => __('Use as featured image', 'support-genix-lite'),
+            'insert_into_item' => __('Insert into Docs', 'support-genix-lite'),
+            'uploaded_to_this_item' => __('Uploaded to this Docs', 'support-genix-lite'),
+            'items_list' => __('Docs list', 'support-genix-lite'),
+            'items_list_navigation' => __('Docs list navigation', 'support-genix-lite'),
+            'filter_items_list' => __('Filter Docs list', 'support-genix-lite'),
         );
 
         $rewrite = array(
@@ -1272,7 +1269,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         );
 
         $args = array(
-            'label' => __('Docs', 'support-genix'),
+            'label' => __('Docs', 'support-genix-lite'),
             'description' => '',
             'labels' => $labels,
             'menu_icon' => '',
@@ -1303,17 +1300,17 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         $rewrite_slug = (!empty($category_base) ? untrailingslashit($category_base) : 'sgkb-docs-category');
 
         $labels = array(
-            'name' => _x('Categories', 'taxonomy general name', 'support-genix'),
-            'singular_name' => _x('Category', 'taxonomy singular name', 'support-genix'),
-            'search_items' => __('Search Categories', 'support-genix'),
-            'all_items' => __('All Categories', 'support-genix'),
-            'parent_item' => __('Parent Category', 'support-genix'),
-            'parent_item_colon' => __('Parent Category:', 'support-genix'),
-            'edit_item' => __('Edit Category', 'support-genix'),
-            'update_item' => __('Update Category', 'support-genix'),
-            'add_new_item' => __('Add New Category', 'support-genix'),
-            'new_item_name' => __('New Category Name', 'support-genix'),
-            'menu_name' => __('Categories', 'support-genix'),
+            'name' => _x('Categories', 'taxonomy general name', 'support-genix-lite'),
+            'singular_name' => _x('Category', 'taxonomy singular name', 'support-genix-lite'),
+            'search_items' => __('Search Categories', 'support-genix-lite'),
+            'all_items' => __('All Categories', 'support-genix-lite'),
+            'parent_item' => __('Parent Category', 'support-genix-lite'),
+            'parent_item_colon' => __('Parent Category:', 'support-genix-lite'),
+            'edit_item' => __('Edit Category', 'support-genix-lite'),
+            'update_item' => __('Update Category', 'support-genix-lite'),
+            'add_new_item' => __('Add New Category', 'support-genix-lite'),
+            'new_item_name' => __('New Category Name', 'support-genix-lite'),
+            'menu_name' => __('Categories', 'support-genix-lite'),
         );
 
         $rewrite = array(
@@ -1348,17 +1345,17 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         $rewrite_slug = (!empty($tag_base) ? untrailingslashit($tag_base) : 'sgkb-docs-tag');
 
         $labels = array(
-            'name' => _x('Tags', 'taxonomy general name', 'support-genix'),
-            'singular_name' => _x('Tag', 'taxonomy singular name', 'support-genix'),
-            'search_items' => __('Search Tags', 'support-genix'),
-            'all_items' => __('All Tags', 'support-genix'),
-            'parent_item' => __('Parent Tag', 'support-genix'),
-            'parent_item_colon' => __('Parent Tag:', 'support-genix'),
-            'edit_item' => __('Edit Tag', 'support-genix'),
-            'update_item' => __('Update Tag', 'support-genix'),
-            'add_new_item' => __('Add New Tag', 'support-genix'),
-            'new_item_name' => __('New Tag Name', 'support-genix'),
-            'menu_name' => __('Tags', 'support-genix'),
+            'name' => _x('Tags', 'taxonomy general name', 'support-genix-lite'),
+            'singular_name' => _x('Tag', 'taxonomy singular name', 'support-genix-lite'),
+            'search_items' => __('Search Tags', 'support-genix-lite'),
+            'all_items' => __('All Tags', 'support-genix-lite'),
+            'parent_item' => __('Parent Tag', 'support-genix-lite'),
+            'parent_item_colon' => __('Parent Tag:', 'support-genix-lite'),
+            'edit_item' => __('Edit Tag', 'support-genix-lite'),
+            'update_item' => __('Update Tag', 'support-genix-lite'),
+            'add_new_item' => __('Add New Tag', 'support-genix-lite'),
+            'new_item_name' => __('New Tag Name', 'support-genix-lite'),
+            'menu_name' => __('Tags', 'support-genix-lite'),
         );
 
         $rewrite = array(
@@ -1632,8 +1629,8 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
 
     public function setDocsCategory($post)
     {
-        $category_id = isset($_GET['post_cat']) ? absint($_GET['post_cat']) : 0;
-        $request_uri = isset($_SERVER['REQUEST_URI']) ? esc_url_raw($_SERVER['REQUEST_URI']) : '';
+        $category_id = isset($_GET['post_cat']) ? absint($_GET['post_cat']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Read-only category filter from query string; no state change.
+        $request_uri = isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Read-only request URI; no state change.
 
         if (
             empty($category_id) ||
@@ -1770,7 +1767,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         }
 
         if (!empty($taxq_args)) {
-            $docs_args['tax_query'] = $taxq_args;
+            $docs_args['tax_query'] = $taxq_args; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
         }
 
         add_filter('posts_join', array($this, 'custom_join_query'), 10, 2);
@@ -1829,7 +1826,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
             'taxonomy' => 'sgkb-docs-category',
             'hide_empty' => false,
             'hierarchical' => false,
-            'meta_key' => '_sg_order',
+            'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
             'orderby' => 'meta_value_num',
             'order' => 'ASC',
         ];
@@ -1890,7 +1887,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
                 }
 
                 if (!empty($taxq_args)) {
-                    $docs_args['tax_query'] = $taxq_args;
+                    $docs_args['tax_query'] = $taxq_args; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                 }
 
                 add_filter('posts_join', array($this, 'custom_join_query'), 10, 2);
@@ -1973,7 +1970,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
             }
 
             if (!empty($taxq_args)) {
-                $docs_args['tax_query'] = $taxq_args;
+                $docs_args['tax_query'] = $taxq_args; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
             }
 
             add_filter('posts_join', array($this, 'custom_join_query'), 10, 2);
@@ -2028,7 +2025,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         $edit_link = get_edit_post_link($post_id);
         $categories = $cats ? get_the_terms($post_id, 'sgkb-docs-category') : [];
         $tags = get_the_terms($post_id, 'sgkb-docs-tag');
-        $author = get_user($post->post_author);
+        $author = get_userdata($post->post_author);
         $only_for_chatbot = get_post_meta($post->ID, 'only_for_chatbot', true);
 
         $post->key = $post_id;
@@ -2396,7 +2393,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
                 $args['number'] = 0;
                 $args['offset'] = 0;
             } elseif ('fld_order' === $orderBy) {
-                $args['meta_key'] = '_sg_order';
+                $args['meta_key'] = '_sg_order'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
                 $args['orderby'] = 'meta_value_num';
                 $args['order'] = $order;
             } else {
@@ -2405,7 +2402,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
             }
 
             if ('fld_order' === $orderBy) {
-                $args['meta_key'] = '_sg_order';
+                $args['meta_key'] = '_sg_order'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
                 $args['orderby'] = 'meta_value_num';
             }
 
@@ -2545,7 +2542,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
                 'taxonomy' => 'sgkb-docs-category',
                 'hide_empty' => false,
                 'hierarchical' => false,
-                'meta_key' => '_sg_order',
+                'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
                 'orderby' => 'meta_value_num',
                 'order' => 'ASC',
             ));
@@ -2889,7 +2886,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
 
         if (empty($query) || strlen($query) < 2) {
             $apiResponse->status = false;
-            $apiResponse->msg = __("Please enter at least 2 characters", 'support-genix');
+            $apiResponse->msg = __("Please enter at least 2 characters", 'support-genix-lite');
             echo wp_json_encode($apiResponse);
             return;
         }
@@ -2907,7 +2904,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         // Check if searching in specific category
         $category_slug = sanitize_text_field(ApbdWps_GetValue("category", ""));
         if (!empty($category_slug)) {
-            $args['tax_query'] = array(
+            $args['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                 array(
                     'taxonomy' => 'sgkb-docs-category',
                     'field' => 'slug',
@@ -2927,7 +2924,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
                 <div class="sgkb-search-results-dropdown" style="display: flex; flex-direction: column; background: #ffffff; color: #111827; text-align: left;">
                     <div class="sgkb-search-results-header" style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb; background: #f9fafb;">
                         <span class="sgkb-search-results-count" style="font-size: 0.875rem; color: #6b7280; font-weight: 500;">
-                            <?php echo sprintf(__('Found %d results', 'support-genix'), $docs_query->found_posts); ?>
+                            <?php /* translators: %d: number of results. */ echo esc_html(sprintf(__('Found %d results', 'support-genix-lite'), $docs_query->found_posts)); ?>
                         </span>
                     </div>
                     <div class="sgkb-search-results-list" style="background: #ffffff; padding: 8px; margin: 0; overflow: hidden auto;">
@@ -2962,7 +2959,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
 
                                     // Ensure excerpt is not empty
                                     if (empty($excerpt)) {
-                                        $excerpt = __('No description available for this article.', 'support-genix');
+                                        $excerpt = __('No description available for this article.', 'support-genix-lite');
                                     }
                                     ?>
                                     <div class="sgkb-search-result-excerpt" style="font-size: 12px; color: #6b7280; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; margin: 2px 0 0 0; max-height: 2.8em;"><?php echo esc_html($excerpt); ?></div>
@@ -2978,7 +2975,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
                     <?php if ($docs_query->found_posts > 10) : ?>
                         <div class="sgkb-search-results-footer" style="padding: 12px 16px; border-top: 1px solid #e5e7eb; background: #f9fafb;">
                             <a href="<?php echo esc_url(home_url('/?s=' . urlencode($query) . '&post_type=sgkb-docs')); ?>" class="sgkb-search-view-all" style="display: inline-flex; align-items: center; gap: 8px; color: #7229dd; text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.gap='12px'; this.style.color='#5521a8'" onmouseout="this.style.gap='8px'; this.style.color='#7229dd'">
-                                <?php echo sprintf(__('View all %d results', 'support-genix'), $docs_query->found_posts); ?>
+                                <?php /* translators: %d: number of results. */ echo esc_html(sprintf(__('View all %d results', 'support-genix-lite'), $docs_query->found_posts)); ?>
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                     <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
@@ -2994,7 +2991,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
                         <path d="M11 6C13.7614 6 16 8.23858 16 11M16.6588 16.6549L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                     <p class="sgkb-search-no-results-text" style="font-size: 1rem; color: #1f2937; margin: 0 0 8px 0;">No results found for "<strong style="color: #7229dd;"><?php echo esc_html($query); ?></strong>"</p>
-                    <p class="sgkb-search-no-results-hint" style="font-size: 0.875rem; color: #6b7280; margin: 0;"><?php _e('Try searching with different keywords', 'support-genix'); ?></p>
+                    <p class="sgkb-search-no-results-hint" style="font-size: 0.875rem; color: #6b7280; margin: 0;"><?php esc_html_e('Try searching with different keywords', 'support-genix-lite'); ?></p>
                 </div>
             <?php
             }
@@ -4100,7 +4097,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
 
         $ex_term_ids = get_terms(array(
             'taxonomy' => $taxonomy,
-            'meta_key' => '_sg_order',
+            'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
             'orderby' => 'meta_value_num',
             'order' => 'DESC',
             'number' => 1,
@@ -4133,14 +4130,14 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         if (('u' == $order_type) && (1 < $ex_order)) {
             $ex_term_ids = get_terms(array(
                 'taxonomy' => $taxonomy,
-                'meta_key' => '_sg_order',
+                'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
                 'orderby' => 'meta_value_num',
                 'order' => 'DESC',
                 'number' => 1,
                 'hide_empty' => false,
                 'hierarchical' => false,
                 'fields' => 'ids',
-                'meta_query' => array(
+                'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                     array(
                         'key' => '_sg_order',
                         'value' => $ex_order,
@@ -4165,14 +4162,14 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         } elseif ('d' == $order_type) {
             $ex_term_ids = get_terms(array(
                 'taxonomy' => $taxonomy,
-                'meta_key' => '_sg_order',
+                'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
                 'orderby' => 'meta_value_num',
                 'order' => 'ASC',
                 'number' => 1,
                 'hide_empty' => false,
                 'hierarchical' => false,
                 'fields' => 'ids',
-                'meta_query' => array(
+                'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                     array(
                         'key' => '_sg_order',
                         'value' => $ex_order,
@@ -4203,7 +4200,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
     {
         $term_ids = get_terms(array(
             'taxonomy' => $taxonomy,
-            'meta_key' => '_sg_order',
+            'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
             'orderby' => 'id',
             'order' => 'ASC',
             'hide_empty' => false,
@@ -4227,7 +4224,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
     {
         $term_ids = get_terms(array(
             'taxonomy' => $taxonomy,
-            'meta_key' => '_sg_order',
+            'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
             'orderby' => 'meta_value_num',
             'order' => 'ASC',
             'hide_empty' => false,
@@ -4288,22 +4285,22 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
     public function handle_article_feedback()
     {
         // Verify nonce
-        if (!wp_verify_nonce($_POST['nonce'], 'ajax-nonce')) {
-            wp_die(__('Security check failed', 'support-genix'));
+        if (!wp_verify_nonce(isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '', 'ajax-nonce')) {
+            wp_die(esc_html(__('Security check failed', 'support-genix-lite')));
         }
 
-        $article_id = absint($_POST['article_id']);
-        $feedback_type = sanitize_text_field($_POST['feedback_type']);
+        $article_id = isset($_POST['article_id']) ? absint($_POST['article_id']) : 0;
+        $feedback_type = isset($_POST['feedback_type']) ? sanitize_text_field(wp_unslash($_POST['feedback_type'])) : '';
 
         // Validate inputs
         if (!$article_id || !in_array($feedback_type, ['helpful', 'not-helpful'])) {
-            wp_send_json_error(__('Invalid feedback data', 'support-genix'));
+            wp_send_json_error(__('Invalid feedback data', 'support-genix-lite'));
         }
 
         // Check if post exists and is a docs post
         $post = get_post($article_id);
         if (!$post || $post->post_type !== 'sgkb-docs') {
-            wp_send_json_error(__('Article not found', 'support-genix'));
+            wp_send_json_error(__('Article not found', 'support-genix-lite'));
         }
 
         // Store feedback in post meta
@@ -4320,12 +4317,12 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         $this->store_analytics_reaction($article_id, $reaction);
 
         // Optional: Store user feedback to prevent duplicate submissions
-        $user_ip = $_SERVER['REMOTE_ADDR'];
+        $user_ip = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '';
         $user_feedback_key = '_sgkb_feedback_' . md5($user_ip . $article_id);
         update_post_meta($article_id, $user_feedback_key, $feedback_type);
 
         wp_send_json_success([
-            'message' => __('Thank you for your feedback!', 'support-genix'),
+            'message' => __('Thank you for your feedback!', 'support-genix-lite'),
             'feedback_type' => $feedback_type
         ]);
     }
@@ -4339,7 +4336,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
 
         // Get date range for last 30 days
         $date_ended = current_time('Y-m-d');
-        $date_start = date('Y-m-d', strtotime('-30 days'));
+        $date_start = gmdate('Y-m-d', strtotime('-30 days'));
 
         // Get table names
         $keywordsobj = new Mapbd_wps_docs_search_keywords();
@@ -4349,6 +4346,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         $events_table = $eventsobj->GetTableName();
 
         // Query to get top searched keywords that had results
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $result = $wpdb->get_results($wpdb->prepare("
             SELECT k.keyword, SUM(e.count) as total_count
             FROM {$keywords_table} k
@@ -4358,6 +4356,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
             ORDER BY total_count DESC, k.id DESC
             LIMIT %d
         ", $date_start, $date_ended, $limit));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
         // If no searches found, return empty array
         if (empty($result)) {
@@ -4405,7 +4404,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
 
         if (empty($lang_code)) {
             if (class_exists('SitePress')) {
-                $lang_code = apply_filters('wpml_current_language', null);
+                $lang_code = apply_filters('wpml_current_language', null); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML integration hook (external).
             } elseif (function_exists('pll_current_language')) {
                 $lang_code = pll_current_language();
             }

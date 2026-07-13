@@ -220,7 +220,7 @@ if (!class_exists("ApbdWpsModel")) {
                     $this->input_clean($default);
                 }
             }
-            $postvalue = ! empty($_POST[$name]) ? sanitize_text_field($_POST[$name]) : $default;
+            $postvalue = ! empty($_POST[$name]) ? sanitize_text_field(wp_unslash($_POST[$name])) : $default; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Generic model setter; nonce is the caller's responsibility.
             $this->doFieldValueFilter($name, $postvalue, $isXsClean);
             if (!$this->IsHTMLProperty($name)) {
                 $this->input_clean($postvalue);
@@ -1034,8 +1034,8 @@ if (!class_exists("ApbdWpsModel")) {
                         if (isset($this->setProperties[$key]) && in_array("xss_clean", $rules)) {
 
                             $this->$key(wp_strip_all_tags($this->$key));
-                            if (isset($_POST[$key])) {
-                                $_POST[$key] = wp_strip_all_tags($_POST[$key]);
+                            if (isset($_POST[$key])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Generic model setter; nonce is the caller's responsibility.
+                                $_POST[$key] = wp_strip_all_tags(wp_unslash($_POST[$key])); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Generic model setter; nonce is the caller's responsibility.
                             }
                         }
 
@@ -1713,7 +1713,7 @@ if (!class_exists("ApbdWpsModel")) {
         function SetFromPostData($isNew = false, $data = null)
         {
             if (null === $data) {
-                $data = $_POST;
+                $data = $_POST; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Generic model setter; nonce is the caller's responsibility.
             }
 
             return $this->SetFromArray($data, $isNew);

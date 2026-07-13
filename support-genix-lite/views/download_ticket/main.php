@@ -1,4 +1,6 @@
 <?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View partial linted in isolation; its template-scoped variables are not global and cannot be individually prefixed.
+defined('ABSPATH') || exit;
 
 /** @var $detailsObj */
 /** @var $ticketObj */
@@ -94,7 +96,7 @@ $fields = $detailsObj->custom_fields;
                         <p class="sg_dt__reply-date"><?php echo esc_html($replyObj->reply_time); ?></p>
                     </div>
                     <div class="sg_dt__reply-body">
-                        <div class="sg_dt__reply-text"><?php echo ApbdWps_KsesEmailHtml($replyObj->reply_text); ?></div>
+                        <div class="sg_dt__reply-text"><?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped via ApbdWps_KsesEmailHtml (wp_kses_post). */ echo ApbdWps_KsesEmailHtml($replyObj->reply_text); ?></div>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View partial linted in isolation; its template-scoped variables are not global and cannot be individually prefixed.
 
 /**
  * Modern Category Card Component
@@ -74,7 +75,7 @@ if (!empty($top_docs)) {
         'orderby' => 'modified',
         'order' => 'DESC',
         'suppress_filters' => false, // Allow WPML/Polylang to filter by language
-        'tax_query' => array(
+        'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
             array(
                 'taxonomy' => 'sgkb-docs-category',
                 'field' => 'term_id',
@@ -121,8 +122,8 @@ if (!empty($top_docs)) {
                             'line' => array('x1' => array(), 'y1' => array(), 'x2' => array(), 'y2' => array(), 'stroke' => array(), 'stroke-width' => array()),
                         ));
                     } else {
-                        // Fallback icon HTML
-                        echo $category_icon;
+                        // Fallback: unknown icon format stored as term meta; escape as plain text.
+                        echo esc_html($category_icon);
                     }
                     ?>
                 <?php else : ?>
@@ -147,8 +148,9 @@ if (!empty($top_docs)) {
             <span class="sgkb-category-count">
                 <?php
                 echo sprintf(
-                    _n('%s article', '%s articles', $docs_count, 'support-genix'),
-                    number_format_i18n($docs_count)
+                    // translators: %s: number of articles.
+                    esc_html(_n('%s article', '%s articles', $docs_count, 'support-genix-lite')),
+                    esc_html(number_format_i18n($docs_count))
                 );
                 ?>
             </span>
@@ -167,7 +169,7 @@ if (!empty($top_docs)) {
         <ul class="sgkb-category-docs-list">
             <?php foreach ($top_docs as $doc) : ?>
                 <li>
-                    <a href="<?php echo get_permalink($doc->ID); ?>"
+                    <a href="<?php echo esc_url(get_permalink($doc->ID)); ?>"
                         title="<?php echo esc_attr($doc->post_title); ?>">
                         <?php echo esc_html($doc->post_title); ?>
                     </a>
@@ -177,7 +179,7 @@ if (!empty($top_docs)) {
     <?php else : ?>
         <div class="sgkb-category-empty">
             <p class="sgkb-text-secondary sgkb-text-sm">
-                <?php esc_html_e('No articles available yet.', 'support-genix'); ?>
+                <?php esc_html_e('No articles available yet.', 'support-genix-lite'); ?>
             </p>
         </div>
     <?php endif; ?>
@@ -185,14 +187,14 @@ if (!empty($top_docs)) {
     <!-- View All Link -->
     <a href="<?php echo esc_url($category_link); ?>"
         class="sgkb-category-link"
-        aria-label="<?php echo esc_attr(sprintf(__('View all articles in %s', 'support-genix'), $category->name)); ?>">
-        <?php esc_html_e('View all articles', 'support-genix'); ?>
+        aria-label="<?php /* translators: %s: category name. */ echo esc_attr(sprintf(__('View all articles in %s', 'support-genix-lite'), $category->name)); ?>">
+        <?php esc_html_e('View all articles', 'support-genix-lite'); ?>
     </a>
 
     <?php if ($is_featured) : ?>
         <!-- Featured Badge -->
         <span class="sgkb-featured-badge sgkb-absolute" style="top: 16px; right: 16px;">
-            <?php esc_html_e('Featured', 'support-genix'); ?>
+            <?php esc_html_e('Featured', 'support-genix-lite'); ?>
         </span>
     <?php endif; ?>
 </div>

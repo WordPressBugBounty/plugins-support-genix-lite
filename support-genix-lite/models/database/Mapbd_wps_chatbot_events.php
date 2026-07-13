@@ -71,6 +71,7 @@ class Mapbd_wps_chatbot_events extends ApbdWpsModel
         $keywordsObj = new Mapbd_wps_chatbot_keywords();
         $keywordsTable = $keywordsObj->db->prefix . $keywordsObj->tableName;
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             $sql = "CREATE TABLE `{$table}` (
                 `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -87,8 +88,9 @@ class Mapbd_wps_chatbot_events extends ApbdWpsModel
                 KEY `created_date` (`created_date`),
                 CONSTRAINT `fkcb_keyword_id` FOREIGN KEY (`keyword_id`) REFERENCES `{$keywordsTable}` (`id`) ON DELETE CASCADE
             ) $charsetCollate;";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
+            dbDelta($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
 
@@ -97,11 +99,11 @@ class Mapbd_wps_chatbot_events extends ApbdWpsModel
         global $wpdb;
 
         $table_name = $wpdb->prefix . $this->tableName;
-        $sql = "DROP TABLE IF EXISTS $table_name;";
+        $sql = "DROP TABLE IF EXISTS $table_name;";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
-        $wpdb->query("SET FOREIGN_KEY_CHECKS = 0;");
-        $wpdb->query($sql);
-        $wpdb->query("SET FOREIGN_KEY_CHECKS = 1;");
+        $wpdb->query("SET FOREIGN_KEY_CHECKS = 0;");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+        $wpdb->query($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+        $wpdb->query("SET FOREIGN_KEY_CHECKS = 1;");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     static function UpdateDBTable()
@@ -109,18 +111,20 @@ class Mapbd_wps_chatbot_events extends ApbdWpsModel
         $thisObj = new static();
         $table = $thisObj->db->prefix . $thisObj->tableName;
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             return;
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
         }
 
         if (self::IsGeneratedColumn($thisObj->db, $table, 'created_date')) {
-            $thisObj->db->query("ALTER TABLE `{$table}` DROP INDEX `keyword_id_founded_created_date`");
-            $thisObj->db->query("ALTER TABLE `{$table}` DROP COLUMN `created_date`");
-            $thisObj->db->query("ALTER TABLE `{$table}` ADD COLUMN `created_date` date DEFAULT NULL AFTER `created_at`");
-            $thisObj->db->query("UPDATE `{$table}` SET `created_date` = DATE(`created_at`)");
-            $thisObj->db->query("ALTER TABLE `{$table}` MODIFY COLUMN `created_date` date NOT NULL");
-            $thisObj->db->query("ALTER TABLE `{$table}` ADD KEY `created_date` (`created_date`)");
-            $thisObj->db->query("ALTER TABLE `{$table}` ADD UNIQUE KEY `keyword_id_founded_created_date` (`keyword_id`, `founded`, `created_date`)");
+            $thisObj->db->query("ALTER TABLE `{$table}` DROP INDEX `keyword_id_founded_created_date`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("ALTER TABLE `{$table}` DROP COLUMN `created_date`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("ALTER TABLE `{$table}` ADD COLUMN `created_date` date DEFAULT NULL AFTER `created_at`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("UPDATE `{$table}` SET `created_date` = DATE(`created_at`)");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("ALTER TABLE `{$table}` MODIFY COLUMN `created_date` date NOT NULL");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("ALTER TABLE `{$table}` ADD KEY `created_date` (`created_date`)");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("ALTER TABLE `{$table}` ADD UNIQUE KEY `keyword_id_founded_created_date` (`keyword_id`, `founded`, `created_date`)");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
 

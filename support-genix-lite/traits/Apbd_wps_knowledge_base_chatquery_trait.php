@@ -308,8 +308,10 @@ trait Apbd_wps_knowledge_base_chatquery_trait
             (1 < count($search_terms)) &&
             ($min_direct_strlen < mb_strlen($sanitized_query))
         ) {
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             $direct_query_sql = "(CASE WHEN p.post_title LIKE %s THEN 20 ELSE 0 END) +
                 (CASE WHEN p.post_content LIKE %s THEN 10 ELSE 0 END) +";
+            // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
             $direct_query_esc = '%' . $wpdb->esc_like($sanitized_query) . '%';
             $direct_query_params = [$direct_query_esc, $direct_query_esc];
@@ -358,6 +360,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
         }
 
         // Build base SQL with match_count for threshold filtering.
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $sql_base = "SELECT DISTINCT p.ID, p.post_title, p.post_content,
                 ({$direct_query_sql}
                 {$title_search} +
@@ -369,6 +372,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
             AND p.post_status = 'publish'
             {$tax_where_sql}
             HAVING relevance_score > 0";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
         $params_base = array_merge(
             $direct_query_params,
@@ -382,9 +386,11 @@ trait Apbd_wps_knowledge_base_chatquery_trait
         $use_threshold = ($term_count > 1 && $min_matches > 1);
 
         if ($use_threshold) {
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             $sql_with_threshold = $sql_base . " AND match_count >= %d
                 ORDER BY relevance_score DESC, p.post_date DESC
                 LIMIT %d";
+            // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
             $params_with_threshold = array_merge($params_base, [$min_matches, $limit]);
 
@@ -392,13 +398,15 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                 [$wpdb, 'prepare'],
                 array_merge([$sql_with_threshold], $params_with_threshold)
             );
-            $docs = $wpdb->get_results($prepared_sql);
+            $docs = $wpdb->get_results($prepared_sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
             // Fallback: If no results with threshold, retry without threshold.
             if (empty($docs)) {
+                // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
                 $sql_no_threshold = $sql_base . "
                     ORDER BY relevance_score DESC, p.post_date DESC
                     LIMIT %d";
+                // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
                 $params_no_threshold = array_merge($params_base, [$limit]);
 
@@ -406,13 +414,15 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                     [$wpdb, 'prepare'],
                     array_merge([$sql_no_threshold], $params_no_threshold)
                 );
-                $docs = $wpdb->get_results($prepared_sql);
+                $docs = $wpdb->get_results($prepared_sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             }
         } else {
             // Single term or threshold is 1 - no need for threshold logic.
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             $sql_no_threshold = $sql_base . "
                 ORDER BY relevance_score DESC, p.post_date DESC
                 LIMIT %d";
+            // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
             $params_no_threshold = array_merge($params_base, [$limit]);
 
@@ -420,7 +430,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                 [$wpdb, 'prepare'],
                 array_merge([$sql_no_threshold], $params_no_threshold)
             );
-            $docs = $wpdb->get_results($prepared_sql);
+            $docs = $wpdb->get_results($prepared_sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
 
         if (!is_array($docs)) {
@@ -524,15 +534,16 @@ trait Apbd_wps_knowledge_base_chatquery_trait
             $prompt .= "Context:\n";
             $prompt .= $context . "\n\n";
             $prompt .= "Current Question: " . $query . "\n\n";
-            $prompt .= "If this is just a greeting (hi, hello, hey, thanks, etc.), respond warmly and invite them to ask questions (1-2 sentences) — do NOT use the context above.\n";
-            $prompt .= "Otherwise, provide a helpful answer based on the provided context. Remember to respond in the user's language.";
+            $prompt .= "Treat the message as a greeting ONLY if it is purely a salutation or social pleasantry with no topic (a bare \"hi\", \"hey\", \"hello\", \"thanks\", or its equivalent in any language). In that case respond warmly and invite them to ask questions (1-2 sentences) — do NOT use the context above.\n";
+            $prompt .= "If the message names any feature, topic, or keyword — even as a short phrase or single words without question wording — treat it as a question and answer it using the context above. When in doubt, answer from the context rather than greeting.\n";
+            $prompt .= "Provide a helpful answer based on the provided context. Remember to respond in the user's language.";
         } else {
             // No match scenario
             $prompt .= "Current Question: " . $query . "\n\n";
             $prompt .= "SITUATION: No matching documentation found.\n\n";
-            $prompt .= "If this is a greeting (hi, hello, thanks, etc.):\n";
+            $prompt .= "If this is purely a greeting or social pleasantry with no topic (e.g. \"hi\", \"hey\", \"hello\", \"thanks\", or the equivalent in any language):\n";
             $prompt .= "- Respond warmly and invite them to ask questions (1-2 sentences)\n\n";
-            $prompt .= "If this is a question:\n";
+            $prompt .= "If this is a question (treat any feature, topic, keyword, short phrase, or single word as a question, even without question wording):\n";
             $prompt .= "- Acknowledge you don't have specific information on this topic\n";
             $prompt .= "- Suggest they try different keywords or rephrase\n";
             $prompt .= "- Mention: \"For personalized help, you can create a support ticket.\"\n\n";
@@ -560,11 +571,13 @@ trait Apbd_wps_knowledge_base_chatquery_trait
 
             $tableName = $wpdb->prefix . 'apbd_wps_chatbot_history';
 
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             $sql = "SELECT query, content FROM {$tableName}
                     WHERE session_id = %s
                     ORDER BY id DESC
                     LIMIT %d";
-            $result = $wpdb->get_results($wpdb->prepare($sql, $session_id, $limit), ARRAY_A);
+            // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+            $result = $wpdb->get_results($wpdb->prepare($sql, $session_id, $limit), ARRAY_A);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
             // Reverse to get chronological order (oldest first)
             return is_array($result) ? array_reverse($result) : [];
@@ -890,7 +903,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
         }
 
         $docs_ids_str = (is_array($docs_ids) ? implode(',', $docs_ids) : (is_string($docs_ids) ? $docs_ids : ''));
-        $conv_hash = md5(uniqid(mt_rand(), true));
+        $conv_hash = md5(uniqid(wp_rand(), true));
         $current_time = gmdate("Y-m-d H:i:s");
 
         $history = new Mapbd_wps_chatbot_history();
@@ -914,12 +927,15 @@ trait Apbd_wps_knowledge_base_chatquery_trait
             $max_records = absint($this->GetModuleOption('chatbot_max_messages', 100));
 
             if ($max_records > 0) {
+                // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
                 $current_count = $wpdb->get_var($wpdb->prepare(
                     "SELECT COUNT(*) FROM {$table_name} WHERE user_id = %d",
                     $user_id
                 ));
+                // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
                 if ($max_records < $current_count) {
+                    // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
                     $wpdb->query($wpdb->prepare(
                         "DELETE FROM {$table_name}
                         WHERE user_id = %d
@@ -935,6 +951,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                         $user_id,
                         $max_records
                     ));
+                    // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
                 }
             }
 
@@ -979,7 +996,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
     private function create_guest_history_with_session($query, $content, $docs_ids, $session_id, $guest_identifier, $source_data = [])
     {
         $docs_ids_str = (is_array($docs_ids) ? implode(',', $docs_ids) : (is_string($docs_ids) ? $docs_ids : ''));
-        $conv_hash = md5(uniqid(mt_rand(), true));
+        $conv_hash = md5(uniqid(wp_rand(), true));
         $current_time = gmdate("Y-m-d H:i:s");
 
         $history = new Mapbd_wps_chatbot_history();
@@ -1034,7 +1051,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
         $founded = $found_count ? 'Y' : 'N';
 
         $current_time = current_time('mysql');
-        $current_date = date('Y-m-d', strtotime($current_time));
+        $current_date = gmdate('Y-m-d', strtotime($current_time));
 
         $keyword_id = 0;
 
@@ -1168,6 +1185,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
 
         if ($logged_in && !empty($user_id)) {
             // Logged-in user: query by user_id with source filter
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             $sql = $wpdb->prepare(
                 "SELECT * FROM (
                     SELECT h.* FROM {$tableName} h
@@ -1180,8 +1198,9 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                 ORDER BY id ASC;",
                 $user_id
             );
+            // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
-            $result = $wpdb->get_results($sql);
+            $result = $wpdb->get_results($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         } else {
             // Guest user: query by guest_identifier (cross-session) or session_id (fallback)
             $guest_identifier = sanitize_text_field(ApbdWps_GetValue('guest_identifier', ''));
@@ -1189,6 +1208,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
 
             if (!empty($guest_identifier)) {
                 // Load ALL history for this guest across all sessions
+                // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
                 $sql = $wpdb->prepare(
                     "SELECT * FROM (
                         SELECT h.* FROM {$tableName} h
@@ -1201,10 +1221,12 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                     ORDER BY id ASC;",
                     $guest_identifier
                 );
+                // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
-                $result = $wpdb->get_results($sql);
+                $result = $wpdb->get_results($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             } elseif (!empty($session_id)) {
                 // Fallback: load by session_id only
+                // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
                 $sql = $wpdb->prepare(
                     "SELECT * FROM (
                         SELECT h.* FROM {$tableName} h
@@ -1217,8 +1239,9 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                     ORDER BY id ASC;",
                     $session_id
                 );
+                // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
-                $result = $wpdb->get_results($sql);
+                $result = $wpdb->get_results($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             } else {
                 return $apiResponse;
             }
@@ -1249,7 +1272,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                 ];
 
                 if ('Y' === $disable_ofcb_single) {
-                    $docs_args['meta_query'] = [
+                    $docs_args['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                         [
                             'key' => 'only_for_chatbot',
                             'value' => '1',
@@ -1331,20 +1354,24 @@ trait Apbd_wps_knowledge_base_chatquery_trait
 
         if ($logged_in && !empty($user_id)) {
             // Logged-in user: delete history for matching sessions only
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             $sql = "DELETE h FROM {$historyTable} h
                     INNER JOIN {$sessionTable} s ON h.session_id = s.session_id
                     WHERE h.user_id = %d {$session_source_filter};";
-            $result = $wpdb->query($wpdb->prepare($sql, $user_id));
+            // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+            $result = $wpdb->query($wpdb->prepare($sql, $user_id));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
             // Also delete history without a session record (legacy)
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             $sql = "DELETE FROM {$historyTable}
                     WHERE user_id = %d
                     AND session_id NOT IN (SELECT session_id FROM {$sessionTable});";
-            $wpdb->query($wpdb->prepare($sql, $user_id));
+            // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+            $wpdb->query($wpdb->prepare($sql, $user_id));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
             // Delete matching sessions
-            $sql = "DELETE FROM {$sessionTable} WHERE user_id = %d {$session_source_filter};";
-            $wpdb->query($wpdb->prepare($sql, $user_id));
+            $sql = "DELETE FROM {$sessionTable} WHERE user_id = %d {$session_source_filter};";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $wpdb->query($wpdb->prepare($sql, $user_id));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         } else {
             // Guest user: delete by guest_identifier (all sessions) or session_id (fallback)
             $guest_identifier = sanitize_text_field(ApbdWps_PostValue('guest_identifier', ''));
@@ -1352,28 +1379,32 @@ trait Apbd_wps_knowledge_base_chatquery_trait
 
             if (!empty($guest_identifier)) {
                 // Delete history for matching sessions only
+                // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
                 $sql = "DELETE h FROM {$historyTable} h
                         INNER JOIN {$sessionTable} s ON h.session_id = s.session_id
                         WHERE h.guest_identifier = %s AND h.user_id = 0 {$session_source_filter};";
-                $result = $wpdb->query($wpdb->prepare($sql, $guest_identifier));
+                // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+                $result = $wpdb->query($wpdb->prepare($sql, $guest_identifier));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
                 // Also delete history without a session record (legacy)
+                // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
                 $sql = "DELETE FROM {$historyTable}
                         WHERE guest_identifier = %s AND user_id = 0
                         AND session_id NOT IN (SELECT session_id FROM {$sessionTable});";
-                $wpdb->query($wpdb->prepare($sql, $guest_identifier));
+                // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+                $wpdb->query($wpdb->prepare($sql, $guest_identifier));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
                 // Delete matching sessions
-                $sql = "DELETE FROM {$sessionTable} WHERE guest_identifier = %s AND user_id = 0 {$session_source_filter};";
-                $wpdb->query($wpdb->prepare($sql, $guest_identifier));
+                $sql = "DELETE FROM {$sessionTable} WHERE guest_identifier = %s AND user_id = 0 {$session_source_filter};";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+                $wpdb->query($wpdb->prepare($sql, $guest_identifier));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             } elseif (!empty($session_id)) {
                 // Fallback: delete by session_id only
-                $sql = "DELETE FROM {$historyTable} WHERE session_id = %s AND user_id = 0;";
-                $result = $wpdb->query($wpdb->prepare($sql, $session_id));
+                $sql = "DELETE FROM {$historyTable} WHERE session_id = %s AND user_id = 0;";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+                $result = $wpdb->query($wpdb->prepare($sql, $session_id));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
                 // Also delete the session record
-                $sql = "DELETE FROM {$sessionTable} WHERE session_id = %s AND user_id = 0;";
-                $wpdb->query($wpdb->prepare($sql, $session_id));
+                $sql = "DELETE FROM {$sessionTable} WHERE session_id = %s AND user_id = 0;";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+                $wpdb->query($wpdb->prepare($sql, $session_id));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             } else {
                 return $apiResponse;
             }
@@ -1493,7 +1524,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
             $space_args = array(
                 'taxonomy' => 'sgkb-docs-space',
                 'hide_empty' => true,
-                'meta_key' => '_sg_order',
+                'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
                 'orderby' => 'meta_value_num',
                 'order' => 'ASC',
             );
@@ -1511,7 +1542,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                     $categories_in_space = get_terms(array(
                         'taxonomy' => 'sgkb-docs-category',
                         'hide_empty' => true,
-                        'meta_query' => array(
+                        'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                             array(
                                 'key' => '_sg_spaces',
                                 'value' => '"' . $id . '"',
@@ -1527,14 +1558,14 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                         'post_status' => 'publish',
                         'posts_per_page' => -1,
                         'fields' => 'ids',
-                        'tax_query' => array(
+                        'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                             array(
                                 'taxonomy' => 'sgkb-docs-space',
                                 'field' => 'term_id',
                                 'terms' => $id,
                             )
                         ),
-                        'meta_query' => array(
+                        'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                             'relation' => 'OR',
                             array(
                                 'key' => 'only_for_chatbot',
@@ -1583,7 +1614,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
                 'taxonomy' => 'sgkb-docs-category',
                 'hide_empty' => true,
                 'hierarchical' => false,
-                'meta_key' => '_sg_order',
+                'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
                 'orderby' => 'meta_value_num',
                 'order' => 'ASC',
                 'suppress_filters' => false,
@@ -1726,7 +1757,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
 
         if (!empty($taxq_args)) {
             $taxq_args['relation'] = 'AND';
-            $docs_args['tax_query'] = $taxq_args;
+            $docs_args['tax_query'] = $taxq_args; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
         }
 
         if (0 < strlen($search)) {
@@ -1736,7 +1767,7 @@ trait Apbd_wps_knowledge_base_chatquery_trait
         $disable_ofcb_single = $this->GetOption('disable_ofcb_single', 'N');
 
         if ('Y' === $disable_ofcb_single) {
-            $docs_args['meta_query'] = array(
+            $docs_args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                 array(
                     'key' => 'only_for_chatbot',
                     'compare' => 'NOT EXISTS'

@@ -48,7 +48,7 @@ function apbd_wps_lite_loco_extract_custom_strings($extraction, $domain)
         $relative_path = str_replace($plugin_dir, '', $file);
 
         // Skip vendor/node_modules/build directories
-        if (preg_match('#(vendor|node_modules|dashboard/dist|portal/dist|chatbot/dist)/#', $relative_path)) {
+        if (preg_match('#(vendor|node_modules|js-apps|assets/apps)/#', $relative_path)) {
             continue;
         }
 

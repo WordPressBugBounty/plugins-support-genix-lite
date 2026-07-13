@@ -158,9 +158,9 @@ class Mapbd_wps_notification extends ApbdWpsModel
         $charset = $thisObj->db->charset;
         $collate = $thisObj->db->collate;
 
-        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";
+        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
-        $thisObj->db->query($alter_query);
+        $thisObj->db->query($alter_query);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     static function CreateDBTable()
@@ -169,6 +169,7 @@ class Mapbd_wps_notification extends ApbdWpsModel
         $table = $thisObj->db->prefix . $thisObj->tableName;
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             $sql = "CREATE TABLE `{$table}` (
                       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -189,8 +190,9 @@ class Mapbd_wps_notification extends ApbdWpsModel
                       KEY `user_type` (`user_id`) USING BTREE,
                       KEY `user_id_item` (`user_id`,`item_type`) USING BTREE
                     ) $charsetCollate;";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
+            dbDelta($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
     function DropDBTable()
@@ -198,7 +200,7 @@ class Mapbd_wps_notification extends ApbdWpsModel
         global $wpdb;
 
         $table_name = $wpdb->prefix . $this->tableName;
-        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");
+        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     static function AddNotification($user_id, $title, $msg, $msg_param, $link, $is_popup = false, $itemType = '', $status = 'A', $extraParam = '')

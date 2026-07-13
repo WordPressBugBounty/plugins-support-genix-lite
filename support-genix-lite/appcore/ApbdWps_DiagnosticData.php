@@ -4,10 +4,7 @@
  * Diagnostic data.
  */
 
-// If this file is accessed directly, exit.
-if (! defined('ABSPATH')) {
-    exit;
-}
+defined('ABSPATH') || exit;
 
 /**
  * Class.
@@ -99,7 +96,7 @@ if (! class_exists('ApbdWps_DiagnosticData')) {
             }, 0);
 
             add_action('wp_ajax_support_genix_lite_diagnostic_data', function () {
-                $nonce = (isset($_REQUEST['_ajax_nonce']) ? sanitize_text_field($_REQUEST['_ajax_nonce']) : '');
+                $nonce = (isset($_REQUEST['_ajax_nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['_ajax_nonce'])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Nonce read here; verified via wp_verify_nonce() immediately below.
 
                 if (! wp_verify_nonce($nonce, 'ajax-nonce') || ! current_user_can('manage_options')) {
                     if (wp_doing_ajax()) {
@@ -193,7 +190,7 @@ if (! class_exists('ApbdWps_DiagnosticData')) {
          */
         private function process_data()
         {
-            $agreed = (isset($_POST['agreed']) ? sanitize_key($_POST['agreed']) : 'no');
+            $agreed = (isset($_POST['agreed']) ? sanitize_key($_POST['agreed']) : 'no'); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Nonce verified before process_data() is called.
             $agreed = (('yes' === $agreed) ? 'yes' : 'no');
 
             $notice = 'no';
@@ -298,7 +295,7 @@ if (! class_exists('ApbdWps_DiagnosticData')) {
         {
             global $wpdb;
 
-            $software = ((isset($_SERVER['SERVER_SOFTWARE']) && ! empty($_SERVER['SERVER_SOFTWARE'])) ? sanitize_text_field($_SERVER['SERVER_SOFTWARE']) : '');
+            $software = ((isset($_SERVER['SERVER_SOFTWARE']) && ! empty($_SERVER['SERVER_SOFTWARE'])) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_SOFTWARE'])) : '');
             $php_version = (function_exists('phpversion') ? phpversion() : '');
             $mysql_version = (method_exists($wpdb, 'db_version') ? $wpdb->db_version() : '');
             $php_max_upload_size = size_format(wp_max_upload_size());
@@ -573,7 +570,7 @@ if (! class_exists('ApbdWps_DiagnosticData')) {
             if (isset($ht_diagnostic_notice_owner) && $ht_diagnostic_notice_owner !== 'support_genix') {
                 return false;
             }
-            $ht_diagnostic_notice_owner = 'support_genix';
+            $ht_diagnostic_notice_owner = 'support_genix'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Local scoped variable.
 
             return true;
         }
@@ -668,7 +665,7 @@ if (! class_exists('ApbdWps_DiagnosticData')) {
                 </style>
             </div>
             <div class="support-genix-lite-diagnostic-data-notice notice notice-info">
-                <p class="support-genix-lite-diagnostic-data-message"><?php echo wp_kses_post(sprintf(esc_html__('Want to help make %2$s%1$s%3$s even more awesome? Allow %1$s to collect diagnostic data and usage information. (%4$swhat we collect%5$s)', 'support-genix-lite'), esc_html($this->project_name), '<strong>', '</strong>', '<a href="#" class="support-genix-lite-diagnostic-data-list-toogle">', '</a>')); ?></p>
+                <p class="support-genix-lite-diagnostic-data-message"><?php /* translators: %1$s: plugin name; %2$s and %3$s: opening and closing bold tags; %4$s and %5$s: opening and closing link tags. */ echo wp_kses_post(sprintf(esc_html__('Want to help make %2$s%1$s%3$s even more awesome? Allow %1$s to collect diagnostic data and usage information. (%4$swhat we collect%5$s)', 'support-genix-lite'), esc_html($this->project_name), '<strong>', '</strong>', '<a href="#" class="support-genix-lite-diagnostic-data-list-toogle">', '</a>')); ?></p>
                 <p class="support-genix-lite-diagnostic-data-list"><?php echo wp_kses_post($message_l2); ?></p>
                 <p class="support-genix-lite-diagnostic-data-buttons">
                     <a href="<?php echo esc_url($button_link_1); ?>" class="support-genix-lite-diagnostic-data-button support-genix-lite-diagnostic-data-agree button button-primary"><?php echo esc_html($button_text_1); ?></a>

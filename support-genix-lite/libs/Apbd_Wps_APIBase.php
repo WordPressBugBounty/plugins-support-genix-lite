@@ -42,14 +42,14 @@ if (!class_exists("Apbd_Wps_APIBase")) {
         function LoadPayload()
         {
             if (!self::$isLoadedPayload) {
-                if (!empty($_POST['payload']) && is_string($_POST['payload'])) {
-                    self::$payload_obj = json_decode(stripslashes($_POST['payload']), true);
+                if (!empty($_POST['payload']) && is_string($_POST['payload'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- API payload loader; request authenticated by the API layer.
+                    self::$payload_obj = json_decode(wp_unslash($_POST['payload']), true); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- API payload loader; request authenticated by the API layer; JSON payload blob decoded and validated by caller.
                 } else {
                     self::$payload_obj = ApbdWps_ReadPHPInputStream();
                     if (!empty(self::$payload_obj)) {
                         self::$payload_obj = json_decode(self::$payload_obj, true);
                         if (empty(self::$payload_obj)) {
-                            self::$payload_obj = wp_parse_args($_POST);
+                            self::$payload_obj = wp_parse_args($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- API payload loader; request authenticated by the API layer.
                         }
                     }
                 }

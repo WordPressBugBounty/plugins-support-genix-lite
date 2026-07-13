@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile -- Bundled third-party library (Composer + Mozart); not subject to plugin coding standards.
 
 /*
  * This file is part of the Symfony package.
@@ -10,6 +11,8 @@
  */
 
 use ApbdWps\Vendor\Symfony\Polyfill\Php80 as p;
+
+defined('ABSPATH') || exit;
 
 if (\PHP_VERSION_ID >= 80000) {
     return;

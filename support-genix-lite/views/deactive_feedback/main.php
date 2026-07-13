@@ -1,5 +1,6 @@
 <?php
-if (! defined('ABSPATH')) exit; // Exit if accessed directly
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View partial linted in isolation; its template-scoped variables are not global and cannot be individually prefixed.
+defined('ABSPATH') || exit;
 
 $ajaxurl = admin_url('admin-ajax.php');
 $nonce = wp_create_nonce('sgenix_deactivation_nonce');

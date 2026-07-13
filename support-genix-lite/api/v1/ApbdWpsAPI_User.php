@@ -400,12 +400,12 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
                     require_once(ABSPATH . 'wp-admin/includes/file.php');
                 }
 
-                if (empty($_FILES['file']) || !is_array($_FILES['file'])) {
+                if (empty($_FILES['file']) || !is_array($_FILES['file'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- REST endpoint with its own auth; file upload.
                     $this->response->SetResponse(false, $settingsObj->__("No file uploaded"));
                     return $this->response;
                 }
 
-                $uploadedfile = $_FILES['file'];
+                $uploadedfile = $_FILES['file']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- File upload validated/handled via WordPress upload API.
                 $uploadedName = isset($uploadedfile['name']) ? (string) $uploadedfile['name'] : '';
 
                 // Hardcoded denylist takes precedence — script extensions never allowed regardless of MIME.

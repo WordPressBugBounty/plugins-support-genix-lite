@@ -4,10 +4,7 @@
  * Deactive feedback.
  */
 
-// If this file is accessed directly, exit.
-if (! defined('ABSPATH')) {
-    exit;
-}
+defined('ABSPATH') || exit;
 
 /**
  * Class.
@@ -65,8 +62,8 @@ if (! class_exists('ApbdWps_DeactiveFeedback')) {
             }
 
             // Sanitize and prepare data
-            $reason = isset($_POST['reason']) ? sanitize_text_field($_POST['reason']) : '';
-            $message = isset($_POST['message']) ? sanitize_textarea_field($_POST['message']) : '';
+            $reason = isset($_POST['reason']) ? sanitize_text_field(wp_unslash($_POST['reason'])) : '';
+            $message = isset($_POST['message']) ? sanitize_textarea_field(wp_unslash($_POST['message'])) : '';
 
             // Prepare data for webhook
             $data = array_merge(
@@ -177,7 +174,7 @@ if (! class_exists('ApbdWps_DeactiveFeedback')) {
         {
             global $wpdb;
 
-            $software = (isset($_SERVER['SERVER_SOFTWARE']) && !empty($_SERVER['SERVER_SOFTWARE'])) ? $_SERVER['SERVER_SOFTWARE'] : '';
+            $software = (isset($_SERVER['SERVER_SOFTWARE']) && !empty($_SERVER['SERVER_SOFTWARE'])) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_SOFTWARE'])) : '';
             $php_version = function_exists('phpversion') ? phpversion() : '';
             $mysql_version = method_exists($wpdb, 'db_version') ? $wpdb->db_version() : '';
 

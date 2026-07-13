@@ -68,7 +68,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
         }
 
         $current_time = current_time('mysql');
-        $current_date = date('Y-m-d', strtotime($current_time));
+        $current_date = gmdate('Y-m-d', strtotime($current_time));
 
         $is_unique_view = !isset($_COOKIE["sgkb_docs_visited_{$post_id}"]);
 
@@ -153,7 +153,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
             'soso.com' => 'sosospider'
         ];
 
-        $useragent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field($_SERVER['HTTP_USER_AGENT']) : '';
+        $useragent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '';
 
         if (!empty($useragent)) {
             foreach ($bot_list as $bot_name => $bot_key) {
@@ -186,7 +186,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
         }
 
         $current_time = current_time('mysql');
-        $current_date = date('Y-m-d', strtotime($current_time));
+        $current_date = gmdate('Y-m-d', strtotime($current_time));
 
         $existsobj = new Mapbd_wps_docs_analytics();
         $existsobj->post_id($post_id);
@@ -278,6 +278,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
         global $wpdb;
 
         // Base query
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $query = "
             SELECT
                 SUM(da.positive) as positive,
@@ -289,6 +290,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
             AND p.post_status = 'publish'
             AND da.created_date BETWEEN %s AND %s
         ";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
         $query_params = [$start_date, $end_date];
 
@@ -297,6 +299,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
             $category_ids = array_map('absint', explode(',', $category_ids));
             $category_placeholders = implode(',', array_fill(0, count($category_ids), '%d'));
 
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             $query .= " AND p.ID IN (
                 SELECT object_id
                 FROM {$wpdb->term_relationships} tr
@@ -304,6 +307,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
                 WHERE tt.taxonomy = 'sgkb-docs-category'
                 AND tt.term_id IN ({$category_placeholders})
             )";
+            // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
             $query_params = array_merge($query_params, $category_ids);
         }
@@ -313,6 +317,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
             $tag_ids = array_map('absint', explode(',', $tag_ids));
             $tag_placeholders = implode(',', array_fill(0, count($tag_ids), '%d'));
 
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             $query .= " AND p.ID IN (
                 SELECT object_id
                 FROM {$wpdb->term_relationships} tr
@@ -320,6 +325,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
                 WHERE tt.taxonomy = 'sgkb-docs-tag'
                 AND tt.term_id IN ({$tag_placeholders})
             )";
+            // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
             $query_params = array_merge($query_params, $tag_ids);
         }
@@ -329,7 +335,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
             $author_ids = array_map('absint', explode(',', $author_ids));
             $author_placeholders = implode(',', array_fill(0, count($author_ids), '%d'));
 
-            $query .= " AND p.post_author IN ({$author_placeholders})";
+            $query .= " AND p.post_author IN ({$author_placeholders})";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             $query_params = array_merge($query_params, $author_ids);
         }
 
@@ -339,7 +345,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
         } else {
             $prepared_query = $query;
         }
-        $result = $wpdb->get_row($prepared_query);
+        $result = $wpdb->get_row($prepared_query);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
         $positive = absint($result->positive ?? 0);
         $negative = absint($result->negative ?? 0);
@@ -437,10 +443,10 @@ trait Apbd_wps_knowledge_base_analytics_trait
         }
 
         if (!empty($taxq_args)) {
-            $docs_args['tax_query'] = $taxq_args;
+            $docs_args['tax_query'] = $taxq_args; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
         }
 
-        $docs_args['meta_query'] = array(
+        $docs_args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
             array(
                 'key' => 'only_for_chatbot',
                 'compare' => 'NOT EXISTS'

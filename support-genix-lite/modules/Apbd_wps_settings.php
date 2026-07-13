@@ -17,6 +17,11 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     /**
      * @var string
      */
+    private static $fileDlAction = 'support-genix_attached_file_dl';
+
+    /**
+     * @var string
+     */
     private static $uploadBasePath = WP_CONTENT_DIR . "/uploads/support-genix/";
 
     function initialize()
@@ -55,6 +60,11 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
         $this->AddPortalAjaxBothAction("data_basic", [$this, "dataBasic"]);
 
+        // admin-ajax (cookie auth), not REST: an <img> can't send the X-WP-Nonce the
+        // REST API requires. nopriv too, for public tickets; authz in the handler.
+        add_action('wp_ajax_' . self::$fileDlAction, [$this, 'ajax_file_dl']);
+        add_action('wp_ajax_nopriv_' . self::$fileDlAction, [$this, 'ajax_file_dl']);
+
         self::$uploadBasePath = apply_filters('apbd-wps/filter/set-upload-path', self::$uploadBasePath);
 
         //filters
@@ -64,11 +74,9 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         add_filter("apbd-wps/filter/user-custom-properties", [$this, 'userCustomFields'], 2, 2);
 
         //actions
-        add_action("apbd-wps/action/download-file", [$this, 'download_file'], 8, 3);
         add_action("apbd-wps/action/ticket-created", [$this, 'save_ticket_meta'], 8, 2);
         add_action("apbd-wps/action/user-created", [$this, 'save_user_meta'], 8, 2);
         add_action("apbd-wps/action/user-updated", [$this, 'save_user_meta'], 8, 2);
-        add_action("apbd-wps/action/download-file", [$this, 'download_file'], 8, 3);
         add_action("apbd-wps/action/ticket-custom-field-update", [$this, 'update_ticket_meta'], 10, 3);
 
         add_action('apbd-wps/action/ticket-created', [$this, "ticket_assign"], 8, 2);
@@ -132,7 +140,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 $login_page = esc_url_raw($this->GetOption('login_page', ''));
                 $login_page = empty($login_page) ? wp_login_url($currentUrl) : $login_page;
 
-                if (home_url($_SERVER['REQUEST_URI']) !== $login_page) {
+                if (home_url(( isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '' )) !== $login_page) {
                     wp_safe_redirect($login_page);
                     exit;
                 }
@@ -171,11 +179,11 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     <meta charset="utf-8">
                     <meta http-equiv="X-UA-Compatible" content="IE=edge">
                     <meta name="viewport" content="width=device-width,initial-scale=1">
-                    <link rel="icon" href="<?php echo esc_url($this->GetOption("app_favicon", $this->get_portal_url("dist/img/favicon32x32.png"))); ?>">
-                    <link rel="icon" type="image/png" href="<?php echo esc_url($this->GetOption("app_favicon", $this->get_portal_url("dist/img/favicon180x180.png"))); ?>">
-                    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url($this->GetOption("app_favicon", $this->get_portal_url("dist/img/favicon180x180.png"))); ?>">
-                    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url($this->GetOption("app_favicon", $this->get_portal_url("dist/img/favicon32x32.png"))); ?>">
-                    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url($this->GetOption("app_favicon", $this->get_portal_url("dist/img/favicon16x16.png"))); ?>">
+                    <link rel="icon" href="<?php echo esc_url($this->GetOption("app_favicon", $this->portal_asset_url("img/favicon32x32.png"))); ?>">
+                    <link rel="icon" type="image/png" href="<?php echo esc_url($this->GetOption("app_favicon", $this->portal_asset_url("img/favicon180x180.png"))); ?>">
+                    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url($this->GetOption("app_favicon", $this->portal_asset_url("img/favicon180x180.png"))); ?>">
+                    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url($this->GetOption("app_favicon", $this->portal_asset_url("img/favicon32x32.png"))); ?>">
+                    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url($this->GetOption("app_favicon", $this->portal_asset_url("img/favicon16x16.png"))); ?>">
                     <title><?php echo esc_html(get_the_title()); ?></title>
                     <?php do_action('apbd-wps/action/portal-header'); ?>
                 </head>
@@ -226,7 +234,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
         $coreObject = ApbdWps_SupportLite::GetInstance();
         $base_path = plugin_dir_path($coreObject->pluginFile);
-        $dist_path = untrailingslashit($base_path) . "/portal/dist";
+        $dist_path = untrailingslashit($base_path) . "/assets/apps/portal";
         $dist_css_files = ApbdWps_GetFilesInDirectory($dist_path, 'css');
         $dist_js_files = ApbdWps_GetFilesInDirectory($dist_path, 'js');
 
@@ -234,14 +242,14 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         if (is_array($dist_css_files) && !empty($dist_css_files)) {
             foreach ($dist_css_files as $file_name) {
                 if (0 === strpos($file_name, 'main.')) {
-                    $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->get_portal_url("dist/{$file_name}")) . '" media=""';
+                    $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->portal_asset_url("{$file_name}")) . '" media=""';
         ?>
                     <link <?php echo wp_kses_post($ats); ?> />
             <?php
                 }
             }
         } else {
-            $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->get_portal_url("dist/main.CJjRaX8a.1781434317879.css")) . '" media=""';
+            $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->portal_asset_url("main.CJjRaX8a.1783849905657.css")) . '" media=""';
             ?>
             <link <?php echo wp_kses_post($ats); ?> />
         <?php
@@ -269,14 +277,14 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         if (!empty($this->get_custom_css())) {
         ?>
             <style>
-                <?php echo ApbdWps_KsesCss($this->get_custom_css()); ?>
+                <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped via ApbdWps_KsesCss (wp_kses). */ echo ApbdWps_KsesCss($this->get_custom_css()); ?>
             </style>
         <?php
         }
 
         // Logo.
         $logo_url = esc_url_raw($this->GetOption('app_logo', ''));
-        $logo_url = empty($logo_url) ? $this->get_portal_url("dist/img/logo.png", false) : $logo_url;
+        $logo_url = empty($logo_url) ? $this->portal_asset_url("img/logo.png", false) : $logo_url;
 
         // WP Login Reg.
         $reg_url = '';
@@ -356,14 +364,14 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         if (is_array($dist_js_files) && !empty($dist_js_files)) {
             foreach ($dist_js_files as $file_name) {
                 if (0 === strpos($file_name, 'main.')) {
-                    $ats = 'type="module" src="' . esc_url($this->get_portal_url("dist/{$file_name}")) . '" id="support-genix-portal-main-js"';
+                    $ats = 'type="module" src="' . esc_url($this->portal_asset_url("{$file_name}")) . '" id="support-genix-portal-main-js"';
         ?>
                     <script <?php echo wp_kses_post($ats); ?>></script>
             <?php
                 }
             }
         } else {
-            $ats = 'type="module" src="' . esc_url($this->get_portal_url("dist/main.DRhhiRkS.1781434317879.js")) . '" id="support-genix-portal-main-js"';
+            $ats = 'type="module" src="' . esc_url($this->portal_asset_url("main.Bc9MFv-7.1783849905657.js")) . '" id="support-genix-portal-main-js"';
             ?>
             <script <?php echo wp_kses_post($ats); ?>></script>
         <?php
@@ -654,7 +662,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     {
         $site_url = get_site_url();
         $site_title = get_bloginfo('name');
-        $year = date('Y');
+        $year = gmdate('Y');
 
         $default_cp_text = sprintf($this->__("Copyright %s © %s"), '[site_link]', '[year]');
 
@@ -780,7 +788,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
         global $wpdb;
 
-        $options = $wpdb->get_results($wpdb->prepare("SELECT option_name, option_value FROM `" . esc_sql($wpdb->options) . "` WHERE option_name LIKE %s", '%apbd-wp-support%'));
+        $options = $wpdb->get_results($wpdb->prepare("SELECT option_name, option_value FROM `" . esc_sql($wpdb->options) . "` WHERE option_name LIKE %s", '%apbd-wp-support%')); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- One-time settings scan on core options table; values prepared, caching not applicable.
 
         if (!empty($options)) {
             foreach ($options as $option) {
@@ -815,15 +823,15 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         return $encryption_key;
     }
 
-    public function get_portal_url($link, $withVersion = true)
+    public function portal_asset_url($link, $withVersion = true)
     {
         if (!$withVersion) {
-            $url = plugins_url("portal/" . $link, $this->pluginFile);
+            $url = plugins_url("assets/apps/portal/" . $link, $this->pluginFile);
         } else {
             $version = $this->kernelObject->pluginVersion;
 
             $base_path = plugin_dir_path($this->kernelObject->pluginFile);
-            $file_path = realpath($base_path . "portal/" . $link);
+            $file_path = realpath($base_path . "assets/apps/portal/" . $link);
 
             if (file_exists($file_path)) {
                 $version .= '-';
@@ -835,34 +843,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 }
             }
 
-            $url = plugins_url("portal/" . $link . "?v=" . $version, $this->pluginFile);
-        }
-
-        // Adjust URL to match current request's host (fixes www/non-www CORS issues)
-        return ApbdWps_AdjustUrlToCurrentHost($url);
-    }
-
-    public function get_chatbot_url($link, $withVersion = true)
-    {
-        if (!$withVersion) {
-            $url = plugins_url("chatbot/" . $link, $this->pluginFile);
-        } else {
-            $version = $this->kernelObject->pluginVersion;
-
-            $base_path = plugin_dir_path($this->kernelObject->pluginFile);
-            $file_path = realpath($base_path . "chatbot/" . $link);
-
-            if (file_exists($file_path)) {
-                $version .= '-';
-                $version .= filemtime($file_path);
-
-                if (defined('WP_DEBUG') && !!WP_DEBUG) {
-                    $version .= '-';
-                    $version .= time();
-                }
-            }
-
-            $url = plugins_url("chatbot/" . $link . "?v=" . $version, $this->pluginFile);
+            $url = plugins_url("assets/apps/portal/" . $link . "?v=" . $version, $this->pluginFile);
         }
 
         // Adjust URL to match current request's host (fixes www/non-www CORS issues)
@@ -1382,12 +1363,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     $this->TransferApiKeys();
                 }
 
-                // When pro version is less than 1.8.31
-                if (1 === version_compare('1.8.31', $last_pro_version)) {
-                    // From version 1.4.31
-                    $this->UpdateBaseFolder();
-                }
-
                 // When pro version is less than 1.8.34
                 if (1 === version_compare('1.8.34', $last_pro_version)) {
                     // From version 1.4.34
@@ -1451,9 +1426,9 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     Mapbd_wps_chatbot_session::UpdateDBTable4();
                 }
 
-                // When pro version is less than 1.8.45
-                if (1 === version_compare('1.8.45', $last_pro_version)) {
-                    // From version 1.4.45
+                // When pro version is less than 1.8.48
+                if (1 === version_compare('1.8.48', $last_pro_version)) {
+                    // From version 1.4.48
                     $this->UpdateBaseFolder();
                 }
             }
@@ -1674,14 +1649,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 }
             }
 
-            // From version 1.4.31
-            if (1 === version_compare('1.4.31', $previous_version)) {
-                // When pro version is empty or less than 1.8.31
-                if (empty($last_pro_version) || (1 === version_compare('1.8.31', $last_pro_version))) {
-                    $this->UpdateBaseFolder();
-                }
-            }
-
             // From version 1.4.34
             if (1 === version_compare('1.4.34', $previous_version)) {
                 // When pro version is empty or less than 1.8.34
@@ -1766,10 +1733,10 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 }
             }
 
-            // From version 1.4.45
-            if (1 === version_compare('1.4.45', $previous_version)) {
-                // When pro version is empty or less than 1.8.45
-                if (empty($last_pro_version) || (1 === version_compare('1.8.45', $last_pro_version))) {
+            // From version 1.4.48
+            if (1 === version_compare('1.4.48', $previous_version)) {
+                // When pro version is empty or less than 1.8.48
+                if (empty($last_pro_version) || (1 === version_compare('1.8.48', $last_pro_version))) {
                     $this->UpdateBaseFolder();
                 }
             }
@@ -2062,7 +2029,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     $n->meta_type('D');
                     $n->meta_value($custom_field);
                     if (!$n->Save()) {
-                        Mapbd_wps_debug_log::AddGeneralLog("Custom field save failed", print_r($n, true) . "\n" . ApbdWps_GetMsgAPI());
+                        Mapbd_wps_debug_log::AddGeneralLog("Custom field save failed", print_r($n, true) . "\n" . ApbdWps_GetMsgAPI() /* phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Diagnostic log formatting. */);
                     }
                 }
             }
@@ -2174,8 +2141,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         return $attached_files;
     }
 
-    function download_file($type, $ticket_or_reply_id, $file) {}
-
     function read_all_file(&$attached_files, $path, $tType, $ticket_id, $ticket_reply_id = null)
     {
         $allowed_files = $this->GetAllowedFileType();
@@ -2189,14 +2154,145 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
                 if (in_array($ext, $allowed_files)) {
                     $fileProperty = new stdClass();
-                    $relative_path = str_replace(WP_CONTENT_DIR, '', $file);
-                    $fileProperty->url = content_url($relative_path);
+                    $storedName = basename($file);
+
+                    // $ticket_id already carries the "{ticket}_{reply}" form for replies.
+                    $proxyUrl = add_query_arg(
+                        array(
+                            'action' => self::$fileDlAction,
+                            'type'   => $tType,
+                            'id'     => $ticket_id,
+                            'file'   => $storedName,
+                        ),
+                        admin_url('admin-ajax.php')
+                    );
+
+                    // Pin to the request host so the host-scoped auth cookie is sent.
+                    $fileProperty->url = ApbdWps_AdjustUrlToRequestHost($proxyUrl);
+
+                    // Clean display name (strip the 32-char hash prefix).
+                    $displayName = $storedName;
+                    $nameParts   = explode('___', $storedName, 2);
+                    if (count($nameParts) === 2 && strlen($nameParts[0]) === 32 && ctype_xdigit($nameParts[0])) {
+                        $displayName = $nameParts[1];
+                    }
+                    $fileProperty->name = $displayName;
+
                     $fileProperty->type = ApbdWps_GetMimeType($file);
                     $fileProperty->ext = $ext;
                     $attached_files[] = $fileProperty;
                 }
             }
         }
+    }
+
+    /**
+     * admin-ajax entry point for downloading a ticket/reply attachment.
+     * Authorization is enforced inside stream_ticket_attachment().
+     */
+    public function ajax_file_dl()
+    {
+        // Media endpoint hit by <img>; authz is in stream_ticket_attachment(), not a nonce.
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $type = isset($_GET['type']) ? sanitize_text_field(wp_unslash($_GET['type'])) : '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $id   = isset($_GET['id']) ? sanitize_text_field(wp_unslash($_GET['id'])) : '';
+        // basename()'d in the streamer; only used to locate a file, never echoed or in SQL.
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        $file = isset($_GET['file']) ? wp_unslash($_GET['file']) : '';
+
+        if (! self::stream_ticket_attachment($type, $id, $file)) {
+            status_header(403);
+            exit;
+        }
+        exit;
+    }
+
+    /**
+     * Resolve, authorize and stream a ticket/reply attachment.
+     *
+     * Shared by the admin-ajax proxy (ajax_file_dl) and the REST download route
+     * (ApbdWpsAPI_Ticket::file_dl). $file must already be URL-decoded; only the
+     * basename is used, so directory-traversal sequences are stripped.
+     *
+     * @param string $type                 "T" for ticket, "R" for reply.
+     * @param string $ticket_or_reply_id   Ticket id, or "{ticket}_{reply}" for replies.
+     * @param string $file                  Stored file name (URL-decoded).
+     * @return bool  True when the file was streamed, false otherwise.
+     */
+    public static function stream_ticket_attachment($type, $ticket_or_reply_id, $file)
+    {
+        $type     = strtoupper(sanitize_text_field((string) $type));
+        $basePath = self::get_upload_path();
+        $safeName = basename((string) $file);
+
+        if ($safeName === '' || $safeName === '.' || $safeName === '..') {
+            return false;
+        }
+
+        $ticket_id = 0;
+        $target    = null;
+
+        if ($type === 'T') {
+            $ticket_id = absint($ticket_or_reply_id);
+            if (! empty($ticket_id)) {
+                $target = $basePath . $ticket_id . '/attached_files/' . $safeName;
+            }
+        } elseif ($type === 'R') {
+            $parts = explode('_', (string) $ticket_or_reply_id);
+            if (count($parts) === 2) {
+                $rep = Mapbd_wps_ticket_reply::FindBy('ticket_id', absint($parts[0]), array('reply_id' => absint($parts[1])));
+                if ($rep) {
+                    $ticket_id = absint($rep->ticket_id);
+                    $target    = $basePath . $rep->ticket_id . '/replied/' . $rep->reply_id . '/attached_files/' . $safeName;
+                }
+            }
+        }
+
+        if (empty($ticket_id) || is_null($target)) {
+            return false;
+        }
+
+        if (! Mapbd_wps_ticket::userCanAccessTicket($ticket_id)) {
+            return false;
+        }
+
+        if (! file_exists($target)) {
+            return false;
+        }
+
+        // Defense-in-depth: the resolved path must stay inside the upload base.
+        $realBase   = realpath($basePath);
+        $realTarget = realpath($target);
+        if ($realBase === false || $realTarget === false
+            || strpos($realTarget, rtrim($realBase, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR) !== 0) {
+            return false;
+        }
+
+        $ext = strtolower(pathinfo($realTarget, PATHINFO_EXTENSION));
+        if (! in_array($ext, self::GetModuleAllowedFileType())) {
+            return false;
+        }
+
+        $mime = ApbdWps_GetMimeType($realTarget);
+        // Strip any header-breaking characters from the name before it goes in a header.
+        $dispositionName = sanitize_file_name($safeName);
+
+        if (! headers_sent()) {
+            nocache_headers();
+            header('Content-Type: ' . ($mime ? $mime : 'application/octet-stream'));
+            // "inline" so <img>/preview works; the browser can still save it.
+            header('Content-Disposition: inline; filename="' . $dispositionName . '"');
+            header('X-Content-Type-Options: nosniff');
+            header('Content-Length: ' . filesize($realTarget));
+        }
+
+        // Stream the raw binary with the proven native read. WP_Filesystem returns an
+        // empty body when get_filesystem_method() is non-direct, which blanked attachment
+        // downloads. Authorization + traversal protection are enforced above.
+        readfile($realTarget); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile, WordPress.Security.EscapeOutput.OutputNotEscaped -- Raw binary attachment download; readfile streams from disk and the bytes must not be escaped.
+
+        return true;
     }
 
     public function data()
@@ -2331,8 +2427,8 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $apiResponse = new Apbd_Wps_APIResponse();
 
         $default = [
-            'app_favicon' => $this->get_portal_url("dist/img/favicon180x180.png", false),
-            'app_logo' => $this->get_portal_url("dist/img/logo.png", false),
+            'app_favicon' => $this->portal_asset_url("img/favicon180x180.png", false),
+            'app_logo' => $this->portal_asset_url("img/logo.png", false),
         ];
 
         $app_favicon = $this->GetOption('app_favicon', $default['app_favicon']);
@@ -3149,6 +3245,21 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     private static function GetUploadHtaccessContent()
     {
         return '# Support Genix - upload directory hardening (do not edit; managed by plugin)
+# Deny ALL direct HTTP access to this directory. Every file here (ticket/reply
+# attachments) is served only through the authenticated PHP proxy
+# (admin-ajax action=..._file_dl), which reads from disk via WP_Filesystem and
+# is therefore unaffected by these rules. Nothing in this tree is meant to be
+# fetched directly, so a blanket deny is safe and total.
+# NOTE: .htaccess is honoured by Apache/LiteSpeed but ignored by nginx; nginx
+# users must add an equivalent "location" deny rule at the server level.
+<IfModule authz_core_module>
+    Require all denied
+</IfModule>
+<IfModule !authz_core_module>
+    Order allow,deny
+    Deny from all
+</IfModule>
+
 # Block access to hidden/system files
 <FilesMatch "^\.">
     <IfModule authz_core_module>
@@ -3660,7 +3771,7 @@ Options -Indexes -ExecCGI
                     global $wp_filesystem;
 
                     if (empty($wp_filesystem)) {
-                        require_once(ABSPATH . '/wp-admin/includes/file.php');
+                        require_once(ABSPATH . 'wp-admin/includes/file.php');
                         WP_Filesystem();
                     }
 
@@ -4031,7 +4142,7 @@ Options -Indexes -ExecCGI
 
         foreach ($options as $option_key => $option) {
             $option_key = 'support_genix_' . sanitize_key(strval($option_key));
-            $option_value = (isset($_POST[$option_key]) ? sanitize_text_field($_POST[$option_key]) : '');
+            $option_value = (isset($_POST[$option_key]) ? sanitize_text_field(wp_unslash($_POST[$option_key])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Runs on the WordPress profile-update hook; nonce verified by WordPress core.
 
             update_user_meta($user_id, $option_key, $option_value);
         }

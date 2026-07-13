@@ -21,7 +21,8 @@
 	},
 	"scripts": {
 		"prefix": [
-			"\"vendor/bin/mozart\" compose"
+			"\"vendor/bin/mozart\" compose",
+			"@php ../../dev-files/add_vendor_phpcs_ignore.php"
 		]
 	},
 	"extra": {

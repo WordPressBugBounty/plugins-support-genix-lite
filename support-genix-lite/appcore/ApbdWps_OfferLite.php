@@ -4,10 +4,7 @@
  * Offer.
  */
 
-// If this file is accessed directly, exit.
-if (! defined('ABSPATH')) {
-    exit;
-}
+defined('ABSPATH') || exit;
 
 /**
  * Class.

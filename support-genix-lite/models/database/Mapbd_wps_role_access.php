@@ -103,9 +103,9 @@ class Mapbd_wps_role_access extends ApbdWpsModel
         $charset = $thisObj->db->charset;
         $collate = $thisObj->db->collate;
 
-        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";
+        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
-        $thisObj->db->query($alter_query);
+        $thisObj->db->query($alter_query);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     static function CreateDBTable()
@@ -114,6 +114,7 @@ class Mapbd_wps_role_access extends ApbdWpsModel
         $table = $thisObj->db->prefix . $thisObj->tableName;
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             $sql = "CREATE TABLE `{$table}` (
                   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -123,8 +124,9 @@ class Mapbd_wps_role_access extends ApbdWpsModel
                   PRIMARY KEY (`id`),
                   UNIQUE KEY `role_resource` (`resource_id`,`role_slug`) USING BTREE
             ) $charsetCollate;";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
+            dbDelta($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
     function DropDBTable()
@@ -132,7 +134,7 @@ class Mapbd_wps_role_access extends ApbdWpsModel
         global $wpdb;
 
         $table_name = $wpdb->prefix . $this->tableName;
-        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");
+        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     public static function GetAccessList()
@@ -164,7 +166,7 @@ class Mapbd_wps_role_access extends ApbdWpsModel
             'edit-elite-purchase-code',
         ];
 
-        return apply_filters('elte-wps/role-access-list', $access);
+        return apply_filters('elte-wps/role-access-list', $access);  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Legacy plugin hook name retained for backward compatibility.
     }
 
     public static function GetAgentAccessList()
@@ -194,7 +196,7 @@ class Mapbd_wps_role_access extends ApbdWpsModel
             'edit-envato-purchase-code',
         ];
 
-        return apply_filters('elte-wps/role-agent-access-list', $access);
+        return apply_filters('elte-wps/role-agent-access-list', $access);  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Legacy plugin hook name retained for backward compatibility.
     }
 
     public static function GetManagerAccessList()
@@ -204,6 +206,6 @@ class Mapbd_wps_role_access extends ApbdWpsModel
             'restore-ticket'
         ]);
 
-        return apply_filters('elte-wps/role-agent-access-list', $access);
+        return apply_filters('elte-wps/role-agent-access-list', $access);  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Legacy plugin hook name retained for backward compatibility.
     }
 }

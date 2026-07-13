@@ -561,7 +561,7 @@ class Apbd_Wps_Imap
             global $wp_filesystem;
 
             if (empty($wp_filesystem)) {
-                require_once(ABSPATH . '/wp-admin/includes/file.php');
+                require_once(ABSPATH . 'wp-admin/includes/file.php');
                 WP_Filesystem();
             }
 
@@ -723,7 +723,7 @@ class Apbd_Wps_Imap
     {
         if (function_exists("iconv")) {
             if (mb_detect_encoding($str, 'UTF-8, ISO-8859-1, GBK') != 'UTF-8') {
-                $str = utf8_encode($str);
+                $str = mb_convert_encoding($str, 'UTF-8', 'ISO-8859-1');
             }
             $str = iconv('UTF-8', 'UTF-8//IGNORE', $str);
         }

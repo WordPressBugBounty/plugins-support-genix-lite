@@ -46,8 +46,6 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
             return true;
         } elseif ($route == "logout") {
             return true;
-        } elseif ($route == "file-dl") {
-            return true;
         }
         return parent::SetRoutePermission($route);
     }
@@ -250,9 +248,17 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
 
         $src_by = $this->GetPayload("src_by", []);
 
+        $allowed_props = Mapbd_wps_ticket::allowedSearchProps();
+
         foreach ($src_by as $src_item) {
             if (('assigned_on' === $src_item['prop']) && $is_agent_logged_in && $check_assigned_on) {
                 $filter_assigned_on = absint($src_item['val']);
+                continue;
+            }
+            // Reject any prop that is not '*' or a known column (optionally `t.`-qualified);
+            // prop is used below as a dynamic column setter / SQL identifier.
+            $prop_column = preg_replace('#^t\.#', '', (string) $src_item['prop']);
+            if ('*' !== $src_item['prop'] && ! in_array($prop_column, $allowed_props, true)) {
                 continue;
             }
             $src_item['val'] = preg_replace('#[^a-z0-9@ _\-\.]#i', "", $src_item['val']);
@@ -586,49 +592,29 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
 
     function file_dl($data)
     {
-        $file = null;
-        if ($data['type'] && $data['ticket_or_reply_id'] && $data['file']) {
-            ob_start();
-            $filePath = Apbd_wps_settings::get_upload_path();
-            if (strtoupper($data['type']) == "T") {
-                $file = $filePath . $data['ticket_or_reply_id'] . "/attached_files/" . urldecode($data['file']);
-            } elseif (strtoupper($data['type']) == "R") {
-                $replyinfo = explode('_', $data['ticket_or_reply_id']);
-                if (is_array($replyinfo) && count($replyinfo) == 2) {
-                    $rep = Mapbd_wps_ticket_reply::FindBy("ticket_id", $replyinfo[0], ["reply_id" => $replyinfo[1]]);
-                    if ($rep) {
-                        $file = $filePath . $rep->ticket_id . "/replied/" . $rep->reply_id . '/attached_files/' . urldecode($data['file']);
-                    }
-                }
+        // Back-compat route; the shared streamer enforces auth + traversal protection.
+        if (! empty($data['type']) && ! empty($data['ticket_or_reply_id']) && isset($data['file'])) {
+            $file = urldecode($data['file']);
+
+            // Defense-in-depth: reject any path separator or traversal segment before
+            // the streamer runs. Redundant with basename()/realpath() there, but keeps
+            // the route's contract explicit — a name only, never a path.
+            if (strpbrk($file, "/\\") !== false || strpos($file, '..') !== false) {
+                status_header(403);
+                exit;
             }
-            ob_get_clean();
-            if (!is_null($file) && file_exists($file)) {
 
-                $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-                $allowedExtensions = Apbd_wps_settings::GetModuleAllowedFileType();
-                if (in_array($ext, $allowedExtensions)) {
-                    $mime = ApbdWps_GetMimeType($file);
-                    if (!headers_sent()) {
-                        header("Pragma: public");
-                        header("Expires: 0");
-                        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-                        header('Content-Type: ' . $mime);
-                        header('Content-Disposition: attachment; filename=' . $data['file']);
-                    }
-
-                    global $wp_filesystem;
-
-                    if (empty($wp_filesystem)) {
-                        require_once(ABSPATH . '/wp-admin/includes/file.php');
-                        WP_Filesystem();
-                    }
-
-                    // Raw file content - deliberately not escaped as this is a direct file download
-                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                    echo $wp_filesystem->get_contents($file);
-                }
+            $served = Apbd_wps_settings::stream_ticket_attachment(
+                $data['type'],
+                $data['ticket_or_reply_id'],
+                $file
+            );
+            if ($served) {
+                exit;
             }
         }
+        status_header(403);
+        exit;
     }
 
     function ticket_reply()

@@ -207,7 +207,7 @@ trait Apbd_wps_ticket_migration_trait
     public function migration_initialize()
     {
         if (get_option('sgnix_ticket_migration_in_progress', false)) {
-            throw new Exception($this->__('Migration is already in progress. Please wait for it to complete.'));
+            throw new Exception(esc_html($this->__('Migration is already in progress. Please wait for it to complete.')));
         }
 
         $this->migration_validate();
@@ -260,24 +260,24 @@ trait Apbd_wps_ticket_migration_trait
         $required_memory = 256 * 1024 * 1024; // 256MB
 
         if ($memory_limit_bytes > 0 && $memory_limit_bytes < $required_memory) {
-            throw new Exception($this->___('Insufficient memory limit (%s). Please increase to at least 256M for large migrations.', $memory_limit));
+            throw new Exception(esc_html($this->___('Insufficient memory limit (%s). Please increase to at least 256M for large migrations.', $memory_limit)));
         }
 
         // Check execution time
         $max_execution_time = ini_get('max_execution_time');
         if ($max_execution_time > 0 && $max_execution_time < 300) {
-            throw new Exception($this->___('Insufficient execution time limit (%d seconds). Please increase to at least 300 seconds or set to 0 for unlimited.', $max_execution_time));
+            throw new Exception(esc_html($this->___('Insufficient execution time limit (%d seconds). Please increase to at least 300 seconds or set to 0 for unlimited.', $max_execution_time)));
         }
 
         // Check database connectivity
         global $wpdb;
         if (!$wpdb->check_connection()) {
-            throw new Exception($this->__('Database connection is unstable. Please check your database server.'));
+            throw new Exception(esc_html($this->__('Database connection is unstable. Please check your database server.')));
         }
 
         // Check if WordPress is in maintenance mode
         if (wp_maintenance()) {
-            throw new Exception($this->__('WordPress is in maintenance mode. Please complete maintenance before running migration.'));
+            throw new Exception(esc_html($this->__('WordPress is in maintenance mode. Please complete maintenance before running migration.')));
         }
 
         // Check available disk space for logging (if possible)
@@ -285,7 +285,7 @@ trait Apbd_wps_ticket_migration_trait
         if (function_exists('disk_free_space') && is_dir($upload_dir['basedir'])) {
             $free_space = disk_free_space($upload_dir['basedir']);
             if ($free_space !== false && $free_space < (50 * 1024 * 1024)) { // 50MB
-                throw new Exception($this->__('Low disk space detected. Please ensure sufficient space for migration logs.'));
+                throw new Exception(esc_html($this->__('Low disk space detected. Please ensure sufficient space for migration logs.')));
             }
         }
     }
@@ -468,7 +468,7 @@ trait Apbd_wps_ticket_migration_trait
                 $status = $ticket->status;
 
                 $created_at = $ticket->created_at;
-                $created_date = date('Y-m-d H:i:s', strtotime($created_at));
+                $created_date = gmdate('Y-m-d H:i:s', strtotime($created_at));
 
                 $payload = array(
                     'user_email' => $customer->email,
@@ -574,7 +574,7 @@ trait Apbd_wps_ticket_migration_trait
                 $attachments = $reply->attachments;
 
                 $created_at = $reply->created_at;
-                $created_date = date('Y-m-d H:i:s', strtotime($created_at));
+                $created_date = gmdate('Y-m-d H:i:s', strtotime($created_at));
 
                 $payload = array(
                     'user_type' => ('agent' === $person->person_type ? 'A' : 'U'),

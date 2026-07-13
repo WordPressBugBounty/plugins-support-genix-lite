@@ -37,7 +37,7 @@ trait Apbd_wps_knowledge_base_duplicator_trait
     {
         global $wpdb;
 
-        $appended = esc_html__('Copy', 'post-duplicator');
+        $appended = esc_html__('Copy', 'support-genix-lite');
         $timestamp = current_time('timestamp', 0);
         $timestamp_gmt = current_time('timestamp', 1);
 
@@ -57,10 +57,10 @@ trait Apbd_wps_knowledge_base_duplicator_trait
         $duplicate['post_name'] = $post_name;
         $duplicate['post_status'] = 'draft';
         $duplicate['post_author'] = get_current_user_id();
-        $duplicate['post_date'] = date('Y-m-d H:i:s', $timestamp);
-        $duplicate['post_date_gmt'] = date('Y-m-d H:i:s', $timestamp_gmt);
-        $duplicate['post_modified'] = date('Y-m-d H:i:s', $timestamp);
-        $duplicate['post_modified_gmt'] = date('Y-m-d H:i:s', $timestamp_gmt);
+        $duplicate['post_date'] = gmdate('Y-m-d H:i:s', $timestamp);
+        $duplicate['post_date_gmt'] = gmdate('Y-m-d H:i:s', $timestamp_gmt);
+        $duplicate['post_modified'] = gmdate('Y-m-d H:i:s', $timestamp);
+        $duplicate['post_modified_gmt'] = gmdate('Y-m-d H:i:s', $timestamp_gmt);
 
         // Remove post elements.
         unset($duplicate['ID']);
@@ -95,16 +95,16 @@ trait Apbd_wps_knowledge_base_duplicator_trait
         foreach ($custom_fields as $key => $value) {
             if (is_array($value) && count($value) > 0) {
                 foreach ($value as $i => $v) {
-                    if (! apply_filters("mtphr_post_duplicator_meta_{$key}_enabled", true)) {
+                    if (! apply_filters("mtphr_post_duplicator_meta_{$key}_enabled", true)) {  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Post Duplicator integration hook (external).
                         continue;
                     }
 
-                    $meta_value = apply_filters("mtphr_post_duplicator_meta_value", $v, $key, $duplicate_id, $duplicate['post_type']);
+                    $meta_value = apply_filters("mtphr_post_duplicator_meta_value", $v, $key, $duplicate_id, $duplicate['post_type']);  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Post Duplicator integration hook (external).
 
                     $data = array(
                         'post_id' => intval($duplicate_id),
-                        'meta_key' => sanitize_text_field($key),
-                        'meta_value' => $meta_value,
+                        'meta_key' => sanitize_text_field($key),  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
+                        'meta_value' => $meta_value,  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Feature requires this meta value lookup.
                     );
 
                     $formats = array(
@@ -113,7 +113,7 @@ trait Apbd_wps_knowledge_base_duplicator_trait
                         '%s',
                     );
 
-                    $wpdb->insert($wpdb->prefix . 'postmeta', $data, $formats);
+                    $wpdb->insert($wpdb->prefix . 'postmeta', $data, $formats); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Post duplication writes meta directly; formats enforced, caching not applicable to a write.
                 }
             }
         }

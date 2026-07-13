@@ -24,13 +24,6 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
         }
         $this->setIsDemoMode(SUPPORTGENIX_DEMO);
     }
-    public static function get_portal_url($link, $ver = "1.0.0")
-    {
-        $url = plugins_url("portal/" . $link . "?v=" . $ver, self::GetInstance()->pluginFile);
-
-        // Adjust URL to match current request's host (fixes www/non-www CORS issues)
-        return ApbdWps_AdjustUrlToCurrentHost($url);
-    }
     public function initialize()
     {
         parent::initialize();
@@ -121,7 +114,7 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
     public function add_security_headers()
     {
         // Only apply to plugin pages and REST API endpoints
-        if (!is_admin() && strpos($_SERVER['REQUEST_URI'], '/wp-json/apbd-wps/') === false) {
+        if (!is_admin() && strpos((isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : ''), '/wp-json/apbd-wps/') === false) {
             return;
         }
 
@@ -167,17 +160,17 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
         wp_enqueue_media();
 
         $base_path = plugin_dir_path($this->pluginFile);
-        $dist_path = untrailingslashit($base_path) . "/dashboard/dist";
+        $dist_path = untrailingslashit($base_path) . "/assets/apps/dashboard";
         $dist_files = ApbdWps_GetFilesInDirectory($dist_path, 'css');
 
         if (is_array($dist_files) && !empty($dist_files)) {
             foreach ($dist_files as $file_name) {
                 if (0 === strpos($file_name, 'main.')) {
-                    $this->AddAdminStyle($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/{$file_name}", true);
+                    $this->AddAdminStyle($this->support_genix_assets_slug . "-dashboard-main", "assets/apps/dashboard/{$file_name}", true);
                 }
             }
         } else {
-            $this->AddAdminStyle($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/main.BIuCdw5S.1781434278904.css", true);
+            $this->AddAdminStyle($this->support_genix_assets_slug . "-dashboard-main", "assets/apps/dashboard/main.BIuCdw5S.1783849862585.css", true);
         }
 
         foreach ($this->moduleList as $moduleObject) {
@@ -189,17 +182,17 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
         $coreObject = ApbdWps_SupportLite::GetInstance();
 
         $base_path = plugin_dir_path($this->pluginFile);
-        $dist_path = untrailingslashit($base_path) . "/dashboard/dist";
+        $dist_path = untrailingslashit($base_path) . "/assets/apps/dashboard";
         $dist_files = ApbdWps_GetFilesInDirectory($dist_path, 'js');
 
         if (is_array($dist_files) && !empty($dist_files)) {
             foreach ($dist_files as $file_name) {
                 if (0 === strpos($file_name, 'main.')) {
-                    $this->AddAdminScript($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/{$file_name}", true);
+                    $this->AddAdminScript($this->support_genix_assets_slug . "-dashboard-main", "assets/apps/dashboard/{$file_name}", true);
                 }
             }
         } else {
-            $this->AddAdminScript($this->support_genix_assets_slug . "-dashboard-main", "dashboard/dist/main.BfqsHtLv.1781434278904.js", true);
+            $this->AddAdminScript($this->support_genix_assets_slug . "-dashboard-main", "assets/apps/dashboard/main.CkfUOUgA.1783849862585.js", true);
         }
 
         $userObj = wp_get_current_user();

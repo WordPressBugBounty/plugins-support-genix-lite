@@ -58,6 +58,7 @@ class Mapbd_wps_users extends ApbdWpsModel
         $table = $thisObj->db->base_prefix . $thisObj->tableName;
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             $sql = "CREATE TABLE `{$table}` (
                       `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -75,8 +76,9 @@ class Mapbd_wps_users extends ApbdWpsModel
                       KEY `user_nicename` (`user_nicename`),
                       KEY `user_email` (`user_email`)
                     ) $charsetCollate;";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
+            dbDelta($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
     function DropDBTable()
@@ -84,6 +86,6 @@ class Mapbd_wps_users extends ApbdWpsModel
         global $wpdb;
 
         $table_name = $wpdb->base_prefix . $this->tableName;
-        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");
+        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 }

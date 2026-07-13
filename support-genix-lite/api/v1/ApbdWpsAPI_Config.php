@@ -41,7 +41,7 @@ class ApbdWpsAPI_Config extends Apbd_Wps_APIBase
         $coreObject = ApbdWps_SupportLite::GetInstance();
 
         // Logged user.
-        $getUser = wp_get_current_user();
+        $getUser = wp_get_current_user(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Local response-builder variable.
         $logged_user = null;
         $is_master = false;
 

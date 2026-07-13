@@ -143,8 +143,8 @@ class Mapbd_wps_ticket_log extends ApbdWpsModel
     }
     function GetNewLogId($ticket_id, $default)
     {
-        $query  = "SELECT max(log_id) as lastS from " . $this->db->prefix . $this->tableName . " WHERE ticket_id={$ticket_id}";
-        $result = $this->db->get_row($query);
+        $query  = "SELECT max(log_id) as lastS from " . $this->db->prefix . $this->tableName . " WHERE ticket_id={$ticket_id}";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+        $result = $this->db->get_row($query);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($result) {
             if (! empty($result->lastS)) {
                 $a = (int)$result->lastS;
@@ -183,9 +183,9 @@ class Mapbd_wps_ticket_log extends ApbdWpsModel
         $charset = $thisObj->db->charset;
         $collate = $thisObj->db->collate;
 
-        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";
+        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
-        $thisObj->db->query($alter_query);
+        $thisObj->db->query($alter_query);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     /**
@@ -202,6 +202,7 @@ class Mapbd_wps_ticket_log extends ApbdWpsModel
         $table = $thisObj->db->prefix . $thisObj->tableName;
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             $sql = "CREATE TABLE `{$table}` (
                       `ticket_id` int(11) NOT NULL DEFAULT 0,
@@ -215,8 +216,9 @@ class Mapbd_wps_ticket_log extends ApbdWpsModel
                       UNIQUE KEY `ticket_id` (`ticket_id`,`log_id`) USING BTREE,
                       KEY `ticket_id_2` (`ticket_id`) USING BTREE
                     ) $charsetCollate;";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
+            dbDelta($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
     function DropDBTable()
@@ -224,6 +226,6 @@ class Mapbd_wps_ticket_log extends ApbdWpsModel
         global $wpdb;
 
         $table_name = $wpdb->prefix . $this->tableName;
-        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");
+        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 }

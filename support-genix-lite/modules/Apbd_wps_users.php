@@ -709,8 +709,8 @@ class Apbd_wps_users extends ApbdWpsBaseModuleLite
             return;
         }
 
-        $creating = isset($_POST['createuser']);
-        $user_roles = $creating && isset($_POST['role']) ? wp_unslash($_POST['role']) : '';
+        $creating = isset($_POST['createuser']); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Read-only field renderer gated by current_user_can('promote_users'); reads $_POST only to preselect the default role, no state change.
+        $user_roles = $creating && isset($_POST['role']) ? sanitize_text_field(wp_unslash($_POST['role'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Read-only field renderer gated by current_user_can('promote_users'); reads $_POST only to preselect the default role, no state change.
 
         if (!$user_roles) {
             $user_roles = get_option('default_role');
@@ -829,7 +829,7 @@ class Apbd_wps_users extends ApbdWpsBaseModuleLite
         if (
             !current_user_can('promote_users') ||
             !isset($_POST['sgenix_wp_user_roles_nonce']) ||
-            !wp_verify_nonce($_POST['sgenix_wp_user_roles_nonce'], 'sgenix_wp_user_roles')
+            !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['sgenix_wp_user_roles_nonce'])), 'sgenix_wp_user_roles')
         ) {
             return;
         }
@@ -841,7 +841,7 @@ class Apbd_wps_users extends ApbdWpsBaseModuleLite
         $old_roles = array_intersect(array_values($user->roles), $key_roles);
 
         if (!empty($_POST['sgenix_wp_user_roles'])) {
-            $new_roles = array_map([$this, 'sanitize_user_role_key'], $_POST['sgenix_wp_user_roles']);
+            $new_roles = array_map([$this, 'sanitize_user_role_key'], wp_unslash((array) $_POST['sgenix_wp_user_roles'])); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each element sanitized via sanitize_user_role_key() callback.
 
             foreach ($new_roles as $new_role) {
                 if (
@@ -875,7 +875,7 @@ class Apbd_wps_users extends ApbdWpsBaseModuleLite
             !current_user_can('promote_users') ||
             !current_user_can('edit_user', $user_id) ||
             !isset($_POST['sgenix_wp_user_roles_nonce']) ||
-            !wp_verify_nonce($_POST['sgenix_wp_user_roles_nonce'], 'sgenix_wp_user_roles')
+            !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['sgenix_wp_user_roles_nonce'])), 'sgenix_wp_user_roles')
         ) {
             return;
         }
@@ -885,7 +885,7 @@ class Apbd_wps_users extends ApbdWpsBaseModuleLite
         $old_roles = array_intersect(array_values($old_user->roles), $key_roles);
 
         if (!empty($_POST['sgenix_wp_user_roles'])) {
-            $new_roles = array_map([$this, 'sanitize_user_role_key'], $_POST['sgenix_wp_user_roles']);
+            $new_roles = array_map([$this, 'sanitize_user_role_key'], wp_unslash((array) $_POST['sgenix_wp_user_roles'])); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each element sanitized via sanitize_user_role_key() callback.
 
             foreach ($new_roles as $new_role) {
                 if (

@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View partial linted in isolation; its template-scoped variables are not global and cannot be individually prefixed.
 
 /**
  * Archive pages - Modern Layout Only
@@ -38,7 +39,7 @@ if (!is_search()) {
 ?>
     <div class="sgkb-container" style="padding: 40px 20px;">
         <h1 style="font-size: 32px; margin-bottom: 24px;">
-            <?php printf(__('Search Results for: %s', 'support-genix'), '<span>' . get_search_query() . '</span>'); ?>
+            <?php /* translators: %s: search query. */ printf( esc_html__('Search Results for: %s', 'support-genix-lite'), '<span>' . esc_html(get_search_query()) . '</span>' ); ?>
         </h1>
 
         <?php if (have_posts()) : ?>
@@ -51,14 +52,14 @@ if (!is_search()) {
                             </a>
                         </h2>
                         <div style="color: #6b7280;">
-                            <?php echo wp_trim_words(get_the_excerpt(), 30); ?>
+                            <?php echo esc_html(wp_trim_words(get_the_excerpt(), 30)); ?>
                         </div>
                     </article>
                 <?php endwhile; ?>
             </div>
             <?php the_posts_pagination(); ?>
         <?php else : ?>
-            <p><?php _e('No results found. Please try different keywords.', 'support-genix'); ?></p>
+            <p><?php esc_html_e('No results found. Please try different keywords.', 'support-genix-lite'); ?></p>
         <?php endif; ?>
     </div>
 <?php

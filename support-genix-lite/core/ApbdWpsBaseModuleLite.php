@@ -380,7 +380,7 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
             $actionName = $this->GetActionName($actionName);
 
             add_action('wp_ajax_' . $actionName, function () use ($actionName, $function_to_add) {
-                $nonce = (isset($_REQUEST['_ajax_nonce']) ? sanitize_text_field($_REQUEST['_ajax_nonce']) : '');
+                $nonce = (isset($_REQUEST['_ajax_nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['_ajax_nonce'])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Nonce read here; verified via wp_verify_nonce() in this dispatcher.
 
                 $prefix = 'support-genix_AJ_Apbd_wps_';
                 $endpoint = $endpoint = (0 === strpos($actionName, $prefix) ? substr($actionName, strlen($prefix)) : '');
@@ -722,7 +722,7 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
             $actionHook = $this->GetActionName($actionName . '_portal');
 
             add_action('wp_ajax_' . $actionHook, function () use ($actionName, $function_to_add) {
-                $nonce = (isset($_REQUEST['_ajax_nonce']) ? sanitize_text_field($_REQUEST['_ajax_nonce']) : '');
+                $nonce = (isset($_REQUEST['_ajax_nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['_ajax_nonce'])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Nonce read here; verified via wp_verify_nonce() in this dispatcher.
 
                 $prefix = 'support-genix_AJ_Apbd_wps_';
                 $endpoint = $endpoint = (0 === strpos($actionName, $prefix) ? substr($actionName, strlen($prefix)) : '');
@@ -799,7 +799,7 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
             $actionName = $this->GetActionName($actionName);
 
             add_action('wp_ajax_nopriv_' . $actionName, function () use ($function_to_add) {
-                $nonce = (isset($_REQUEST['_ajax_nonce']) ? sanitize_text_field($_REQUEST['_ajax_nonce']) : '');
+                $nonce = (isset($_REQUEST['_ajax_nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['_ajax_nonce'])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Nonce read here; verified via wp_verify_nonce() in this dispatcher.
 
                 if (! wp_verify_nonce($nonce, 'ajax-nonce')) {
                     if (wp_doing_ajax()) {
@@ -823,7 +823,7 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
             $actionName = $this->GetActionName($actionName . '_portal');
 
             add_action('wp_ajax_nopriv_' . $actionName, function () use ($function_to_add) {
-                $nonce = (isset($_REQUEST['_ajax_nonce']) ? sanitize_text_field($_REQUEST['_ajax_nonce']) : '');
+                $nonce = (isset($_REQUEST['_ajax_nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['_ajax_nonce'])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Nonce read here; verified via wp_verify_nonce() in this dispatcher.
 
                 if (! wp_verify_nonce($nonce, 'ajax-nonce')) {
                     if (wp_doing_ajax()) {
@@ -934,7 +934,7 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
             $multiLangActive = false;
 
             if (is_plugin_active('sitepress-multilingual-cms/sitepress.php')) {
-                $multiLangCode = apply_filters('wpml_current_language', $multiLangCode);
+                $multiLangCode = apply_filters('wpml_current_language', $multiLangCode);  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML integration hook (external).
                 $multiLangActive = true;
             } elseif (function_exists('pll_current_language')) {
                 $multiLangCode = call_user_func('pll_current_language');
@@ -1121,7 +1121,7 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
         {
             $response   = new ApbdWpsAjaxConfirmResponse();
             $beforeSave = $this->options;
-            $postData = wp_parse_args($_POST);
+            $postData = wp_parse_args($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- AJAX handler dispatched through nonce-verified dispatcher.
             foreach ($postData as $key => $value) {
                 $key = sanitize_key($key);
                 if ($key == "action") {

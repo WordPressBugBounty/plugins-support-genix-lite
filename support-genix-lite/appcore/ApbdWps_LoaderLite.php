@@ -1,4 +1,5 @@
 <?php
+defined('ABSPATH') || exit;
 
 /**
  * @since: 21/11/2022
@@ -40,7 +41,7 @@ if (! class_exists("ApbdWps_LoaderLite")) {
          */
         public function getRequestParams()
         {
-            $requestUri = (isset($_SERVER['REQUEST_URI']) ? esc_url_raw($_SERVER['REQUEST_URI']) : '');
+            $requestUri = (isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '');
             $requestParams = array();
 
             if (! empty($requestUri)) {
@@ -85,7 +86,7 @@ if (! class_exists("ApbdWps_LoaderLite")) {
          */
         public function isProEditionBeingRolledBack()
         {
-            $plugin = (isset($_GET['plugin']) ? sanitize_text_field($_GET['plugin']) : '');
+            $plugin = (isset($_GET['plugin']) ? sanitize_text_field(wp_unslash($_GET['plugin'])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- WordPress plugins-screen context; read-only detection.
             $plugin = ((empty($plugin) && isset($this->requestParams['plugin'])) ? $this->requestParams['plugin'] : $plugin);
 
             return ($this->proPluginFile === $plugin);
@@ -109,11 +110,11 @@ if (! class_exists("ApbdWps_LoaderLite")) {
                 return false;
             }
 
-            $action = ((isset($_REQUEST['action']) && (-1 !== intval($_REQUEST['action']))) ? sanitize_text_field($_REQUEST['action']) : '');
-            $action = ((empty($action) && isset($_REQUEST['action2']) && (-1 !== intval($_REQUEST['action2']))) ? sanitize_text_field($_REQUEST['action2']) : $action);
+            $action = ((isset($_REQUEST['action']) && (-1 !== intval($_REQUEST['action']))) ? sanitize_text_field(wp_unslash($_REQUEST['action'])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- WordPress plugins-screen context; read-only detection.
+            $action = ((empty($action) && isset($_REQUEST['action2']) && (-1 !== intval($_REQUEST['action2']))) ? sanitize_text_field(wp_unslash($_REQUEST['action2'])) : $action); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- WordPress plugins-screen context; read-only detection.
 
-            $plugin  = (isset($_REQUEST['plugin']) ? sanitize_text_field($_REQUEST['plugin']) : '');
-            $checked = ((isset($_POST['checked']) && is_array($_POST['checked'])) ? array_map('sanitize_text_field', $_POST['checked']) : []);
+            $plugin  = (isset($_REQUEST['plugin']) ? sanitize_text_field(wp_unslash($_REQUEST['plugin'])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- WordPress plugins-screen context; read-only detection.
+            $checked = ((isset($_POST['checked']) && is_array($_POST['checked'])) ? array_map('sanitize_text_field', wp_unslash($_POST['checked'])) : []); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- WordPress plugins-screen context; read-only detection.
 
             $activate         = 'activate';
             $activateSelected = 'activate-selected';
@@ -144,11 +145,11 @@ if (! class_exists("ApbdWps_LoaderLite")) {
                 return false;
             }
 
-            $action = ((isset($_REQUEST['action']) && (-1 !== intval($_REQUEST['action']))) ? sanitize_text_field($_REQUEST['action']) : '');
-            $action = ((empty($action) && isset($_REQUEST['action2']) && (-1 !== intval($_REQUEST['action2']))) ? sanitize_text_field($_REQUEST['action2']) : $action);
+            $action = ((isset($_REQUEST['action']) && (-1 !== intval($_REQUEST['action']))) ? sanitize_text_field(wp_unslash($_REQUEST['action'])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- WordPress plugins-screen context; read-only detection.
+            $action = ((empty($action) && isset($_REQUEST['action2']) && (-1 !== intval($_REQUEST['action2']))) ? sanitize_text_field(wp_unslash($_REQUEST['action2'])) : $action); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- WordPress plugins-screen context; read-only detection.
 
-            $plugin = (isset($_REQUEST['plugin']) ? sanitize_text_field($_REQUEST['plugin']) : '');
-            $checked = ((isset($_POST['checked']) && is_array($_POST['checked'])) ? array_map('sanitize_text_field', $_POST['checked']) : []);
+            $plugin = (isset($_REQUEST['plugin']) ? sanitize_text_field(wp_unslash($_REQUEST['plugin'])) : ''); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- WordPress plugins-screen context; read-only detection.
+            $checked = ((isset($_POST['checked']) && is_array($_POST['checked'])) ? array_map('sanitize_text_field', wp_unslash($_POST['checked'])) : []); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- WordPress plugins-screen context; read-only detection.
 
             $deactivate          = 'deactivate';
             $deactivateSelected  = 'deactivate-selected';

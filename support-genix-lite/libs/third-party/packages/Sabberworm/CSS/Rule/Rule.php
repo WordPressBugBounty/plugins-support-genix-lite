@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile -- Bundled third-party library (Composer + Mozart); not subject to plugin coding standards.
 
 namespace ApbdWps\Vendor\Sabberworm\CSS\Rule;
 

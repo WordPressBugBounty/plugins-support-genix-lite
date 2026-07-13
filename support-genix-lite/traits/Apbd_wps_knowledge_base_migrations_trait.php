@@ -210,11 +210,11 @@ trait Apbd_wps_knowledge_base_migrations_trait
 
         // Check if migration is already in progress
         if (get_option('migration_in_progress', false)) {
-            throw new Exception($this->__('Migration is already in progress. Please wait for it to complete.'));
+            throw new Exception(esc_html($this->__('Migration is already in progress. Please wait for it to complete.')));
         }
 
         if (taxonomy_exists('knowledge_base')) {
-            throw new Exception($this->__('Multiple Knowledge Base is not supported yet.'));
+            throw new Exception(esc_html($this->__('Multiple Knowledge Base is not supported yet.')));
         }
 
         // Validate environment before starting
@@ -226,7 +226,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
 
         $this->migration_initialize();
 
-        // $wpdb->query('START TRANSACTION');
+        // $wpdb->query('START TRANSACTION');  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
         try {
             $results = [
@@ -258,7 +258,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
             $results['duration'] = current_time('timestamp') - get_option('migration_start_time');
 
             // Commit transaction
-            // $wpdb->query('COMMIT');
+            // $wpdb->query('COMMIT');  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
             // Log successful migration
             $this->migration_log_success($results);
@@ -269,7 +269,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
             return $results;
         } catch (Exception $e) {
             // Rollback transaction
-            // $wpdb->query('ROLLBACK');
+            // $wpdb->query('ROLLBACK');  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
             // Log error
             $this->migration_log_error($e->getMessage());
@@ -289,24 +289,24 @@ trait Apbd_wps_knowledge_base_migrations_trait
         $required_memory = 256 * 1024 * 1024; // 256MB
 
         if ($memory_limit_bytes > 0 && $memory_limit_bytes < $required_memory) {
-            throw new Exception($this->___('Insufficient memory limit (%s). Please increase to at least 256M for large migrations.', $memory_limit));
+            throw new Exception(esc_html($this->___('Insufficient memory limit (%s). Please increase to at least 256M for large migrations.', $memory_limit)));
         }
 
         // Check execution time
         $max_execution_time = ini_get('max_execution_time');
         if ($max_execution_time > 0 && $max_execution_time < 300) {
-            throw new Exception($this->___('Insufficient execution time limit (%d seconds). Please increase to at least 300 seconds or set to 0 for unlimited.', $max_execution_time));
+            throw new Exception(esc_html($this->___('Insufficient execution time limit (%d seconds). Please increase to at least 300 seconds or set to 0 for unlimited.', $max_execution_time)));
         }
 
         // Check database connectivity
         global $wpdb;
         if (!$wpdb->check_connection()) {
-            throw new Exception($this->__('Database connection is unstable. Please check your database server.'));
+            throw new Exception(esc_html($this->__('Database connection is unstable. Please check your database server.')));
         }
 
         // Check if WordPress is in maintenance mode
         if (wp_maintenance()) {
-            throw new Exception($this->__('WordPress is in maintenance mode. Please complete maintenance before running migration.'));
+            throw new Exception(esc_html($this->__('WordPress is in maintenance mode. Please complete maintenance before running migration.')));
         }
 
         // Check available disk space for logging (if possible)
@@ -314,7 +314,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
         if (function_exists('disk_free_space') && is_dir($upload_dir['basedir'])) {
             $free_space = disk_free_space($upload_dir['basedir']);
             if ($free_space !== false && $free_space < (50 * 1024 * 1024)) { // 50MB
-                throw new Exception($this->__('Low disk space detected. Please ensure sufficient space for migration logs.'));
+                throw new Exception(esc_html($this->__('Low disk space detected. Please ensure sufficient space for migration logs.')));
             }
         }
     }
@@ -325,11 +325,11 @@ trait Apbd_wps_knowledge_base_migrations_trait
         $target_post_type = $this->migration_config['target']['post_type'];
 
         if (!post_type_exists($source_post_type)) {
-            throw new Exception($this->___('Source post type does not exist: %s', $source_post_type));
+            throw new Exception(esc_html($this->___('Source post type does not exist: %s', $source_post_type)));
         }
 
         if (!post_type_exists($target_post_type)) {
-            throw new Exception($this->___('Target post type does not exist: %s', $target_post_type));
+            throw new Exception(esc_html($this->___('Target post type does not exist: %s', $target_post_type)));
         }
 
         $count_posts = wp_count_posts($source_post_type);
@@ -343,33 +343,33 @@ trait Apbd_wps_knowledge_base_migrations_trait
         }
 
         if ($total_posts_count === 0) {
-            throw new Exception($this->___('No posts found for source post type: %s', $source_post_type));
+            throw new Exception(esc_html($this->___('No posts found for source post type: %s', $source_post_type)));
         }
 
         // Validate source taxonomies exist
         foreach ($this->migration_config['source']['taxonomies'] as $taxonomy) {
             if (!taxonomy_exists($taxonomy)) {
-                throw new Exception($this->___('Source taxonomy does not exist: %s', $taxonomy));
+                throw new Exception(esc_html($this->___('Source taxonomy does not exist: %s', $taxonomy)));
             }
         }
 
         // Validate target taxonomies exist
         foreach ($this->migration_config['target']['taxonomies'] as $taxonomy) {
             if (!taxonomy_exists($taxonomy)) {
-                throw new Exception($this->___('Target taxonomy does not exist: %s', $taxonomy));
+                throw new Exception(esc_html($this->___('Target taxonomy does not exist: %s', $taxonomy)));
             }
         }
 
         // Check if target post type supports the target taxonomies
         $target_post_type_obj = get_post_type_object($target_post_type);
         if (!$target_post_type_obj) {
-            throw new Exception($this->___('Cannot retrieve target post type object: %s', $target_post_type));
+            throw new Exception(esc_html($this->___('Cannot retrieve target post type object: %s', $target_post_type)));
         }
 
         // Validate taxonomy support for target post type
         foreach ($this->migration_config['target']['taxonomies'] as $taxonomy) {
             if (!is_object_in_taxonomy($target_post_type, $taxonomy)) {
-                throw new Exception($this->___('Target post type "%s" does not support taxonomy "%s"', $target_post_type, $taxonomy));
+                throw new Exception(esc_html($this->___('Target post type "%s" does not support taxonomy "%s"', $target_post_type, $taxonomy)));
             }
         }
     }
@@ -514,7 +514,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
         do {
             // Check execution time (if limit is set)
             if ($max_execution_time > 0 && (time() - $start_time) > ($max_execution_time - $time_buffer)) {
-                throw new Exception($this->__('Migration timeout approaching. Please increase max_execution_time or run migration again to continue from where it left off.'));
+                throw new Exception(esc_html($this->__('Migration timeout approaching. Please increase max_execution_time or run migration again to continue from where it left off.')));
             }
 
             // Memory management
@@ -540,7 +540,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
                 ], true, false);
 
                 if (is_wp_error($updated)) {
-                    error_log($this->___('Failed to migrate post ID %s: %s', $post->ID, $updated->get_error_message()));
+                    error_log($this->___('Failed to migrate post ID %s: %s', $post->ID, $updated->get_error_message()));  // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Migration error diagnostic.
                     continue;
                 }
 
@@ -593,7 +593,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
             // If still high memory usage, throw exception
             $current_usage_after = memory_get_usage(true);
             if ($current_usage_after > ($memory_limit * 0.9)) {
-                throw new Exception($this->___('Memory usage too high (%s of %s). Please increase memory_limit or reduce batch size.', size_format($current_usage_after), size_format($memory_limit)));
+                throw new Exception(esc_html($this->___('Memory usage too high (%s of %s). Please increase memory_limit or reduce batch size.', size_format($current_usage_after), size_format($memory_limit))));
             }
         }
     }
@@ -623,7 +623,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
                 (strpos($meta_key, 'doc_tag') !== false)
             ) {
                 // Log potential meta that might need manual review
-                error_log($this->___('Post %d has meta key "%s" that might reference old taxonomies. Please review manually.', $post_id, $meta_key));
+                error_log($this->___('Post %d has meta key "%s" that might reference old taxonomies. Please review manually.', $post_id, $meta_key));  // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Migration error diagnostic.
             }
         }
     }
@@ -656,7 +656,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
             if (!empty($new_term_ids)) {
                 $set_result = wp_set_post_terms($post_id, $new_term_ids, $target_taxonomy);
                 if (is_wp_error($set_result)) {
-                    error_log($this->___('Failed to set terms for post %d in taxonomy %s: %s', $post_id, $target_taxonomy, $set_result->get_error_message()));
+                    error_log($this->___('Failed to set terms for post %d in taxonomy %s: %s', $post_id, $target_taxonomy, $set_result->get_error_message()));  // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Migration error diagnostic.
                 }
             }
 
@@ -746,6 +746,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
 
             do {
                 // Get orphaned relationship IDs in batches
+                // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
                 $orphaned_ids = $wpdb->get_col($wpdb->prepare("
                     SELECT tr.object_id
                     FROM {$wpdb->term_relationships} tr
@@ -754,17 +755,20 @@ trait Apbd_wps_knowledge_base_migrations_trait
                     WHERE tt.taxonomy = %s AND p.ID IS NULL
                     LIMIT %d OFFSET %d
                 ", $taxonomy, $batch_size, $processed));
+                // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
                 if (!empty($orphaned_ids)) {
                     $placeholders = implode(',', array_fill(0, count($orphaned_ids), '%d'));
+                    // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
                     $query = "
                         DELETE tr FROM {$wpdb->term_relationships} tr
                         INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
                         WHERE tt.taxonomy = %s AND tr.object_id IN ({$placeholders})
                     ";
+                    // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
                     $params = array_merge([$taxonomy], $orphaned_ids);
                     $prepared_query = call_user_func_array(array($wpdb, 'prepare'), array_merge(array($query), $params));
-                    $wpdb->query($prepared_query);
+                    $wpdb->query($prepared_query);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
                 }
 
                 $processed += $batch_size;
@@ -826,7 +830,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
             $memory_peak
         );
 
-        error_log($message);
+        error_log($message);  // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Migration error diagnostic.
 
         // Store migration log in option for admin display
         $this->migration_store_log('success', $message, $results);
@@ -835,7 +839,7 @@ trait Apbd_wps_knowledge_base_migrations_trait
     private function migration_log_error($error_message)
     {
         $full_message = $this->___('Migration failed: %s', $error_message);
-        error_log($full_message);
+        error_log($full_message);  // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Migration error diagnostic.
 
         // Add system info to error log
         $system_info = [

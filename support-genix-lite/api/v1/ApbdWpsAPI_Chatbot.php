@@ -93,7 +93,7 @@ class ApbdWpsAPI_Chatbot extends Apbd_Wps_APIBase
 
         // WPML language switching
         if (class_exists('SitePress')) {
-            do_action('wpml_switch_language', $lang);
+            do_action('wpml_switch_language', $lang);  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML integration hook (external).
         }
         // Polylang language switching
         elseif (function_exists('pll_set_language')) {

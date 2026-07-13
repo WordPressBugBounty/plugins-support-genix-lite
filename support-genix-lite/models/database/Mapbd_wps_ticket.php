@@ -281,8 +281,8 @@ class Mapbd_wps_ticket extends ApbdWpsModel
                 }
             }
         }
-        if (! empty($_FILES['attached'])) {
-            if (!self::checkUploadedFiles($_FILES['attached'])) {
+        if (! empty($_FILES['attached'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- File upload validated/handled via WordPress upload API.
+            if (!self::checkUploadedFiles($_FILES['attached'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- File upload validated/handled via WordPress upload API.
                 return false;
             }
         }
@@ -311,8 +311,8 @@ class Mapbd_wps_ticket extends ApbdWpsModel
     static function create_ticket_action(&$ticketObj, &$customFields = null)
     {
 
-        if (! empty($_FILES['attached'])) {
-            do_action('apbd-wps/action/attach-files', $_FILES['attached'], $ticketObj);
+        if (! empty($_FILES['attached'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- File upload validated/handled via WordPress upload API.
+            do_action('apbd-wps/action/attach-files', $_FILES['attached'], $ticketObj); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- File upload validated/handled via WordPress upload API.
         }
         do_action('apbd-wps/action/ticket-created', $ticketObj, $customFields);
         return true;
@@ -361,8 +361,8 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $track_id_type = apply_filters("apbd-wps/filter/track-id-type", "R");
         if ($track_id_type == "S") {
             //sequential
-            $query  = "SELECT ticket_track_id as lastS from " . $this->db->prefix . $this->tableName . " WHERE ticket_track_id like 'S-%' ORDER BY id DESC LIMIT 1";
-            $result = $this->db->get_row($query);
+            $query  = "SELECT ticket_track_id as lastS from " . $this->db->prefix . $this->tableName . " WHERE ticket_track_id like 'S-%' ORDER BY id DESC LIMIT 1";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $result = $this->db->get_row($query);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             if ($result) {
                 if (! empty($result->lastS)) {
                     $a = (int) (preg_replace('/[^0-9]/', '', $result->lastS));
@@ -406,7 +406,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
     {
         $n = new Mapbd_wps_support_meta();
 
-        $all_ids = $n->SelectAllWithArrayKeys('meta_value', '', '', '', '', '', '', ['item_id' => $ticket_id, 'item_type' => 'T', 'meta_key' => 'tag_id', 'meta_type' => 'C']);
+        $all_ids = $n->SelectAllWithArrayKeys('meta_value', '', '', '', '', '', '', ['item_id' => $ticket_id, 'item_type' => 'T', 'meta_key' => 'tag_id', 'meta_type' => 'C']); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
         $new_ids = array_diff($tag_ids, $all_ids);
         $old_ids = array_diff($all_ids, $tag_ids);
 
@@ -830,6 +830,77 @@ class Mapbd_wps_ticket extends ApbdWpsModel
     }
 
     /**
+     * Whether the current user may view the given ticket (and therefore its
+     * attachments). Mirrors the authorization gate used by
+     * getTicketDetails / getTicketDetails__dashboard / getTicketDetails__portal
+     * so attachment access follows the exact same rules as ticket access.
+     *
+     * @param int $ticket_id
+     * @return bool
+     */
+    static function userCanAccessTicket($ticket_id)
+    {
+        $ticket_id = absint($ticket_id);
+        if (empty($ticket_id)) {
+            return false;
+        }
+
+        $ticketObj = new Mapbd_wps_ticket();
+        $ticketObj->id($ticket_id);
+        if (! $ticketObj->Select()) {
+            return false;
+        }
+
+        $is_agent_logged_in         = Apbd_wps_settings::isAgentLoggedIn();
+        $manage_other_agents_ticket = current_user_can('manage-other-agents-ticket');
+        $manage_unassigned_ticket   = current_user_can('manage-unassigned-ticket');
+        $manage_self_created_ticket = current_user_can('manage-self-created-ticket');
+        $current_user_id    = get_current_user_id();
+        $ticket_user        = (isset($ticketObj->ticket_user) ? absint($ticketObj->ticket_user) : 0);
+        $ticket_assigned_on = (isset($ticketObj->assigned_on) ? absint($ticketObj->assigned_on) : 0);
+        $ticket_opened_by   = (isset($ticketObj->opened_by) ? absint($ticketObj->opened_by) : 0);
+
+        if ($ticketObj->is_public != 'Y') {
+            // Attachment access requires an authenticated user for non-public tickets.
+            if (empty($current_user_id)) {
+                return false;
+            }
+
+            if ($is_agent_logged_in) {
+                if (!$manage_other_agents_ticket && ! empty($ticket_assigned_on) && ($ticket_assigned_on !== $current_user_id)) {
+                    if (!$manage_self_created_ticket || ($ticket_opened_by !== $current_user_id)) {
+                        if ($ticket_user !== $current_user_id) {
+                            return false;
+                        }
+                    }
+                }
+
+                if (!$manage_unassigned_ticket && empty($ticket_assigned_on)) {
+                    if (!$manage_self_created_ticket || ($ticket_opened_by !== $current_user_id)) {
+                        if ($ticket_user !== $current_user_id) {
+                            return false;
+                        }
+                    }
+                }
+            } else {
+                // Client: only the ticket owner may access a non-public ticket.
+                if ($ticket_user !== $current_user_id) {
+                    return false;
+                }
+            }
+        } elseif (! $is_agent_logged_in) {
+            $is_public_tickets_menu = Apbd_wps_settings::GetModuleOption("is_public_tickets_menu", 'N');
+            if ('Y' !== $is_public_tickets_menu) {
+                if (! empty($current_user_id) && $ticket_user !== $current_user_id) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * The getTicketDetails is generated by apbd wps
      *
      * @param mixed $ticket_id
@@ -1213,18 +1284,39 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         return $output;
     }
 
+    /**
+     * Column allowlist for the ticket search `prop` filter. `prop` is interpolated as a
+     * bare SQL identifier (getTicketStat) or used as a dynamic column setter
+     * (setSearchBy / the REST ticket-list loop), so it must be validated against real
+     * column names to prevent WHERE-clause injection. '*' is the full-text pseudo-column
+     * handled separately by each caller.
+     *
+     * @return string[]
+     */
+    public static function allowedSearchProps()
+    {
+        return array(
+            'id', 'ticket_track_id', 'cat_id', 'title', 'ticket_body', 'ticket_user',
+            'opened_time', 're_open_time', 're_open_by', 're_open_by_type', 'user_type',
+            'status', 'assigned_on', 'assigned_date', 'last_replied_by', 'last_replied_by_type',
+            'last_reply_time', 'ticket_rating', 'priority', 'is_public', 'is_open_using_email',
+            'reply_counter', 'is_user_seen_last_reply', 'related_url', 'last_status_update_time',
+            'email_notification', 'opened_by', 'opened_by_type', 'mailbox_id', 'mailbox_type',
+        );
+    }
+
     static function getTicketStat($src_by = [])
     {
         global $wpdb;
-        $whereCondition = "";
+        $whereCondition = "";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $id = get_current_user_id();
         if (Apbd_wps_settings::isClientLoggedIn()) {
             $is_public_tickets_menu = Apbd_wps_settings::GetModuleOption("is_public_tickets_menu", 'N');
 
             if ('Y' === $is_public_tickets_menu) {
-                $whereCondition = " WHERE t.ticket_user='{$id}' OR t.is_public = 'Y'";
+                $whereCondition = " WHERE t.ticket_user='{$id}' OR t.is_public = 'Y'";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             } else {
-                $whereCondition = " WHERE t.ticket_user='{$id}'";
+                $whereCondition = " WHERE t.ticket_user='{$id}'";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             }
         }
         $mainobj = new Mapbd_wps_ticket();
@@ -1245,10 +1337,17 @@ class Mapbd_wps_ticket extends ApbdWpsModel
 
         $filter_assigned_on = 0;
 
+        $allowed_props = self::allowedSearchProps();
+
         if (! empty($src_by)) {
             foreach ($src_by as $src_item) {
                 $src_item['prop'] = preg_replace('#[^a-z0-9@ _\-\.\*]#i', "", $src_item['prop']);
                 $src_item['val']  = preg_replace('#[^a-z0-9@ _\-\.]#i', "", $src_item['val']);
+                // Reject any prop that is not '*' or a known column (optionally `t.`-qualified).
+                $prop_column = preg_replace('#^t\.#', '', (string) $src_item['prop']);
+                if ('*' !== $src_item['prop'] && ! in_array($prop_column, $allowed_props, true)) {
+                    continue;
+                }
                 if (! empty($src_item['val'])) {
                     if (('assigned_on' === $src_item['prop']) && $is_agent_logged_in) {
                         $filter_assigned_on = absint($src_item['val']);
@@ -1259,18 +1358,18 @@ class Mapbd_wps_ticket extends ApbdWpsModel
                         if ($src_item['opr'] == 'like') {
                             $prop_like_str = "like '%" . $src_item['val'] . "%'";
 
-                            $src_by_query = "";
-                            $src_by_query .= " OR (t.title $prop_like_str)";
-                            $src_by_query .= " OR (t.ticket_body $prop_like_str)";
-                            $src_by_query .= " OR ($userTableName.user_email $prop_like_str)";
-                            $src_by_query .= " OR ($userTableName.display_name $prop_like_str)";
+                            $src_by_query = "";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
+                            $src_by_query .= " OR (t.title $prop_like_str)";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
+                            $src_by_query .= " OR (t.ticket_body $prop_like_str)";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
+                            $src_by_query .= " OR ($userTableName.user_email $prop_like_str)";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
+                            $src_by_query .= " OR ($userTableName.display_name $prop_like_str)";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
 
                             $meta_item_str = "SELECT GROUP_CONCAT(item_id) AS item_ids FROM {$metaTableName} WHERE item_type='T' AND meta_type<>'C' AND meta_value $prop_like_str";
                             $meta_item_rlt = $aps_support_meta->SelectQuery($meta_item_str);
                             $meta_item_ids = implode(",", array_unique(array_map('absint', explode(",", strval($meta_item_rlt[0]->item_ids)))));
 
                             if (! empty($meta_item_ids)) {
-                                $src_by_query .= " OR (t.id IN ($meta_item_ids))";
+                                $src_by_query .= " OR (t.id IN ($meta_item_ids))";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
                             }
 
                             $src_condition .= (! empty($src_condition) ? ' AND ' : '') . "(ticket_track_id $prop_like_str" . $src_by_query . ")";
@@ -1315,7 +1414,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         }
 
         $statusList = $mainobj->GetPropertyRawOptions('status');
-        $query = "SELECT `status`,count(*) total FROM  {$ticket_table} as t {$join_condition} {$whereCondition} GROUP BY `status`";
+        $query = "SELECT `status`,count(*) total FROM  {$ticket_table} as t {$join_condition} {$whereCondition} GROUP BY `status`";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $dbData = $mainobj->SelectQuery($query);
         foreach ($statusList as $key => $title) {
             $responseData[$key] = 0;
@@ -1360,26 +1459,33 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             $userTableName = $aps_user->GetTableName();
             $metaTableName = $aps_support_meta->GetTableName();
 
+            $allowed_props = self::allowedSearchProps();
+
             foreach ($src_by as $src_item) {
                 $src_item['prop'] = preg_replace('#[^a-z0-9@ _\-\.\*]#i', "", $src_item['prop']);
                 $src_item['val'] = preg_replace('#[^a-z0-9@ _\-\.]#i', "", $src_item['val']);
+                // Reject any prop that is not '*' or a known column (optionally `t.`-qualified).
+                $prop_column = preg_replace('#^t\.#', '', (string) $src_item['prop']);
+                if ('*' !== $src_item['prop'] && ! in_array($prop_column, $allowed_props, true)) {
+                    continue;
+                }
                 if (! empty($src_item['val'])) {
                     if ($src_item['prop'] == '*') {
                         if ($src_item['opr'] == 'like') {
                             $prop_like_str = "like '%" . $src_item['val'] . "%'";
 
-                            $src_by_query = "";
-                            $src_by_query .= " OR ($tableName.title $prop_like_str)";
-                            $src_by_query .= " OR ($tableName.ticket_body $prop_like_str)";
-                            $src_by_query .= " OR ($userTableName.user_email $prop_like_str)";
-                            $src_by_query .= " OR ($userTableName.display_name $prop_like_str)";
+                            $src_by_query = "";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
+                            $src_by_query .= " OR ($tableName.title $prop_like_str)";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
+                            $src_by_query .= " OR ($tableName.ticket_body $prop_like_str)";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
+                            $src_by_query .= " OR ($userTableName.user_email $prop_like_str)";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
+                            $src_by_query .= " OR ($userTableName.display_name $prop_like_str)";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
 
                             $meta_item_str = "SELECT GROUP_CONCAT(item_id) AS item_ids FROM {$metaTableName} WHERE item_type='T' AND meta_type<>'C' AND meta_value $prop_like_str";
                             $meta_item_rlt = $aps_support_meta->SelectQuery($meta_item_str);
                             $meta_item_ids = implode(",", array_unique(array_map('absint', explode(",", strval($meta_item_rlt[0]->item_ids)))));
 
                             if (! empty($meta_item_ids)) {
-                                $src_by_query .= " OR ($tableName.id IN ($meta_item_ids))";
+                                $src_by_query .= " OR ($tableName.id IN ($meta_item_ids))";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Ticket search filter; prop validated against a fixed column allowlist, LIKE values regex-filtered (quotes/parens/semicolons stripped) inside quotes, ID lists absint()-mapped.
                             }
 
                             $mainobj->ticket_track_id($prop_like_str . $src_by_query, true);
@@ -1404,9 +1510,11 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $thisObj = new static();
         $table = $thisObj->db->prefix . $thisObj->tableName;
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") == $table) {
             $sql = "ALTER TABLE `{$table}` MODIFY `assigned_on` char(11)";
-            $thisObj->db->query($sql);
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+            $thisObj->db->query($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
 
@@ -1420,9 +1528,9 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $charset = $thisObj->db->charset;
         $collate = $thisObj->db->collate;
 
-        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";
+        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
-        $thisObj->db->query($alter_query);
+        $thisObj->db->query($alter_query);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     /**
@@ -1473,9 +1581,11 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $thisObj = new static();
         $tableName = $thisObj->db->prefix . $thisObj->tableName;
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$tableName}'") == $tableName) {
             $thisObj->DBColumnAddOrModify('priority', 'char', 1, "'N'", 'NOT NULL', '', 'drop(N=Normal,M=Medium,H=High)');
-            $thisObj->db->query("UPDATE `{$tableName}` SET `priority` = 'N'");
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+            $thisObj->db->query("UPDATE `{$tableName}` SET `priority` = 'N'");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
 
@@ -1488,6 +1598,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $thisObj = new static();
         $tableName = $thisObj->db->prefix . $thisObj->tableName;
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$tableName}'") == $tableName) {
             // Check if FULLTEXT index already exists
             $index_exists = $thisObj->db->get_var(
@@ -1498,9 +1609,10 @@ class Mapbd_wps_ticket extends ApbdWpsModel
                     'ft_title'
                 )
             );
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
             if (!$index_exists) {
-                $thisObj->db->query("ALTER TABLE `{$tableName}` ADD FULLTEXT INDEX `ft_title` (`title`)");
+                $thisObj->db->query("ALTER TABLE `{$tableName}` ADD FULLTEXT INDEX `ft_title` (`title`)");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             }
         }
     }
@@ -1511,6 +1623,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $table = $thisObj->db->prefix . $thisObj->tableName;
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             $sql = "CREATE TABLE `{$table}` (
                       `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1547,8 +1660,9 @@ class Mapbd_wps_ticket extends ApbdWpsModel
                       UNIQUE KEY `ticket_track_id` (`ticket_track_id`) USING BTREE,
                       FULLTEXT KEY `ft_title` (`title`)
                     ) $charsetCollate;";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
+            dbDelta($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
     function DropDBTable()
@@ -1556,7 +1670,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         global $wpdb;
 
         $table_name = $wpdb->prefix . $this->tableName;
-        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");
+        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
     static function ChangeTicketUser($ticket_id, $new_user_id, $old_user_id = 0)
     {

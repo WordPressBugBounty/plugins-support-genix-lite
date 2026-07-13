@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View partial linted in isolation; its template-scoped variables are not global and cannot be individually prefixed.
 
 /**
  * Modern Single Article Template
@@ -11,9 +12,10 @@ defined('ABSPATH') || exit;
 if (!function_exists('sgkb_reading_time')) {
     function sgkb_reading_time($content)
     {
-        $word_count = str_word_count(strip_tags($content));
+        $word_count = str_word_count(wp_strip_all_tags($content));
         $reading_time = ceil($word_count / 200); // Average reading speed
-        return sprintf(__('%d min read', 'support-genix'), $reading_time);
+        // translators: %d: estimated reading time in minutes.
+        return sprintf(__('%d min read', 'support-genix-lite'), $reading_time);
     }
 }
 
@@ -63,7 +65,7 @@ if ($show_toc === 'Y') {
     if (!empty($matches[0])) {
         foreach ($matches[0] as $index => $heading) {
             $level = $matches[1][$index];
-            $text = strip_tags($matches[2][$index]);
+            $text = wp_strip_all_tags($matches[2][$index]);
             $id = 'section-' . ($index + 1);
 
             // Add ID to heading in content
@@ -82,9 +84,9 @@ if ($show_toc === 'Y') {
 $related_args = [
     'post_type' => 'sgkb-docs',
     'posts_per_page' => 5,
-    'post__not_in' => [$post->ID],
+    'post__not_in' => [$post->ID],  // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- Small, bounded exclusion set.
     'orderby' => 'rand',
-    'meta_query' => [
+    'meta_query' => [  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
         'relation' => 'OR',
         [
             'key' => 'only_for_chatbot',
@@ -99,7 +101,7 @@ $related_args = [
 ];
 
 if ($primary_category) {
-    $related_args['tax_query'] = [
+    $related_args['tax_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
         [
             'taxonomy' => 'sgkb-docs-category',
             'terms' => $primary_category->term_id
@@ -147,7 +149,7 @@ $related_articles = new WP_Query($related_args);
                             <line x1="8" y1="2" x2="8" y2="6" stroke-linecap="round" stroke-linejoin="round" />
                             <line x1="3" y1="10" x2="21" y2="10" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <span><?php echo get_the_date(); ?></span>
+                        <span><?php echo esc_html(get_the_date()); ?></span>
                     </div>
 
                     <div class="sgkb-article-meta-item">
@@ -155,7 +157,7 @@ $related_articles = new WP_Query($related_args);
                             <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round" />
                             <polyline points="12 6 12 12 16 14" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <span><?php echo sgkb_reading_time(get_the_content()); ?></span>
+                        <span><?php echo esc_html(sgkb_reading_time(get_the_content())); ?></span>
                     </div>
 
                     <?php if ($tags && !is_wp_error($tags) && $show_meta === 'Y') : ?>
@@ -183,7 +185,7 @@ $related_articles = new WP_Query($related_args);
             $all_categories = get_terms(array(
                 'taxonomy' => 'sgkb-docs-category',
                 'hide_empty' => true,
-                'meta_key' => '_sg_order',
+                'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
                 'orderby' => 'meta_value_num',
                 'order' => 'ASC'
             ));
@@ -208,8 +210,8 @@ $related_articles = new WP_Query($related_args);
                         'post_type' => 'sgkb-docs',
                         'posts_per_page' => 200,
                         'post_status' => 'publish',
-                        'tax_query' => $tax_query,
-                        'meta_query' => array(
+                        'tax_query' => $tax_query,  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
+                        'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                             'relation' => 'OR',
                             array(
                                 'key' => 'only_for_chatbot',
@@ -284,7 +286,7 @@ $related_articles = new WP_Query($related_args);
                                             <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                         <span class="sgkb-sidebar-category-name"><?php echo esc_html($cat_data['term']->name); ?></span>
-                                        <span class="sgkb-sidebar-category-count"><?php echo count($cat_data['articles']); ?></span>
+                                        <span class="sgkb-sidebar-category-count"><?php echo esc_html(count($cat_data['articles'])); ?></span>
                                     </button>
                                     <nav class="sgkb-sidebar-category-content" <?php echo !$is_expanded ? 'style="display: none;"' : ''; ?>>
                                         <?php foreach ($cat_data['articles'] as $article) :
@@ -311,7 +313,7 @@ $related_articles = new WP_Query($related_args);
                     <?php endif; ?>
 
                     <div class="sgkb-content-wrapper"<?php echo $show_lightbox === 'Y' ? ' data-lightbox="true"' : ''; ?>>
-                        <?php echo apply_filters('the_content', $content); ?>
+                        <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Admin-authored post body rendered through the core 'the_content' filter (already sanitized by WordPress); kses-wrapping would strip legit embed attributes (iframe allowfullscreen, video controls, srcset). */ echo apply_filters('the_content', $content); ?>
                     </div>
 
                     <?php if ($show_modified === 'Y') : ?>
@@ -320,29 +322,29 @@ $related_articles = new WP_Query($related_args);
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                 <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            <span><?php printf(__('Last updated on %s', 'support-genix'), get_the_modified_date()); ?></span>
+                            <span><?php /* translators: %s: last modified date. */ printf(esc_html__('Last updated on %s', 'support-genix-lite'), esc_html(get_the_modified_date())); ?></span>
                         </div>
                     <?php endif; ?>
 
                     <?php if ($show_reaction === 'Y') : ?>
                         <!-- Article Feedback -->
                         <div class="sgkb-article-feedback">
-                            <h3><?php _e('Was this article helpful?', 'support-genix'); ?></h3>
+                            <h3><?php esc_html_e('Was this article helpful?', 'support-genix-lite'); ?></h3>
                             <div class="sgkb-feedback-buttons">
-                                <button class="sgkb-feedback-btn sgkb-feedback-yes" data-article="<?php echo get_the_ID(); ?>" data-type="helpful">
+                                <button class="sgkb-feedback-btn sgkb-feedback-yes" data-article="<?php echo esc_attr(get_the_ID()); ?>" data-type="helpful">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                                         <path d="M14 9V5C14 4.20435 13.6839 3.44129 13.1213 2.87868C12.5587 2.31607 11.7956 2 11 2L7 9V22H18.28C18.7623 22.0055 19.2304 21.8364 19.5979 21.524C19.9654 21.2116 20.2077 20.7769 20.28 20.3L21.66 11.3C21.7035 11.0134 21.6842 10.7207 21.6033 10.4423C21.5225 10.1638 21.3821 9.90629 21.1919 9.68751C21.0016 9.46873 20.7661 9.29393 20.5016 9.17522C20.2371 9.0565 19.9499 8.99672 19.66 9H14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         <path d="M7 9H4C3.46957 9 2.96086 9.21071 2.58579 9.58579C2.21071 9.96086 2 10.4696 2 11V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                    <span><?php _e('Yes', 'support-genix'); ?></span>
+                                    <span><?php esc_html_e('Yes', 'support-genix-lite'); ?></span>
                                 </button>
 
-                                <button class="sgkb-feedback-btn sgkb-feedback-no" data-article="<?php echo get_the_ID(); ?>" data-type="not-helpful">
+                                <button class="sgkb-feedback-btn sgkb-feedback-no" data-article="<?php echo esc_attr(get_the_ID()); ?>" data-type="not-helpful">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                                         <path d="M10 15V19C10 19.7956 10.3161 20.5587 10.8787 21.1213C11.4413 21.6839 12.2044 22 13 22L17 15V2H5.72C5.23767 1.99454 4.76962 2.16359 4.40209 2.47599C4.03457 2.78839 3.79232 3.22309 3.72 3.7L2.34 12.7C2.29649 12.9866 2.31583 13.2793 2.39666 13.5577C2.47749 13.8362 2.61794 14.0937 2.80814 14.3125C2.99834 14.5313 3.23392 14.7061 3.49843 14.8248C3.76294 14.9435 4.05009 15.0033 4.34 15H10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         <path d="M17 2H20C20.5304 2 21.0391 2.21071 21.4142 2.58579C21.7893 2.96086 22 3.46957 22 4V13C22 13.5304 21.7893 14.0391 21.4142 14.4142C21.0391 14.7893 20.5304 15 20 15H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                    <span><?php _e('No', 'support-genix'); ?></span>
+                                    <span><?php esc_html_e('No', 'support-genix-lite'); ?></span>
                                 </button>
                             </div>
                         </div>
@@ -354,13 +356,13 @@ $related_articles = new WP_Query($related_args);
                         $category_articles = new WP_Query([
                             'post_type' => 'sgkb-docs',
                             'posts_per_page' => -1,
-                            'tax_query' => [
+                            'tax_query' => [  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                                 [
                                     'taxonomy' => 'sgkb-docs-category',
                                     'terms' => $primary_category->term_id
                                 ]
                             ],
-                            'meta_query' => [
+                            'meta_query' => [  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                                 'relation' => 'OR',
                                 [
                                     'key' => 'only_for_chatbot',
@@ -397,21 +399,21 @@ $related_articles = new WP_Query($related_args);
                             <!-- Article Navigation -->
                             <div class="sgkb-article-navigation">
                                 <?php if ($prev_post) : ?>
-                                    <a href="<?php echo get_permalink($prev_post); ?>" class="sgkb-nav-card sgkb-nav-prev">
+                                    <a href="<?php echo esc_url(get_permalink($prev_post)); ?>" class="sgkb-nav-card sgkb-nav-prev">
                                         <div class="sgkb-nav-direction">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                                 <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                             </svg>
-                                            <span><?php _e('PREVIOUS', 'support-genix'); ?></span>
+                                            <span><?php esc_html_e('PREVIOUS', 'support-genix-lite'); ?></span>
                                         </div>
                                         <h4 class="sgkb-nav-title"><?php echo esc_html($prev_post->post_title); ?></h4>
                                     </a>
                                 <?php endif; ?>
 
                                 <?php if ($next_post) : ?>
-                                    <a href="<?php echo get_permalink($next_post); ?>" class="sgkb-nav-card sgkb-nav-next">
+                                    <a href="<?php echo esc_url(get_permalink($next_post)); ?>" class="sgkb-nav-card sgkb-nav-next">
                                         <div class="sgkb-nav-direction">
-                                            <span><?php _e('NEXT', 'support-genix'); ?></span>
+                                            <span><?php esc_html_e('NEXT', 'support-genix-lite'); ?></span>
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                                 <path d="M5 12H19M12 5L19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                             </svg>
@@ -426,7 +428,7 @@ $related_articles = new WP_Query($related_args);
                     <?php if ($hide_powered_by !== 'Y') : ?>
                         <!-- Powerd By -->
                         <div class="sgkb-article-powered-by">
-                            <span><?php printf(__('Powered by %s', 'support-genix'), '<a href="https://supportgenix.com" target="_blank" rel="noopener noreferrer">Support Genix</a>'); ?></span>
+                            <span><?php /* translators: %s: Support Genix link. */ printf(esc_html__('Powered by %s', 'support-genix-lite'), '<a href="https://supportgenix.com" target="_blank" rel="noopener noreferrer">Support Genix</a>'); ?></span>
                         </div>
                     <?php endif; ?>
                 </main>
@@ -435,7 +437,7 @@ $related_articles = new WP_Query($related_args);
                 <?php if ($show_right_sidebar) : ?>
                     <aside class="sgkb-article-right-sidebar">
                         <div class="sgkb-toc-wrapper">
-                            <h3 class="sgkb-toc-title"><?php _e('ON THIS PAGE', 'support-genix'); ?></h3>
+                            <h3 class="sgkb-toc-title"><?php esc_html_e('ON THIS PAGE', 'support-genix-lite'); ?></h3>
                             <nav class="sgkb-toc-nav">
                                 <?php foreach ($toc_items as $item) : ?>
                                     <a href="#<?php echo esc_attr($item['id']); ?>"
@@ -455,7 +457,7 @@ $related_articles = new WP_Query($related_args);
     <?php if ($related_articles->have_posts()) : ?>
         <section class="sgkb-related-articles-modern">
             <div class="sgkb-container">
-                <h2 class="sgkb-related-title"><?php _e('Related Articles', 'support-genix'); ?></h2>
+                <h2 class="sgkb-related-title"><?php esc_html_e('Related Articles', 'support-genix-lite'); ?></h2>
                 <div class="sgkb-related-grid">
                     <?php while ($related_articles->have_posts()) : $related_articles->the_post(); ?>
                         <article class="sgkb-related-card">
@@ -466,10 +468,10 @@ $related_articles = new WP_Query($related_args);
                                     if (empty(trim(wp_strip_all_tags($excerpt)))) {
                                         $excerpt = wp_strip_all_tags(get_the_content());
                                     }
-                                    echo wp_trim_words($excerpt, 15);
+                                    echo esc_html(wp_trim_words($excerpt, 15));
                                 ?></p>
                                 <span class="sgkb-related-readmore">
-                                    <?php _e('Read more', 'support-genix'); ?>
+                                    <?php esc_html_e('Read more', 'support-genix-lite'); ?>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                         <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>

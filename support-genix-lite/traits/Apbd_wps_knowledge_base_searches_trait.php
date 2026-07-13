@@ -68,7 +68,7 @@ trait Apbd_wps_knowledge_base_searches_trait
         $founded = $found_count ? 'Y' : 'N';
 
         $current_time = current_time('mysql');
-        $current_date = date('Y-m-d', strtotime($current_time));
+        $current_date = gmdate('Y-m-d', strtotime($current_time));
 
         $keyword_id = 0;
 
@@ -156,6 +156,7 @@ trait Apbd_wps_knowledge_base_searches_trait
 
         global $wpdb;
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $sql = "
             SELECT k.id, k.keyword, SUM(e.count) as count
             FROM $keywords_table k
@@ -165,15 +166,18 @@ trait Apbd_wps_knowledge_base_searches_trait
             ORDER BY count DESC, k.id DESC
             LIMIT %d, %d
         ";
-        $result = $wpdb->get_results($wpdb->prepare($sql, $date_start, $date_ended, $limitStart, $limit));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+        $result = $wpdb->get_results($wpdb->prepare($sql, $date_start, $date_ended, $limitStart, $limit));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $sql_total = "
             SELECT COUNT(DISTINCT k.id) as total
             FROM $keywords_table k
             JOIN $events_table e ON k.id = e.keyword_id
             WHERE e.founded = 'Y' AND e.created_date BETWEEN %s AND %s
         ";
-        $total = $wpdb->get_var($wpdb->prepare($sql_total, $date_start, $date_ended));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+        $total = $wpdb->get_var($wpdb->prepare($sql_total, $date_start, $date_ended));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
         $apiResponse->SetResponse(true, "", [
             'result' => $result,
@@ -207,6 +211,7 @@ trait Apbd_wps_knowledge_base_searches_trait
 
         global $wpdb;
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $sql = "
             SELECT k.id, k.keyword, SUM(e.count) as count
             FROM $keywords_table k
@@ -216,15 +221,18 @@ trait Apbd_wps_knowledge_base_searches_trait
             ORDER BY count DESC, k.id DESC
             LIMIT %d, %d
         ";
-        $result = $wpdb->get_results($wpdb->prepare($sql, $date_start, $date_ended, $limitStart, $limit));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+        $result = $wpdb->get_results($wpdb->prepare($sql, $date_start, $date_ended, $limitStart, $limit));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $sql_total = "
             SELECT COUNT(DISTINCT k.id) as total
             FROM $keywords_table k
             JOIN $events_table e ON k.id = e.keyword_id
             WHERE e.founded = 'N' AND e.created_date BETWEEN %s AND %s
         ";
-        $total = $wpdb->get_var($wpdb->prepare($sql_total, $date_start, $date_ended));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+        $total = $wpdb->get_var($wpdb->prepare($sql_total, $date_start, $date_ended));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
         $apiResponse->SetResponse(true, "", [
             'result' => $result,
@@ -250,7 +258,7 @@ trait Apbd_wps_knowledge_base_searches_trait
                 'sgkb_search' => true,
             );
 
-            $docs_args['meta_query'] = array(
+            $docs_args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                 array(
                     'key' => 'only_for_chatbot',
                     'compare' => 'NOT EXISTS'
@@ -267,7 +275,8 @@ trait Apbd_wps_knowledge_base_searches_trait
                 $result .= '<div class="sgkb-hero-search-header">';
                 $result .= '<span class="sgkb-hero-search-count">';
                 $result .= sprintf(
-                    esc_html(_n('Found %d result', 'Found %d results', $post_count, 'support-genix')),
+                    // translators: %d: number of results found.
+                    esc_html(_n('Found %d result', 'Found %d results', $post_count, 'support-genix-lite')),
                     $post_count
                 );
                 $result .= '</span>';
@@ -306,7 +315,7 @@ trait Apbd_wps_knowledge_base_searches_trait
                         $excerpt = wp_trim_words($content, 20, '...');
                     }
                     if (empty($excerpt)) {
-                        $excerpt = __('No description available for this article.', 'support-genix');
+                        $excerpt = __('No description available for this article.', 'support-genix-lite');
                     }
 
                     $result .= '<div class="sgkb-hero-search-article-excerpt">' . esc_html($excerpt) . '</div>';
@@ -320,7 +329,7 @@ trait Apbd_wps_knowledge_base_searches_trait
 
                 $result .= '</div>';
             } else {
-                $result .= '<div class="sgkb-hero-search-empty">' . __('No results found!', 'support-genix') . '</div>';
+                $result .= '<div class="sgkb-hero-search-empty">' . __('No results found!', 'support-genix-lite') . '</div>';
             }
 
             do_action('sgkb_docs_update_searches_data', $query, $found_count);
@@ -335,12 +344,12 @@ trait Apbd_wps_knowledge_base_searches_trait
     public function track_popular_search()
     {
         // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ajax-nonce')) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'ajax-nonce')) {
             wp_send_json_error('Security check failed');
             return;
         }
 
-        $keyword = isset($_POST['keyword']) ? sanitize_text_field($_POST['keyword']) : '';
+        $keyword = isset($_POST['keyword']) ? sanitize_text_field(wp_unslash($_POST['keyword'])) : '';
 
         if (empty($keyword)) {
             wp_send_json_error('No keyword provided');
@@ -380,10 +389,10 @@ trait Apbd_wps_knowledge_base_searches_trait
         // If no searches found, return some defaults
         if (empty($searches)) {
             $searches = array(
-                __('Getting started', 'support-genix'),
-                __('Installation', 'support-genix'),
-                __('Account setup', 'support-genix'),
-                __('Troubleshooting', 'support-genix')
+                __('Getting started', 'support-genix-lite'),
+                __('Installation', 'support-genix-lite'),
+                __('Account setup', 'support-genix-lite'),
+                __('Troubleshooting', 'support-genix-lite')
             );
         }
 

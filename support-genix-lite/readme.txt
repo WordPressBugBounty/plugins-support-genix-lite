@@ -1,11 +1,11 @@
 === Support Genix – Helpdesk, AI Chatbot, Knowledge Base & Customer Support Ticketing System ===
-Contributors: nazmulhudadev, aslamhasib, tarekht
+Contributors: nazmulhudadev, aslamhasib
 Author link: https://supportgenix.com
-Tags: helpdesk, support ticket, customer support, ai chatbot, knowledge base, support automation, live chat, ai assistant, chatbot, help center, docs, documentation, ai support
-Requires at least: 5.0
+Tags: helpdesk, support ticket, knowledge base, ai chatbot, customer support
+Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.47
+Stable tag: 1.4.48
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -466,6 +466,10 @@ Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Ant
 
 == Changelog ==
 
+= Version: 1.4.48 - Date: 12 July, 2026 =
+* Security: Hardened access control and file handling.
+* Thanks to Alessandro Greco (Aleff) and Giovanbattista Ianni (University of Calabria, UNICAL), and Artus KG for responsibly disclosing these issues.
+
 = Version: 1.4.47 - Date: 14 June, 2026 =
 * Improved: Support for handling content in tickets and replies reliably.
 * Improved: Ticket list loading speed for a lighter, faster response.
@@ -586,15 +590,3 @@ Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Ant
 
 = Version: 1.4.29 - Date: 22 October, 2025 =
 * Improved: Minor UI update and optimizations.
-
-= Version: 1.4.28 - Date: 06 October, 2025 =
-* Fixed: "Help Me Write" AI assistance not generating responses issue.
-* Fixed: Minor bugs and issues to enhance functionality and user experience.
-
-= Version: 1.4.27 - Date: 01 October, 2025 =
-* Added: "Help Me Write" AI assistance for generating ticket replies.
-* Added: Auto-assignment rules to automatically set priority for tickets.
-* Improved: Overall plugin performance and stability for smoother, more reliable usage.
-* Fixed: Dynamic placeholder issue in saved replies.
-* Fixed: Case sensitivity issue with file extensions.
-* Fixed: Minor bugs and issues to enhance functionality and user experience.

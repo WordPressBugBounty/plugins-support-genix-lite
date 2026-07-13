@@ -50,7 +50,7 @@ trait Apbd_wps_knowledge_base_metabox_trait
     {
         if (
             !isset($_POST['_chatbot_metabox_nonce']) ||
-            !wp_verify_nonce($_POST['_chatbot_metabox_nonce'], 'chatbot_metabox_nonce') ||
+            !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_chatbot_metabox_nonce'])), 'chatbot_metabox_nonce') ||
             !current_user_can('edit_post', $post_id) ||
             ('sgkb-docs' !== get_post_type($post_id)) ||
             (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)

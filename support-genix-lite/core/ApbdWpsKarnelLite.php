@@ -244,12 +244,13 @@ if (!class_exists("ApbdWpsKarnelLite")) {
         {
             if ($this->isDevelopmode) {
                 $qu   = ApbdWpsModel::GetTotalQueriesForLog();
-                $path = plugin_dir_path($this->pluginFile) . "logs/";
+                $up   = wp_upload_dir();
+                $path = trailingslashit($up['basedir']) . "support-genix/logs/";
 
                 global $wp_filesystem;
 
                 if (empty($wp_filesystem)) {
-                    require_once(ABSPATH . '/wp-admin/includes/file.php');
+                    require_once(ABSPATH . 'wp-admin/includes/file.php');
                     WP_Filesystem();
                 }
 
@@ -708,7 +709,7 @@ if (!class_exists("ApbdWpsKarnelLite")) {
 
         function CheckAdminPage()
         {
-            $page = ! empty($_REQUEST['page']) ? sanitize_text_field($_REQUEST['page']) : "";
+            $page = ! empty($_REQUEST['page']) ? sanitize_text_field(wp_unslash($_REQUEST['page'])) : ""; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Read-only admin-page detection; no state change.
             $page = trim($page);
             if (! empty($page)) {
                 if ($page == $this->pluginBaseName) {
@@ -727,9 +728,9 @@ if (!class_exists("ApbdWpsKarnelLite")) {
 
         static function IsMainOptionPage()
         {
-            $file = basename($_SERVER['SCRIPT_FILENAME']);
+            $file = basename(isset($_SERVER['SCRIPT_FILENAME']) ? sanitize_text_field(wp_unslash($_SERVER['SCRIPT_FILENAME'])) : '');
             if ($file == "plugins.php") {
-                if (empty($_REQUEST['page'])) {
+                if (empty($_REQUEST['page'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Read-only admin-page detection; no state change.
                     return true;
                 }
             }
@@ -892,7 +893,7 @@ if (!class_exists("ApbdWpsKarnelLite")) {
 
         function getActiveModuleId()
         {
-            $selected = (! empty($_COOKIE[$this->pluginBaseName . '_st_menu'])) ? $_COOKIE[$this->pluginBaseName . '_st_menu'] : "";
+            $selected = (! empty($_COOKIE[$this->pluginBaseName . '_st_menu'])) ? sanitize_text_field(wp_unslash($_COOKIE[$this->pluginBaseName . '_st_menu'])) : "";
             if (! empty($selected)) {
                 return $selected;
             }
@@ -1035,7 +1036,7 @@ if (!class_exists("ApbdWpsKarnelLite")) {
                     ?>
                     <div class="sgkb-nav-bar" id="sgkb-nav-bar" style="display:none;">
                         <h3 class="sgkb-nav-bar-label"><?php esc_html_e('Quick Nav:', 'support-genix-lite'); ?></h3>
-                        <a href="<?php echo $safe_url; ?>" class="sgkb-btn sgkb-modern-ui-btn" id="sgkb-modern-ui-btn"><span class="dashicons dashicons-grid-view"></span> <?php esc_html_e('Modern UI', 'support-genix-lite'); ?></a>
+                        <a href="<?php echo esc_url($safe_url); ?>" class="sgkb-btn sgkb-modern-ui-btn" id="sgkb-modern-ui-btn"><span class="dashicons dashicons-grid-view"></span> <?php esc_html_e('Modern UI', 'support-genix-lite'); ?></a>
                         <span class="sgkb-nav-bar-divider"></span>
                         <?php foreach ($nav_items as $sid => $item) :
                             if ($sid === $screen_id) continue;

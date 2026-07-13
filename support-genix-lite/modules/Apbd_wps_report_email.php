@@ -246,8 +246,8 @@ class Apbd_wps_report_email extends ApbdWpsBaseModuleLite
                 break;
 
             case 'hourly':
-                $last_hour = date('Y-m-d H', $last_sent_timestamp);
-                $current_hour = date('Y-m-d H', $current_timestamp);
+                $last_hour = gmdate('Y-m-d H', $last_sent_timestamp);
+                $current_hour = gmdate('Y-m-d H', $current_timestamp);
                 $shouldSend = ($last_hour !== $current_hour);
                 break;
 
@@ -256,11 +256,11 @@ class Apbd_wps_report_email extends ApbdWpsBaseModuleLite
                 $target_hour = isset($current_time_parts[0]) ? intval($current_time_parts[0]) : 0;
                 $target_minute = isset($current_time_parts[1]) ? intval($current_time_parts[1]) : 0;
 
-                $current_hour = intval(date('H', $current_timestamp));
-                $current_minute = intval(date('i', $current_timestamp));
+                $current_hour = intval(gmdate('H', $current_timestamp));
+                $current_minute = intval(gmdate('i', $current_timestamp));
 
-                $last_date = date('Y-m-d', $last_sent_timestamp);
-                $current_date = date('Y-m-d', $current_timestamp);
+                $last_date = gmdate('Y-m-d', $last_sent_timestamp);
+                $current_date = gmdate('Y-m-d', $current_timestamp);
 
                 $shouldSend = (
                     ($last_date !== $current_date) &&
@@ -275,16 +275,16 @@ class Apbd_wps_report_email extends ApbdWpsBaseModuleLite
                 break;
 
             case 'weekly':
-                $current_week_day = intval(date('N', $current_timestamp));
-                $last_week = date('W', $last_sent_timestamp);
-                $current_week = date('W', $current_timestamp);
+                $current_week_day = intval(gmdate('N', $current_timestamp));
+                $last_week = gmdate('W', $last_sent_timestamp);
+                $current_week = gmdate('W', $current_timestamp);
 
                 $time_parts = explode(':', $day_time);
                 $target_hour = isset($time_parts[0]) ? intval($time_parts[0]) : 0;
                 $target_minute = isset($time_parts[1]) ? intval($time_parts[1]) : 0;
 
-                $current_hour = intval(date('H', $current_timestamp));
-                $current_minute = intval(date('i', $current_timestamp));
+                $current_hour = intval(gmdate('H', $current_timestamp));
+                $current_minute = intval(gmdate('i', $current_timestamp));
 
                 $shouldSend = (
                     ($last_week !== $current_week) &&
@@ -300,16 +300,16 @@ class Apbd_wps_report_email extends ApbdWpsBaseModuleLite
                 break;
 
             case 'monthly':
-                $current_month_day = intval(date('j', $current_timestamp));
-                $last_month = date('Y-m', $last_sent_timestamp);
-                $current_month = date('Y-m', $current_timestamp);
+                $current_month_day = intval(gmdate('j', $current_timestamp));
+                $last_month = gmdate('Y-m', $last_sent_timestamp);
+                $current_month = gmdate('Y-m', $current_timestamp);
 
                 $time_parts = explode(':', $day_time);
                 $target_hour = isset($time_parts[0]) ? intval($time_parts[0]) : 0;
                 $target_minute = isset($time_parts[1]) ? intval($time_parts[1]) : 0;
 
-                $current_hour = intval(date('H', $current_timestamp));
-                $current_minute = intval(date('i', $current_timestamp));
+                $current_hour = intval(gmdate('H', $current_timestamp));
+                $current_minute = intval(gmdate('i', $current_timestamp));
 
                 $shouldSend = (
                     ($last_month !== $current_month) &&
@@ -343,19 +343,19 @@ class Apbd_wps_report_email extends ApbdWpsBaseModuleLite
             switch ($frequency) {
                 case 'custom':
                 case 'hourly':
-                    $start_date = date('Y-m-d H:i:s', strtotime('-1 hour', $current_timestamp + 1));
+                    $start_date = gmdate('Y-m-d H:i:s', strtotime('-1 hour', $current_timestamp + 1));
                     break;
 
                 case 'daily':
-                    $start_date = date('Y-m-d H:i:s', strtotime('-1 day', $current_timestamp + 1));
+                    $start_date = gmdate('Y-m-d H:i:s', strtotime('-1 day', $current_timestamp + 1));
                     break;
 
                 case 'weekly':
-                    $start_date = date('Y-m-d H:i:s', strtotime('-7 days', $current_timestamp + 1));
+                    $start_date = gmdate('Y-m-d H:i:s', strtotime('-7 days', $current_timestamp + 1));
                     break;
 
                 case 'monthly':
-                    $start_date = date('Y-m-d H:i:s', strtotime('-1 month', $current_timestamp + 1));
+                    $start_date = gmdate('Y-m-d H:i:s', strtotime('-1 month', $current_timestamp + 1));
                     break;
             }
         }

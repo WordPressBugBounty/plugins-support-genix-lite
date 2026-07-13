@@ -4,10 +4,7 @@
  * Promotional Banner Notice.
  */
 
-// If this file is accessed directly, exit.
-if (! defined('ABSPATH')) {
-    exit;
-}
+defined('ABSPATH') || exit;
 
 /**
  * Class for handling promotional banner notices.
@@ -220,7 +217,7 @@ if (! class_exists('ApbdWps_Promo')) {
          */
         public function dismiss_banner()
         {
-            if (! isset($_POST['nonce']) || ! wp_verify_nonce($_POST['nonce'], 'dismiss-promo-banner')) {
+            if (! isset($_POST['nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'dismiss-promo-banner')) {
                 wp_die(esc_html__('Invalid nonce', 'support-genix-lite'));
             }
 
@@ -228,7 +225,7 @@ if (! class_exists('ApbdWps_Promo')) {
                 wp_die(esc_html__('Unauthorized', 'support-genix-lite'));
             }
 
-            $notice = isset($_POST['notice']) ? sanitize_text_field($_POST['notice']) : '';
+            $notice = isset($_POST['notice']) ? sanitize_text_field(wp_unslash($_POST['notice'])) : '';
             if ($notice === $this->notice_key) {
                 update_option($this->notice_key . '_dismissed', true);
             }

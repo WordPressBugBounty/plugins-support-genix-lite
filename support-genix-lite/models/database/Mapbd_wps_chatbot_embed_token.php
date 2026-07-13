@@ -93,6 +93,7 @@ class Mapbd_wps_chatbot_embed_token extends ApbdWpsModel
         $table = $thisObj->db->prefix . $thisObj->tableName;
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             $sql = "CREATE TABLE `{$table}` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -111,8 +112,9 @@ class Mapbd_wps_chatbot_embed_token extends ApbdWpsModel
                 UNIQUE KEY `idx_token` (`token`),
                 KEY `idx_status` (`status`)
             ) $charsetCollate;";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
+            dbDelta($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
 
@@ -123,8 +125,8 @@ class Mapbd_wps_chatbot_embed_token extends ApbdWpsModel
     {
         global $wpdb;
         $table_name = $wpdb->prefix . $this->tableName;
-        $sql = "DROP TABLE IF EXISTS $table_name;";
-        $wpdb->query($sql);
+        $sql = "DROP TABLE IF EXISTS $table_name;";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+        $wpdb->query($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     static function DeleteById($id)

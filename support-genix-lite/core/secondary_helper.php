@@ -172,7 +172,7 @@ if (! function_exists("ApbdWps_CheckDuplicacy")) {
         $args = array(
             'post_type' => 'post',
             'posts_per_page' => 1,
-            'meta_query' => array(
+            'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                 array(
                     'key' => '_' . $pluginbase . 'apuid',
                     'value' => $MetaInfo,
@@ -370,7 +370,8 @@ if (! function_exists("ApbdWps_Lan__")) {
     {
         $obj = ApbdWpsKarnelLite::GetInstanceByBase($domain);
         if (is_object($obj) && method_exists($obj, "isDevelopmode") && $obj->isDevelopmode()) {
-            $logpath = plugin_dir_path($obj->pluginFile) . "logs/";
+            $up      = wp_upload_dir();
+            $logpath = trailingslashit($up['basedir']) . "support-genix/logs/";
             ApbdWps_AddIntoLanguageMsg($obj->pluginName, $logpath, $string, $domain . "-en_US.po");
         }
         $args    = func_get_args();
@@ -463,7 +464,7 @@ if (! function_exists("ApbdWps_GenerateBaseUsername")) {
         }
 
         if (empty($username)) {
-            $username = 'user_' . time() . '_' . rand(100, 999);
+            $username = 'user_' . time() . '_' . wp_rand(100, 999);
         }
 
         return $username;
@@ -491,7 +492,7 @@ if (! function_exists("ApbdWps_GenerateUniqueUsername")) {
         $timestampUsername = $username . '_' . time();
 
         if (username_exists($timestampUsername)) {
-            return $username . '_' . time() . '_' . rand(100, 999);
+            return $username . '_' . time() . '_' . wp_rand(100, 999);
         }
 
         return $timestampUsername;
@@ -513,6 +514,51 @@ if (! function_exists("ApbdWps_AdjustUrlToCurrentHost")) {
     {
         // Only adjust in frontend context where HTTP_HOST is available
         if (empty($_SERVER['HTTP_HOST']) || is_admin()) {
+            return $url;
+        }
+
+        $current_host = sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST']));
+        $parsed_url = wp_parse_url($url);
+
+        if (empty($parsed_url['host']) || empty($current_host)) {
+            return $url;
+        }
+
+        // Check if hosts differ only by www prefix
+        $url_host = $parsed_url['host'];
+        $url_host_normalized = preg_replace('/^www\./i', '', $url_host);
+        $current_host_normalized = preg_replace('/^www\./i', '', $current_host);
+
+        // Only adjust if base domains match (security: don't redirect to different domains)
+        if ($url_host_normalized !== $current_host_normalized) {
+            return $url;
+        }
+
+        // Replace the host in the URL with the current request's host
+        $adjusted_url = str_replace('//' . $url_host, '//' . $current_host, $url);
+
+        return $adjusted_url;
+    }
+}
+
+if (! function_exists("ApbdWps_AdjustUrlToRequestHost")) {
+    /**
+     * Adjust a URL to match the current request's host, including inside
+     * admin-ajax requests.
+     *
+     * Same purpose and same www/non-www base-domain safety check as
+     * ApbdWps_AdjustUrlToCurrentHost(), but WITHOUT the is_admin() bail. Some
+     * URLs (e.g. the authenticated attachment proxy) are generated inside an
+     * admin-ajax request - where is_admin() is always true - that may originate
+     * from a front-end portal page served on the non-canonical host. Pinning the
+     * URL to the request host ensures the host-scoped auth cookie is sent.
+     *
+     * @param string $url The URL to adjust.
+     * @return string The adjusted URL with matching host.
+     */
+    function ApbdWps_AdjustUrlToRequestHost($url)
+    {
+        if (empty($_SERVER['HTTP_HOST'])) {
             return $url;
         }
 
@@ -641,10 +687,12 @@ if (!function_exists("ApbdWps_CurrentUrl")) {
         } else {
             $protocol = 'http://';
         }
+        $http_host   = (isset($_SERVER['HTTP_HOST']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST'])) : '');
+        $request_uri = (isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '');
         if ($isWithParam) {
-            return $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            return $protocol . $http_host . $request_uri;
         } else {
-            $url_parts = wp_parse_url($protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+            $url_parts = wp_parse_url($protocol . $http_host . $request_uri);
             return $url_parts['scheme'] . '://' . $url_parts['host'] . $url_parts['path'];
         }
     }
@@ -653,10 +701,14 @@ if (!function_exists("ApbdWps_CurrentUrl")) {
 if (! function_exists('ApbdWps_AddFileLog')) {
     function ApbdWps_AddFileLog($log_string, $fileName = "log.txt")
     {
-        $path = dirname(__FILE__) . "/../logs/";
+        $up   = wp_upload_dir();
+        $path = trailingslashit($up['basedir']) . "support-genix/logs/";
+        if (!is_dir($path)) {
+            wp_mkdir_p($path);
+        }
         if (is_dir($path)) {
             $log_string = "\n" . $log_string;
-            file_put_contents($path . $fileName, $log_string, FILE_APPEND);
+            file_put_contents($path . $fileName, $log_string, FILE_APPEND); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Native append is the proven method for this log writer.
         }
     }
 }

@@ -25,7 +25,7 @@ trait Apbd_wps_settings_blocks_trait
             [
                 [
                     'slug' => 'support-genix',
-                    'title' => __('Support Genix', 'support-genix'),
+                    'title' => __('Support Genix', 'support-genix-lite'),
                     'icon' => null,
                 ],
             ]

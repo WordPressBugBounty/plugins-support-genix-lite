@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View partial linted in isolation; its template-scoped variables are not global and cannot be individually prefixed.
 
 /**
  * Report email template.
@@ -159,7 +160,7 @@ $totalData = isset($categoryData['total_data']) ? $categoryData['total_data'] : 
                                                         <p style="font-size:14px;line-height:24px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:400;margin-top:0;margin-bottom:0;color:#3b4049;"><br></p>
                                                         <p style="font-size:14px;line-height:24px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:400;margin-top:0;margin-bottom:0;color:#3b4049;"><?php $this->_e('* Closed ticket count reflects the total number of times tickets have been marked as closed.'); ?></p>
                                                         <p style="font-size:14px;line-height:24px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:400;margin-top:0;margin-bottom:14px;color:#3b4049;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#e2e8f0;"><br></p>
-                                                        <p style="font-size:14px;line-height:24px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:400;margin-top:0;margin-bottom:0;color:#3b4049;"><?php printf($this->__('Upgrade to %s for advanced features, powerful integrations, and enhanced productivity tools.'), '<a href="https://supportgenix.com/pricing/" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-weight:400;margin-top:0;margin-bottom:0;color:#00e;text-decoration:none;">Support Genix Pro</a>'); ?></p>
+                                                        <p style="font-size:14px;line-height:24px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:400;margin-top:0;margin-bottom:0;color:#3b4049;"><?php echo wp_kses_post(sprintf($this->__('Upgrade to %s for advanced features, powerful integrations, and enhanced productivity tools.'), '<a href="https://supportgenix.com/pricing/" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-weight:400;margin-top:0;margin-bottom:0;color:#00e;text-decoration:none;">Support Genix Pro</a>')); ?></p>
                                                     </div>
                                                 </td>
                                             </tr>

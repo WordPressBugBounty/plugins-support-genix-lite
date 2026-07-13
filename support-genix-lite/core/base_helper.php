@@ -7,8 +7,7 @@
 defined('ABSPATH') || exit;
 
 if (!defined("ApbdWps_IsPostBack")) {
-    $request_method = isset($_SERVER['REQUEST_METHOD']) ? sanitize_text_field($_SERVER['REQUEST_METHOD']) : '';
-    define("ApbdWps_IsPostBack", strtoupper($request_method) == 'POST');
+    define("ApbdWps_IsPostBack", strtoupper(isset($_SERVER['REQUEST_METHOD']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_METHOD'])) : '') == 'POST');
 }
 
 if (! function_exists("ApbdWps_IsValidEmail")) {
@@ -31,7 +30,7 @@ if (! function_exists("ApbdWps_DownloadFile")) {
         global $wp_filesystem;
 
         if (empty($wp_filesystem)) {
-            require_once(ABSPATH . '/wp-admin/includes/file.php');
+            require_once(ABSPATH . 'wp-admin/includes/file.php');
             WP_Filesystem();
         }
 
@@ -73,7 +72,7 @@ if (! function_exists("ApbdWps_DownloadFile")) {
 if (! function_exists("ApbdWps_PostValue")) {
     function ApbdWps_PostValue($index, $default = NULL)
     {
-        $data = wp_parse_args($_POST);
+        $data = wp_parse_args($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Generic request accessor; nonce is the caller's responsibility.
 
         if (! isset($data[$index])) {
             return $default;
@@ -86,7 +85,7 @@ if (! function_exists("ApbdWps_PostValue")) {
 if (! function_exists("ApbdWps_RequestValue")) {
     function ApbdWps_RequestValue($index, $default = NULL)
     {
-        $data = wp_parse_args($_REQUEST);
+        $data = wp_parse_args($_REQUEST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Generic request accessor; nonce is the caller's responsibility.
 
         if (! isset($data[$index])) {
             return $default;
@@ -99,7 +98,7 @@ if (! function_exists("ApbdWps_RequestValue")) {
 if (! function_exists("ApbdWps_GetValue")) {
     function ApbdWps_GetValue($index, $default = NULL)
     {
-        $data = wp_parse_args($_GET);
+        $data = wp_parse_args($_GET); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Generic request accessor; nonce is the caller's responsibility.
 
         if (! isset($data[$index])) {
             return $default;
@@ -229,8 +228,12 @@ if (! function_exists("ApbdWps_FilePutContents")) {
             global $wp_filesystem;
 
             if (empty($wp_filesystem)) {
-                require_once(ABSPATH . '/wp-admin/includes/file.php');
+                require_once(ABSPATH . 'wp-admin/includes/file.php');
                 WP_Filesystem();
+            }
+
+            if (empty($wp_filesystem) || !is_object($wp_filesystem)) {
+                return false;
             }
 
             return $wp_filesystem->put_contents(
@@ -246,15 +249,15 @@ if (! function_exists("ApbdWps_GetRemoteIP")) {
     function ApbdWps_GetRemoteIP()
     {
         if (! empty($_SERVER['HTTP_X_REAL_IP'])) {
-            return $_SERVER['HTTP_X_REAL_IP'];
+            return sanitize_text_field(wp_unslash($_SERVER['HTTP_X_REAL_IP']));
         } elseif (! empty($_SERVER['HTTP_CLIENT_IP'])) {
-            return $_SERVER['HTTP_CLIENT_IP'];
+            return sanitize_text_field(wp_unslash($_SERVER['HTTP_CLIENT_IP']));
         } elseif (! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+            return sanitize_text_field(wp_unslash($_SERVER['HTTP_X_FORWARDED_FOR']));
         } elseif (! empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-            return $_SERVER['HTTP_CF_CONNECTING_IP'];
+            return sanitize_text_field(wp_unslash($_SERVER['HTTP_CF_CONNECTING_IP']));
         } else {
-            return ! empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : "-";
+            return ! empty($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : "-";
         }
     }
 }
@@ -382,7 +385,7 @@ if (!function_exists('ApbdWps_GetFileSystem')) {
         global $wp_filesystem;
 
         if (empty($wp_filesystem)) {
-            require_once(ABSPATH . '/wp-admin/includes/file.php');
+            require_once(ABSPATH . 'wp-admin/includes/file.php');
             WP_Filesystem();
         }
 
@@ -394,7 +397,7 @@ if (! function_exists("ApbdWps_FileGetContents")) {
     function ApbdWps_FileGetContents($filename)
     {
         $wp_filesystem = ApbdWps_GetFileSystem();
-        return $wp_filesystem->get_contents($filename);
+        return (!empty($wp_filesystem) && is_object($wp_filesystem)) ? $wp_filesystem->get_contents($filename) : '';
     }
 }
 
@@ -402,7 +405,7 @@ if (! function_exists("ApbdWps_ReadPHPInputStream")) {
     function ApbdWps_ReadPHPInputStream()
     {
         $wp_filesystem = ApbdWps_GetFileSystem();
-        return $wp_filesystem->get_contents('php://input');
+        return (!empty($wp_filesystem) && is_object($wp_filesystem)) ? $wp_filesystem->get_contents('php://input') : '';
     }
 }
 
@@ -411,7 +414,7 @@ if (! function_exists("ApbdWps_AddLogFile")) {
     {
         $filenamePath = WP_CONTENT_DIR . "/" . $filename;
         if (!is_string($data)) {
-            $data = print_r($data, true);
+            $data = print_r($data, true); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Diagnostic log formatting.
         }
         if ($isAppend) {
             return ApbdWps_FilePutContents($filenamePath, $data, FILE_APPEND);
@@ -429,8 +432,8 @@ if (!function_exists("SUPPORT_GENIX_init")) {
     function SUPPORT_GENIX_init()
     {
         $coreObject = ApbdWps_SupportLite::GetInstance();
-        do_action($coreObject->_set_action_prefix . "/register_module", $coreObject);
-        load_plugin_textdomain("support-genix-lite", false, basename(dirname($coreObject->pluginFile)) . '/languages/');
+        do_action($coreObject->_set_action_prefix . "/register_module", $coreObject);  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Hook name uses the plugin's runtime action prefix.
+        load_plugin_textdomain("support-genix-lite", false, basename(dirname($coreObject->pluginFile)) . '/languages/'); // phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- Explicit load kept for reliable translation loading across environments.
         if ($coreObject->isModuleLoaded()) {
             foreach ($coreObject->moduleList as $moduleObject) {
                 if ($moduleObject->OnInit()) {

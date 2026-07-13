@@ -362,7 +362,7 @@ trait Apbd_wps_ticket_migration_create_trait
                     $field_value = $request_data['ticket_custom_fields__' . $field_key];
                 }
 
-                $custom_fields[$field_key] = strip_tags($field_value);
+                $custom_fields[$field_key] = wp_strip_all_tags($field_value);
             }
         }
 
@@ -397,7 +397,7 @@ trait Apbd_wps_ticket_migration_create_trait
                 $destination_file = rtrim($move_to_path, '/') . '/' . $filename;
 
                 if ($remove_original) {
-                    rename($existing_path, $destination_file);
+                    rename($existing_path, $destination_file); // phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename -- Native rename is the proven method for moving a migrated attachment between server-absolute plugin paths (cron/non-direct transport where WP_Filesystem has no credentials).
                 } else {
                     copy($existing_path, $destination_file);
                 }

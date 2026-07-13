@@ -75,6 +75,7 @@ class Mapbd_wps_docs_analytics extends ApbdWpsModel
         $table = $thisObj->db->prefix . $thisObj->tableName;
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             $sql = "CREATE TABLE `{$table}` (
                 `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -93,8 +94,9 @@ class Mapbd_wps_docs_analytics extends ApbdWpsModel
                 KEY `created_at` (`created_at`),
                 KEY `created_date` (`created_date`)
             ) $charsetCollate;";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
+            dbDelta($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
 
@@ -103,8 +105,8 @@ class Mapbd_wps_docs_analytics extends ApbdWpsModel
         global $wpdb;
 
         $table_name = $wpdb->prefix . $this->tableName;
-        $sql = "DROP TABLE IF EXISTS $table_name;";
-        $wpdb->query($sql);
+        $sql = "DROP TABLE IF EXISTS $table_name;";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+        $wpdb->query($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     static function UpdateDBTable()
@@ -112,26 +114,28 @@ class Mapbd_wps_docs_analytics extends ApbdWpsModel
         $thisObj = new static();
         $table = $thisObj->db->prefix . $thisObj->tableName;
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             return;
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
         }
 
         // Convert 'score' from generated to regular column
         if (self::IsGeneratedColumn($thisObj->db, $table, 'score')) {
-            $thisObj->db->query("ALTER TABLE `{$table}` DROP COLUMN `score`");
-            $thisObj->db->query("ALTER TABLE `{$table}` ADD COLUMN `score` int(11) NOT NULL DEFAULT 0 AFTER `neutral`");
-            $thisObj->db->query("UPDATE `{$table}` SET `score` = CASE WHEN (COALESCE(`positive`,0)+COALESCE(`negative`,0)) > 0 THEN ROUND(((COALESCE(`positive`,0)-COALESCE(`negative`,0))/(COALESCE(`positive`,0)+COALESCE(`negative`,0)))*100,0) ELSE 0 END");
+            $thisObj->db->query("ALTER TABLE `{$table}` DROP COLUMN `score`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("ALTER TABLE `{$table}` ADD COLUMN `score` int(11) NOT NULL DEFAULT 0 AFTER `neutral`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("UPDATE `{$table}` SET `score` = CASE WHEN (COALESCE(`positive`,0)+COALESCE(`negative`,0)) > 0 THEN ROUND(((COALESCE(`positive`,0)-COALESCE(`negative`,0))/(COALESCE(`positive`,0)+COALESCE(`negative`,0)))*100,0) ELSE 0 END");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
 
         // Convert 'created_date' from generated to regular column
         if (self::IsGeneratedColumn($thisObj->db, $table, 'created_date')) {
-            $thisObj->db->query("ALTER TABLE `{$table}` DROP INDEX `post_id_created_date`");
-            $thisObj->db->query("ALTER TABLE `{$table}` DROP COLUMN `created_date`");
-            $thisObj->db->query("ALTER TABLE `{$table}` ADD COLUMN `created_date` date DEFAULT NULL AFTER `created_at`");
-            $thisObj->db->query("UPDATE `{$table}` SET `created_date` = DATE(`created_at`)");
-            $thisObj->db->query("ALTER TABLE `{$table}` MODIFY COLUMN `created_date` date NOT NULL");
-            $thisObj->db->query("ALTER TABLE `{$table}` ADD KEY `created_date` (`created_date`)");
-            $thisObj->db->query("ALTER TABLE `{$table}` ADD UNIQUE KEY `post_id_created_date` (`post_id`, `created_date`)");
+            $thisObj->db->query("ALTER TABLE `{$table}` DROP INDEX `post_id_created_date`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("ALTER TABLE `{$table}` DROP COLUMN `created_date`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("ALTER TABLE `{$table}` ADD COLUMN `created_date` date DEFAULT NULL AFTER `created_at`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("UPDATE `{$table}` SET `created_date` = DATE(`created_at`)");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("ALTER TABLE `{$table}` MODIFY COLUMN `created_date` date NOT NULL");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("ALTER TABLE `{$table}` ADD KEY `created_date` (`created_date`)");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+            $thisObj->db->query("ALTER TABLE `{$table}` ADD UNIQUE KEY `post_id_created_date` (`post_id`, `created_date`)");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
 
@@ -153,7 +157,7 @@ class Mapbd_wps_docs_analytics extends ApbdWpsModel
         $thisObj = new static();
         $tableName = $thisObj->db->prefix . $thisObj->tableName;
 
-        $results = $thisObj->SelectQuery($wpdb->prepare("SELECT sum(views) as total_views FROM {$tableName} WHERE post_id = %d", $post_id));
+        $results = $thisObj->SelectQuery($wpdb->prepare("SELECT sum(views) as total_views FROM {$tableName} WHERE post_id = %d", $post_id));  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Values passed via $wpdb->prepare()/absint(); identifiers are internal $wpdb->prefix table names.
 
         if (is_array($results) && !empty($results)) {
             $result = isset($results[0]) ? $results[0] : $results;

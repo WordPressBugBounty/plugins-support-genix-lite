@@ -1,3 +1,4 @@
+<?php defined('ABSPATH') || exit; ?>
 <style>
 /* base style */
 #pdf-download-content p,

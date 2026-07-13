@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View partial linted in isolation; its template-scoped variables are not global and cannot be individually prefixed.
 
 /**
  * Main.
@@ -14,7 +15,7 @@ defined('ABSPATH') || exit;
 // Adjust to current host so iframe origin matches parent (fixes www/non-www X-Frame-Options block)
 $home_url = ApbdWps_AdjustUrlToCurrentHost(get_home_url());
 $iframeBase = trailingslashit((false !== strpos($home_url, '?')) ? substr($home_url, 0, (strpos($home_url, '?'))) : $home_url);
-$page_url = home_url(add_query_arg(array(), wp_unslash($_SERVER['REQUEST_URI'])));
+$page_url = home_url(add_query_arg(array(), isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : ''));
 $page_url = strtok($page_url, '?');
 $iframeUrl = add_query_arg(array('chatbot_iframe' => 1, 'page_url' => $page_url), $iframeBase);
 ?>
@@ -50,6 +51,6 @@ $iframeUrl = add_query_arg(array('chatbot_iframe' => 1, 'page_url' => $page_url)
         background: transparent !important;
     }
 </style>
-<div id="support-genix-chatbot-iframe-container" role="region" aria-label="<?php echo esc_attr(__('Chatbot Widget', 'support-genix')); ?>" style="width: 96px; height: 96px;">
-    <iframe id="support-genix-chatbot-iframe" src="<?php echo esc_url($iframeUrl); ?>" title="<?php echo esc_attr(__('Chatbot Widget', 'support-genix')); ?>" allowfullscreen></iframe>
+<div id="support-genix-chatbot-iframe-container" role="region" aria-label="<?php echo esc_attr(__('Chatbot Widget', 'support-genix-lite')); ?>" style="width: 96px; height: 96px;">
+    <iframe id="support-genix-chatbot-iframe" src="<?php echo esc_url($iframeUrl); ?>" title="<?php echo esc_attr(__('Chatbot Widget', 'support-genix-lite')); ?>" allowfullscreen></iframe>
 </div>

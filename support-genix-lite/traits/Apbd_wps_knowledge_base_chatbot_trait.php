@@ -337,12 +337,12 @@ trait Apbd_wps_knowledge_base_chatbot_trait
     function chatbot_asset_url($link, $withVersion = true)
     {
         if (!$withVersion) {
-            $url = plugins_url("chatbot/" . $link, $this->pluginFile);
+            $url = plugins_url("assets/apps/chatbot/" . $link, $this->pluginFile);
         } else {
             $version = $this->kernelObject->pluginVersion;
 
             $base_path = plugin_dir_path($this->kernelObject->pluginFile);
-            $file_path = realpath($base_path . "chatbot/" . $link);
+            $file_path = realpath($base_path . "assets/apps/chatbot/" . $link);
 
             if (file_exists($file_path)) {
                 $version .= '-';
@@ -354,7 +354,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
                 }
             }
 
-            $url = plugins_url("chatbot/" . $link . "?v=" . $version, $this->pluginFile);
+            $url = plugins_url("assets/apps/chatbot/" . $link . "?v=" . $version, $this->pluginFile);
         }
 
         // Adjust URL to match current request's host (fixes www/non-www CORS issues)
@@ -363,7 +363,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
 
     function chatbot_iframe()
     {
-        $init = (isset($_GET['chatbot_iframe']) ? rest_sanitize_boolean($_GET['chatbot_iframe']) : false);
+        $init = (isset($_GET['chatbot_iframe']) ? rest_sanitize_boolean($_GET['chatbot_iframe']) : false); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Read-only iframe render flag; no state change.
 
         if (!$init) {
             return;
@@ -416,7 +416,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
 
         $coreObject = ApbdWps_SupportLite::GetInstance();
         $base_path = plugin_dir_path($coreObject->pluginFile);
-        $dist_path = untrailingslashit($base_path) . "/chatbot/dist";
+        $dist_path = untrailingslashit($base_path) . "/assets/apps/chatbot";
         $dist_css_files = ApbdWps_GetFilesInDirectory($dist_path, 'css');
         $dist_js_files = ApbdWps_GetFilesInDirectory($dist_path, 'js');
 
@@ -605,11 +605,11 @@ trait Apbd_wps_knowledge_base_chatbot_trait
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width,initial-scale=1">
-            <link rel="icon" href="<?php echo esc_url(Apbd_wps_settings::GetModuleOption("app_favicon", $this->chatbot_asset_url("dist/img/favicon32x32.png"))); ?>">
-            <link rel="icon" type="image/png" href="<?php echo esc_url(Apbd_wps_settings::GetModuleOption("app_favicon", $this->chatbot_asset_url("dist/img/favicon180x180.png"))); ?>">
-            <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url(Apbd_wps_settings::GetModuleOption("app_favicon", $this->chatbot_asset_url("dist/img/favicon180x180.png"))); ?>">
-            <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url(Apbd_wps_settings::GetModuleOption("app_favicon", $this->chatbot_asset_url("dist/img/favicon32x32.png"))); ?>">
-            <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url(Apbd_wps_settings::GetModuleOption("app_favicon", $this->chatbot_asset_url("dist/img/favicon16x16.png"))); ?>">
+            <link rel="icon" href="<?php echo esc_url(Apbd_wps_settings::GetModuleOption("app_favicon", $this->chatbot_asset_url("img/favicon32x32.png"))); ?>">
+            <link rel="icon" type="image/png" href="<?php echo esc_url(Apbd_wps_settings::GetModuleOption("app_favicon", $this->chatbot_asset_url("img/favicon180x180.png"))); ?>">
+            <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url(Apbd_wps_settings::GetModuleOption("app_favicon", $this->chatbot_asset_url("img/favicon180x180.png"))); ?>">
+            <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url(Apbd_wps_settings::GetModuleOption("app_favicon", $this->chatbot_asset_url("img/favicon32x32.png"))); ?>">
+            <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url(Apbd_wps_settings::GetModuleOption("app_favicon", $this->chatbot_asset_url("img/favicon16x16.png"))); ?>">
             <title><?php echo esc_html($chatbot_label); ?></title>
             <?php
             // Main CSS.
@@ -618,18 +618,18 @@ trait Apbd_wps_knowledge_base_chatbot_trait
                     if (0 === strpos($file_name, 'main.')) {
             ?>
                         <style id="support-genix-chatbot-main-inline-css">
-                            <?php echo ApbdWps_KsesCss($custom_css); ?>
+                            <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped via ApbdWps_KsesCss (wp_kses). */ echo ApbdWps_KsesCss($custom_css); ?>
                         </style>
-                        <link rel="stylesheet" id="support-genix-chatbot-main-css" href="<?php echo esc_url($this->chatbot_asset_url("dist/{$file_name}")); ?>" media="" />
+                        <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Standalone chatbot HTML document; local hashed build asset. ?><link rel="stylesheet" id="support-genix-chatbot-main-css" href="<?php echo esc_url($this->chatbot_asset_url("{$file_name}")); ?>" media="" />
                 <?php
                     }
                 }
             } else {
                 ?>
                 <style id="support-genix-chatbot-main-inline-css">
-                    <?php echo ApbdWps_KsesCss($custom_css); ?>
+                    <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped via ApbdWps_KsesCss (wp_kses). */ echo ApbdWps_KsesCss($custom_css); ?>
                 </style>
-                <link rel="stylesheet" id="support-genix-chatbot-main-css" href="<?php echo esc_url($this->chatbot_asset_url("dist/main.BpSEh8y_.1781434247330.css")); ?>" media="" />
+                <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Standalone chatbot HTML document; local hashed build asset. ?><link rel="stylesheet" id="support-genix-chatbot-main-css" href="<?php echo esc_url($this->chatbot_asset_url("main.BpSEh8y_.1783849826835.css")); ?>" media="" />
                 <?php
             }
 
@@ -641,7 +641,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
                         <script id="support-genix-chatbot-main-js-extra">
                             var support_genix_chatbot_config = <?php echo json_encode($support_genix_chatbot_config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
                         </script>
-                        <script type="module" src="<?php echo esc_url($this->chatbot_asset_url("dist/{$file_name}")); ?>" id="support-genix-chatbot-main-js"></script>
+                        <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Standalone chatbot HTML document; local hashed ES module build asset. ?><script type="module" src="<?php echo esc_url($this->chatbot_asset_url("{$file_name}")); ?>" id="support-genix-chatbot-main-js"></script>
                 <?php
                     }
                 }
@@ -650,7 +650,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
                 <script id="support-genix-chatbot-main-js-extra">
                     var support_genix_chatbot_config = <?php echo json_encode($support_genix_chatbot_config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
                 </script>
-                <script type="module" src="<?php echo esc_url($this->chatbot_asset_url("dist/main.2Bm7dfgk.1781434247330.js")); ?>" id="support-genix-chatbot-main-js"></script>
+                <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Standalone chatbot HTML document; local hashed ES module build asset. ?><script type="module" src="<?php echo esc_url($this->chatbot_asset_url("main.CBirFCNF.1783849826835.js")); ?>" id="support-genix-chatbot-main-js"></script>
             <?php
             }
             ?>
@@ -700,6 +700,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
 
         global $wpdb;
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $sql = "
             SELECT k.id, k.keyword, SUM(e.count) as count
             FROM $keywords_table k
@@ -709,15 +710,18 @@ trait Apbd_wps_knowledge_base_chatbot_trait
             ORDER BY count DESC, k.id DESC
             LIMIT %d, %d
         ";
-        $result = $wpdb->get_results($wpdb->prepare($sql, $date_start, $date_ended, $limitStart, $limit));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+        $result = $wpdb->get_results($wpdb->prepare($sql, $date_start, $date_ended, $limitStart, $limit));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $sql_total = "
             SELECT COUNT(DISTINCT k.id) as total
             FROM $keywords_table k
             JOIN $events_table e ON k.id = e.keyword_id
             WHERE e.founded = 'Y' AND e.created_date BETWEEN %s AND %s
         ";
-        $total = $wpdb->get_var($wpdb->prepare($sql_total, $date_start, $date_ended));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+        $total = $wpdb->get_var($wpdb->prepare($sql_total, $date_start, $date_ended));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
         $apiResponse->SetResponse(true, "", [
             'result' => $result,
@@ -751,6 +755,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
 
         global $wpdb;
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $sql = "
             SELECT k.id, k.keyword, SUM(e.count) as count
             FROM $keywords_table k
@@ -760,15 +765,18 @@ trait Apbd_wps_knowledge_base_chatbot_trait
             ORDER BY count DESC, k.id DESC
             LIMIT %d, %d
         ";
-        $result = $wpdb->get_results($wpdb->prepare($sql, $date_start, $date_ended, $limitStart, $limit));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+        $result = $wpdb->get_results($wpdb->prepare($sql, $date_start, $date_ended, $limitStart, $limit));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $sql_total = "
             SELECT COUNT(DISTINCT k.id) as total
             FROM $keywords_table k
             JOIN $events_table e ON k.id = e.keyword_id
             WHERE e.founded = 'N' AND e.created_date BETWEEN %s AND %s
         ";
-        $total = $wpdb->get_var($wpdb->prepare($sql_total, $date_start, $date_ended));
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+        $total = $wpdb->get_var($wpdb->prepare($sql_total, $date_start, $date_ended));  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
         $apiResponse->SetResponse(true, "", [
             'result' => $result,
@@ -896,7 +904,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
             ];
 
             if ('Y' === $disable_ofcb_single) {
-                $docs_args['meta_query'] = [
+                $docs_args['meta_query'] = [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                     [
                         'key' => 'only_for_chatbot',
                         'value' => '1',

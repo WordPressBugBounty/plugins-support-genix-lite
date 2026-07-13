@@ -1,0 +1,1 @@
+import{l as t}from"./antd.CrefW_sd.1783849862585.js";import{t as c,y as n}from"../main.CkfUOUgA.1783849862585.js";t.extend(n);const d=(a,e="both",m=!0)=>{const r=m?t.utc(a).local():t(a),o=r.format("MMMM D, YYYY"),s=r.format("h:mm a");switch(e){case"date":return o;case"time":return s;default:return c("%1$s at %2$s",o,s)}};export{d as t};

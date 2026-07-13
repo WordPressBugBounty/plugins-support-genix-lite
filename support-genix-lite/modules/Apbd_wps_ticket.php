@@ -479,7 +479,7 @@ class Apbd_wps_ticket extends ApbdWpsBaseModuleLite
         if (ApbdWps_IsPostBack && !empty($param_id)) {
             $fields = array_map(function ($value) {
                 return !is_bool($value) ? sanitize_text_field($value) : $value;
-            }, $_POST);
+            }, $_POST); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Postback fields sanitized per-element via array_map(sanitize_text_field); nonce handled by the request handler.
 
             if (!empty($fields)) {
                 $isAgent = Apbd_wps_settings::isAgentLoggedIn();

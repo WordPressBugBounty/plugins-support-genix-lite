@@ -189,9 +189,9 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
         $charset = $thisObj->db->charset;
         $collate = $thisObj->db->collate;
 
-        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";
+        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
-        $thisObj->db->query($alter_query);
+        $thisObj->db->query($alter_query);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     static function CreateDBTable()
@@ -200,6 +200,7 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
         $table = $thisObj->db->prefix . $thisObj->tableName;
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             $sql = "CREATE TABLE `{$table}` (
                       `k_word` char(3) NOT NULL DEFAULT '',
@@ -212,8 +213,9 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
                       PRIMARY KEY (`k_word`) USING BTREE,
                       UNIQUE KEY `email_keyword` (`k_word`) USING BTREE
                     ) $charsetCollate;";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
+            dbDelta($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
     function DropDBTable()
@@ -221,7 +223,7 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
         global $wpdb;
 
         $table_name = $wpdb->prefix . $this->tableName;
-        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");
+        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     public static function AddDefaultTemplates()
@@ -404,14 +406,14 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
         <body data-start="start-here" itemscope itemtype="http://schema.org/EmailMessage">
             <div id="full-email-body">
                 <?php if (!empty($ticket_title)) : ?>
-                    <div class="em-d-none"><?php echo ApbdWps_KsesHtml(wp_kses_no_null($ticket_title)); ?></div>
+                    <div class="em-d-none"><?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped via ApbdWps_KsesHtml (wp_kses). */ echo ApbdWps_KsesHtml(wp_kses_no_null($ticket_title)); ?></div>
                 <?php endif; ?>
                 <div class="em-d-none">--start--</div>
                 <div class="body-container">
                     <div class="replay-line em-reply-line"></div>
                     <div class="mail-container">
                         <div class="mail-content sg-reply-text">
-                            <?php echo ApbdWps_KsesHtml(wp_kses_no_null($content)); ?>
+                            <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped via ApbdWps_KsesHtml (wp_kses). */ echo ApbdWps_KsesHtml(wp_kses_no_null($content)); ?>
                         </div>
                     </div>
                 </div>

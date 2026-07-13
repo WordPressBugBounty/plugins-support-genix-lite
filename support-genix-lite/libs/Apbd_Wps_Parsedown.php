@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile -- Bundled third-party library (Composer + Mozart); not subject to plugin coding standards.
 
 #
 #
@@ -30,6 +31,8 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 #
+
+defined('ABSPATH') || exit;
 
 class Apbd_Wps_Parsedown
 {

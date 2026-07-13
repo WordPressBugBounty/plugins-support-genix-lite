@@ -28,6 +28,13 @@ class Mapbd_wps_role extends ApbdWpsModel
     protected static $_rolelist = null;
 
     /**
+     * Per-prefix cache of whether the role tables exist.
+     *
+     * @var  bool[]
+     */
+    protected static $_tablesReady = [];
+
+    /**
      * @property id,name,slug,role_description,status
      */
     function __construct()
@@ -480,9 +487,9 @@ class Mapbd_wps_role extends ApbdWpsModel
         $charset = $thisObj->db->charset;
         $collate = $thisObj->db->collate;
 
-        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";
+        $alter_query = "ALTER TABLE `{$table_name}` CONVERT TO CHARACTER SET {$charset} COLLATE {$collate}";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
 
-        $thisObj->db->query($alter_query);
+        $thisObj->db->query($alter_query);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
 
     static function CreateDBTable()
@@ -491,6 +498,7 @@ class Mapbd_wps_role extends ApbdWpsModel
         $table = $thisObj->db->prefix . $thisObj->tableName;
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
             $sql = "CREATE TABLE `{$table}` (
                     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -505,8 +513,9 @@ class Mapbd_wps_role extends ApbdWpsModel
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `slug_ind` (`slug`) USING BTREE
                     ) $charsetCollate;";
+        // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
+            dbDelta($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         }
     }
 
@@ -515,7 +524,7 @@ class Mapbd_wps_role extends ApbdWpsModel
         global $wpdb;
 
         $table_name = $wpdb->prefix . $this->tableName;
-        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");
+        $wpdb->query("DROP TABLE IF EXISTS `" . esc_sql($table_name) . "`");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
     }
     static function GetRoleObjectBy($slug, $name, $parent_role, $description, $isAdminRole = false)
     {
@@ -537,11 +546,38 @@ class Mapbd_wps_role extends ApbdWpsModel
             $obj->is_agent('Y');
             $obj->status('A');
             self::$_rolelist = $obj->SelectAllWithIdentity('slug', '', 'is_editable', 'ASC');
-            self::$_rolelist = apply_filters('elite-wps/acl-roles', self::$_rolelist);
+            self::$_rolelist = apply_filters('elite-wps/acl-roles', self::$_rolelist); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Legacy plugin hook name retained for backward compatibility.
         }
         return self::$_rolelist;
     }
 
+
+    /**
+     * Whether both role tables exist for the current DB prefix.
+     *
+     * Guards the globally-fired capability filters so they do not query
+     * missing tables (e.g. under Plugin Check's amended `wp_pc_` prefix).
+     *
+     * @return bool
+     */
+    static function TablesReady()
+    {
+        $role = new self();
+        $db = $role->db;
+        $key = $db->prefix;
+        if (! isset(self::$_tablesReady[$key])) {
+            $access = new Mapbd_wps_role_access();
+            $roleTable = $db->prefix . $role->tableName;
+            $accessTable = $db->prefix . $access->tableName;
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB -- Table-existence check on internal $wpdb->prefix names.
+            self::$_tablesReady[$key] = (
+                $db->get_var("show tables like '{$roleTable}'") === $roleTable &&
+                $db->get_var("show tables like '{$accessTable}'") === $accessTable
+            );
+            // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+        }
+        return self::$_tablesReady[$key];
+    }
 
     /**
      * @return Mapbd_wps_role[]|null

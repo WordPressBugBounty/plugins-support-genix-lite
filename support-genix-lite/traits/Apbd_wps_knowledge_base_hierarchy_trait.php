@@ -79,7 +79,7 @@ trait Apbd_wps_knowledge_base_hierarchy_trait
 
             unset($terms[$key]);
 
-            if (isset($children[$term->term_id]) && empty($_REQUEST['s'])) {
+            if (isset($children[$term->term_id]) && empty($_REQUEST['s'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- Read-only search-context check; no state change.
                 $this->get_term_lebel($taxonomy, $result, $terms, $children, $start, $per_page, $count, $term->term_id, $level + 1);
             }
         }

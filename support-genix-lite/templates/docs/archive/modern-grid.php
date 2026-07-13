@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View partial linted in isolation; its template-scoped variables are not global and cannot be individually prefixed.
 
 /**
  * Modern Grid Layout for Documentation Categories
@@ -81,7 +82,7 @@ $cat_args = array(
     'taxonomy' => 'sgkb-docs-category',
     'hide_empty' => true,
     'hierarchical' => false,
-    'meta_key' => '_sg_order',
+    'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
     'orderby' => 'meta_value_num',
     'order' => 'ASC',
 );
@@ -103,7 +104,7 @@ if (!empty($all_categories)) {
             'post_status' => 'publish',
             'posts_per_page' => 1,
             'fields' => 'ids',
-            'tax_query' => array(
+            'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                 array(
                     'taxonomy' => 'sgkb-docs-category',
                     'field' => 'term_id',
@@ -111,7 +112,7 @@ if (!empty($all_categories)) {
                     'include_children' => false,
                 )
             ),
-            'meta_query' => array(
+            'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                 'relation' => 'OR',
                 array(
                     'key' => 'only_for_chatbot',
@@ -139,7 +140,7 @@ $docs_query = new WP_Query(array(
     'post_status' => 'publish',
     'posts_per_page' => -1,
     'fields' => 'ids',
-    'meta_query' => array(
+    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
         'relation' => 'OR',
         array(
             'key' => 'only_for_chatbot',
@@ -164,7 +165,7 @@ $recent_args = array(
     'orderby' => 'date',
     'order' => 'DESC',
     'suppress_filters' => false, // Allow WPML/Polylang to filter by language
-    'meta_query' => array(
+    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
         'relation' => 'OR',
         array(
             'key' => 'only_for_chatbot',
@@ -195,7 +196,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                     <div class="sgkb-hero-content">
                         <h1 class="sgkb-hero-title">
                             <?php
-                            $hero_title = __('How can we help?', 'support-genix');
+                            $hero_title = __('How can we help?', 'support-genix-lite');
                             if (class_exists('Apbd_wps_knowledge_base')) {
                                 $hero_title = Apbd_wps_knowledge_base::GetModuleOption('hero_title', $hero_title);
                             }
@@ -204,7 +205,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                         </h1>
                         <p class="sgkb-hero-subtitle">
                             <?php
-                            $hero_subtitle = __('Search our knowledge base or browse categories below', 'support-genix');
+                            $hero_subtitle = __('Search our knowledge base or browse categories below', 'support-genix-lite');
                             if (class_exists('Apbd_wps_knowledge_base')) {
                                 $hero_subtitle = Apbd_wps_knowledge_base::GetModuleOption('hero_subtitle', $hero_subtitle);
                             }
@@ -218,9 +219,9 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                 <input
                                     type="search"
                                     class="sgkb-search-input-modern"
-                                    placeholder="<?php echo esc_attr__('Search for articles...', 'support-genix'); ?>"
-                                    aria-label="<?php echo esc_attr__('Search documentation', 'support-genix'); ?>">
-                                <button class="sgkb-search-icon-wrapper" aria-label="<?php echo esc_attr__('Search', 'support-genix'); ?>">
+                                    placeholder="<?php echo esc_attr__('Search for articles...', 'support-genix-lite'); ?>"
+                                    aria-label="<?php echo esc_attr__('Search documentation', 'support-genix-lite'); ?>">
+                                <button class="sgkb-search-icon-wrapper" aria-label="<?php echo esc_attr__('Search', 'support-genix-lite'); ?>">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                                         <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
@@ -234,15 +235,15 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                             <div class="sgkb-stats-bar">
                                 <div class="sgkb-stat-card">
                                     <div class="sgkb-stat-number"><?php echo esc_html($total_docs); ?></div>
-                                    <div class="sgkb-stat-label"><?php esc_html_e('Articles', 'support-genix'); ?></div>
+                                    <div class="sgkb-stat-label"><?php esc_html_e('Articles', 'support-genix-lite'); ?></div>
                                 </div>
                                 <div class="sgkb-stat-card">
                                     <div class="sgkb-stat-number"><?php echo esc_html($total_categories); ?></div>
-                                    <div class="sgkb-stat-label"><?php esc_html_e('Categories', 'support-genix'); ?></div>
+                                    <div class="sgkb-stat-label"><?php esc_html_e('Categories', 'support-genix-lite'); ?></div>
                                 </div>
                                 <div class="sgkb-stat-card">
                                     <div class="sgkb-stat-number"><?php echo esc_html($last_updated); ?></div>
-                                    <div class="sgkb-stat-label"><?php esc_html_e('Last Updated', 'support-genix'); ?></div>
+                                    <div class="sgkb-stat-label"><?php esc_html_e('Last Updated', 'support-genix-lite'); ?></div>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -266,7 +267,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                         <svg class="sgkb-sidebar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
                             <path d="M3 12h18m-9-9v18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                         </svg>
-                        <?php esc_html_e('Quick Navigation', 'support-genix'); ?>
+                        <?php esc_html_e('Quick Navigation', 'support-genix-lite'); ?>
                     </h3>
                     <ul class="sgkb-sidebar-nav">
                         <?php
@@ -275,7 +276,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                             'taxonomy' => 'sgkb-docs-category',
                             'hide_empty' => true,
                             'hierarchical' => true,
-                            'meta_key' => '_sg_order',
+                            'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
                             'orderby' => 'meta_value_num',
                             'order' => 'ASC',
                         ));
@@ -293,7 +294,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                     'post_status' => 'publish',
                                     'posts_per_page' => -1,
                                     'fields' => 'ids',
-                                    'tax_query' => array(
+                                    'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                                         array(
                                             'taxonomy' => 'sgkb-docs-category',
                                             'field' => 'term_id',
@@ -301,7 +302,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                             'include_children' => false,
                                         )
                                     ),
-                                    'meta_query' => array(
+                                    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                                         'relation' => 'OR',
                                         array(
                                             'key' => 'only_for_chatbot',
@@ -335,7 +336,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                         'taxonomy' => 'sgkb-docs-category',
                                         'hide_empty' => true,
                                         'parent' => $nav_cat->term_id,
-                                        'meta_key' => '_sg_order',
+                                        'meta_key' => '_sg_order',  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Feature requires this meta key lookup.
                                         'orderby' => 'meta_value_num',
                                         'order' => 'ASC',
                                     ));
@@ -354,7 +355,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                                     'post_status' => 'publish',
                                                     'posts_per_page' => 1,
                                                     'fields' => 'ids',
-                                                    'tax_query' => array(
+                                                    'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                                                         array(
                                                             'taxonomy' => 'sgkb-docs-category',
                                                             'field' => 'term_id',
@@ -362,7 +363,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                                             'include_children' => false,
                                                         )
                                                     ),
-                                                    'meta_query' => array(
+                                                    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                                                         'relation' => 'OR',
                                                         array(
                                                             'key' => 'only_for_chatbot',
@@ -405,7 +406,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                         <svg class="sgkb-sidebar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <?php esc_html_e('Popular Articles', 'support-genix'); ?>
+                        <?php esc_html_e('Popular Articles', 'support-genix-lite'); ?>
                     </h3>
                     <ul class="sgkb-popular-list">
                         <?php
@@ -416,7 +417,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                             'orderby' => 'comment_count', // Or use a custom meta field for views
                             'order' => 'DESC',
                             'suppress_filters' => false, // Allow WPML/Polylang to filter by language
-                            'meta_query' => array(
+                            'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                                 array(
                                     'key' => 'only_for_chatbot',
                                     'compare' => 'NOT EXISTS'
@@ -432,7 +433,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                 $category_name = (!empty($doc_categories) && !is_wp_error($doc_categories)) ? $doc_categories[0]->name : '';
                         ?>
                                 <li class="sgkb-popular-item">
-                                    <a href="<?php echo get_permalink($popular_doc->ID); ?>" class="sgkb-popular-link">
+                                    <a href="<?php echo esc_url(get_permalink($popular_doc->ID)); ?>" class="sgkb-popular-link">
                                         <svg class="sgkb-popular-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
                                             <path d="M9 12h6m-3-3v6m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                         </svg>
@@ -468,14 +469,14 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                         'post_type' => 'sgkb-docs',
                         'posts_per_page' => 3,
                         'suppress_filters' => false, // Allow WPML/Polylang to filter by language
-                        'tax_query' => array(
+                        'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                             array(
                                 'taxonomy' => 'sgkb-docs-category',
                                 'field' => 'term_id',
                                 'terms' => $featured_id,
                             )
                         ),
-                        'meta_query' => array(
+                        'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                             array(
                                 'key' => 'only_for_chatbot',
                                 'compare' => 'NOT EXISTS'
@@ -496,9 +497,9 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                         <!-- Featured Section -->
                         <section class="sgkb-featured-section" data-animate="sgkb-animate-fadeInUp">
                             <div class="sgkb-section-header">
-                                <h2 class="sgkb-section-title"><?php esc_html_e('Featured Topics', 'support-genix'); ?></h2>
-                                <a href="<?php echo get_term_link($featured_category); ?>" class="sgkb-section-link">
-                                    <?php esc_html_e('View all', 'support-genix'); ?> →
+                                <h2 class="sgkb-section-title"><?php esc_html_e('Featured Topics', 'support-genix-lite'); ?></h2>
+                                <a href="<?php echo esc_url(get_term_link($featured_category)); ?>" class="sgkb-section-link">
+                                    <?php esc_html_e('View all', 'support-genix-lite'); ?> →
                                 </a>
                             </div>
 
@@ -506,17 +507,17 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                 <?php
                                 foreach ($featured_docs as $doc) : ?>
                                     <article class="sgkb-featured-card">
-                                        <span class="sgkb-featured-badge"><?php esc_html_e('Featured', 'support-genix'); ?></span>
+                                        <span class="sgkb-featured-badge"><?php esc_html_e('Featured', 'support-genix-lite'); ?></span>
                                         <h3 class="sgkb-article-title">
-                                            <a href="<?php echo get_permalink($doc->ID); ?>">
+                                            <a href="<?php echo esc_url(get_permalink($doc->ID)); ?>">
                                                 <?php echo esc_html($doc->post_title); ?>
                                             </a>
                                         </h3>
                                         <p class="sgkb-article-excerpt">
-                                            <?php echo wp_trim_words($doc->post_excerpt ?: $doc->post_content, 20); ?>
+                                            <?php echo esc_html(wp_trim_words($doc->post_excerpt ?: $doc->post_content, 20)); ?>
                                         </p>
-                                        <a href="<?php echo get_permalink($doc->ID); ?>" class="sgkb-category-link">
-                                            <?php esc_html_e('Read more', 'support-genix'); ?>
+                                        <a href="<?php echo esc_url(get_permalink($doc->ID)); ?>" class="sgkb-category-link">
+                                            <?php esc_html_e('Read more', 'support-genix-lite'); ?>
                                         </a>
                                     </article>
                                 <?php endforeach; ?>
@@ -531,7 +532,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
 
                 <!-- Categories Grid -->
                 <section class="sgkb-categories-section">
-                    <h2 class="sgkb-section-title sgkb-category-browse-title"><?php esc_html_e('Browse by Category', 'support-genix'); ?></h2>
+                    <h2 class="sgkb-section-title sgkb-category-browse-title"><?php esc_html_e('Browse by Category', 'support-genix-lite'); ?></h2>
 
                     <?php if (!empty($categories)) :
                         // Determine grid class based on number of categories
@@ -559,7 +560,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                 $docs_args = array(
                                     'post_type' => 'sgkb-docs',
                                     'posts_per_page' => $docs_per_category,
-                                    'tax_query' => array(
+                                    'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                                         array(
                                             'taxonomy' => 'sgkb-docs-category',
                                             'field' => 'term_id',
@@ -568,7 +569,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                             'include_children' => false,
                                         )
                                     ),
-                                    'meta_query' => array(
+                                    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                                         array(
                                             'key' => 'only_for_chatbot',
                                             'compare' => 'NOT EXISTS'
@@ -592,8 +593,8 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                         'orderby' => 'modified',
                                         'order' => 'DESC',
                                         'suppress_filters' => false, // Allow WPML/Polylang to filter by language
-                                        'tax_query' => $docs_args['tax_query'],
-                                        'meta_query' => $docs_args['meta_query']
+                                        'tax_query' => $docs_args['tax_query'],  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
+                                        'meta_query' => $docs_args['meta_query']  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                                     ));
                                     if (!empty($recent_doc)) {
                                         $last_modified = $recent_doc[0]->post_modified;
@@ -620,7 +621,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                                 <?php if ($term_icon_image) : ?>
                                                     <img src="<?php echo esc_url($term_icon_image); ?>" alt="<?php echo esc_attr($category->name); ?>" class="sgkb-category-icon-image">
                                                 <?php elseif ($term_icon) : ?>
-                                                    <?php echo sgkb_get_icon_html($term_icon); ?>
+                                                    <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted SVG/icon markup from internal helper. */ echo sgkb_get_icon_html($term_icon); ?>
                                                 <?php else : ?>
                                                     <!-- Default icon -->
                                                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
@@ -638,13 +639,13 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                             </h3>
                                             <div class="sgkb-category-meta">
                                                 <span class="sgkb-meta-item">
-                                                    <?php echo esc_html($docs_count); ?> <?php echo _n('article', 'articles', $docs_count, 'support-genix'); ?>
+                                                    <?php echo esc_html($docs_count); ?> <?php echo esc_html(_n('article', 'articles', $docs_count, 'support-genix-lite')); ?>
                                                 </span>
                                                 <?php /* Removed time ago display
                                         <?php if ($last_modified) : ?>
                                         <span class="sgkb-meta-separator">•</span>
                                         <span class="sgkb-meta-item sgkb-text-muted">
-                                            <?php echo human_time_diff(strtotime($last_modified), current_time('timestamp')) . ' ' . __('ago', 'support-genix'); ?>
+                                            <?php echo human_time_diff(strtotime($last_modified), current_time('timestamp')) . ' ' . __('ago', 'support-genix-lite'); ?>
                                         </span>
                                         <?php endif; ?>
                                         */ ?>
@@ -672,7 +673,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                     <?php endif; ?>
 
                                     <a href="<?php echo esc_url($term_link); ?>" class="sgkb-category-link">
-                                        <?php esc_html_e('View all articles', 'support-genix'); ?>
+                                        <?php esc_html_e('View all articles', 'support-genix-lite'); ?>
                                     </a>
                                 </div>
 
@@ -684,7 +685,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                 <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             <div class="sgkb-alert-content">
-                                <?php esc_html_e('No documentation categories found.', 'support-genix'); ?>
+                                <?php esc_html_e('No documentation categories found.', 'support-genix-lite'); ?>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -703,7 +704,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                         'orderby' => 'modified',
                         'order' => 'DESC',
                         'suppress_filters' => false, // Allow WPML/Polylang to filter by language
-                        'meta_query' => array(
+                        'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
                             array(
                                 'key' => 'only_for_chatbot',
                                 'compare' => 'NOT EXISTS'
@@ -715,7 +716,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                 ?>
                         <section class="sgkb-mt-16">
                             <div class="sgkb-section-header">
-                                <h2 class="sgkb-section-title"><?php esc_html_e('Recently Updated', 'support-genix'); ?></h2>
+                                <h2 class="sgkb-section-title"><?php esc_html_e('Recently Updated', 'support-genix-lite'); ?></h2>
                             </div>
 
                             <div class="sgkb-grid sgkb-grid-cols-1">
@@ -724,7 +725,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                 ?>
                                     <article class="sgkb-article-card" data-animate="sgkb-animate-fadeInUp">
                                         <h3 class="sgkb-article-title">
-                                            <a href="<?php echo get_permalink($doc->ID); ?>">
+                                            <a href="<?php echo esc_url(get_permalink($doc->ID)); ?>">
                                                 <?php echo esc_html($doc->post_title); ?>
                                             </a>
                                         </h3>
@@ -733,7 +734,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                                     <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                 </svg>
-                                                <?php echo human_time_diff(strtotime($doc->post_modified), current_time('timestamp')) . ' ' . __('ago', 'support-genix'); ?>
+                                                <?php echo esc_html( human_time_diff(strtotime($doc->post_modified), current_time('timestamp')) . ' ' . __('ago', 'support-genix-lite') ); ?>
                                             </span>
                                             <?php if (!empty($categories)) : ?>
                                                 <span class="sgkb-article-meta-item">
@@ -745,7 +746,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                             <?php endif; ?>
                                         </div>
                                         <p class="sgkb-article-excerpt">
-                                            <?php echo wp_trim_words($doc->post_excerpt ?: $doc->post_content, 30); ?>
+                                            <?php echo esc_html(wp_trim_words($doc->post_excerpt ?: $doc->post_content, 30)); ?>
                                         </p>
                                     </article>
                                 <?php endforeach; ?>

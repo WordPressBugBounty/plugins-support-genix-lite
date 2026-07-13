@@ -539,6 +539,10 @@ class Apbd_wps_role extends ApbdWpsBaseModuleLite
 
     public function EditableRoles($all_roles)
     {
+        if (! Mapbd_wps_role::TablesReady()) {
+            return $all_roles;
+        }
+
         $capabilities = [
             'level_0' => true,
             'read' => true
@@ -576,6 +580,9 @@ class Apbd_wps_role extends ApbdWpsBaseModuleLite
 
     public function UserHasCap($all_caps, $caps, $args, $user)
     {
+        if (! Mapbd_wps_role::TablesReady()) {
+            return $all_caps;
+        }
         return Mapbd_wps_role::SetCapabilitiesByRole($all_caps, $user);
     }
 }

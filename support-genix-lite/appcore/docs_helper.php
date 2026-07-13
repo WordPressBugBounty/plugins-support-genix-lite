@@ -162,8 +162,8 @@ if (!function_exists("sgkb_render_breadcrumbs")) {
 
         $defaults = array(
             'show_home' => true,
-            'home_text' => __('Home', 'support-genix'),
-            'docs_text' => __('Documentation', 'support-genix'),
+            'home_text' => __('Home', 'support-genix-lite'),
+            'docs_text' => __('Documentation', 'support-genix-lite'),
             'separator' => ' / ',
             'show_current' => true,
         );
@@ -171,7 +171,7 @@ if (!function_exists("sgkb_render_breadcrumbs")) {
         $args = wp_parse_args($args, $defaults);
         $context = sgkb_get_current_context();
 
-        echo '<nav class="sgkb-breadcrumbs" aria-label="' . esc_attr__('Breadcrumb', 'support-genix') . '">';
+        echo '<nav class="sgkb-breadcrumbs" aria-label="' . esc_attr__('Breadcrumb', 'support-genix-lite') . '">';
         echo '<ol class="sgkb-breadcrumb-list">';
 
         // Home link
