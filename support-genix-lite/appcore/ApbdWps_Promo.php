@@ -48,9 +48,9 @@ if (! class_exists('ApbdWps_Promo')) {
          */
         private function __construct()
         {
-            $this->banner_image = plugins_url('assets/img/christmas-offer-banner-2025.png', dirname(__FILE__));
-            $this->banner_link = 'https://supportgenix.com/pricing/?utm_source=dashboard&utm_medium=admin-notice-bar';
-            $this->notice_key = 'support_genix_promo_banner_christmas_2025';
+            $this->banner_image = plugins_url('assets/img/appreciation-offer-banner-2026.png', dirname(__FILE__));
+            $this->banner_link = 'https://supportgenix.com/pricing/?utm_source=sprtgnxdasbrd&utm_medium=appreciation_offer&utm_campaign=dashborad_banner_cta&utm_id=aprcition26';
+            $this->notice_key = 'support_genix_promo_banner_appreciation_2026';
 
             add_action('admin_notices', function () {
                 $screen = get_current_screen();
@@ -145,12 +145,12 @@ if (! class_exists('ApbdWps_Promo')) {
             }
 
             $current_time = current_time('timestamp');
-            $christmas_start = strtotime('2025-12-22');
-            $christmas_end = strtotime('2026-01-12');
+            $promo_start = strtotime('2026-07-15');
+            $promo_end = strtotime('2026-07-28');
 
             if (
-                ($current_time < $christmas_start) ||
-                ($current_time > $christmas_end)
+                ($current_time < $promo_start) ||
+                ($current_time > $promo_end)
             ) {
                 return;
             }
@@ -166,7 +166,7 @@ if (! class_exists('ApbdWps_Promo')) {
             );
 
             // Add Black Friday message if within date range
-            //if ($current_time >= $christmas_start && $current_time <= $christmas_end) {
+            //if ($current_time >= $promo_start && $current_time <= $promo_end) {
             // $banner_html .= sprintf(
             //     '<p> 🎉
             //     %s <a href="%s" target="_blank">%s</a></p>',

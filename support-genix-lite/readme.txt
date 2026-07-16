@@ -5,7 +5,7 @@ Tags: helpdesk, support ticket, knowledge base, ai chatbot, customer support
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.48
+Stable tag: 1.4.49
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,6 +18,8 @@ AI-powered helpdesk & support ticket system with chatbot, knowledge base, and sm
 **Support Genix** is a powerful, **AI-powered helpdesk plugin** for WordPress, designed to simplify customer support management with intelligent automation. Manage support tickets in one place, boost productivity with **AI-powered reply generation**, **create knowledge base docs with AI** and enhance customer satisfaction with **24/7 automated chatbot support**.
 
 Whether you're running a small business or managing a large WooCommerce store, Support Genix helps you track and resolve customer support tickets with ease. With **unlimited tickets, agents, and customers**, plus advanced **AI features**, custom fields, and automated notifications, you'll never miss an important issue again.
+
+🔥 **Limited-Time Offer — Agency Lifetime: $199** (was $699) · **Save 71%** · 100 sites, yours forever. 👉 **[See the Offer](https://supportgenix.com/pricing/?utm_source=wprepo&utm_medium=freeplugin&utm_campaign=sg-lifetime-offer)** — ends July 28, 2026.
 
 == 👇 Helpful Links to Get Started ==
 
@@ -466,6 +468,9 @@ Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Ant
 
 == Changelog ==
 
+= Version: 1.4.49 - Date: 16 July, 2026 =
+* Added: Limited-time Appreciation Offer notice in the admin dashboard (dismissible).
+
 = Version: 1.4.48 - Date: 12 July, 2026 =
 * Security: Hardened access control and file handling.
 * Thanks to Alessandro Greco (Aleff) and Giovanbattista Ianni (University of Calabria, UNICAL), and Artus KG for responsibly disclosing these issues.
@@ -587,6 +592,3 @@ Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Ant
 * Added: Migration Tool to seamlessly import content from BetterDocs into the Knowledge Base.
 * Added: Support Tickets Report to monitor ticket activity, response performance, and user interactions.
 * Fixed: Minor bugs and issues to enhance functionality and user experience.
-
-= Version: 1.4.29 - Date: 22 October, 2025 =
-* Improved: Minor UI update and optimizations.
