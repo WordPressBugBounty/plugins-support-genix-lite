@@ -5,7 +5,7 @@ Tags: helpdesk, support ticket, knowledge base, ai chatbot, customer support
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.49
+Stable tag: 1.4.50
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,9 @@ AI-powered helpdesk & support ticket system with chatbot, knowledge base, and sm
 
 Whether you're running a small business or managing a large WooCommerce store, Support Genix helps you track and resolve customer support tickets with ease. With **unlimited tickets, agents, and customers**, plus advanced **AI features**, custom fields, and automated notifications, you'll never miss an important issue again.
 
-🔥 **Limited-Time Offer — Agency Lifetime: $199** (was $699) · **Save 71%** · 100 sites, yours forever. 👉 **[See the Offer](https://supportgenix.com/pricing/?utm_source=wprepo&utm_medium=freeplugin&utm_campaign=sg-lifetime-offer)** — ends July 28, 2026.
+[youtube https://www.youtube.com/watch?v=Dp80DntEbaw]
+
+🔥 **Limited-Time Offer — Agency Lifetime: $199** (was $699) · **Save 71%** · 100 sites, yours forever. 👉 **[See the Offer](https://supportgenix.com/pricing/?utm_source=wprepo&utm_medium=freeplugin&utm_campaign=sg-lifetime-offer)** — ends August 9, 2026.
 
 == 👇 Helpful Links to Get Started ==
 
@@ -467,6 +469,9 @@ Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Ant
 
 
 == Changelog ==
+
+= Version: 1.4.50 - Date: 30 July, 2026 =
+* Updated: Appreciation Offer banner artwork and extended the offer end date.
 
 = Version: 1.4.49 - Date: 16 July, 2026 =
 * Added: Limited-time Appreciation Offer notice in the admin dashboard (dismissible).

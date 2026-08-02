@@ -48,7 +48,7 @@ if (! class_exists('ApbdWps_Promo')) {
          */
         private function __construct()
         {
-            $this->banner_image = plugins_url('assets/img/appreciation-offer-banner-2026.png', dirname(__FILE__));
+            $this->banner_image = plugins_url('assets/img/appreciation-offer-banner-july-2026.png', dirname(__FILE__));
             $this->banner_link = 'https://supportgenix.com/pricing/?utm_source=sprtgnxdasbrd&utm_medium=appreciation_offer&utm_campaign=dashborad_banner_cta&utm_id=aprcition26';
             $this->notice_key = 'support_genix_promo_banner_appreciation_2026';
 
@@ -146,7 +146,7 @@ if (! class_exists('ApbdWps_Promo')) {
 
             $current_time = current_time('timestamp');
             $promo_start = strtotime('2026-07-15');
-            $promo_end = strtotime('2026-07-28');
+            $promo_end = strtotime('2026-08-09');
 
             if (
                 ($current_time < $promo_start) ||
