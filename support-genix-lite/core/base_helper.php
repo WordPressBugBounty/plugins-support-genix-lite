@@ -24,6 +24,209 @@ if (! function_exists('ApbdWps_GetTextByKey')) {
     }
 }
 
+if (! function_exists('ApbdWps_GetClaudeResponseText')) {
+    /**
+     * Pull the assistant text out of a Claude Messages API response.
+     *
+     * The content array is not guaranteed to start with the text block: models
+     * that think by default (Claude Opus 5, Claude Sonnet 5) put a thinking
+     * block first, and a refused request returns no text block at all. Reading
+     * content[0]['text'] therefore fails on those models, so every text block
+     * is collected in order instead.
+     *
+     * @param array       $data        Decoded response body
+     * @param string|null $stop_reason Set to a normalised stop reason, see ApbdWps_NormalizeAIStopReason()
+     * @return string Assistant text, empty when the response carries none
+     */
+    function ApbdWps_GetClaudeResponseText($data, &$stop_reason = null)
+    {
+        $stop_reason = is_array($data) && isset($data['stop_reason']) && is_string($data['stop_reason'])
+            ? ApbdWps_NormalizeAIStopReason($data['stop_reason'])
+            : '';
+
+        if (! is_array($data) || empty($data['content']) || ! is_array($data['content'])) {
+            return '';
+        }
+
+        $parts = array();
+
+        foreach ($data['content'] as $block) {
+            if (! is_array($block) || ! isset($block['text']) || ! is_string($block['text'])) {
+                continue;
+            }
+
+            // Skip thinking blocks: they carry a text field only when the
+            // request asked for summarised reasoning, and it is not an answer.
+            if (isset($block['type']) && 'text' !== $block['type']) {
+                continue;
+            }
+
+            $parts[] = $block['text'];
+        }
+
+        return trim(implode('', $parts));
+    }
+}
+
+if (! function_exists('ApbdWps_GetOpenAIResponseText')) {
+    /**
+     * Pull the assistant text out of an OpenAI chat completion response.
+     *
+     * Counterpart to ApbdWps_GetClaudeResponseText(). The content is empty
+     * rather than missing in two cases worth telling apart: a tool call or
+     * refusal (content null), and a reasoning model that spent the whole
+     * budget before writing an answer (content "", finish_reason "length").
+     * The finish reason is handed back so the caller can say which happened.
+     *
+     * @param array       $data        Decoded response body
+     * @param string|null $stop_reason Set to a normalised stop reason, see ApbdWps_NormalizeAIStopReason()
+     * @return string Assistant text, empty when the response carries none
+     */
+    function ApbdWps_GetOpenAIResponseText($data, &$stop_reason = null)
+    {
+        $stop_reason = '';
+
+        if (! is_array($data) || empty($data['choices']) || ! is_array($data['choices'])) {
+            return '';
+        }
+
+        $choice = isset($data['choices'][0]) && is_array($data['choices'][0]) ? $data['choices'][0] : array();
+
+        if (isset($choice['finish_reason']) && is_string($choice['finish_reason'])) {
+            $stop_reason = ApbdWps_NormalizeAIStopReason($choice['finish_reason']);
+        }
+
+        if (! isset($choice['message']['content']) || ! is_string($choice['message']['content'])) {
+            return '';
+        }
+
+        return trim($choice['message']['content']);
+    }
+}
+
+if (! function_exists('ApbdWps_NormalizeAIStopReason')) {
+    /**
+     * Reduce a provider stop reason to a shared vocabulary.
+     *
+     * OpenAI calls it finish_reason and Claude calls it stop_reason, and they
+     * spell the same outcomes differently. Mapping both onto one set of names is
+     * what lets the two providers report a failure with the same wording.
+     *
+     * @param string $reason Provider stop reason
+     * @return string 'complete', 'truncated', 'refusal', 'tool_use', or the raw value
+     */
+    function ApbdWps_NormalizeAIStopReason($reason)
+    {
+        $map = array(
+            // OpenAI chat completions.
+            'stop' => 'complete',
+            'length' => 'truncated',
+            'content_filter' => 'refusal',
+            'tool_calls' => 'tool_use',
+            'function_call' => 'tool_use',
+            // Claude messages.
+            'end_turn' => 'complete',
+            'stop_sequence' => 'complete',
+            'max_tokens' => 'truncated',
+            'refusal' => 'refusal',
+            'tool_use' => 'tool_use',
+            'pause_turn' => 'tool_use',
+        );
+
+        $reason = is_string($reason) ? strtolower(trim($reason)) : '';
+
+        return isset($map[$reason]) ? $map[$reason] : $reason;
+    }
+}
+
+if (! function_exists('ApbdWps_GetAIResponseContent')) {
+    /**
+     * Read an AI response, or explain why there is nothing to read.
+     *
+     * Both providers go through here so a given failure reads the same to the
+     * user whichever one produced it: only the text the provider itself wrote
+     * (its own error message) can differ.
+     *
+     * @param array  $data     Decoded response body
+     * @param string $provider 'openai' or 'claude', used only for the log trail
+     * @return string|WP_Error Assistant text, or the reason there is none
+     */
+    function ApbdWps_GetAIResponseContent($data, $provider = '')
+    {
+        $code = 'apbd_wps_ai_error';
+        $provider = ('claude' === $provider) ? 'claude' : 'openai';
+
+        if (! is_array($data) || empty($data)) {
+            return new WP_Error($code, ApbdWps_GetAIErrorMessage('unreadable', $provider));
+        }
+
+        // The provider's own wording is the most useful thing available, so it
+        // wins over anything this plugin could say about the failure.
+        if (isset($data['error']['message']) && is_string($data['error']['message']) && '' !== trim($data['error']['message'])) {
+            return new WP_Error($code, trim($data['error']['message']));
+        }
+
+        $stop_reason = '';
+        $content = 'claude' === $provider
+            ? ApbdWps_GetClaudeResponseText($data, $stop_reason)
+            : ApbdWps_GetOpenAIResponseText($data, $stop_reason);
+
+        if ('' !== $content) {
+            return $content;
+        }
+
+        if ('truncated' === $stop_reason) {
+            return new WP_Error($code, ApbdWps_GetAIErrorMessage('truncated', $provider));
+        }
+
+        if ('refusal' === $stop_reason) {
+            return new WP_Error($code, ApbdWps_GetAIErrorMessage('refusal', $provider));
+        }
+
+        return new WP_Error($code, ApbdWps_GetAIErrorMessage('unreadable', $provider));
+    }
+}
+
+if (! function_exists('ApbdWps_GetAIErrorMessage')) {
+    /**
+     * Wording for an AI failure, identical across providers.
+     *
+     * @param string $reason   'truncated', 'refusal' or 'unreadable'
+     * @param string $provider 'openai' or 'claude', passed to the filter only
+     * @return string
+     */
+    function ApbdWps_GetAIErrorMessage($reason, $provider = '')
+    {
+        $messages = array(
+            'truncated' => __('The AI stopped before writing a reply because it reached the Max Tokens limit. Increase Max Tokens for this model and try again.', 'support-genix-lite'),
+            'refusal' => __('The AI declined to answer this request.', 'support-genix-lite'),
+            'unreadable' => __('The AI returned a response that could not be read.', 'support-genix-lite'),
+        );
+
+        $message = isset($messages[$reason]) ? $messages[$reason] : $messages['unreadable'];
+
+        return (string) apply_filters('apbd-wps/filter/ai-error-message', $message, $reason, $provider);
+    }
+}
+
+if (! function_exists('ApbdWps_GetAINoReasoningPrompt')) {
+    /**
+     * Guard line for models that reason unless told not to.
+     *
+     * With reasoning switched off, a model built to think can leak its internal
+     * XML into the visible answer. Anthropic documents this general wording as
+     * the mitigation; naming the tags directly works less well.
+     *
+     * @return string Sentence to append to the system prompt, empty when filtered off
+     */
+    function ApbdWps_GetAINoReasoningPrompt()
+    {
+        $prompt = __('Do not include internal or system XML tags in your response.', 'support-genix-lite');
+
+        return (string) apply_filters('apbd-wps/filter/ai-no-reasoning-prompt', $prompt);
+    }
+}
+
 if (! function_exists("ApbdWps_DownloadFile")) {
     function ApbdWps_DownloadFile($url, $downloadpath)
     {

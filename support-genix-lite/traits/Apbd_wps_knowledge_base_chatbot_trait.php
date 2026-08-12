@@ -38,12 +38,8 @@ trait Apbd_wps_knowledge_base_chatbot_trait
         $chatbot_enable_clear_history = $this->GetOption('chatbot_enable_clear_history', 'Y');
         $chatbot_show_in_whole_site = $this->GetOption('chatbot_show_in_whole_site', 'Y');
         $chatbot_show_in_ticket_page = $this->GetOption('chatbot_show_in_ticket_page', 'Y');
-        $chatbot_smart_search = $this->GetOption('chatbot_smart_search', 'Y');
-        $chatbot_no_match_hello = $this->GetOption('chatbot_no_match_hello', 'Y');
 
         $chatbot_status = ('A' === $chatbot_status) ? true : false;
-        $chatbot_smart_search = ('Y' === $chatbot_smart_search) ? true : false;
-        $chatbot_no_match_hello = ('Y' === $chatbot_no_match_hello) ? true : false;
 
         // Display options.
         $chatbot_display_opts = [];
@@ -72,8 +68,6 @@ trait Apbd_wps_knowledge_base_chatbot_trait
             'chatbot_ai_tool' => $chatbot_ai_tool,
             'chatbot_display_opts' => $chatbot_display_opts,
             'chatbot_feature_opts' => $chatbot_feature_opts,
-            'chatbot_smart_search' => $chatbot_smart_search,
-            'chatbot_no_match_hello' => $chatbot_no_match_hello,
         ];
 
         $apiResponse->SetResponse(true, "", $data);
@@ -150,12 +144,6 @@ trait Apbd_wps_knowledge_base_chatbot_trait
                 $chatbot_ai_tool = sanitize_text_field(ApbdWps_PostValue('chatbot_ai_tool', ''));
                 $chatbot_display_opts = sanitize_text_field(ApbdWps_PostValue('chatbot_display_opts', ''));
                 $chatbot_feature_opts = sanitize_text_field(ApbdWps_PostValue('chatbot_feature_opts', ''));
-                $chatbot_smart_search = sanitize_text_field(ApbdWps_PostValue('chatbot_smart_search', ''));
-                $chatbot_no_match_hello = sanitize_text_field(ApbdWps_PostValue('chatbot_no_match_hello', ''));
-
-                $chatbot_smart_search = 'Y' === $chatbot_smart_search ? 'Y' : 'N';
-                $chatbot_no_match_hello = 'Y' === $chatbot_no_match_hello ? 'Y' : 'N';
-
                 // Display options.
                 $chatbot_display_opts = explode(',', $chatbot_display_opts);
                 $all__chatbot_display_opts = ['whole_site', 'ticket_page'];
@@ -184,10 +172,13 @@ trait Apbd_wps_knowledge_base_chatbot_trait
                     $hasError = true;
                 }
 
+                // Support Genix AI is retired - only sites already on it may keep it.
+                if ('ai_proxy' === $chatbot_ai_tool && !Apbd_wps_settings::IsAIProxyVisible()) {
+                    $hasError = true;
+                }
+
                 $this->AddIntoOption('chatbot_status', 'A');
                 $this->AddIntoOption('chatbot_ai_tool', $chatbot_ai_tool);
-                $this->AddIntoOption('chatbot_smart_search', $chatbot_smart_search);
-                $this->AddIntoOption('chatbot_no_match_hello', $chatbot_no_match_hello);
             } else {
                 $this->AddIntoOption('chatbot_status', 'I');
             }

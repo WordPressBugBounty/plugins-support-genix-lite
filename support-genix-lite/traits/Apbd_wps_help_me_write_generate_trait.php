@@ -92,7 +92,7 @@ trait Apbd_wps_help_me_write_generate_trait
         $api_config = null;
         $api_key = '';
         $model = '';
-        $max_tokens = 2000;
+        $max_tokens = 8000;
 
         if ('ai_proxy' === $ai_tool) {
             $api_config = Apbd_wps_settings::GetAIProxyConfig();
@@ -110,7 +110,7 @@ trait Apbd_wps_help_me_write_generate_trait
             }
             $api_key = $api_config['api_key'];
             $model = $api_config['model'];
-            $max_tokens = min($api_config['max_tokens'], 2000);
+            $max_tokens = min($api_config['max_tokens'], 8000);
         } elseif ('claude' === $ai_tool) {
             $api_config = Apbd_wps_settings::GetClaudeConfig();
             if (null === $api_config) {
@@ -120,7 +120,7 @@ trait Apbd_wps_help_me_write_generate_trait
             }
             $api_key = $api_config['api_key'];
             $model = $api_config['model'];
-            $max_tokens = min($api_config['max_tokens'], 2000);
+            $max_tokens = min($api_config['max_tokens'], 8000);
         }
 
         // Get ticket information for context
@@ -151,6 +151,9 @@ trait Apbd_wps_help_me_write_generate_trait
         }
 
         if (is_wp_error($generated_reply)) {
+            // The agent gets generic wording, so log the real reason for the admin.
+            Mapbd_wps_debug_log::AddGeneralLog('AI Ticket Reply generation failed', $generated_reply->get_error_message());
+
             $apiResponse->SetResponse(false, $this->__('Failed to generate reply. Please try again.'));
             echo wp_json_encode($apiResponse);
             return;
@@ -253,7 +256,7 @@ trait Apbd_wps_help_me_write_generate_trait
         $api_config = null;
         $api_key = '';
         $model = '';
-        $max_tokens = 2000;
+        $max_tokens = 8000;
 
         if ('ai_proxy' === $ai_tool) {
             $api_config = Apbd_wps_settings::GetAIProxyConfig();
@@ -271,7 +274,7 @@ trait Apbd_wps_help_me_write_generate_trait
             }
             $api_key = $api_config['api_key'];
             $model = $api_config['model'];
-            $max_tokens = min($api_config['max_tokens'], 2000);
+            $max_tokens = min($api_config['max_tokens'], 8000);
         } elseif ('claude' === $ai_tool) {
             $api_config = Apbd_wps_settings::GetClaudeConfig();
             if (null === $api_config) {
@@ -281,7 +284,7 @@ trait Apbd_wps_help_me_write_generate_trait
             }
             $api_key = $api_config['api_key'];
             $model = $api_config['model'];
-            $max_tokens = min($api_config['max_tokens'], 2000);
+            $max_tokens = min($api_config['max_tokens'], 8000);
         }
 
         // Build refinement prompt
@@ -308,6 +311,9 @@ trait Apbd_wps_help_me_write_generate_trait
         }
 
         if (is_wp_error($refined_reply)) {
+            // The agent gets generic wording, so log the real reason for the admin.
+            Mapbd_wps_debug_log::AddGeneralLog('AI Ticket Reply refinement failed', $refined_reply->get_error_message());
+
             $apiResponse->SetResponse(false, $this->__('Failed to refine reply. Please try again.'));
             echo wp_json_encode($apiResponse);
             return;
@@ -467,6 +473,8 @@ trait Apbd_wps_help_me_write_generate_trait
         // Check if model requires max_completion_tokens (GPT-5 series, o-series)
         $uses_completion_tokens = preg_match('/^(gpt-5|o[0-9])/', $model);
 
+        $system_prompt = $this->append_no_reasoning_guard($system_prompt, 'openai', $model);
+
         $body = [
             'model' => $model,
             'messages' => [
@@ -474,6 +482,10 @@ trait Apbd_wps_help_me_write_generate_trait
                 ['role' => 'user', 'content' => $user_prompt]
             ],
         ];
+
+        // Drafting a reply from ticket context needs no reasoning, and reasoning
+        // tokens would come out of the same budget as the reply.
+        $body = array_merge($body, Apbd_wps_settings::GetAINoReasoningParams('openai', $model));
 
         if ($uses_completion_tokens) {
             $body['max_completion_tokens'] = $max_tokens;
@@ -501,11 +513,7 @@ trait Apbd_wps_help_me_write_generate_trait
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
 
-        if (isset($data['choices'][0]['message']['content'])) {
-            return trim($data['choices'][0]['message']['content']);
-        }
-
-        return new WP_Error('api_error', 'Failed to generate response from OpenAI');
+        return ApbdWps_GetAIResponseContent($data, 'openai');
     }
 
     /**
@@ -515,6 +523,8 @@ trait Apbd_wps_help_me_write_generate_trait
     {
         $url = 'https://api.anthropic.com/v1/messages';
 
+        $system_prompt = $this->append_no_reasoning_guard($system_prompt, 'claude', $model);
+
         $body = [
             'model' => $model,
             'system' => $system_prompt,
@@ -523,6 +533,10 @@ trait Apbd_wps_help_me_write_generate_trait
             ],
             'max_tokens' => $max_tokens
         ];
+
+        // Drafting a reply from ticket context needs no thinking, and thinking
+        // tokens would come out of the same budget as the reply.
+        $body = array_merge($body, Apbd_wps_settings::GetAINoReasoningParams('claude', $model));
 
         $args = [
             'method' => 'POST',
@@ -544,11 +558,24 @@ trait Apbd_wps_help_me_write_generate_trait
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
 
-        if (isset($data['content'][0]['text'])) {
-            return trim($data['content'][0]['text']);
+        return ApbdWps_GetAIResponseContent($data, 'claude');
+    }
+
+    /**
+     * Add the leaked-tag guard for models that reason unless told not to.
+     *
+     * @param string $system_prompt Prompt built for this request
+     * @param string $provider      'openai' or 'claude'
+     * @param string $model         Model id
+     * @return string Prompt, guarded where the model needs it
+     */
+    private function append_no_reasoning_guard($system_prompt, $provider, $model)
+    {
+        if (! Apbd_wps_settings::DoesAIModelReasonByDefault($provider, $model)) {
+            return $system_prompt;
         }
 
-        return new WP_Error('api_error', 'Failed to generate response from Claude');
+        return rtrim((string) $system_prompt) . "\n\n" . ApbdWps_GetAINoReasoningPrompt();
     }
 
     /**

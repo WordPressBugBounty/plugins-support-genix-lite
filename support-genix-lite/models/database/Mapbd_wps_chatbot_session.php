@@ -38,7 +38,7 @@ class Mapbd_wps_chatbot_session extends ApbdWpsModel
         $this->multiKey = array();
         $this->autoIncField = array("id");
         $this->htmlInputField = ['custom_data'];
-        $this->app_base_name = "support-genix";
+        $this->app_base_name = "support-genix-lite";
     }
 
     function SetValidation()

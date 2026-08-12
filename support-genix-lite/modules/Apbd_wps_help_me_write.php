@@ -59,10 +59,17 @@ class Apbd_wps_help_me_write extends ApbdWpsBaseModuleLite
             if ('A' === $status) {
                 $ai_tools = sanitize_text_field(ApbdWps_PostValue('ai_tools', ''));
 
+                // Support Genix AI is retired - only sites already on it may keep it.
+                $allow_ai_proxy = Apbd_wps_settings::IsAIProxyVisible();
+
                 // AI tools.
                 $ai_tools = explode(',', $ai_tools);
-                $ai_tools = array_filter($ai_tools, function ($value) {
-                    return ('ai_proxy' === $value || 'openai' === $value || 'claude' === $value);
+                $ai_tools = array_filter($ai_tools, function ($value) use ($allow_ai_proxy) {
+                    if ('ai_proxy' === $value) {
+                        return $allow_ai_proxy;
+                    }
+
+                    return ('openai' === $value || 'claude' === $value);
                 });
 
                 if (empty($ai_tools)) {

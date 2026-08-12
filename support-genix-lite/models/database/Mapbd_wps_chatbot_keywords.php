@@ -24,7 +24,7 @@ class Mapbd_wps_chatbot_keywords extends ApbdWpsModel
         $this->uniqueKey = array("keyword");
         $this->multiKey = array();
         $this->autoIncField = array("id");
-        $this->app_base_name = "support-genix";
+        $this->app_base_name = "support-genix-lite";
     }
 
     function SetValidation()

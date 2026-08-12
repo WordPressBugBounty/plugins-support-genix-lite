@@ -1025,6 +1025,200 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     }
 
     /**
+     * Smallest output token budget a model is offered.
+     *
+     * Reasoning is switched off on every request (see GetAINoReasoningParams),
+     * so the whole budget goes to the answer and a small floor is safe.
+     *
+     * @param string $provider 'openai' or 'claude'
+     * @param string $model    Model id
+     * @return int Output token floor
+     */
+    public static function GetModelMinOutputTokens($provider, $model)
+    {
+        return absint(apply_filters('apbd-wps/filter/model-min-output-tokens', 256, $provider, $model));
+    }
+
+    /**
+     * Request parameters that switch a model's reasoning off.
+     *
+     * Merge the result into the request body. An unknown model returns an empty
+     * array so a filtered-in model is never sent a parameter it may reject.
+     *
+     * @param string $provider 'openai' or 'claude'
+     * @param string $model    Model id
+     * @return array Parameters to merge into the request body
+     */
+    public static function GetAINoReasoningParams($provider, $model)
+    {
+        $models = self::GetSupportedAIModels($provider);
+        $model = sanitize_text_field($model);
+
+        $params = isset($models[$model]['no_reasoning']) && is_array($models[$model]['no_reasoning'])
+            ? $models[$model]['no_reasoning']
+            : [];
+
+        return (array) apply_filters('apbd-wps/filter/ai-no-reasoning-params', $params, $provider, $model);
+    }
+
+    /**
+     * Whether a model reasons unless told not to.
+     *
+     * Used to add the leaked-tag guard to the prompt: a model built to think
+     * can put its internal XML into the visible answer once thinking is off.
+     *
+     * @param string $provider 'openai' or 'claude'
+     * @param string $model    Model id
+     * @return bool
+     */
+    public static function DoesAIModelReasonByDefault($provider, $model)
+    {
+        $models = self::GetSupportedAIModels($provider);
+        $model = sanitize_text_field($model);
+
+        return ! empty($models[$model]['reasons_by_default']);
+    }
+
+    /**
+     * Hold a configured token budget inside the selected model's range.
+     *
+     * @param string     $provider   'openai' or 'claude'
+     * @param string     $model      Model id
+     * @param int|string $max_tokens Configured value
+     * @return int Value the provider will accept
+     */
+    public static function ClampAIMaxTokens($provider, $model, $max_tokens)
+    {
+        $min = max(1, self::GetModelMinOutputTokens($provider, $model));
+        $max = max($min, self::GetModelMaxOutputTokens($provider, $model));
+
+        return min(max($min, absint($max_tokens)), $max);
+    }
+
+    /**
+     * Maximum output tokens a model will accept.
+     *
+     * Sending more than a model's own ceiling is rejected by the provider, so the
+     * configured value is clamped to whatever the selected model can return.
+     *
+     * @param string $provider 'openai' or 'claude'
+     * @param string $model    Model id
+     * @return int Output token ceiling
+     */
+    public static function GetModelMaxOutputTokens($provider, $model)
+    {
+        $caps = self::GetSupportedAIModels($provider);
+        $model = sanitize_text_field($model);
+
+        $limit = isset($caps[$model]['max_tokens']) ? $caps[$model]['max_tokens'] : 4096;
+
+        return absint(apply_filters('apbd-wps/filter/model-max-output-tokens', $limit, $provider, $model));
+    }
+
+    /**
+     * Models this plugin supports, with their limits and reasoning behaviour.
+     *
+     * Retired models are removed from here: a request naming one fails with a
+     * 404, so a saved value that is no longer listed is treated as unset.
+     *
+     * Every entry carries the request parameter that switches reasoning off for
+     * that model, because the three AI features - ticket replies, documentation
+     * and the chatbot - write from context that is already in the prompt. There
+     * is nothing to reason about, and reasoning tokens come out of the same
+     * max_tokens budget as the answer, so leaving it on buys latency and cost
+     * and risks a reply that gets truncated before it starts.
+     *
+     * - OpenAI: reasoning_effort 'none' on GPT-5.1 and later. The original GPT-5
+     *   models predate that value and take 'minimal', their lowest setting.
+     *   Models before GPT-5 do not reason and take no parameter.
+     * - Claude: thinking type 'disabled'. Accepted by every model listed here.
+     *   Models that always think (Fable 5, Mythos) reject it, so they are not
+     *   listed and an unknown model is sent no thinking parameter at all.
+     *
+     * @param string $provider 'openai' or 'claude'
+     * @return array Model id => ['label', 'max_tokens', 'no_reasoning', 'reasons_by_default']
+     */
+    public static function GetSupportedAIModels($provider)
+    {
+        // Reasoning switches, kept next to the models they apply to.
+        $gpt_none = ['reasoning_effort' => 'none'];
+        $gpt_minimal = ['reasoning_effort' => 'minimal'];
+        $no_thinking = ['thinking' => ['type' => 'disabled']];
+
+        $models = [
+            'openai' => [
+                'gpt-5.6-sol' => ['label' => 'GPT-5.6 Sol', 'max_tokens' => 128000, 'no_reasoning' => $gpt_none, 'reasons_by_default' => true],
+                'gpt-5.6-terra' => ['label' => 'GPT-5.6 Terra', 'max_tokens' => 128000, 'no_reasoning' => $gpt_none, 'reasons_by_default' => true],
+                'gpt-5.6-luna' => ['label' => 'GPT-5.6 Luna', 'max_tokens' => 128000, 'no_reasoning' => $gpt_none, 'reasons_by_default' => true],
+                'gpt-5.4-nano' => ['label' => 'GPT-5.4 Nano', 'max_tokens' => 128000, 'no_reasoning' => $gpt_none, 'reasons_by_default' => true],
+                'gpt-5.1' => ['label' => 'GPT-5.1', 'max_tokens' => 128000, 'no_reasoning' => $gpt_none, 'reasons_by_default' => false],
+                // 'none' arrived with GPT-5.1; the original GPT-5 models stop at 'minimal'.
+                'gpt-5' => ['label' => 'GPT-5', 'max_tokens' => 128000, 'no_reasoning' => $gpt_minimal, 'reasons_by_default' => true],
+                'gpt-5-mini' => ['label' => 'GPT-5 Mini', 'max_tokens' => 128000, 'no_reasoning' => $gpt_minimal, 'reasons_by_default' => true],
+                'gpt-4.1' => ['label' => 'GPT-4.1', 'max_tokens' => 32768, 'no_reasoning' => [], 'reasons_by_default' => false],
+                'gpt-4.1-mini' => ['label' => 'GPT-4.1 Mini', 'max_tokens' => 32768, 'no_reasoning' => [], 'reasons_by_default' => false],
+                'gpt-4o' => ['label' => 'GPT-4o', 'max_tokens' => 16384, 'no_reasoning' => [], 'reasons_by_default' => false],
+                'gpt-4o-mini' => ['label' => 'GPT-4o Mini', 'max_tokens' => 16384, 'no_reasoning' => [], 'reasons_by_default' => false],
+                // Retiring 2026-10-23. Still functional, so kept selectable.
+                'gpt-4.1-nano' => ['label' => 'GPT-4.1 Nano (retires Oct 2026)', 'max_tokens' => 32768, 'no_reasoning' => [], 'reasons_by_default' => false],
+                'gpt-4-turbo' => ['label' => 'GPT-4 Turbo (retires Oct 2026)', 'max_tokens' => 4096, 'no_reasoning' => [], 'reasons_by_default' => false],
+                'gpt-4' => ['label' => 'GPT-4 (retires Oct 2026)', 'max_tokens' => 8192, 'no_reasoning' => [], 'reasons_by_default' => false],
+                'gpt-3.5-turbo' => ['label' => 'GPT-3.5 Turbo (retires Oct 2026)', 'max_tokens' => 4096, 'no_reasoning' => [], 'reasons_by_default' => false],
+            ],
+            'claude' => [
+                'claude-opus-5' => ['label' => 'Claude Opus 5', 'max_tokens' => 128000, 'no_reasoning' => $no_thinking, 'reasons_by_default' => true],
+                'claude-sonnet-5' => ['label' => 'Claude Sonnet 5', 'max_tokens' => 128000, 'no_reasoning' => $no_thinking, 'reasons_by_default' => true],
+                'claude-haiku-4-5' => ['label' => 'Claude Haiku 4.5', 'max_tokens' => 64000, 'no_reasoning' => $no_thinking, 'reasons_by_default' => false],
+                'claude-opus-4-8' => ['label' => 'Claude Opus 4.8', 'max_tokens' => 128000, 'no_reasoning' => $no_thinking, 'reasons_by_default' => false],
+                'claude-sonnet-4-6' => ['label' => 'Claude Sonnet 4.6', 'max_tokens' => 128000, 'no_reasoning' => $no_thinking, 'reasons_by_default' => false],
+                'claude-opus-4-5' => ['label' => 'Claude Opus 4.5', 'max_tokens' => 64000, 'no_reasoning' => $no_thinking, 'reasons_by_default' => false],
+                'claude-sonnet-4-5' => ['label' => 'Claude Sonnet 4.5', 'max_tokens' => 64000, 'no_reasoning' => $no_thinking, 'reasons_by_default' => false],
+            ],
+        ];
+
+        $provider = ('claude' === $provider) ? 'claude' : 'openai';
+
+        return apply_filters('apbd-wps/filter/supported-ai-models', $models[$provider], $provider);
+    }
+
+    /**
+     * Supported models shaped for a dashboard select field.
+     *
+     * @param string $provider 'openai' or 'claude'
+     * @return array List of ['value' => id, 'label' => name, 'min_tokens' => int, 'max_tokens' => int]
+     */
+    public static function GetAIModelOptions($provider)
+    {
+        $options = [];
+
+        foreach (self::GetSupportedAIModels($provider) as $id => $model) {
+            $options[] = [
+                'value' => $id,
+                'label' => $model['label'],
+                'min_tokens' => self::GetModelMinOutputTokens($provider, $id),
+                'max_tokens' => (int) $model['max_tokens'],
+            ];
+        }
+
+        return $options;
+    }
+
+    /**
+     * Fall back to the default model when the saved one is no longer supported.
+     *
+     * @param string $provider 'openai' or 'claude'
+     * @param string $model    Saved model id
+     * @param string $default  Model to use when the saved one is retired/unknown
+     * @return string Usable model id
+     */
+    public static function NormalizeAIModel($provider, $model, $default)
+    {
+        $supported = self::GetSupportedAIModels($provider);
+
+        return isset($supported[$model]) ? $model : $default;
+    }
+
+    /**
      * Get OpenAI API configuration from central settings
      *
      * @return array|null ['api_key' => string, 'model' => string, 'max_tokens' => int] or null if not configured
@@ -1042,12 +1236,15 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         }
 
         $model = sanitize_text_field(self::GetModuleOption('openai_model', 'gpt-4o-mini'));
-        $max_tokens = min(max(1, absint(self::GetModuleOption('openai_max_tokens', 1500))), 8192);
+        $model = self::NormalizeAIModel('openai', $model, 'gpt-4o-mini');
+        $max_tokens = self::ClampAIMaxTokens('openai', $model, self::GetModuleOption('openai_max_tokens', 4096));
 
         return [
             'api_key' => $api_key,
             'model' => $model,
             'max_tokens' => $max_tokens,
+            'no_reasoning' => self::GetAINoReasoningParams('openai', $model),
+            'reasons_by_default' => self::DoesAIModelReasonByDefault('openai', $model),
         ];
     }
 
@@ -1068,13 +1265,16 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             return null;
         }
 
-        $model = sanitize_text_field(self::GetModuleOption('claude_model', 'claude-3-haiku-20240307'));
-        $max_tokens = min(max(1, absint(self::GetModuleOption('claude_max_tokens', 1500))), 8192);
+        $model = sanitize_text_field(self::GetModuleOption('claude_model', 'claude-haiku-4-5'));
+        $model = self::NormalizeAIModel('claude', $model, 'claude-haiku-4-5');
+        $max_tokens = self::ClampAIMaxTokens('claude', $model, self::GetModuleOption('claude_max_tokens', 4096));
 
         return [
             'api_key' => $api_key,
             'model' => $model,
             'max_tokens' => $max_tokens,
+            'no_reasoning' => self::GetAINoReasoningParams('claude', $model),
+            'reasons_by_default' => self::DoesAIModelReasonByDefault('claude', $model),
         ];
     }
 
@@ -1096,7 +1296,9 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     public static function GetAvailableAITools()
     {
         return [
-            'ai_proxy' => self::HasAIProxyConfigured(),
+            // Retired: offered only to sites already using it. Runtime paths
+            // read GetAIProxyConfig() directly, so existing setups keep working.
+            'ai_proxy' => self::IsAIProxyVisible(),
             'openai' => (null !== self::GetOpenAIConfig()),
             'claude' => (null !== self::GetClaudeConfig()),
         ];
@@ -1141,6 +1343,75 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     public static function HasAIProxyConfigured()
     {
         return (null !== self::GetAIProxyConfig());
+    }
+
+    /**
+     * Whether Support Genix AI is actually being used by a feature.
+     *
+     * A feature counts only when it is switched on AND routes to the proxy.
+     * A feature that is off runs nothing, and one that has moved to OpenAI or
+     * Claude no longer touches the proxy - in both cases the service is not in
+     * use. Each check mirrors that feature's runtime default, so an enabled
+     * feature whose tool was never saved still counts.
+     *
+     * @return bool
+     */
+    public static function IsAIProxySelected()
+    {
+        // AI Chatbot - single choice, falls back to the proxy when never saved.
+        if (
+            'A' === Apbd_wps_knowledge_base::GetModuleOption('chatbot_status', 'I')
+            && 'ai_proxy' === Apbd_wps_knowledge_base::GetModuleOption('chatbot_ai_tool', 'ai_proxy')
+        ) {
+            return true;
+        }
+
+        // AI Ticket Reply and AI Docs Writer - multi choice.
+        $features = [
+            [
+                Apbd_wps_help_me_write::GetModuleOption('status', 'I'),
+                Apbd_wps_help_me_write::GetModuleOption('ai_tools', ''),
+            ],
+            [
+                Apbd_wps_knowledge_base::GetModuleOption('write_with_ai_status', 'I'),
+                Apbd_wps_knowledge_base::GetModuleOption('write_with_ai_tools', ''),
+            ],
+        ];
+
+        foreach ($features as $feature) {
+            list($status, $tools) = $feature;
+
+            if ('A' !== $status) {
+                continue;
+            }
+
+            $tools = maybe_unserialize($tools);
+
+            // An unset selection falls back to the proxy at runtime.
+            if (empty($tools) || !is_array($tools)) {
+                return true;
+            }
+
+            if (in_array('ai_proxy', $tools, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Whether Support Genix AI should be offered anywhere in the UI.
+     *
+     * The service is being retired: it stays visible only for sites already
+     * using it, so they can migrate. Once a site moves every feature to its
+     * own API key the option disappears and cannot be selected again.
+     *
+     * @return bool
+     */
+    public static function IsAIProxyVisible()
+    {
+        return (self::HasAIProxyConfigured() && self::IsAIProxySelected());
     }
 
     public function user_login()
@@ -2548,8 +2819,8 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
         $openai_status = $this->GetOption('openai_status', 'I');
         $openai_api_key = $this->GetOption('openai_api_key', '');
-        $openai_model = $this->GetOption('openai_model', 'gpt-4o-mini');
-        $openai_max_tokens = $this->GetOption('openai_max_tokens', 1500);
+        $openai_model = Apbd_wps_settings::NormalizeAIModel('openai', $this->GetOption('openai_model', 'gpt-4o-mini'), 'gpt-4o-mini');
+        $openai_max_tokens = $this->GetOption('openai_max_tokens', 4096);
 
         // Status.
         $openai_status = ('A' === $openai_status) ? true : false;
@@ -2562,6 +2833,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'openai_api_key' => $openai_api_key,
             'openai_model' => $openai_model,
             'openai_max_tokens' => $openai_max_tokens,
+            'openai_models' => Apbd_wps_settings::GetAIModelOptions('openai'),
         ];
 
         $apiResponse->SetResponse(true, "", $data);
@@ -2575,8 +2847,8 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
         $claude_status = $this->GetOption('claude_status', 'I');
         $claude_api_key = $this->GetOption('claude_api_key', '');
-        $claude_model = $this->GetOption('claude_model', 'claude-3-haiku-20240307');
-        $claude_max_tokens = $this->GetOption('claude_max_tokens', 1500);
+        $claude_model = Apbd_wps_settings::NormalizeAIModel('claude', $this->GetOption('claude_model', 'claude-haiku-4-5'), 'claude-haiku-4-5');
+        $claude_max_tokens = $this->GetOption('claude_max_tokens', 4096);
 
         // Status.
         $claude_status = ('A' === $claude_status) ? true : false;
@@ -2589,6 +2861,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'claude_api_key' => $claude_api_key,
             'claude_model' => $claude_model,
             'claude_max_tokens' => $claude_max_tokens,
+            'claude_models' => Apbd_wps_settings::GetAIModelOptions('claude'),
         ];
 
         $apiResponse->SetResponse(true, "", $data);
@@ -3017,7 +3290,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $hasError = false;
 
         // Valid OpenAI models.
-        $valid_openai_models = ['gpt-5.1', 'gpt-5', 'gpt-5-mini', 'gpt-4.1', 'gpt-4.1-mini', 'gpt-4.1-nano', 'gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'];
+        $valid_openai_models = array_keys(self::GetSupportedAIModels('openai'));
 
         if (ApbdWps_IsPostBack) {
             $openai_status = sanitize_text_field(ApbdWps_PostValue('openai_status', ''));
@@ -3077,14 +3350,14 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $hasError = false;
 
         // Valid Claude models.
-        $valid_claude_models = ['claude-opus-4-5-20251101', 'claude-haiku-4-5-20251001', 'claude-sonnet-4-5-20250929', 'claude-opus-4-1-20250805', 'claude-sonnet-4-20250514', 'claude-3-7-sonnet-20250219', 'claude-3-5-haiku-20241022', 'claude-3-5-sonnet-20241022', 'claude-3-opus-20240229', 'claude-3-haiku-20240307'];
+        $valid_claude_models = array_keys(self::GetSupportedAIModels('claude'));
 
         if (ApbdWps_IsPostBack) {
             $claude_status = sanitize_text_field(ApbdWps_PostValue('claude_status', ''));
 
             if ('A' === $claude_status) {
                 $claude_api_key = sanitize_text_field(ApbdWps_PostValue('claude_api_key', ''));
-                $claude_model = sanitize_text_field(ApbdWps_PostValue('claude_model', 'claude-3-haiku-20240307'));
+                $claude_model = sanitize_text_field(ApbdWps_PostValue('claude_model', 'claude-haiku-4-5'));
                 $claude_max_tokens = absint(ApbdWps_PostValue('claude_max_tokens', ''));
 
                 if (str_contains($claude_api_key, '*')) {
@@ -3093,7 +3366,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
                 // Validate model.
                 if (!in_array($claude_model, $valid_claude_models, true)) {
-                    $claude_model = 'claude-3-haiku-20240307';
+                    $claude_model = 'claude-haiku-4-5';
                 }
 
                 if (
@@ -3144,6 +3417,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'ai_proxy_status' => $ai_proxy_status,
             'has_license_key' => true, // Free version auto-registers, no manual license needed
             'license_key_masked' => '', // No license key to display for free version
+            'ai_proxy_visible' => self::IsAIProxyVisible(),
         ];
 
         $apiResponse->SetResponse(true, "", $data);
@@ -3161,6 +3435,13 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             $ai_proxy_status = sanitize_text_field(ApbdWps_PostValue('ai_proxy_status', ''));
 
             if ('A' === $ai_proxy_status) {
+                // Support Genix AI is retired - it can no longer be switched back on.
+                if (!self::IsAIProxyVisible()) {
+                    $apiResponse->SetResponse(false, $this->__('Support Genix AI is no longer available. Please add your own OpenAI or Claude API key.'));
+                    echo wp_json_encode($apiResponse);
+                    return;
+                }
+
                 // Free version: no license key required - will auto-register on first use
                 $this->AddIntoOption('ai_proxy_status', 'A');
             } else {
@@ -3188,6 +3469,15 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     public function dataAIProxyCredits()
     {
         $apiResponse = new Apbd_Wps_APIResponse();
+
+        // Support Genix AI is retired. This endpoint authenticates against the
+        // proxy directly, so it is also the path that would register a brand
+        // new site - keep it closed for anyone not already using the service.
+        if (!self::IsAIProxyVisible()) {
+            $apiResponse->SetResponse(false, $this->__('Support Genix AI is no longer available.'));
+            echo wp_json_encode($apiResponse);
+            return;
+        }
 
         // Build config directly - don't check ai_proxy_status
         // This allows "Check AI Credits" to work without saving toggle
@@ -3227,7 +3517,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'unlimited' => $credits_result['unlimited'],
             'renewal_date' => $credits_result['renewal_date'],
             'tier' => $credits_result['tier'],
-            'checkout_url' => $this->ai_proxy_get_checkout_url($config),
         ];
 
         $apiResponse->SetResponse(true, '', $data);
@@ -5113,6 +5402,7 @@ Options -Indexes -ExecCGI
             'Image lightbox.' => $core->__('Image lightbox.'),
             'Comment.' => $core->__('Comment.'),
             'Set Max Tokens' => $core->__('Set Max Tokens'),
+            'This model accepts %s to %s tokens.' => $core->__('This model accepts %s to %s tokens.'),
             'Set max token' => $core->__('Set max token'),
             'AI Tool' => $core->__('AI Tool'),
             'AI tool' => $core->__('AI tool'),
@@ -5367,7 +5657,6 @@ Options -Indexes -ExecCGI
             'Conversations older than this will be deleted. Cleanup runs automatically twice daily.' => $core->__('Conversations older than this will be deleted. Cleanup runs automatically twice daily.'),
             'days' => $core->__('days'),
             'Related Documentation:' => $core->__('Related Documentation:'),
-            'Support Genix AI (Recommended)' => $core->__('Support Genix AI (Recommended)'),
             'Voice Chat' => $core->__('Voice Chat'),
             'Voice features require ElevenLabs API key configuration in Settings > API Keys > ElevenLabs.' => $core->__('Voice features require ElevenLabs API key configuration in Settings > API Keys > ElevenLabs.'),
             'Voice Agent Mode: Click once for continuous voice-to-voice conversation using ElevenLabs Conversational AI. Requires Agent ID configured in ElevenLabs settings.' => $core->__('Voice Agent Mode: Click once for continuous voice-to-voice conversation using ElevenLabs Conversational AI. Requires Agent ID configured in ElevenLabs settings.'),
@@ -5382,13 +5671,18 @@ Options -Indexes -ExecCGI
             'Documentation Title' => $core->__('Documentation Title'),
             'Documentation title' => $core->__('Documentation title'),
             'Support Genix AI' => $core->__('Support Genix AI'),
+            'Retiring soon' => $core->__('Retiring soon'),
+            'Support Genix AI is retiring soon' => $core->__('Support Genix AI is retiring soon'),
+            'Add your own API key' => $core->__('Add your own API key'),
+            'This service will be discontinued. Add your own OpenAI or Claude API key to keep AI Ticket Reply, AI Docs Writer and the AI Chatbot working.' => $core->__('This service will be discontinued. Add your own OpenAI or Claude API key to keep AI Ticket Reply, AI Docs Writer and the AI Chatbot working.'),
+            'Your AI credits are running low. Add your own OpenAI or Claude API key to keep AI features working.' => $core->__('Your AI credits are running low. Add your own OpenAI or Claude API key to keep AI features working.'),
+            'Being retired - switch to your own API key' => $core->__('Being retired - switch to your own API key'),
             'ElevenLabs' => $core->__('ElevenLabs'),
             'License Key' => $core->__('License Key'),
             'Check AI Credits' => $core->__('Check AI Credits'),
             'Checking Credits...' => $core->__('Checking Credits...'),
             'AI Credits' => $core->__('AI Credits'),
             'Refresh credits' => $core->__('Refresh credits'),
-            'Purchase Credits' => $core->__('Purchase Credits'),
             'Available' => $core->__('Available'),
             'Used' => $core->__('Used'),
             'Total' => $core->__('Total'),
@@ -5492,7 +5786,6 @@ Options -Indexes -ExecCGI
             'Plan' => $core->__('Plan'),
             'Please enter instructions for generating the reply.' => $core->__('Please enter instructions for generating the reply.'),
             'Please enter refinement instructions.' => $core->__('Please enter refinement instructions.'),
-            'Power up your support with AI' => $core->__('Power up your support with AI'),
             'Products' => $core->__('Products'),
             'Purchase:' => $core->__('Purchase:'),
             'Reactions:' => $core->__('Reactions:'),
@@ -5520,14 +5813,12 @@ Options -Indexes -ExecCGI
             'Sorry, something went wrong.' => $core->__('Sorry, something went wrong.'),
             'Sorry, the page you visited does not exist.' => $core->__('Sorry, the page you visited does not exist.'),
             'Sorry, you are not authorized to access this page.' => $core->__('Sorry, you are not authorized to access this page.'),
-            'Start using AI instantly' => $core->__('Start using AI instantly'),
             'Started:' => $core->__('Started:'),
             'Statuses:' => $core->__('Statuses:'),
             'Successfully Migrated!' => $core->__('Successfully Migrated!'),
             'Support Genix AI is powered by OpenAI language models to deliver intelligent assistance. We recommend reviewing AI-generated responses to ensure they meet your specific needs.' => $core->__('Support Genix AI is powered by OpenAI language models to deliver intelligent assistance. We recommend reviewing AI-generated responses to ensure they meet your specific needs.'),
             'Support:' => $core->__('Support:'),
             'Totals' => $core->__('Totals'),
-            'Try Support Genix AI' => $core->__('Try Support Genix AI'),
             'Unable to fetch agents. Configuration missing.' => $core->__('Unable to fetch agents. Configuration missing.'),
             'Unable to fetch credits' => $core->__('Unable to fetch credits'),
             'Unable to fetch voices. Configuration missing.' => $core->__('Unable to fetch voices. Configuration missing.'),
@@ -5595,7 +5886,6 @@ Options -Indexes -ExecCGI
             'Add this script tag to your HTML, preferably before the closing </body> tag. The chatbot will automatically appear as a floating widget.' => $core->__('Add this script tag to your HTML, preferably before the closing </body> tag. The chatbot will automatically appear as a floating widget.'),
             'Upon saving, when the mailbox address is generated, please forward your support emails from connected email address to the mailbox address.' => $core->__('Upon saving, when the mailbox address is generated, please forward your support emails from connected email address to the mailbox address.'),
             'No license key found. Please activate your Support Genix license in the License tab first.' => $core->__('No license key found. Please activate your Support Genix license in the License tab first.'),
-            'Your AI credits are running low. Purchase more credits to continue enjoying AI features.' => $core->__('Your AI credits are running low. Purchase more credits to continue enjoying AI features.'),
             'When enabled, the chatbot will also use agent replies from support tickets to answer questions.' => $core->__('When enabled, the chatbot will also use agent replies from support tickets to answer questions.'),
             'Customer data is automatically stripped before sending to AI.' => $core->__('Customer data is automatically stripped before sending to AI.'),
             'Choose which ticket categories to learn from. Select "All" to include every category.' => $core->__('Choose which ticket categories to learn from. Select "All" to include every category.'),
@@ -5628,7 +5918,6 @@ Options -Indexes -ExecCGI
             'Help & Docs' => $core->__('Help & Docs'),
             'Hide Custom Data' => $core->__('Hide Custom Data'),
             'Hide portal notice from login & register page.' => $core->__('Hide portal notice from login & register page.'),
-            'Includes free AI credits to get started' => $core->__('Includes free AI credits to get started'),
             'Once you migrate from %s to %s, all your docs will be fully transferred (your post slugs for docs will remain the same). It will transfer up to 100 docs (posts) at a time to ensure a smooth process and prevent errors. If you have more than 100 docs (posts), you\'ll need to migrate more than once.' => $core->__('Once you migrate from %s to %s, all your docs will be fully transferred (your post slugs for docs will remain the same). It will transfer up to 100 docs (posts) at a time to ensure a smooth process and prevent errors. If you have more than 100 docs (posts), you\'ll need to migrate more than once.'),
             'Once you migrate from %s to %s, all your support tickets will be fully copied or transferred (including responses, notes, and attachments). It will copy or transfer up to 100 support tickets at a time to ensure a smooth process and prevent errors. If you have more than 100 support tickets, you\'ll need to migrate more than once.' => $core->__('Once you migrate from %s to %s, all your support tickets will be fully copied or transferred (including responses, notes, and attachments). It will copy or transfer up to 100 support tickets at a time to ensure a smooth process and prevent errors. If you have more than 100 support tickets, you\'ll need to migrate more than once.'),
             'Please ensure you add the shortcode %s to your designated support portal page for proper functionality.' => $core->__('Please ensure you add the shortcode %s to your designated support portal page for proper functionality.'),

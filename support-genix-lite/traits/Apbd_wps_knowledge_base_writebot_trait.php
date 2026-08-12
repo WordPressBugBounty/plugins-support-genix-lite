@@ -78,10 +78,17 @@ trait Apbd_wps_knowledge_base_writebot_trait
             if ('A' === $status) {
                 $ai_tools = sanitize_text_field(ApbdWps_PostValue('ai_tools', ''));
 
+                // Support Genix AI is retired - only sites already on it may keep it.
+                $allow_ai_proxy = Apbd_wps_settings::IsAIProxyVisible();
+
                 // AI tools.
                 $ai_tools = explode(',', $ai_tools);
-                $ai_tools = array_filter($ai_tools, function ($value) {
-                    return ('ai_proxy' === $value || 'openai' === $value || 'claude' === $value);
+                $ai_tools = array_filter($ai_tools, function ($value) use ($allow_ai_proxy) {
+                    if ('ai_proxy' === $value) {
+                        return $allow_ai_proxy;
+                    }
+
+                    return ('openai' === $value || 'claude' === $value);
                 });
 
                 if (empty($ai_tools)) {
@@ -211,6 +218,11 @@ trait Apbd_wps_knowledge_base_writebot_trait
                     'content' => $response,
                 ]);
             } else {
+                if (is_wp_error($response)) {
+                    // The editor gets generic wording, so log the real reason for the admin.
+                    Mapbd_wps_debug_log::AddGeneralLog('AI Docs Writer generation failed', $response->get_error_message());
+                }
+
                 $error_msg = is_wp_error($response) ? $response->get_error_message() : $this->__('Failed to generate content.');
                 $apiResponse->SetResponse(false, $error_msg);
             }
@@ -232,7 +244,7 @@ trait Apbd_wps_knowledge_base_writebot_trait
             'messages' => [
                 [
                     'role' => 'system',
-                    'content' => $this->build_writebot_system_prompt()
+                    'content' => $this->build_writebot_system_prompt('openai', $model)
                 ],
                 [
                     'role' => 'user',
@@ -240,6 +252,10 @@ trait Apbd_wps_knowledge_base_writebot_trait
                 ]
             ],
         ];
+
+        // Writing documentation needs no reasoning, and reasoning tokens would
+        // come out of the same budget as the article.
+        $request_body = array_merge($request_body, Apbd_wps_settings::GetAINoReasoningParams('openai', $model));
 
         if ($uses_completion_tokens) {
             $request_body['max_completion_tokens'] = intval($max_tokens);
@@ -270,35 +286,7 @@ trait Apbd_wps_knowledge_base_writebot_trait
             $data = json_decode($body, true);
         }
 
-        if (!is_array($data) || empty($data)) {
-            return new WP_Error('openai_error', 'Unexpected response format.');
-        }
-
-        if (isset($data['error']) && is_array($data['error'])) {
-            $error = $data['error'];
-
-            if (isset($error['message']) && is_string($error['message'])) {
-                return new WP_Error('openai_error', $error['message']);
-            }
-        }
-
-        if (isset($data['choices']) && is_array($data['choices'])) {
-            $choices = $data['choices'];
-
-            if (isset($choices[0]) && is_array($choices[0])) {
-                $choices_item = $choices[0];
-
-                if (isset($choices_item['message']) && is_array($choices_item['message'])) {
-                    $choices_message = $choices_item['message'];
-
-                    if (isset($choices_message['content']) && is_string($choices_message['content'])) {
-                        return $choices_message['content'];
-                    }
-                }
-            }
-        }
-
-        return new WP_Error('openai_error', 'Unexpected response format.');
+        return ApbdWps_GetAIResponseContent($data, 'openai');
     }
 
     private function generate_writebot_claude_response($prompt, $keywords, $api_key, $model, $max_tokens)
@@ -315,8 +303,12 @@ trait Apbd_wps_knowledge_base_writebot_trait
                     'content' => $prompt
                 ]
             ],
-            'system' => $this->build_writebot_system_prompt()
+            'system' => $this->build_writebot_system_prompt('claude', $model)
         ];
+
+        // Writing documentation needs no thinking, and thinking tokens would
+        // come out of the same budget as the article.
+        $request_body = array_merge($request_body, Apbd_wps_settings::GetAINoReasoningParams('claude', $model));
 
         $request_args = [
             'headers' => [
@@ -342,31 +334,7 @@ trait Apbd_wps_knowledge_base_writebot_trait
             $data = json_decode($body, true);
         }
 
-        if (!is_array($data) || empty($data)) {
-            return new WP_Error('claude_error', 'Unexpected response format.');
-        }
-
-        if (isset($data['error']) && is_array($data['error'])) {
-            $error = $data['error'];
-
-            if (isset($error['message']) && is_string($error['message'])) {
-                return new WP_Error('claude_error', $error['message']);
-            }
-        }
-
-        if (isset($data['content']) && is_array($data['content'])) {
-            $content = $data['content'];
-
-            if (isset($content[0]) && is_array($content[0])) {
-                $content_item = $content[0];
-
-                if (isset($content_item['text']) && is_string($content_item['text'])) {
-                    return $content_item['text'];
-                }
-            }
-        }
-
-        return new WP_Error('claude_error', 'Unexpected response format.');
+        return ApbdWps_GetAIResponseContent($data, 'claude');
     }
 
     /**
@@ -469,8 +437,16 @@ trait Apbd_wps_knowledge_base_writebot_trait
         return false;
     }
 
-    private function build_writebot_system_prompt()
+    private function build_writebot_system_prompt($provider = '', $model = '')
     {
-        return 'You are a documentation expert who writes documentation for users with proper HTML formatting. Create actionable documentation that naturally uses keywords, includes step-by-step instructions, and helps users solve real problems.';
+        $prompt = 'You are a documentation expert who writes documentation for users with proper HTML formatting. Create actionable documentation that naturally uses keywords, includes step-by-step instructions, and helps users solve real problems.';
+
+        // Reasoning is switched off on every request; guard against a thinking
+        // model leaking its internal XML into the article.
+        if ($provider && $model && Apbd_wps_settings::DoesAIModelReasonByDefault($provider, $model)) {
+            $prompt .= "\n\n" . ApbdWps_GetAINoReasoningPrompt();
+        }
+
+        return $prompt;
     }
 }

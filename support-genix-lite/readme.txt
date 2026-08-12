@@ -1,11 +1,11 @@
 === Support Genix – Helpdesk, AI Chatbot, Knowledge Base & Customer Support Ticketing System ===
-Contributors: nazmulhudadev, aslamhasib
+Contributors: devitemsllc, nazmulhudadev, aslamhasib
 Author link: https://supportgenix.com
 Tags: helpdesk, support ticket, knowledge base, ai chatbot, customer support
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.50
+Stable tag: 1.4.51
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,8 +20,6 @@ AI-powered helpdesk & support ticket system with chatbot, knowledge base, and sm
 Whether you're running a small business or managing a large WooCommerce store, Support Genix helps you track and resolve customer support tickets with ease. With **unlimited tickets, agents, and customers**, plus advanced **AI features**, custom fields, and automated notifications, you'll never miss an important issue again.
 
 [youtube https://www.youtube.com/watch?v=Dp80DntEbaw]
-
-🔥 **Limited-Time Offer — Agency Lifetime: $199** (was $699) · **Save 71%** · 100 sites, yours forever. 👉 **[See the Offer](https://supportgenix.com/pricing/?utm_source=wprepo&utm_medium=freeplugin&utm_campaign=sg-lifetime-offer)** — ends August 9, 2026.
 
 == 👇 Helpful Links to Get Started ==
 
@@ -402,7 +400,7 @@ The AI Chatbot uses your Knowledge Base content to provide instant answers to cu
 
 = What AI providers does Support Genix support? =
 
-Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Anthropic)** for AI-powered features like AI Ticket Reply, AI Docs Writer, and AI Chatbot. Support Genix AI is our built-in AI service that includes free credits, so you can start using AI features immediately without setting up external API keys.
+Support Genix supports **OpenAI (GPT)** and **Claude (Anthropic)** for AI-powered features like AI Ticket Reply, AI Docs Writer, and AI Chatbot. Add your API key in Settings > API Keys to enable them.
 
 = Does Support Genix include a Knowledge Base? =
 
@@ -469,6 +467,11 @@ Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Ant
 
 
 == Changelog ==
+
+= Version: 1.4.51 - Date: 10 August, 2026 =
+* Updated: Support Genix AI is being retired and will be discontinued soon. Add your own OpenAI or Claude API key in Settings > API Keys to keep using AI Ticket Reply, AI Docs Writer and the AI Chatbot.
+* Fixed: AI Chatbot not responding to visitor questions in certain configurations issues.
+* Fixed: Minor bugs and issues to enhance functionality and user experience.
 
 = Version: 1.4.50 - Date: 30 July, 2026 =
 * Updated: Appreciation Offer banner artwork and extended the offer end date.
@@ -577,23 +580,4 @@ Support Genix supports **Support Genix AI**, **OpenAI (GPT)**, and **Claude (Ant
 = Version: 1.4.32 - Date: 12 November, 2025 =
 * Added: Option to set and control the auto-refresh of the ticket list for agents.
 * Improved: Overall plugin performance and stability for smoother, more reliable usage.
-* Fixed: Minor bugs and issues to enhance functionality and user experience.
-
-= Version: 1.4.31 - Date: 09 November, 2025 =
-* Added: Smart sorting for the Need Reply filter, with an option to enable or disable it.
-* Added: Additional placeholders for saved replies and email templates.
-* Improved: Option to disable replies on closed tickets based on system settings.
-* Improved: Overall plugin performance and stability for smoother, more reliable usage.
-* Fixed: Docs suggestion issue for a smoother and more user-friendly experience.
-* Fixed: Minor bugs and issues to enhance functionality and user experience.
-
-= Version: 1.4.30 - Date: 30 October, 2025 =
-* Added: AI Chatbot to instantly answer user queries using your Knowledge Base content.
-* Added: AI Writing Assistant to quickly generate Knowledge Base articles in minutes.
-* Added: Knowledge Base Module to create, organize, and display help documentation within your workspace.
-* Added: Feature to display Knowledge Base articles directly inside the AI Chatbot.
-* Added: Style customization options for faster and easier Knowledge Base design personalization.
-* Added: Knowledge Base Analytics to track engagement, content performance, search behavior, and chatbot queries.
-* Added: Migration Tool to seamlessly import content from BetterDocs into the Knowledge Base.
-* Added: Support Tickets Report to monitor ticket activity, response performance, and user interactions.
 * Fixed: Minor bugs and issues to enhance functionality and user experience.

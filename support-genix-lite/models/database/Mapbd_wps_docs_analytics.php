@@ -31,7 +31,7 @@ class Mapbd_wps_docs_analytics extends ApbdWpsModel
         $this->uniqueKey = array();
         $this->multiKey = array();
         $this->autoIncField = array("id");
-        $this->app_base_name = "support-genix";
+        $this->app_base_name = "support-genix-lite";
     }
 
     function SetValidation()

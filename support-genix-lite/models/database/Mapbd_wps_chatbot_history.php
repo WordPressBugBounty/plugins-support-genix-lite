@@ -36,7 +36,7 @@ class Mapbd_wps_chatbot_history extends ApbdWpsModel
         $this->multiKey = array();
         $this->autoIncField = array("id");
         $this->htmlInputField = ['query', 'content'];
-        $this->app_base_name = "support-genix";
+        $this->app_base_name = "support-genix-lite";
     }
 
     function SetValidation()

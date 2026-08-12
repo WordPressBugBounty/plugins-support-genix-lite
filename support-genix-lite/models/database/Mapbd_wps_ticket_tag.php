@@ -24,7 +24,7 @@ class Mapbd_wps_ticket_tag extends ApbdWpsModel
         $this->uniqueKey = array();
         $this->multiKey = array();
         $this->autoIncField = array("id");
-        $this->app_base_name = "support-genix";
+        $this->app_base_name = "support-genix-lite";
     }
 
     public function SetFromPostData($isNew = false, $data = null)
