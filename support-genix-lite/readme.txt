@@ -5,7 +5,7 @@ Tags: helpdesk, support ticket, knowledge base, ai chatbot, customer support
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.4.51
+Stable tag: 1.4.52
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -467,6 +467,11 @@ Support Genix supports **OpenAI (GPT)** and **Claude (Anthropic)** for AI-powere
 
 
 == Changelog ==
+
+= Version: 1.4.52 - Date: 19 August, 2026 =
+* Fixed: Ticket list and ticket creation not loading in certain server setups.
+* Fixed: Knowledge Base and chatbot statistics not being recorded in certain server setups.
+* Fixed: Minor bugs and issues to enhance functionality and user experience.
 
 = Version: 1.4.51 - Date: 10 August, 2026 =
 * Updated: Support Genix AI is being retired and will be discontinued soon. Add your own OpenAI or Claude API key in Settings > API Keys to keep using AI Ticket Reply, AI Docs Writer and the AI Chatbot.

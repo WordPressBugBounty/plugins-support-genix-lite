@@ -143,7 +143,7 @@ class Mapbd_wps_webhook extends ApbdWpsModel
         $table = $thisObj->db->prefix . $thisObj->tableName;
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
-        if ($thisObj->db->get_var("show tables like '{$table}'") == $table) {
+        if ('' !== (string) $thisObj->db->get_var($thisObj->db->prepare('SHOW TABLES LIKE %s', $thisObj->db->esc_like($table)))) {
             $sql = "ALTER TABLE `{$table}` ADD `on_tckt_closed` char(1) NOT NULL COMMENT 'bool(A=Active,I=Inactive)'";
         // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             $update = $thisObj->db->query($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
@@ -172,7 +172,7 @@ class Mapbd_wps_webhook extends ApbdWpsModel
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
-        if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
+        if ('' === (string) $thisObj->db->get_var($thisObj->db->prepare('SHOW TABLES LIKE %s', $thisObj->db->esc_like($table)))) {
             $sql = "CREATE TABLE `{$table}` (
                       `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
                       `title` char(100) NOT NULL DEFAULT '',

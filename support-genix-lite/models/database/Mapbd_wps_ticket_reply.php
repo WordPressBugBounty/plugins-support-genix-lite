@@ -123,7 +123,7 @@ class Mapbd_wps_ticket_reply extends ApbdWpsModel
         $table = $thisObj->db->prefix . $thisObj->tableName;
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
-        if ($thisObj->db->get_var("show tables like '{$table}'") == $table) {
+        if ('' !== (string) $thisObj->db->get_var($thisObj->db->prepare('SHOW TABLES LIKE %s', $thisObj->db->esc_like($table)))) {
             $sql = "ALTER TABLE `{$table}` MODIFY `asigned_by` char(11)";
         // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             $thisObj->db->query($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
@@ -164,7 +164,7 @@ class Mapbd_wps_ticket_reply extends ApbdWpsModel
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
-        if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
+        if ('' === (string) $thisObj->db->get_var($thisObj->db->prepare('SHOW TABLES LIKE %s', $thisObj->db->esc_like($table)))) {
             $sql = "CREATE TABLE `{$table}` (
                       `ticket_id` int(11) NOT NULL DEFAULT 0,
                       `reply_id` int(11) NOT NULL DEFAULT 0,

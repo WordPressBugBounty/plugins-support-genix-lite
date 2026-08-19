@@ -1511,7 +1511,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $table = $thisObj->db->prefix . $thisObj->tableName;
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
-        if ($thisObj->db->get_var("show tables like '{$table}'") == $table) {
+        if ('' !== (string) $thisObj->db->get_var($thisObj->db->prepare('SHOW TABLES LIKE %s', $thisObj->db->esc_like($table)))) {
             $sql = "ALTER TABLE `{$table}` MODIFY `assigned_on` char(11)";
         // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             $thisObj->db->query($sql);  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
@@ -1582,7 +1582,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $tableName = $thisObj->db->prefix . $thisObj->tableName;
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
-        if ($thisObj->db->get_var("show tables like '{$tableName}'") == $tableName) {
+        if ('' !== (string) $thisObj->db->get_var($thisObj->db->prepare('SHOW TABLES LIKE %s', $thisObj->db->esc_like($tableName)))) {
             $thisObj->DBColumnAddOrModify('priority', 'char', 1, "'N'", 'NOT NULL', '', 'drop(N=Normal,M=Medium,H=High)');
         // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             $thisObj->db->query("UPDATE `{$tableName}` SET `priority` = 'N'");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
@@ -1599,13 +1599,13 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $tableName = $thisObj->db->prefix . $thisObj->tableName;
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
-        if ($thisObj->db->get_var("show tables like '{$tableName}'") == $tableName) {
+        if ('' !== (string) $thisObj->db->get_var($thisObj->db->prepare('SHOW TABLES LIKE %s', $thisObj->db->esc_like($tableName)))) {
             // Check if FULLTEXT index already exists
             $index_exists = $thisObj->db->get_var(
                 $thisObj->db->prepare(
-                    "SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = %s AND table_name = %s AND index_name = %s",
+                    "SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = %s AND LOWER(table_name) = %s AND index_name = %s",
                     DB_NAME,
-                    $tableName,
+                    strtolower($tableName),
                     'ft_title'
                 )
             );
@@ -1624,7 +1624,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
-        if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
+        if ('' === (string) $thisObj->db->get_var($thisObj->db->prepare('SHOW TABLES LIKE %s', $thisObj->db->esc_like($table)))) {
             $sql = "CREATE TABLE `{$table}` (
                       `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
                       `ticket_track_id` char(18) NOT NULL,

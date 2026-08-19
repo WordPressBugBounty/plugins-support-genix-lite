@@ -499,7 +499,7 @@ class Mapbd_wps_role extends ApbdWpsModel
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
-        if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
+        if ('' === (string) $thisObj->db->get_var($thisObj->db->prepare('SHOW TABLES LIKE %s', $thisObj->db->esc_like($table)))) {
             $sql = "CREATE TABLE `{$table}` (
                     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                     `name` varchar(255) NOT NULL DEFAULT '',
@@ -570,10 +570,10 @@ class Mapbd_wps_role extends ApbdWpsModel
             $roleTable = $db->prefix . $role->tableName;
             $accessTable = $db->prefix . $access->tableName;
             // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB -- Table-existence check on internal $wpdb->prefix names.
-            self::$_tablesReady[$key] = (
-                $db->get_var("show tables like '{$roleTable}'") === $roleTable &&
-                $db->get_var("show tables like '{$accessTable}'") === $accessTable
-            );
+            $roleFound = $db->get_var($db->prepare('SHOW TABLES LIKE %s', $db->esc_like($roleTable)));
+            $accessFound = $db->get_var($db->prepare('SHOW TABLES LIKE %s', $db->esc_like($accessTable)));
+
+            self::$_tablesReady[$key] = (! empty($roleFound) && ! empty($accessFound));
             // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
         }
         return self::$_tablesReady[$key];

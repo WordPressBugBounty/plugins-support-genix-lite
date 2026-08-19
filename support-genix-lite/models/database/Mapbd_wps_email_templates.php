@@ -201,7 +201,7 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
         $charsetCollate = $thisObj->db->has_cap('collation') ? $thisObj->db->get_charset_collate() : '';
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
-        if ($thisObj->db->get_var("show tables like '{$table}'") != $table) {
+        if ('' === (string) $thisObj->db->get_var($thisObj->db->prepare('SHOW TABLES LIKE %s', $thisObj->db->esc_like($table)))) {
             $sql = "CREATE TABLE `{$table}` (
                       `k_word` char(3) NOT NULL DEFAULT '',
                       `grp` char(100) NOT NULL DEFAULT '',
@@ -345,6 +345,7 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
         if (empty($toEmail)) {
             return true;
         }
+
         $obj = self::FindBy("k_word", $keyword);
         if (! empty($obj)) {
             if ($obj->status != "A") {
@@ -381,11 +382,66 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
             $headers[] = 'Reply-To: ' . $reply_to;
         }
 
-        if (!wp_mail($toEmail, $subject, $content, $headers, $attachments)) {
-            return false;
-        } else {
-            return true;
+        // Loop prevention: stamp our own tag so we can recognise this message
+        // if it ever comes back to one of our inbound mailboxes, and mark the
+        // robot notices as machine-generated (RFC 3834) so a helpdesk on the
+        // other side knows not to auto-reply to them.
+        $auto_headers = array(
+            'X-SG-Loop: ' . ApbdWps_GetLoopTag(),
+        );
+
+        // Only the unattended notices are automated. EOT/ETR/TRR carry an
+        // agent's own words, so labelling those "auto-generated" would be both
+        // wrong and bad for deliverability.
+        if (in_array($keyword, ['EOT', 'UOT', 'ETC', 'TCL'], true)) {
+            $auto_headers[] = 'Auto-Submitted: auto-generated';
+            $auto_headers[] = 'X-Auto-Response-Suppress: All';
         }
+
+        $auto_headers = apply_filters('apbd-wps/filter/email-auto-headers', $auto_headers, $keyword);
+
+        if (is_array($auto_headers)) {
+            foreach ($auto_headers as $auto_header) {
+                if (is_string($auto_header) && '' !== trim($auto_header)) {
+                    $headers[] = $auto_header;
+                }
+            }
+        }
+
+        // Build a Message-ID that carries the track id, so a reply's
+        // In-Reply-To / References header alone is enough to re-thread it even
+        // when the quoted body (and its ref: marker) has been stripped.
+        // wp_mail() has no special case for Message-ID, so passing it through
+        // $headers would emit two of them — set it on PHPMailer instead.
+        $ref_track_id = $ticket_track_id;
+
+        if (! empty($ref_track_id)) {
+            $ref_track_id = apply_filters('apbd-wps/filter/query-track-id', $ref_track_id);
+            $ref_track_id = apply_filters('apbd-wps/filter/ref-track-id', $ref_track_id);
+        }
+
+        $ref_track_id = preg_replace('/[^A-Za-z0-9_-]/', '', (string) $ref_track_id);
+        $mail_cb = null;
+
+        if ('' !== $ref_track_id) {
+            $mail_domain = wp_parse_url(home_url(), PHP_URL_HOST);
+            $mail_domain = $mail_domain ? $mail_domain : 'localhost';
+            $message_id  = '<sg.' . $ref_track_id . '.' . wp_generate_uuid4() . '@' . $mail_domain . '>';
+
+            $mail_cb = function ($phpmailer) use ($message_id) {
+                $phpmailer->MessageID = $message_id;
+            };
+
+            add_action('phpmailer_init', $mail_cb, 99);
+        }
+
+        $sent = wp_mail($toEmail, $subject, $content, $headers, $attachments);
+
+        if ($mail_cb) {
+            remove_action('phpmailer_init', $mail_cb, 99);
+        }
+
+        return (bool) $sent;
     }
     static function getTicketEmailText($content, $ticket_title = '', $ticket_track_id = '')
     {

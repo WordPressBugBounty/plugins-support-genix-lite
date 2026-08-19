@@ -1943,9 +1943,9 @@ if (!class_exists("ApbdWpsModel")) {
         static function IsGeneratedColumn($db, $table, $column)
         {
             $col = $db->get_row($db->prepare(
-                "SELECT EXTRA FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s",
+                "SELECT EXTRA FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND LOWER(TABLE_NAME) = %s AND COLUMN_NAME = %s",
                 DB_NAME,
-                $table,
+                strtolower($table),
                 $column
             ));
 

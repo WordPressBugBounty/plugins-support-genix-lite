@@ -653,7 +653,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
 
         // Check if table exists
         // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
-        if ($wpdb->get_var("SHOW TABLES LIKE '{$table}'") !== $table) {  // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- Internal $wpdb->prefix table name; SHOW TABLES cannot use placeholders.
+        if ('' === (string) $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table)))) {  // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- Internal $wpdb->prefix table name; SHOW TABLES cannot use placeholders.
             $apiResponse->SetResponse(true, '', array('sources' => array()));
         // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             echo wp_json_encode($apiResponse);

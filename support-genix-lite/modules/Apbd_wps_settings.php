@@ -1702,6 +1702,14 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     // From version 1.4.48
                     $this->UpdateBaseFolder();
                 }
+
+                // When pro version is less than 1.8.52
+                if (1 === version_compare('1.8.52', $last_pro_version)) {
+                    // From version 1.4.52
+                    Mapbd_wps_docs_analytics::UpdateDBTable();
+                    Mapbd_wps_docs_searches_events::UpdateDBTable();
+                    Mapbd_wps_chatbot_events::UpdateDBTable();
+                }
             }
 
             // From version 1.4.0
@@ -2009,6 +2017,16 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                 // When pro version is empty or less than 1.8.48
                 if (empty($last_pro_version) || (1 === version_compare('1.8.48', $last_pro_version))) {
                     $this->UpdateBaseFolder();
+                }
+            }
+
+            // From version 1.4.52
+            if (1 === version_compare('1.4.52', $previous_version)) {
+                // When pro version is empty or less than 1.8.52
+                if (empty($last_pro_version) || (1 === version_compare('1.8.52', $last_pro_version))) {
+                    Mapbd_wps_docs_analytics::UpdateDBTable();
+                    Mapbd_wps_docs_searches_events::UpdateDBTable();
+                    Mapbd_wps_chatbot_events::UpdateDBTable();
                 }
             }
         }

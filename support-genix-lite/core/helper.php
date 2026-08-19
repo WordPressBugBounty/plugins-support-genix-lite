@@ -386,3 +386,24 @@ if (!function_exists("SUPPORT_GENIX_AdminHead")) {
 }
 
 /* end hidden field*/
+
+/*
+ * ---------------------------------------------------------------------------
+ * Email loop prevention (outbound half).
+ *
+ * Lite has no email-to-ticket, so it only needs to stamp its own tag on
+ * outgoing mail. The inbound side lives in the pro edition — see
+ * blueprint/EMAIL_TO_TICKET_LOOP_PREVENTION.md there.
+ * ---------------------------------------------------------------------------
+ */
+
+if (!function_exists('ApbdWps_GetLoopTag')) {
+    /**
+     * Stable per-site tag stamped on outgoing mail so we can recognise our own
+     * message if it is ever bounced or forwarded back into an inbound mailbox.
+     */
+    function ApbdWps_GetLoopTag()
+    {
+        return substr(hash('sha256', 'apbd-wps-loop|' . home_url()), 0, 16);
+    }
+}
