@@ -3,9 +3,9 @@ Contributors: devitemsllc, nazmulhudadev, aslamhasib
 Author link: https://supportgenix.com
 Tags: helpdesk, support ticket, knowledge base, ai chatbot, customer support
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.4.52
+Stable tag: 1.4.53
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -467,6 +467,10 @@ Support Genix supports **OpenAI (GPT)** and **Claude (Anthropic)** for AI-powere
 
 
 == Changelog ==
+
+= Version: 1.4.53 - Date: 23 August, 2026 =
+* Security: Hardened guest ticket link authentication and token generation.
+* Tested: Compatibility with the latest version of WordPress.
 
 = Version: 1.4.52 - Date: 19 August, 2026 =
 * Fixed: Ticket list and ticket creation not loading in certain server setups.

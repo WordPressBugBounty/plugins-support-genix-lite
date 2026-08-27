@@ -751,7 +751,15 @@ if (! function_exists('ApbdWps_EndpointToken')) {
 if (! function_exists('ApbdWps_EncryptionKey')) {
     function ApbdWps_EncryptionKey()
     {
-        return md5(wp_rand(10, 99) . wp_rand(10, 99) . time() . wp_rand(10, 99));
+        // 256 bits of CSPRNG entropy; the old md5() construction had ~19.5 bits.
+        if (function_exists('random_bytes')) {
+            try {
+                return bin2hex(random_bytes(32));
+            } catch (\Exception $e) {
+                // Fall through to WP's CSPRNG helper below.
+            }
+        }
+        return wp_generate_password(64, false, false);
     }
 }
 

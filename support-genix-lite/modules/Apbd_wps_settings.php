@@ -89,6 +89,17 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
         add_action('wp_mail_failed', [$this, "mail_send_failed"], 9, 1);
 
+        // Guests are real WP users only so the portal's is_user_logged_in() works.
+        // They have no business in wp-admin.
+        add_action('admin_init', [$this, 'block_guest_wp_admin']);
+        add_filter('show_admin_bar', [$this, 'maybe_hide_guest_admin_bar']);
+
+        // Path 2 (opt-in): resolve guests from our own signed portal cookie, not a WP auth cookie.
+        add_filter('determine_current_user', [$this, 'resolve_guest_session'], 30);
+        add_action('wp_logout', ['Apbd_wps_settings', 'ClearGuestSessionCookie']);
+
+        add_action('set_user_role', [$this, 'maybe_clear_guest_flag'], 10, 3);
+
         add_filter("apbd-wps/filter/incoming-webhook-custom-field-valid", [$this, 'valid_incoming_webhook_custom_field'], 10, 5);
         add_filter("apbd-wps/filter/ht-contact-form-custom-field-valid", [$this, 'valid_ht_contact_form_custom_field'], 10, 5);
         add_filter("apbd-wps/filter/ticket-details-custom-properties", [$this, 'final_filter_custom_field'], 10, 3);
@@ -724,34 +735,95 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     {
         $ticket_param = rtrim(ApbdWps_GetValue('p', ''), '/');
 
-        if (! empty($ticket_param)) {
-            $encKey = Apbd_wps_settings::GetEncryptionKey();
-            $encObj = Apbd_Wps_EncryptionLib::getInstance($encKey);
-            $requestParam = $encObj->decryptObj($ticket_param);
-
-            if (! empty($requestParam->ticket_id) && ! empty($requestParam->ticket_user)) {
-                $ticket = Mapbd_wps_ticket::FindBy("id", $requestParam->ticket_id);
-
-                if (! empty($ticket) && $ticket->ticket_user == $requestParam->ticket_user) {
-                    $is_guest_user = get_user_meta($ticket->ticket_user, "is_guest", true) == "Y";
-                    $disable_hotlink = Apbd_wps_settings::GetModuleOption('disable_ticket_hotlink', 'N');
-
-                    if ($is_guest_user || 'Y' !== $disable_hotlink) {
-                        $ticket_link = Mapbd_wps_ticket::getTicketAdminLink($ticket);
-
-                        if (is_user_logged_in()) {
-                            wp_logout();
-                        }
-
-                        wp_clear_auth_cookie();
-                        wp_set_current_user($ticket->ticket_user);
-                        wp_set_auth_cookie($ticket->ticket_user);
-                        wp_safe_redirect($ticket_link);
-                        exit;
-                    }
-                }
-            }
+        if (empty($ticket_param)) {
+            return;
         }
+
+        $encKey = Apbd_wps_settings::GetEncryptionKey();
+        $encObj = Apbd_Wps_EncryptionLib::getInstance($encKey);
+        $requestParam = $encObj->decryptObj($ticket_param);
+
+        if (
+            empty($requestParam) ||
+            empty($requestParam->ticket_id) ||
+            empty($requestParam->ticket_user) ||
+            empty($requestParam->purpose) ||
+            'guest_ticket' !== $requestParam->purpose
+        ) {
+            return;
+        }
+
+        if (empty($requestParam->exp) || (int) $requestParam->exp < time()) {
+            return;
+        }
+
+        $ticket = Mapbd_wps_ticket::FindBy("id", absint($requestParam->ticket_id));
+
+        if (empty($ticket) || $ticket->ticket_user != $requestParam->ticket_user) {
+            return;
+        }
+
+        // Hard gate closing the privilege-escalation path: a guest link may never
+        // authenticate an admin, an agent, or a former guest who was since promoted.
+        if (! Apbd_wps_settings::IsGuestLoginEligible($ticket->ticket_user)) {
+            return;
+        }
+
+        $user = get_user_by('id', $ticket->ticket_user);
+        if (empty($user)) {
+            return;
+        }
+
+        $ticket_link = Mapbd_wps_ticket::getTicketAdminLink($ticket);
+
+        if (is_user_logged_in()) {
+            wp_logout();
+        }
+
+        if (Apbd_wps_settings::UseScopedGuestSession()) {
+            // Path 2: portal-only scoped session, so never wp-admin-capable.
+            wp_clear_auth_cookie();
+            Apbd_wps_settings::IssueGuestSessionCookie($ticket->id, $ticket->ticket_user);
+        } else {
+            // Path 1: guest-only WordPress auth cookie (wp-admin blocked separately).
+            wp_clear_auth_cookie();
+            wp_set_current_user($ticket->ticket_user);
+            wp_set_auth_cookie($ticket->ticket_user);
+        }
+
+        wp_safe_redirect($ticket_link);
+        exit;
+    }
+
+    /**
+     * Bounce guests out of wp-admin. AJAX is left alone; REST never hits admin_init.
+     */
+    public function block_guest_wp_admin()
+    {
+        if (wp_doing_ajax()) {
+            return;
+        }
+
+        $user_id = get_current_user_id();
+        if (empty($user_id)) {
+            return;
+        }
+
+        if (get_user_meta($user_id, 'is_guest', true) === 'Y') {
+            $page_id = absint(Apbd_wps_settings::GetModuleOption('ticket_page'));
+            $redirect = ($page_id ? get_permalink($page_id) : '');
+            wp_safe_redirect($redirect ? $redirect : home_url());
+            exit;
+        }
+    }
+
+    public function maybe_hide_guest_admin_bar($show)
+    {
+        $user_id = get_current_user_id();
+        if (! empty($user_id) && get_user_meta($user_id, 'is_guest', true) === 'Y') {
+            return false;
+        }
+        return $show;
     }
 
     public static function RegistrationAllowed()
@@ -818,9 +890,249 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
     public static function GetEncryptionKey()
     {
-        $encryption_key = get_option('apbd_wps_encryption_key', 'WPS_ABD_enc');
-        $encryption_key = (! empty($encryption_key) ? $encryption_key : 'WPS_ABD_enc');
+        // Never fall back to a guessable key; the old 'WPS_ABD_enc' default was the flaw.
+        $encryption_key = get_option('apbd_wps_encryption_key', '');
+        if (empty($encryption_key)) {
+            $encryption_key = ApbdWps_EncryptionKey();
+            if (! empty($encryption_key)) {
+                update_option('apbd_wps_encryption_key', $encryption_key);
+            }
+        }
         return $encryption_key;
+    }
+
+    public static function GetGuestTokenTtl()
+    {
+        $ttl = 30 * DAY_IN_SECONDS;
+        return absint(apply_filters('apbd-wps/filter/guest-token-ttl', $ttl));
+    }
+
+    /**
+     * One-time key rotation, invalidating tokens forged under the pre-1.4.53 scheme.
+     */
+    public static function RotateEncryptionKeyForSecurityPatch()
+    {
+        if ('Y' === get_option('apbd_wps_enc_key_rotated_v2', 'N')) {
+            return;
+        }
+
+        $new_key = ApbdWps_EncryptionKey();
+        if (! empty($new_key)) {
+            update_option('apbd_wps_encryption_key', $new_key);
+        }
+        update_option('apbd_wps_enc_key_rotated_v2', 'Y');
+    }
+
+    /**
+     * True if the user is an agent, an admin, or holds any capability beyond a plain client.
+     */
+    public static function UserHasElevatedAccess($user)
+    {
+        if (is_numeric($user)) {
+            $user = get_user_by('id', absint($user));
+        }
+        if (empty($user) || empty($user->ID)) {
+            return false;
+        }
+
+        // Evaluate THIS user, not the request's: isAgentLoggedIn() consults current_user_can()
+        // and would misjudge the target when an admin triggers the check.
+        if (is_super_admin($user->ID) || in_array('administrator', (array) $user->roles, true)) {
+            return true;
+        }
+
+        $agent_roles = Mapbd_wps_role::FindAllBy('status', 'A', ['is_agent' => 'Y']);
+        if (! empty($agent_roles)) {
+            foreach ($agent_roles as $agent_role) {
+                if (! empty($agent_role->slug) && in_array($agent_role->slug, (array) $user->roles, true)) {
+                    return true;
+                }
+            }
+        }
+
+        // Any capability a plain subscriber-tier client would never hold.
+        $privileged_caps = [
+            'manage_options',
+            'edit_posts',
+            'edit_others_posts',
+            'edit_pages',
+            'publish_posts',
+            'upload_files',
+            'moderate_comments',
+            'list_users',
+            'promote_users',
+            'edit_theme_options',
+        ];
+        foreach ($privileged_caps as $cap) {
+            if (user_can($user, $cap)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Single authority for guest-link auth: flagged is_guest AND no elevated access.
+     */
+    public static function IsGuestLoginEligible($user_id)
+    {
+        $user_id = absint($user_id);
+        if (empty($user_id)) {
+            return false;
+        }
+
+        $user = get_user_by('id', $user_id);
+        if (empty($user)) {
+            return false;
+        }
+
+        if (get_user_meta($user_id, 'is_guest', true) !== 'Y') {
+            return false;
+        }
+
+        if (Apbd_wps_settings::UserHasElevatedAccess($user)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function maybe_clear_guest_flag($user_id, $role = '', $old_roles = [])
+    {
+        if (get_user_meta($user_id, 'is_guest', true) !== 'Y') {
+            return;
+        }
+        if (Apbd_wps_settings::UserHasElevatedAccess($user_id)) {
+            delete_user_meta($user_id, 'is_guest');
+        }
+    }
+
+    /**
+     * Path 2 - scoped guest session, opt-in and off by default.
+     *
+     * Issues a portal-only, ticket-bound cookie instead of calling wp_set_auth_cookie(),
+     * so no wp-admin-capable session is ever created. Path 1 already closes the CVE.
+     */
+    const GUEST_SESSION_COOKIE = 'sg_guest_ticket_session';
+
+    public static function UseScopedGuestSession()
+    {
+        $enabled = defined('SUPPORT_GENIX_GUEST_SCOPED_SESSION') ? (bool) SUPPORT_GENIX_GUEST_SCOPED_SESSION : false;
+        return (bool) apply_filters('apbd-wps/filter/use-scoped-guest-session', $enabled);
+    }
+
+    /**
+     * Shorter than the token TTL; a guest re-clicks the email link to renew.
+     */
+    public static function GetGuestSessionTtl()
+    {
+        $ttl = DAY_IN_SECONDS;
+        return absint(apply_filters('apbd-wps/filter/guest-session-ttl', $ttl));
+    }
+
+    private static function GuestSessionCookieOptions($expires)
+    {
+        return [
+            'expires'  => $expires,
+            'path'     => (defined('COOKIEPATH') && COOKIEPATH) ? COOKIEPATH : '/',
+            'domain'   => defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '',
+            'secure'   => is_ssl(),
+            'httponly' => true,
+            'samesite' => 'Lax', // blocks the cookie on cross-site POST -> CSRF mitigation
+        ];
+    }
+
+    public static function IssueGuestSessionCookie($ticket_id, $ticket_user)
+    {
+        $exp = time() + self::GetGuestSessionTtl();
+
+        $claim = new stdClass();
+        $claim->ticket_id   = (int) $ticket_id;
+        $claim->ticket_user = (int) $ticket_user;
+        $claim->purpose     = 'guest_session';
+        $claim->iat         = time();
+        $claim->exp         = $exp;
+
+        $encObj = Apbd_Wps_EncryptionLib::getInstance(self::GetEncryptionKey());
+        $value  = $encObj->encryptObj($claim);
+        if (empty($value)) {
+            return false;
+        }
+
+        setcookie(self::GUEST_SESSION_COOKIE, $value, self::GuestSessionCookieOptions($exp));
+        $_COOKIE[self::GUEST_SESSION_COOKIE] = $value;
+        return true;
+    }
+
+    public static function ValidateGuestSessionCookie($raw)
+    {
+        if (empty($raw)) {
+            return null;
+        }
+
+        $encObj = Apbd_Wps_EncryptionLib::getInstance(self::GetEncryptionKey());
+        $claim  = $encObj->decryptObj($raw);
+
+        if (
+            empty($claim) ||
+            empty($claim->ticket_user) ||
+            empty($claim->ticket_id) ||
+            empty($claim->purpose) ||
+            'guest_session' !== $claim->purpose ||
+            empty($claim->exp) ||
+            (int) $claim->exp < time()
+        ) {
+            return null;
+        }
+
+        return $claim;
+    }
+
+    public static function ClearGuestSessionCookie()
+    {
+        setcookie(self::GUEST_SESSION_COOKIE, '', self::GuestSessionCookieOptions(time() - 3600));
+        unset($_COOKIE[self::GUEST_SESSION_COOKIE]);
+    }
+
+    /**
+     * Runs on determine_current_user: front-end and REST only, never interactive wp-admin.
+     */
+    public function resolve_guest_session($user_id)
+    {
+        if (! self::UseScopedGuestSession()) {
+            return $user_id;
+        }
+
+        if (! empty($user_id)) {
+            return $user_id;
+        }
+
+        // Never grant guest identity in the interactive dashboard (AJAX/REST allowed).
+        if (is_admin() && ! wp_doing_ajax()) {
+            return $user_id;
+        }
+
+        if (empty($_COOKIE[self::GUEST_SESSION_COOKIE])) {
+            return $user_id;
+        }
+
+        $raw   = sanitize_text_field(wp_unslash($_COOKIE[self::GUEST_SESSION_COOKIE]));
+        $claim = self::ValidateGuestSessionCookie($raw);
+        if (empty($claim)) {
+            return $user_id;
+        }
+
+        if (! self::IsGuestLoginEligible($claim->ticket_user)) {
+            return $user_id;
+        }
+
+        $ticket = Mapbd_wps_ticket::FindBy('id', absint($claim->ticket_id));
+        if (empty($ticket) || (int) $ticket->ticket_user !== (int) $claim->ticket_user) {
+            return $user_id;
+        }
+
+        return (int) $claim->ticket_user;
     }
 
     public function portal_asset_url($link, $withVersion = true)
@@ -1455,6 +1767,9 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     public function OnVersionUpdate($current_version = "", $previous_version = "", $last_pro_version = "")
     {
         parent::OnVersionUpdate($current_version, $previous_version, $last_pro_version);
+
+        // Invalidate any token forged under the weak pre-1.4.53 scheme.
+        Apbd_wps_settings::RotateEncryptionKeyForSecurityPatch();
 
         if (empty($previous_version)) {
             if (! empty($last_pro_version)) {

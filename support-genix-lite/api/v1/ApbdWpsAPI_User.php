@@ -297,10 +297,10 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
                         if (!email_exists($userEmail)) {
                             $userId = Apbd_Wps_User::create_ticket_user($userPayload, false);
                             if (empty($userId)) {
-                                add_user_meta($userId, "is_guest", "Y");
                                 $this->response->SetResponse(false, ApbdWps_GetMsgAPI());
                                 return $this->response;
                             }
+                            add_user_meta($userId, "is_guest", "Y");
                         } else {
                             $exists_user = get_user_by("email", $userEmail);
                             if ($exists_user instanceof WP_User) {
@@ -315,6 +315,7 @@ class ApbdWpsAPI_User extends Apbd_Wps_APIBase
             } else {
                 $userId = Apbd_Wps_User::create_ticket_user($userPayload, false);
                 if (! empty($userId)) {
+                    add_user_meta($userId, "is_guest", "Y");
                     Apbd_Wps_User::auto_login($userId);
                 } else {
                     $this->response->SetResponse(false, ApbdWps_GetMsgAPI());

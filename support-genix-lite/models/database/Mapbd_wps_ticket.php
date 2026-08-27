@@ -454,6 +454,9 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             $ticketResObj = new stdClass();
             $ticketResObj->ticket_id = $ticketObj->id;
             $ticketResObj->ticket_user = $ticketObj->ticket_user;
+            $ticketResObj->purpose = 'guest_ticket';
+            $ticketResObj->iat = time();
+            $ticketResObj->exp = time() + Apbd_wps_settings::GetGuestTokenTtl();
             $param = urlencode($encObj->encryptObj($ticketResObj));
             return site_url("sgnix/?p={$param}");
         }
@@ -461,6 +464,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
     }
     static function getTicketHotlink($ticketObj)
     {
+        // Guests only: registered users get the normal link and sign in themselves.
         return self::getTicketLink($ticketObj);
     }
     static function getTicketAdminLink($ticketObj)
