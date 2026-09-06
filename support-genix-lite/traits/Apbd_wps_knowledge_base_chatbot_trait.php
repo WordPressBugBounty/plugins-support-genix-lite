@@ -408,8 +408,7 @@ trait Apbd_wps_knowledge_base_chatbot_trait
         $coreObject = ApbdWps_SupportLite::GetInstance();
         $base_path = plugin_dir_path($coreObject->pluginFile);
         $dist_path = untrailingslashit($base_path) . "/assets/apps/chatbot";
-        $dist_css_files = ApbdWps_GetFilesInDirectory($dist_path, 'css');
-        $dist_js_files = ApbdWps_GetFilesInDirectory($dist_path, 'js');
+        $manifest = ApbdWps_GetAppManifest($dist_path);
 
         $logged_in = is_user_logged_in();
         $logged_user = null;
@@ -603,46 +602,24 @@ trait Apbd_wps_knowledge_base_chatbot_trait
             <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url(Apbd_wps_settings::GetModuleOption("app_favicon", $this->chatbot_asset_url("img/favicon16x16.png"))); ?>">
             <title><?php echo esc_html($chatbot_label); ?></title>
             <?php
-            // Main CSS.
-            if (is_array($dist_css_files) && !empty($dist_css_files)) {
-                foreach ($dist_css_files as $file_name) {
-                    if (0 === strpos($file_name, 'main.')) {
-            ?>
-                        <style id="support-genix-chatbot-main-inline-css">
-                            <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped via ApbdWps_KsesCss (wp_kses). */ echo ApbdWps_KsesCss($custom_css); ?>
-                        </style>
-                        <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Standalone chatbot HTML document; local hashed build asset. ?><link rel="stylesheet" id="support-genix-chatbot-main-css" href="<?php echo esc_url($this->chatbot_asset_url("{$file_name}")); ?>" media="" />
-                <?php
-                    }
-                }
-            } else {
-                ?>
-                <style id="support-genix-chatbot-main-inline-css">
-                    <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped via ApbdWps_KsesCss (wp_kses). */ echo ApbdWps_KsesCss($custom_css); ?>
-                </style>
-                <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Standalone chatbot HTML document; local hashed build asset. ?><link rel="stylesheet" id="support-genix-chatbot-main-css" href="<?php echo esc_url($this->chatbot_asset_url("main.BpSEh8y_.1783849826835.css")); ?>" media="" />
-                <?php
-            }
+            $style_handle = 'support-genix-chatbot-main';
+
+            wp_register_style($style_handle, '' !== $manifest['css'] ? $this->chatbot_asset_url($manifest['css']) : false, [], null);
+            wp_add_inline_style($style_handle, ApbdWps_KsesCss($custom_css));
+            wp_print_styles($style_handle);
+
+            wp_print_inline_script_tag(
+                'var support_genix_chatbot_config = ' . wp_json_encode($support_genix_chatbot_config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';',
+                ['id' => 'support-genix-chatbot-main-js-extra']
+            );
 
             // Main JS.
-            if (is_array($dist_js_files) && !empty($dist_js_files)) {
-                foreach ($dist_js_files as $file_name) {
-                    if (0 === strpos($file_name, 'main.')) {
-                ?>
-                        <script id="support-genix-chatbot-main-js-extra">
-                            var support_genix_chatbot_config = <?php echo json_encode($support_genix_chatbot_config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-                        </script>
-                        <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Standalone chatbot HTML document; local hashed ES module build asset. ?><script type="module" src="<?php echo esc_url($this->chatbot_asset_url("{$file_name}")); ?>" id="support-genix-chatbot-main-js"></script>
-                <?php
-                    }
-                }
-            } else {
-                ?>
-                <script id="support-genix-chatbot-main-js-extra">
-                    var support_genix_chatbot_config = <?php echo json_encode($support_genix_chatbot_config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-                </script>
-                <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Standalone chatbot HTML document; local hashed ES module build asset. ?><script type="module" src="<?php echo esc_url($this->chatbot_asset_url("main.CBirFCNF.1783849826835.js")); ?>" id="support-genix-chatbot-main-js"></script>
-            <?php
+            if ('' !== $manifest['js']) {
+                wp_print_script_tag([
+                    'type' => 'module',
+                    'src' => $this->chatbot_asset_url($manifest['js']),
+                    'id' => 'support-genix-chatbot-main-js',
+                ]);
             }
             ?>
         </head>

@@ -14,6 +14,9 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     use Apbd_wps_settings_blocks_trait;
     use Apbd_wps_ai_proxy_trait;
 
+    const GUEST_SESSION_COOKIE = 'sg_guest_ticket_session';
+    const GUEST_TOKEN_MAX_LENGTH = 2048;
+
     /**
      * @var string
      */
@@ -46,6 +49,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $this->AddAjaxAction("logo", [$this, "AjaxRequestCallbackLogo"]);
         $this->AddAjaxAction("file", [$this, "AjaxRequestCallbackFile"]);
         $this->AddAjaxAction("captcha", [$this, "AjaxRequestCallbackCaptcha"]);
+        $this->AddAjaxAction("captcha_verify", [$this, "AjaxRequestCallbackCaptchaVerify"]);
         $this->AddAjaxAction("api_keys_openai", [$this, "AjaxRequestCallbackApiKeysOpenAI"]);
         $this->AddAjaxAction("api_keys_claude", [$this, "AjaxRequestCallbackApiKeysClaude"]);
         $this->AddAjaxAction("api_keys_ai_proxy", [$this, "AjaxRequestCallbackApiKeysAIProxy"]);
@@ -160,7 +164,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     }
     function portal_templates()
     {
-        if (wp_validate_boolean(get_query_var('sgnix'))) {
+        if ($this->is_guest_ticket_request()) {
             $this->guest_ticket_login();
         }
 
@@ -246,52 +250,28 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $coreObject = ApbdWps_SupportLite::GetInstance();
         $base_path = plugin_dir_path($coreObject->pluginFile);
         $dist_path = untrailingslashit($base_path) . "/assets/apps/portal";
-        $dist_css_files = ApbdWps_GetFilesInDirectory($dist_path, 'css');
-        $dist_js_files = ApbdWps_GetFilesInDirectory($dist_path, 'js');
+        $manifest = ApbdWps_GetAppManifest($dist_path);
 
-        // Main CSS.
-        if (is_array($dist_css_files) && !empty($dist_css_files)) {
-            foreach ($dist_css_files as $file_name) {
-                if (0 === strpos($file_name, 'main.')) {
-                    $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->portal_asset_url("{$file_name}")) . '" media=""';
-        ?>
-                    <link <?php echo wp_kses_post($ats); ?> />
-            <?php
-                }
-            }
-        } else {
-            $ats = 'rel="stylesheet" id="support-genix-portal-main-css" href="' . esc_url($this->portal_asset_url("main.CJjRaX8a.1783849905657.css")) . '" media=""';
-            ?>
-            <link <?php echo wp_kses_post($ats); ?> />
-        <?php
-        }
+        $style_handle = 'support-genix-portal-main';
+
+        wp_register_style($style_handle, '' !== $manifest['css'] ? $this->portal_asset_url($manifest['css']) : false, [], null);
 
         // Primary color.
         if (!empty($this->get_primary_brand_color())) {
-        ?>
-            <style>
-                <?php echo wp_kses_post($this->set_primary_color_css()); ?>
-            </style>
-        <?php
+            wp_add_inline_style($style_handle, wp_kses_post($this->set_primary_color_css()));
         }
 
         // Secondary color.
         if (!empty($this->get_secondary_brand_color())) {
-        ?>
-            <style>
-                <?php echo wp_kses_post($this->set_secondary_color_css()); ?>
-            </style>
-        <?php
+            wp_add_inline_style($style_handle, wp_kses_post($this->set_secondary_color_css()));
         }
 
         // Custom CSS.
         if (!empty($this->get_custom_css())) {
-        ?>
-            <style>
-                <?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped via ApbdWps_KsesCss (wp_kses). */ echo ApbdWps_KsesCss($this->get_custom_css()); ?>
-            </style>
-        <?php
+            wp_add_inline_style($style_handle, ApbdWps_KsesCss($this->get_custom_css()));
         }
+
+        wp_print_styles($style_handle);
 
         // Logo.
         $logo_url = esc_url_raw($this->GetOption('app_logo', ''));
@@ -358,36 +338,33 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'texts' => Apbd_wps_settings::portal_texts(),
             'debug' => defined('WP_DEBUG') ? !!WP_DEBUG : false,
         ];
-        ?>
-        <script id="utils-js-extra">
-            var userSettings = <?php echo json_encode($user_settings); ?>;
-        </script>
-        <?php
-        $ats = 'type="text/javascript" src="' . esc_url(includes_url('js/utils.min.js')) . '"';
-        ?>
-        <script <?php echo wp_kses_post($ats); ?>></script>
-        <script id="support-genix-portal-main-js-extra">
-            var support_genix_config = <?php echo json_encode($support_genix_config); ?>;
-        </script>
-        <?php
+        $json_flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
+
+        wp_print_inline_script_tag(
+            'var userSettings = ' . wp_json_encode($user_settings, $json_flags) . ';',
+            ['id' => 'utils-js-extra']
+        );
+
+        wp_print_script_tag([
+            'src' => includes_url('js/utils.min.js'),
+            'id' => 'utils-js',
+        ]);
+
+        wp_print_inline_script_tag(
+            'var support_genix_config = ' . wp_json_encode($support_genix_config, $json_flags) . ';',
+            ['id' => 'support-genix-portal-main-js-extra']
+        );
 
         // Main JS.
-        if (is_array($dist_js_files) && !empty($dist_js_files)) {
-            foreach ($dist_js_files as $file_name) {
-                if (0 === strpos($file_name, 'main.')) {
-                    $ats = 'type="module" src="' . esc_url($this->portal_asset_url("{$file_name}")) . '" id="support-genix-portal-main-js"';
-        ?>
-                    <script <?php echo wp_kses_post($ats); ?>></script>
-            <?php
-                }
-            }
-        } else {
-            $ats = 'type="module" src="' . esc_url($this->portal_asset_url("main.Bc9MFv-7.1783849905657.js")) . '" id="support-genix-portal-main-js"';
-            ?>
-            <script <?php echo wp_kses_post($ats); ?>></script>
-        <?php
+        if ('' !== $manifest['js']) {
+            wp_print_script_tag([
+                'type' => 'module',
+                'src' => $this->portal_asset_url($manifest['js']),
+                'id' => 'support-genix-portal-main-js',
+            ]);
         }
     }
+
     function set_primary_color_css()
     {
         $color = $this->get_primary_brand_color();
@@ -549,6 +526,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         add_action('apbd-wps/action/attach-files', [$this, "attach_file"], 10, 3);
         $this->add_support_genix_rewrite();
         add_filter('query_vars', [$this, 'register_query_var']);
+        add_filter('request', [$this, 'guest_ticket_request_vars']);
         add_action('admin_bar_menu', [$this, 'support_genix_admin_bar_button'], 999);
     }
     function support_genix_admin_bar_button(\WP_Admin_Bar $wp_admin_bar)
@@ -671,7 +649,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
     }
     function copyright_text()
     {
-        $site_url = get_site_url();
+        $site_url = home_url();
         $site_title = get_bloginfo('name');
         $year = gmdate('Y');
 
@@ -715,6 +693,122 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         }
         return $post_states;
     }
+    protected function guest_ticket_query_token()
+    {
+        return self::CleanGuestToken(ApbdWps_GetValue(Mapbd_wps_ticket::GUEST_TICKET_PARAM, ''));
+    }
+
+    protected static function CleanGuestToken($value)
+    {
+        if (!is_scalar($value)) {
+            return '';
+        }
+
+        $value = (string) $value;
+
+        return (self::GUEST_TOKEN_MAX_LENGTH < strlen($value)) ? '' : $value;
+    }
+
+    protected function guest_ticket_token()
+    {
+        $token = $this->guest_ticket_query_token();
+
+        if ('' !== $token) {
+            return $token;
+        }
+
+        $path_token = $this->guest_ticket_route_token();
+        $on_route = (null !== $path_token) || wp_validate_boolean(get_query_var('sgnix'));
+
+        if (!$on_route) {
+            return '';
+        }
+
+        $token = self::CleanGuestToken(ApbdWps_GetValue('p', ''));
+
+        if ('' !== $token) {
+            return $token;
+        }
+
+        $token = self::CleanGuestToken(get_query_var('sg_ticket'));
+
+        if ('' !== $token) {
+            return $token;
+        }
+
+        return (null === $path_token) ? '' : self::CleanGuestToken($path_token);
+    }
+
+    protected function is_guest_ticket_request()
+    {
+        if (wp_validate_boolean(get_query_var('sgnix'))) {
+            return true;
+        }
+
+        if ('' !== $this->guest_ticket_query_token()) {
+            return true;
+        }
+
+        return (null !== $this->guest_ticket_route_token());
+    }
+
+    protected function guest_ticket_route_token()
+    {
+        $request_uri = isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '';
+
+        if ('' === $request_uri) {
+            return null;
+        }
+
+        $path = (string) wp_parse_url($request_uri, PHP_URL_PATH);
+
+        foreach (array(site_url('/'), home_url('/')) as $base_url) {
+            $base_path = (string) wp_parse_url($base_url, PHP_URL_PATH);
+
+            if ('' === $base_path || '/' === $base_path) {
+                continue;
+            }
+
+            if (0 === strpos($path, $base_path)) {
+                $path = substr($path, strlen($base_path));
+                break;
+            }
+        }
+
+        $path = trim($path, '/');
+
+        if (('sgnix' !== $path) && (0 !== strpos($path, 'sgnix/'))) {
+            return null;
+        }
+
+        return trim(substr($path, strlen('sgnix')), '/');
+    }
+
+    public function guest_ticket_request_vars($query_vars)
+    {
+        $token = $this->guest_ticket_route_token();
+        $is_route = (null !== $token);
+
+        // `sgnix` is already set here when the rewrite rule matched.
+        $is_flagged = wp_validate_boolean(isset($query_vars['sgnix']) ? $query_vars['sgnix'] : '');
+
+        if (!$is_route && !$is_flagged && ('' === $this->guest_ticket_query_token())) {
+            return $query_vars;
+        }
+
+        if ($is_route || $is_flagged) {
+            unset($query_vars['p']);
+        }
+
+        $query_vars['sgnix'] = 'true';
+
+        if ($is_route && ('' !== $token)) {
+            $query_vars['sg_ticket'] = $token;
+        }
+
+        return $query_vars;
+    }
+
     function register_query_var($vars)
     {
         $vars[] = 'sg_ticket';
@@ -733,7 +827,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
     public function guest_ticket_login()
     {
-        $ticket_param = rtrim(ApbdWps_GetValue('p', ''), '/');
+        $ticket_param = $this->guest_ticket_token();
 
         if (empty($ticket_param)) {
             return;
@@ -1014,8 +1108,6 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
      * Issues a portal-only, ticket-bound cookie instead of calling wp_set_auth_cookie(),
      * so no wp-admin-capable session is ever created. Path 1 already closes the CVE.
      */
-    const GUEST_SESSION_COOKIE = 'sg_guest_ticket_session';
-
     public static function UseScopedGuestSession()
     {
         $enabled = defined('SUPPORT_GENIX_GUEST_SCOPED_SESSION') ? (bool) SUPPORT_GENIX_GUEST_SCOPED_SESSION : false;
@@ -1316,24 +1408,75 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         }
     }
 
-    protected  static function isValid($token, $secret = "")
+    public static function GetCaptchaThreshold()
+    {
+        $threshold = (float) apply_filters('apbd-wps/filter/recaptcha-v3-score', 0);
+
+        if ((0 > $threshold) || (1 < $threshold)) {
+            $threshold = 0;
+        }
+
+        return $threshold;
+    }
+
+    public static function GetCaptchaKeysFingerprint($site_key = '', $secret_key = '')
+    {
+        if ((1 > strlen($site_key)) || (1 > strlen($secret_key))) {
+            return '';
+        }
+
+        return wp_hash($site_key . '|' . $secret_key);
+    }
+
+    public static function RawVerifyCaptcha($secret = '', $token = '')
     {
         if (empty($secret) || empty($token)) {
-            return false;
+            return new WP_Error('apbd_wps_recaptcha_missing_input', 'Secret key or token missing.');
         }
-        try {
-            $response = wp_remote_get(add_query_arg(array(
-                'secret'   => $secret,
-                'response' => $token,
-            ), 'https://www.google.com/recaptcha/api/siteverify'));
 
-            if (is_wp_error($response) || empty($response['body']) || ! ($json = json_decode($response['body'])) || ! $json->success) {
-                return false;
-            }
-            return true;
-        } catch (Exception $e) {
+        $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', array(
+            'timeout' => 10,
+            'body' => array(
+                'secret' => $secret,
+                'response' => $token,
+            ),
+        ));
+
+        if (is_wp_error($response)) {
+            return new WP_Error('apbd_wps_recaptcha_unreachable', $response->get_error_message());
+        }
+
+        $status = absint(wp_remote_retrieve_response_code($response));
+
+        if (200 !== $status) {
+            return new WP_Error('apbd_wps_recaptcha_http_error', sprintf('HTTP %d', $status));
+        }
+
+        $result = json_decode(wp_remote_retrieve_body($response), true);
+
+        if (! is_array($result)) {
+            return new WP_Error('apbd_wps_recaptcha_bad_response', 'Unreadable verify response.');
+        }
+
+        return $result;
+    }
+
+    protected  static function isValid($token, $secret = "")
+    {
+        $result = self::RawVerifyCaptcha($secret, $token);
+
+        if (is_wp_error($result) || empty($result['success'])) {
             return false;
         }
+
+        $threshold = self::GetCaptchaThreshold();
+
+        // A v2 key verifies without a score, so an absent score is not a failure.
+        if ((0 < $threshold) && isset($result['score']) && ((float) $result['score'] < $threshold)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -3091,6 +3234,9 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         $recaptcha_v3_status = ('A' === $recaptcha_v3_status) ? true : false;
         $recaptcha_v3_hide_badge = ('Y' === $recaptcha_v3_hide_badge) ? true : false;
 
+        // Key check.
+        $keysStatusData = $this->GetCaptchaKeysStatusData();
+
         // Secret key.
         $recaptcha_v3_secret_key = ApbdWps_SecretFieldValue($recaptcha_v3_secret_key);
 
@@ -3115,6 +3261,8 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             'recaptcha_v3_secret_key' => $recaptcha_v3_secret_key,
             'recaptcha_v3_display_opts' => $recaptcha_v3_display_opts,
             'recaptcha_v3_hide_badge' => $recaptcha_v3_hide_badge,
+            'recaptcha_v3_keys_status' => $keysStatusData['recaptcha_v3_keys_status'],
+            'recaptcha_v3_verified_at' => $keysStatusData['recaptcha_v3_verified_at'],
         ];
 
         $apiResponse->SetResponse(true, "", $data);
@@ -3613,6 +3761,167 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         }
 
         echo wp_json_encode($apiResponse);
+    }
+
+    public function AjaxRequestCallbackCaptchaVerify()
+    {
+        $apiResponse = new Apbd_Wps_APIResponse();
+        $apiResponse->SetResponse(false, $this->__('Invalid request.'));
+
+        if (ApbdWps_IsPostBack) {
+            $site_key = sanitize_text_field(ApbdWps_PostValue('recaptcha_v3_site_key', ''));
+            $secret_key = sanitize_text_field(ApbdWps_PostValue('recaptcha_v3_secret_key', ''));
+            $token = sanitize_text_field(ApbdWps_PostValue('grcToken', ''));
+
+            // A masked value means the saved key is the one to test.
+            if (str_contains($secret_key, '*')) {
+                $secret_key = $this->GetOption('recaptcha_v3_secret_key', '');
+            }
+
+            if ((1 > strlen($site_key)) || (1 > strlen($secret_key))) {
+                $apiResponse->SetResponse(false, $this->__('Please fill in both the site key and the secret key first.'));
+
+                echo wp_json_encode($apiResponse);
+
+                return;
+            }
+
+            if (1 > strlen($token)) {
+                $apiResponse->SetResponse(false, $this->__('Google did not issue a token for this site key. The site key is wrong, or this domain is not registered for it.'));
+
+                echo wp_json_encode($apiResponse);
+
+                return;
+            }
+
+            $result = Apbd_wps_settings::RawVerifyCaptcha($secret_key, $token);
+
+            // An unreachable API says nothing about the keys, so nothing is stored.
+            if (is_wp_error($result)) {
+                $apiResponse->SetResponse(false, sprintf($this->__('Could not reach the Google verification API: %1$s'), $result->get_error_message()));
+
+                echo wp_json_encode($apiResponse);
+
+                return;
+            }
+
+            if (empty($result['success'])) {
+                $codes = isset($result['error-codes']) ? array_map('strval', (array) $result['error-codes']) : [];
+
+                $message = $this->__('Google rejected the request.');
+
+                // A spent token is not a key problem, so the stored status stands.
+                $is_key_failure = true;
+
+                if (array_intersect($codes, ['invalid-input-secret', 'missing-input-secret', 'bad-request'])) {
+                    $message = $this->__('The secret key is not valid.');
+                } elseif (in_array('timeout-or-duplicate', $codes, true)) {
+                    $message = $this->__('The test token expired before it was checked. Please click verify again.');
+                    $is_key_failure = false;
+                } elseif (array_intersect($codes, ['invalid-input-response', 'missing-input-response'])) {
+                    // Google returns this for both causes.
+                    $message = $this->__('Google could not verify this check. Either the secret key is wrong, or the two keys do not belong to the same reCAPTCHA registration. Copy both keys from the same site in the Google admin console.');
+                }
+
+                if (! empty($codes)) {
+                    $message .= ' ' . sprintf($this->__('(Google reported: %1$s)'), implode(', ', $codes));
+                }
+
+                $statusData = $this->SaveCaptchaKeysStatus($site_key, $secret_key, ($is_key_failure ? false : null));
+
+                $apiResponse->SetResponse(false, $message, $statusData);
+
+                echo wp_json_encode($apiResponse);
+
+                return;
+            }
+
+            // A v2 key verifies but carries no score.
+            if (! isset($result['score'])) {
+                $statusData = $this->SaveCaptchaKeysStatus($site_key, $secret_key, false);
+
+                $apiResponse->SetResponse(false, $this->__('These keys work, but they are reCAPTCHA v2 keys, not v3. Google returned no score, so this site cannot use them.'), $statusData);
+
+                echo wp_json_encode($apiResponse);
+
+                return;
+            }
+
+            $hostname = isset($result['hostname']) ? (string) $result['hostname'] : '';
+            $site_host = (string) wp_parse_url(home_url(), PHP_URL_HOST);
+
+            if ($hostname && $site_host && (strtolower($hostname) !== strtolower($site_host))) {
+                $statusData = $this->SaveCaptchaKeysStatus($site_key, $secret_key, false);
+
+                $apiResponse->SetResponse(false, sprintf($this->__('Both keys are valid, but Google reported the hostname as %1$s while this site is %2$s. Requests would be refused. Please register %2$s for this key.'), $hostname, $site_host), $statusData);
+
+                echo wp_json_encode($apiResponse);
+
+                return;
+            }
+
+            $message = sprintf(
+                $this->__('Both keys are valid for %1$s.'),
+                ($hostname ? $hostname : $site_host)
+            );
+
+            $statusData = $this->SaveCaptchaKeysStatus($site_key, $secret_key, true);
+
+            $apiResponse->SetResponse(true, $message, $statusData);
+        }
+
+        echo wp_json_encode($apiResponse);
+    }
+
+    protected function SaveCaptchaKeysStatus($site_key = '', $secret_key = '', $status = false)
+    {
+        if (null === $status) {
+            return null;
+        }
+
+        $fingerprint = Apbd_wps_settings::GetCaptchaKeysFingerprint($site_key, $secret_key);
+
+        if (1 > strlen($fingerprint)) {
+            return null;
+        }
+
+        $verified_keys = (string) $this->GetOption('recaptcha_v3_verified_keys', '');
+        $beforeSave = $this->options;
+
+        if ($status) {
+            $this->AddIntoOption('recaptcha_v3_verified_keys', $fingerprint);
+            $this->AddIntoOption('recaptcha_v3_verified_at', time());
+        } elseif (hash_equals($verified_keys, $fingerprint)) {
+            // A pair that was known good has just failed.
+            $this->AddIntoOption('recaptcha_v3_verified_keys', '');
+            $this->AddIntoOption('recaptcha_v3_verified_at', 0);
+        } else {
+            return null;
+        }
+
+        if (($beforeSave !== $this->options) && ! $this->UpdateOption()) {
+            return null;
+        }
+
+        return $this->GetCaptchaKeysStatusData();
+    }
+
+    protected function GetCaptchaKeysStatusData()
+    {
+        $fingerprint = Apbd_wps_settings::GetCaptchaKeysFingerprint(
+            $this->GetOption('recaptcha_v3_site_key', ''),
+            $this->GetOption('recaptcha_v3_secret_key', '')
+        );
+
+        $verified_keys = (string) $this->GetOption('recaptcha_v3_verified_keys', '');
+        $verified_at = absint($this->GetOption('recaptcha_v3_verified_at', 0));
+
+        $status = ((1 <= strlen($fingerprint)) && (1 <= strlen($verified_keys)) && hash_equals($verified_keys, $fingerprint));
+
+        return [
+            'recaptcha_v3_keys_status' => $status,
+            'recaptcha_v3_verified_at' => (($status && $verified_at) ? wp_date(get_option('date_format') . ' ' . get_option('time_format'), $verified_at) : ''),
+        ];
     }
 
     public function AjaxRequestCallbackApiKeysOpenAI()
@@ -6267,15 +6576,45 @@ Options -Indexes -ExecCGI
             'Ticket Tags' => $core->__('Ticket Tags'),
             'When checked, the email notification will only be sent when a new ticket is created.' => $core->__('When checked, the email notification will only be sent when a new ticket is created.'),
             'When checked, the portal notice will only appear on ticket creation and reply forms.' => $core->__('When checked, the portal notice will only appear on ticket creation and reply forms.'),
-            'Your permalink structure is set to Plain. The ticket portal requires pretty permalinks to work properly. Please' => $core->__('Your permalink structure is set to Plain. The ticket portal requires pretty permalinks to work properly. Please'),
+            'Your permalink structure is set to Plain. Support Genix works with any permalink structure, but pretty permalinks give your tickets and knowledge base cleaner URLs. You can' => $core->__('Your permalink structure is set to Plain. Support Genix works with any permalink structure, but pretty permalinks give your tickets and knowledge base cleaner URLs. You can'),
+            'any time.' => $core->__('any time.'),
             'attribute to pass custom data (JSON recommended) that will be visible in chat history.' => $core->__('attribute to pass custom data (JSON recommended) that will be visible in chat history.'),
-            'before continuing.' => $core->__('before continuing.'),
             'e.g., Always greet customers by name. We are a hosting company — focus on server-related solutions. Avoid suggesting customers contact other providers. Always include relevant documentation links when available.' => $core->__('e.g., Always greet customers by name. We are a hosting company — focus on server-related solutions. Avoid suggesting customers contact other providers. Always include relevant documentation links when available.'),
             'e.g., Always respond in a friendly and professional tone. We are a SaaS company that provides project management tools. Focus on helping users with onboarding and feature usage. Avoid discussing competitor products.' => $core->__('e.g., Always respond in a friendly and professional tone. We are a SaaS company that provides project management tools. Focus on helping users with onboarding and feature usage. Avoid discussing competitor products.'),
             'e.g., Write documentation for a technical audience familiar with web development. Use clear headings and code examples where applicable. Focus on practical how-to guides rather than conceptual explanations.' => $core->__('e.g., Write documentation for a technical audience familiar with web development. Use clear headings and code examples where applicable. Focus on practical how-to guides rather than conceptual explanations.'),
             'hCaptcha' => $core->__('hCaptcha'),
             'update your permalink settings' => $core->__('update your permalink settings'),
             'Use the AI Voice selected above instead of agent\'s default voice. Requires "Voice" override to be enabled in ElevenLabs Agent Security settings.' => $core->__('Use the AI Voice selected above instead of agent\'s default voice. Requires "Voice" override to be enabled in ElevenLabs Agent Security settings.'),
+            'Recommended Plugins' => $core->__('Recommended Plugins'),
+            'Recommendation' => $core->__('Recommendation'),
+            'Extend your site with these trusted companion plugins.' => $core->__('Extend your site with these trusted companion plugins.'),
+            'Install Now' => $core->__('Install Now'),
+            'Activated' => $core->__('Activated'),
+            '%s Installations' => $core->__('%s Installations'),
+            'Newly Launched' => $core->__('Newly Launched'),
+            '%s installed.' => $core->__('%s installed.'),
+            '%s activated.' => $core->__('%s activated.'),
+            'Install failed.' => $core->__('Install failed.'),
+            'Activation failed.' => $core->__('Activation failed.'),
+            'Failed to load the recommended plugins.' => $core->__('Failed to load the recommended plugins.'),
+            'Boost' => $core->__('Boost'),
+            'Enable & Continue' => $core->__('Enable & Continue'),
+            'Boost your site with our plugins' => $core->__('Boost your site with our plugins'),
+            'Choose what you need — deactivate any time.' => $core->__('Choose what you need — deactivate any time.'),
+            'Enabling… (%1$d/%2$d)' => $core->__('Enabling… (%1$d/%2$d)'),
+            'Waiting…' => $core->__('Waiting…'),
+            'Installing…' => $core->__('Installing…'),
+            'Activating…' => $core->__('Activating…'),
+            'Enabled' => $core->__('Enabled'),
+            'Failed' => $core->__('Failed'),
+            '%d plugins enabled.' => $core->__('%d plugins enabled.'),
+            '%d plugins could not be enabled.' => $core->__('%d plugins could not be enabled.'),
+            'Verify Now' => $core->__('Verify Now'),
+            'These keys are verified.' => $core->__('These keys are verified.'),
+            'These keys were verified on %s.' => $core->__('These keys were verified on %s.'),
+            'These keys have not been checked yet.' => $core->__('These keys have not been checked yet.'),
+            'Could not verify the keys.' => $core->__('Could not verify the keys.'),
+            'Please fill in both the site key and the secret key first.' => $core->__('Please fill in both the site key and the secret key first.'),
         ];
 
         return $texts;

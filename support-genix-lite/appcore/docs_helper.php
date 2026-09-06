@@ -253,3 +253,213 @@ if (!function_exists("sgkb_render_breadcrumbs")) {
         echo '</nav>';
     }
 }
+
+if (!function_exists('sgkb_get_chatbot_only_ids')) {
+    function sgkb_get_chatbot_only_ids()
+    {
+        static $ids = null;
+
+        if (null !== $ids) {
+            return $ids;
+        }
+
+        global $wpdb;
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- single indexed lookup, cached in a static for the request.
+        $rows = $wpdb->get_col(
+            $wpdb->prepare(
+                "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value = %s",
+                'only_for_chatbot',
+                '1'
+            )
+        );
+
+        $ids = array_values(array_unique(array_map('absint', (array) $rows)));
+
+        return $ids;
+    }
+}
+
+if (!function_exists('sgkb_exclude_chatbot_only')) {
+    function sgkb_exclude_chatbot_only($args = array())
+    {
+        $ids = sgkb_get_chatbot_only_ids();
+
+        if (empty($ids)) {
+            return $args;
+        }
+
+        if (!empty($args['post__in'])) {
+            $remaining = array_values(array_diff(array_map('absint', (array) $args['post__in']), $ids));
+            $args['post__in'] = !empty($remaining) ? $remaining : array(0);
+
+            return $args;
+        }
+
+        $exclude = isset($args['post__not_in']) && is_array($args['post__not_in'])
+            ? array_merge($args['post__not_in'], $ids)
+            : $ids;
+
+        $args['post__not_in'] = array_values(array_unique(array_map('absint', $exclude)));
+
+        return $args;
+    }
+}
+
+if (!function_exists('sgkb_get_docs_grouped_by_term')) {
+    function sgkb_get_docs_grouped_by_term($term_ids, $taxonomy, $per_term = 0, $args = array(), $include_children = false, $exclude_mode = 'ids')
+    {
+        $term_ids = array_values(array_unique(array_filter(array_map('absint', (array) $term_ids))));
+
+        $buckets = array();
+        foreach ($term_ids as $term_id) {
+            $buckets[$term_id] = array();
+        }
+
+        if (empty($term_ids)) {
+            return $buckets;
+        }
+
+        $defaults = array(
+            'post_type' => 'sgkb-docs',
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'suppress_filters' => false,
+            'no_found_rows' => true,
+            'ignore_sticky_posts' => true,
+            'update_post_term_cache' => true,
+            'tax_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- bucketing helper, single taxonomy clause.
+                array(
+                    'taxonomy' => $taxonomy,
+                    'field' => 'term_id',
+                    'terms' => $term_ids,
+                    'include_children' => (bool) $include_children,
+                ),
+            ),
+        );
+
+        $extra_tax = isset($args['tax_query']) && is_array($args['tax_query']) ? $args['tax_query'] : array();
+        unset($args['tax_query']);
+
+        $query_args = array_merge($defaults, $args);
+
+        if (!empty($extra_tax)) {
+            $tax_query = $query_args['tax_query'];
+
+            foreach ($extra_tax as $key => $clause) {
+                if ('relation' === $key || !is_array($clause)) {
+                    continue;
+                }
+
+                $tax_query[] = $clause;
+            }
+
+            $tax_query['relation'] = 'AND';
+            $query_args['tax_query'] = $tax_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- bucketing helper.
+        }
+
+        if ('not_exists' === $exclude_mode) {
+            $meta_query = isset($query_args['meta_query']) && is_array($query_args['meta_query']) ? $query_args['meta_query'] : array();
+            $meta_query[] = array(
+                'key' => 'only_for_chatbot',
+                'compare' => 'NOT EXISTS',
+            );
+            $query_args['meta_query'] = $meta_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- single keyed clause, no OR group.
+        } else {
+            $query_args = sgkb_exclude_chatbot_only($query_args);
+        }
+
+        $query = new WP_Query($query_args);
+
+        if (empty($query->posts)) {
+            return $buckets;
+        }
+
+        // `fields => ids` yields plain IDs; anything else yields WP_Post objects.
+        $is_id_list = isset($query_args['fields']) && 'ids' === $query_args['fields'];
+        $post_ids = $is_id_list ? array_map('absint', $query->posts) : wp_list_pluck($query->posts, 'ID');
+
+        $by_post = array();
+
+        if ($is_id_list) {
+            // No post objects, so nothing primed the object term cache.
+            $relations = wp_get_object_terms($post_ids, $taxonomy, array('fields' => 'all_with_object_id'));
+
+            if (is_wp_error($relations)) {
+                return $buckets;
+            }
+
+            foreach ($relations as $relation) {
+                $by_post[(int) $relation->object_id][] = (int) $relation->term_id;
+            }
+        } else {
+            // WP_Query already primed the object term cache in one query; read it.
+            foreach ($post_ids as $post_id) {
+                $terms = get_the_terms($post_id, $taxonomy);
+
+                if (is_wp_error($terms) || empty($terms)) {
+                    continue;
+                }
+
+                $by_post[$post_id] = wp_list_pluck($terms, 'term_id');
+            }
+        }
+
+        $descendants = array();
+        if ($include_children) {
+            foreach ($term_ids as $term_id) {
+                $children = get_term_children($term_id, $taxonomy);
+                $descendants[$term_id] = is_wp_error($children) ? array() : array_map('absint', $children);
+            }
+        }
+
+        foreach ($query->posts as $post) {
+            $post_id = $is_id_list ? (int) $post : (int) $post->ID;
+
+            if (empty($by_post[$post_id])) {
+                continue;
+            }
+
+            $post_terms = $by_post[$post_id];
+
+            foreach ($term_ids as $term_id) {
+                $matches = in_array($term_id, $post_terms, true);
+
+                if (!$matches && !empty($descendants[$term_id])) {
+                    $matches = (bool) array_intersect($descendants[$term_id], $post_terms);
+                }
+
+                if (!$matches) {
+                    continue;
+                }
+
+                if ($per_term > 0 && count($buckets[$term_id]) >= $per_term) {
+                    continue;
+                }
+
+                $buckets[$term_id][] = $post;
+            }
+        }
+
+        return $buckets;
+    }
+}
+
+if (!function_exists('sgkb_get_term_doc_counts')) {
+    function sgkb_get_term_doc_counts($term_ids, $taxonomy, $include_children = false, $exclude_mode = 'ids', $args = array())
+    {
+        $args = is_array($args) ? $args : array();
+        $args['fields'] = 'ids';
+
+        $buckets = sgkb_get_docs_grouped_by_term($term_ids, $taxonomy, 0, $args, $include_children, $exclude_mode);
+
+        $counts = array();
+        foreach ($buckets as $term_id => $posts) {
+            $counts[$term_id] = count($posts);
+        }
+
+        return $counts;
+    }
+}

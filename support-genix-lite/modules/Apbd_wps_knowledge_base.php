@@ -684,10 +684,6 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         $this->taxonomy_docs_category();
         $this->taxonomy_docs_tag();
 
-        add_filter('posts_join', array($this, 'custom_join_query'), 10, 2);
-        add_filter('posts_fields', array($this, 'custom_fields_query'), 10, 2);
-        add_filter('posts_groupby', array($this, 'custom_groupby_query'), 10, 2);
-
         add_filter('template_include', array($this, 'custom_docs_template'));
         add_filter('post_type_link', [$this, 'custom_docs_permalink'], 10, 3);
 
@@ -1174,22 +1170,6 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
                 $query->set('order', $archive_docs_order);
             }
 
-            // Always filter out posts that are only for chatbot from archive pages
-            $meta_query = $query->get('meta_query') ?: array();
-            $meta_query[] = array(
-                'relation' => 'OR',
-                array(
-                    'key' => 'only_for_chatbot',
-                    'compare' => 'NOT EXISTS'
-                ),
-                array(
-                    'key' => 'only_for_chatbot',
-                    'value' => '1',
-                    'compare' => '!='
-                )
-            );
-            $query->set('meta_query', $meta_query);
-
             if (is_tax('sgkb-docs-category')) {
                 $tax_query = isset($query->tax_query) ? $query->tax_query : null;
                 $tax_query = isset($tax_query->queries) ? $tax_query->queries : [];
@@ -1503,7 +1483,7 @@ class Apbd_wps_knowledge_base extends ApbdWpsBaseModuleLite
         $author_slug = get_the_author_meta('user_nicename', $post->post_author);
 
         // Get category slug (always, regardless of Multiple KB setting)
-        $categories = wp_get_object_terms($post->ID, 'sgkb-docs-category');
+        $categories = get_the_terms($post->ID, 'sgkb-docs-category');
 
         if (!is_wp_error($categories) && is_array($categories) && !empty($categories)) {
             $category_item = isset($categories[0]) ? $categories[0] : null;

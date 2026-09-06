@@ -42,40 +42,18 @@ $all_subcategories = get_terms(array(
 // Filter out subcategories that only have chatbot-only posts
 $subcategories = array();
 if (!empty($all_subcategories)) {
-    foreach ($all_subcategories as $subcategory) {
-        $non_chatbot_posts = new WP_Query(array(
-            'post_type' => 'sgkb-docs',
-            'post_status' => 'publish',
-            'posts_per_page' => 1,
-            'fields' => 'ids',
-            'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                array(
-                    'taxonomy' => 'sgkb-docs-category',
-                    'field' => 'term_id',
-                    'terms' => $subcategory->term_id,
-                    'include_children' => false,
-                )
-            ),
-            'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                'relation' => 'OR',
-                array(
-                    'key' => 'only_for_chatbot',
-                    'compare' => 'NOT EXISTS'
-                ),
-                array(
-                    'key' => 'only_for_chatbot',
-                    'value' => '1',
-                    'compare' => '!='
-                )
-            )
-        ));
+    // One bucketed query for every subcategory instead of one query each.
+    $subcategory_counts = sgkb_get_term_doc_counts(
+        wp_list_pluck($all_subcategories, 'term_id'),
+        'sgkb-docs-category'
+    );
 
-        if ($non_chatbot_posts->found_posts > 0) {
+    foreach ($all_subcategories as $subcategory) {
+        if (!empty($subcategory_counts[$subcategory->term_id])) {
             // Update the count to reflect only non-chatbot posts
-            $subcategory->count = $non_chatbot_posts->found_posts;
+            $subcategory->count = (int) $subcategory_counts[$subcategory->term_id];
             $subcategories[] = $subcategory;
         }
-        wp_reset_postdata();
     }
 }
 
@@ -92,35 +70,14 @@ $all_related_categories = get_terms(array(
 // Filter out categories that only have chatbot-only posts
 $related_categories = array();
 if (!empty($all_related_categories)) {
-    foreach ($all_related_categories as $related) {
-        $non_chatbot_posts = new WP_Query(array(
-            'post_type' => 'sgkb-docs',
-            'post_status' => 'publish',
-            'posts_per_page' => 1,
-            'fields' => 'ids',
-            'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                array(
-                    'taxonomy' => 'sgkb-docs-category',
-                    'field' => 'term_id',
-                    'terms' => $related->term_id,
-                    'include_children' => false,
-                )
-            ),
-            'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                'relation' => 'OR',
-                array(
-                    'key' => 'only_for_chatbot',
-                    'compare' => 'NOT EXISTS'
-                ),
-                array(
-                    'key' => 'only_for_chatbot',
-                    'value' => '1',
-                    'compare' => '!='
-                )
-            )
-        ));
+    // One bucketed query for every related category instead of one query each.
+    $related_category_counts = sgkb_get_term_doc_counts(
+        wp_list_pluck($all_related_categories, 'term_id'),
+        'sgkb-docs-category'
+    );
 
-        if ($non_chatbot_posts->found_posts > 0) {
+    foreach ($all_related_categories as $related) {
+        if (!empty($related_category_counts[$related->term_id])) {
             $related_categories[] = $related;
             // Limit to 5 categories
             if (count($related_categories) >= 5) {
@@ -239,35 +196,8 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                         <?php foreach ($subcategories as $subcategory) :
                                             $sub_color = get_term_meta($subcategory->term_id, '_sg_color', true) ?: '#7229dd';
 
-                                            // Get actual count of non-chatbot posts for this subcategory
-                                            $sub_non_chatbot_query = new WP_Query(array(
-                                                'post_type' => 'sgkb-docs',
-                                                'post_status' => 'publish',
-                                                'posts_per_page' => -1,
-                                                'fields' => 'ids',
-                                                'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                                                    array(
-                                                        'taxonomy' => 'sgkb-docs-category',
-                                                        'field' => 'term_id',
-                                                        'terms' => $subcategory->term_id,
-                                                        'include_children' => false,
-                                                    )
-                                                ),
-                                                'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                                                    'relation' => 'OR',
-                                                    array(
-                                                        'key' => 'only_for_chatbot',
-                                                        'compare' => 'NOT EXISTS'
-                                                    ),
-                                                    array(
-                                                        'key' => 'only_for_chatbot',
-                                                        'value' => '1',
-                                                        'compare' => '!='
-                                                    )
-                                                )
-                                            ));
-                                            $sub_count = $sub_non_chatbot_query->found_posts;
-                                            wp_reset_postdata();
+                                            // Already counted when $subcategories was built.
+                                            $sub_count = (int) $subcategory->count;
                                         ?>
                                             <li class="sgkb-subcategory-item">
                                                 <a href="<?php echo esc_url(get_term_link($subcategory)); ?>" class="sgkb-subcategory-link">
@@ -288,36 +218,10 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                     <h3 class="sgkb-sidebar-title"><?php esc_html_e('Related Categories', 'support-genix-lite'); ?></h3>
                                     <ul class="sgkb-related-list">
                                         <?php foreach ($related_categories as $related) :
-                                            // Get the actual count of non-chatbot posts for this category
-                                            $count_args = array(
-                                                'post_type' => 'sgkb-docs',
-                                                'post_status' => 'publish',
-                                                'posts_per_page' => -1,
-                                                'fields' => 'ids',
-                                                'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                                                    array(
-                                                        'taxonomy' => 'sgkb-docs-category',
-                                                        'field' => 'term_id',
-                                                        'terms' => $related->term_id,
-                                                        'include_children' => false,
-                                                    )
-                                                ),
-                                                'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                                                    'relation' => 'OR',
-                                                    array(
-                                                        'key' => 'only_for_chatbot',
-                                                        'compare' => 'NOT EXISTS'
-                                                    ),
-                                                    array(
-                                                        'key' => 'only_for_chatbot',
-                                                        'value' => '1',
-                                                        'compare' => '!='
-                                                    )
-                                                )
-                                            );
-                                            $count_query = new WP_Query($count_args);
-                                            $related_count = $count_query->found_posts;
-                                            wp_reset_postdata();
+                                            // Read the bucketed map built when $related_categories was filtered.
+                                            $related_count = isset($related_category_counts[$related->term_id])
+                                                ? (int) $related_category_counts[$related->term_id]
+                                                : 0;
 
                                             // Get category color
                                             $related_color = get_term_meta($related->term_id, '_sg_color', true) ?: '#7229dd';

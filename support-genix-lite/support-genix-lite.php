@@ -1,16 +1,18 @@
 <?php
-/*
-Plugin Name: Support Genix Lite
-Plugin URI: http://supportgenix.com
-Description: Helpdesk, AI Chatbot, Knowledge Base & Customer Support Ticketing System.
-Version: 1.4.53
-Author: Support Genix
-Author URI: https://supportgenix.com
-License: GPL v2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: support-genix-lite
-Domain Path: /languages/
-*/
+/**
+ * Plugin Name: Support Genix Lite
+ * Plugin URI: https://supportgenix.com
+ * Description: Helpdesk, AI Chatbot, Knowledge Base & Customer Support Ticketing System.
+ * Version: 1.4.54
+ * Author: Devitems
+ * Author URI: https://devitems.com
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: support-genix-lite
+ * Domain Path: /languages
+ * Requires at least: 6.0
+ * Requires PHP: 7.4
+ */
 
 defined('ABSPATH') || exit;
 
@@ -18,7 +20,7 @@ global $wpdb;
 $apbdWpSupportLiteLoad = false;
 $apbdWpSupportLiteFile = __FILE__;
 $apbdWpSupportLitePath = dirname($apbdWpSupportLiteFile);
-$apbdWpSupportLiteVersion = '1.4.53';
+$apbdWpSupportLiteVersion = '1.4.54';
 
 if (!defined('SUPPORT_GENIX_LITE_FILE_PATH')) {
     define('SUPPORT_GENIX_LITE_FILE_PATH', $apbdWpSupportLitePath);

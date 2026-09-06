@@ -169,6 +169,34 @@ if (!function_exists('ApbdWps_GetFilesInDirectory')) {
     }
 }
 
+if (!function_exists('ApbdWps_GetAppManifest')) {
+    function ApbdWps_GetAppManifest($dist_path)
+    {
+        static $manifests = [];
+
+        $dist_path = untrailingslashit($dist_path);
+
+        if (isset($manifests[$dist_path])) {
+            return $manifests[$dist_path];
+        }
+
+        $file = $dist_path . '/manifest.php';
+        $data = is_readable($file) ? require $file : [];
+
+        if (!is_array($data)) {
+            $data = [];
+        }
+
+        // Interpolated into a URL: keep to a basename so nothing traverses out.
+        $manifests[$dist_path] = [
+            'js' => isset($data['js']) && is_string($data['js']) ? basename($data['js']) : '',
+            'css' => isset($data['css']) && is_string($data['css']) ? basename($data['css']) : '',
+        ];
+
+        return $manifests[$dist_path];
+    }
+}
+
 if (!function_exists('ApbdWps_GetFilesBasename')) {
     function ApbdWps_GetFilesBasename($file = '')
     {

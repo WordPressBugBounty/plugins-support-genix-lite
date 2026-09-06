@@ -484,6 +484,13 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
                         'mailbox_settings_data' => 'all',
                         'mailbox_confirm' => 'all',
                         'mailbox_data' => 'read',
+                        // Recommended plugins.
+                        'recommended_plugins' => 'all',
+                        'recommended_plugins_data' => 'all',
+                        'recommended_plugins_boost_data' => 'all',
+                        'recommended_plugins_install' => 'all',
+                        'recommended_plugins_activate' => 'all',
+                        'recommended_plugins_confirm' => 'all',
                         // Report email.
                         'report_email' => 'all',
                         'report_email_confirm' => 'all',
@@ -513,6 +520,7 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
                         'settings_logo' => 'all',
                         'settings_file' => 'all',
                         'settings_captcha' => 'all',
+                        'settings_captcha_verify' => 'all',
                         'settings_status' => 'all',
                         'settings_style' => 'all',
                         'settings_confirm' => 'all',

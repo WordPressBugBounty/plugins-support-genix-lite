@@ -34,24 +34,16 @@ $tag_posts = new WP_Query(array(
     'post_type' => 'sgkb-docs',
     'posts_per_page' => -1,
     'fields' => 'ids',
+    'no_found_rows' => true,
+    'update_post_meta_cache' => false,
+    'update_post_term_cache' => false,
     'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
         array(
             'taxonomy' => 'sgkb-docs-tag',
             'terms' => $current_tag->term_id
         )
     ),
-    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-        'relation' => 'OR',
-        array(
-            'key' => 'only_for_chatbot',
-            'compare' => 'NOT EXISTS'
-        ),
-        array(
-            'key' => 'only_for_chatbot',
-            'value' => '1',
-            'compare' => '!='
-        )
-    )
+    'post__not_in' => sgkb_get_chatbot_only_ids(), // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- avoids the postmeta cross join a `relation => OR` meta_query causes.
 ));
 
 $related_tags = array();
@@ -63,41 +55,19 @@ if ($tag_posts->have_posts()) {
         'exclude' => array($current_tag->term_id)  // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- Small, bounded exclusion set.
     ));
 
+    $related_tag_counts = sgkb_get_term_doc_counts(
+        wp_list_pluck($all_related_tags, 'term_id'),
+        'sgkb-docs-tag'
+    );
+
     // Filter and limit related tags
     foreach ($all_related_tags as $related_tag) {
         if ($related_tag->term_id === $current_tag->term_id) continue;
 
-        // Check if tag has non-chatbot posts
-        $non_chatbot_posts = new WP_Query(array(
-            'post_type' => 'sgkb-docs',
-            'post_status' => 'publish',
-            'posts_per_page' => 1,
-            'fields' => 'ids',
-            'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                array(
-                    'taxonomy' => 'sgkb-docs-tag',
-                    'terms' => $related_tag->term_id
-                )
-            ),
-            'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                'relation' => 'OR',
-                array(
-                    'key' => 'only_for_chatbot',
-                    'compare' => 'NOT EXISTS'
-                ),
-                array(
-                    'key' => 'only_for_chatbot',
-                    'value' => '1',
-                    'compare' => '!='
-                )
-            )
-        ));
-
-        if ($non_chatbot_posts->have_posts()) {
+        if (!empty($related_tag_counts[$related_tag->term_id])) {
             $related_tags[] = $related_tag;
             if (count($related_tags) >= 5) break; // Limit to 5 related tags
         }
-        wp_reset_postdata();
     }
 }
 wp_reset_postdata();
@@ -149,7 +119,9 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                     $non_chatbot_query = new WP_Query(array(
                                         'post_type' => 'sgkb-docs',
                                         'post_status' => 'publish',
-                                        'posts_per_page' => -1,
+                                        'posts_per_page' => 1,
+                                        'update_post_meta_cache' => false,
+                                        'update_post_term_cache' => false,
                                         'fields' => 'ids',
                                         'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
                                             array(
@@ -158,18 +130,7 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                                 'terms' => $current_tag->term_id,
                                             )
                                         ),
-                                        'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                                            'relation' => 'OR',
-                                            array(
-                                                'key' => 'only_for_chatbot',
-                                                'compare' => 'NOT EXISTS'
-                                            ),
-                                            array(
-                                                'key' => 'only_for_chatbot',
-                                                'value' => '1',
-                                                'compare' => '!='
-                                            )
-                                        )
+                                        'post__not_in' => sgkb_get_chatbot_only_ids(), // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- avoids the postmeta cross join a `relation => OR` meta_query causes.
                                     ));
                                     $post_count = $non_chatbot_query->found_posts;
                                     wp_reset_postdata();
@@ -232,35 +193,10 @@ if (!function_exists('sgkb_adjust_brightness')) {
                                     <h3 class="sgkb-sidebar-title"><?php esc_html_e('Related Tags', 'support-genix-lite'); ?></h3>
                                     <ul class="sgkb-related-list">
                                         <?php foreach ($related_tags as $related) :
-                                            // Get the actual count of non-chatbot posts for this tag
-                                            $count_args = array(
-                                                'post_type' => 'sgkb-docs',
-                                                'post_status' => 'publish',
-                                                'posts_per_page' => -1,
-                                                'fields' => 'ids',
-                                                'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                                                    array(
-                                                        'taxonomy' => 'sgkb-docs-tag', // Changed to tag
-                                                        'field' => 'term_id',
-                                                        'terms' => $related->term_id,
-                                                    )
-                                                ),
-                                                'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                                                    'relation' => 'OR',
-                                                    array(
-                                                        'key' => 'only_for_chatbot',
-                                                        'compare' => 'NOT EXISTS'
-                                                    ),
-                                                    array(
-                                                        'key' => 'only_for_chatbot',
-                                                        'value' => '1',
-                                                        'compare' => '!='
-                                                    )
-                                                )
-                                            );
-                                            $count_query = new WP_Query($count_args);
-                                            $related_count = $count_query->found_posts;
-                                            wp_reset_postdata();
+                                            // Read the bucketed map built when $related_tags was filtered.
+                                            $related_count = isset($related_tag_counts[$related->term_id])
+                                                ? (int) $related_tag_counts[$related->term_id]
+                                                : 0;
 
                                             // Get tag color (might not exist, use default)
                                             $related_color = get_term_meta($related->term_id, '_sg_color', true) ?: '#7229dd';

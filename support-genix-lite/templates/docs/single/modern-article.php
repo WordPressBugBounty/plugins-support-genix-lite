@@ -84,20 +84,9 @@ if ($show_toc === 'Y') {
 $related_args = [
     'post_type' => 'sgkb-docs',
     'posts_per_page' => 5,
-    'post__not_in' => [$post->ID],  // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- Small, bounded exclusion set.
+    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- avoids the postmeta cross join a `relation => OR` meta_query causes.
+    'post__not_in' => array_merge([$post->ID], sgkb_get_chatbot_only_ids()),
     'orderby' => 'rand',
-    'meta_query' => [  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-        'relation' => 'OR',
-        [
-            'key' => 'only_for_chatbot',
-            'compare' => 'NOT EXISTS'
-        ],
-        [
-            'key' => 'only_for_chatbot',
-            'value' => '1',
-            'compare' => '!='
-        ]
-    ]
 ];
 
 if ($primary_category) {
@@ -193,59 +182,41 @@ $related_articles = new WP_Query($related_args);
                 $all_categories = array();
             }
 
-            // Filter categories and get their articles
             if (!empty($all_categories)) {
-                foreach ($all_categories as $cat) {
-                    // Build tax query
-                    $tax_query = array(
-                        array(
-                            'taxonomy' => 'sgkb-docs-category',
-                            'field' => 'term_id',
-                            'terms' => $cat->term_id
-                        )
-                    );
+                $sidebar_buckets = sgkb_get_docs_grouped_by_term(
+                    wp_list_pluck($all_categories, 'term_id'),
+                    'sgkb-docs-category',
+                    200,
+                    array(
+                        'posts_per_page' => -1,
+                        'orderby' => array('menu_order' => 'ASC', 'ID' => 'ASC'),
+                        'update_post_meta_cache' => false,
+                    ),
+                    true
+                );
 
-                    // Get articles for this category
-                    $cat_articles = new WP_Query(array(
-                        'post_type' => 'sgkb-docs',
-                        'posts_per_page' => 200,
-                        'post_status' => 'publish',
-                        'tax_query' => $tax_query,  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                        'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                            'relation' => 'OR',
-                            array(
-                                'key' => 'only_for_chatbot',
-                                'compare' => 'NOT EXISTS'
-                            ),
-                            array(
-                                'key' => 'only_for_chatbot',
-                                'value' => '1',
-                                'compare' => '!='
-                            )
-                        ),
-                        'orderby' => 'menu_order',
-                        'order' => 'ASC'
-                    ));
+                foreach ($all_categories as $cat) {
+                    $bucket = isset($sidebar_buckets[$cat->term_id]) ? $sidebar_buckets[$cat->term_id] : array();
 
                     // Only include categories that have articles
-                    if ($cat_articles->have_posts()) {
-                        $articles = array();
-                        while ($cat_articles->have_posts()) {
-                            $cat_articles->the_post();
-                            $articles[] = array(
-                                'id' => get_the_ID(),
-                                'title' => get_the_title(),
-                                'permalink' => get_permalink()
-                            );
-                        }
-                        wp_reset_postdata();
+                    if (empty($bucket)) {
+                        continue;
+                    }
 
-                        $sidebar_categories[] = array(
-                            'term' => $cat,
-                            'articles' => $articles,
-                            'is_current' => ($primary_category && $primary_category->term_id === $cat->term_id)
+                    $articles = array();
+                    foreach ($bucket as $bucket_post) {
+                        $articles[] = array(
+                            'id' => $bucket_post->ID,
+                            'title' => get_the_title($bucket_post),
+                            'permalink' => get_permalink($bucket_post)
                         );
                     }
+
+                    $sidebar_categories[] = array(
+                        'term' => $cat,
+                        'articles' => $articles,
+                        'is_current' => ($primary_category && $primary_category->term_id === $cat->term_id)
+                    );
                 }
             }
 
@@ -362,21 +333,13 @@ $related_articles = new WP_Query($related_args);
                                     'terms' => $primary_category->term_id
                                 ]
                             ],
-                            'meta_query' => [  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                                'relation' => 'OR',
-                                [
-                                    'key' => 'only_for_chatbot',
-                                    'compare' => 'NOT EXISTS'
-                                ],
-                                [
-                                    'key' => 'only_for_chatbot',
-                                    'value' => '1',
-                                    'compare' => '!='
-                                ]
-                            ],
+                            'post__not_in' => sgkb_get_chatbot_only_ids(), // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- avoids the postmeta cross join a `relation => OR` meta_query causes.
                             'orderby' => 'menu_order',
                             'order' => 'ASC',
-                            'fields' => 'ids'
+                            'fields' => 'ids',
+                            'no_found_rows' => true,
+                            'update_post_meta_cache' => false,
+                            'update_post_term_cache' => false,
                         ]);
 
                         $article_ids = $category_articles->posts;

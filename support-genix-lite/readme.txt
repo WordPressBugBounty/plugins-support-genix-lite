@@ -1,13 +1,12 @@
 === Support Genix – Helpdesk, AI Chatbot, Knowledge Base & Customer Support Ticketing System ===
 Contributors: devitemsllc, nazmulhudadev, aslamhasib
-Author link: https://supportgenix.com
 Tags: helpdesk, support ticket, knowledge base, ai chatbot, customer support
 Requires at least: 6.0
 Tested up to: 7.1
+Stable tag: 1.4.54
 Requires PHP: 7.4
-Stable tag: 1.4.53
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 AI-powered helpdesk & support ticket system with chatbot, knowledge base, and smart automation for WordPress.
 
@@ -467,6 +466,12 @@ Support Genix supports **OpenAI (GPT)** and **Claude (Anthropic)** for AI-powere
 
 
 == Changelog ==
+
+= Version: 1.4.54 - Date: 06 September, 2026 =
+* Added: Verify button for the reCAPTCHA v3 keys, so a wrong or mismatched key pair is reported before it blocks visitors.
+* Fixed: Support portal, AI Chatbot and Knowledge Base not loading on sites using the Plain permalink structure.
+* Improved: Knowledge Base archive and article pages load significantly faster on large sites.
+* Fixed: Minor bugs and issues to enhance functionality and user experience.
 
 = Version: 1.4.53 - Date: 23 August, 2026 =
 * Security: Hardened guest ticket link authentication and token generation.

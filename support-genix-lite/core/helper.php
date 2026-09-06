@@ -320,6 +320,19 @@ if (!function_exists("SUPPORT_GENIX_AdminMenu")) {
         }
 
         if ($isAdminUser) {
+            $recommendationSeparator = '<style>#adminmenu li#toplevel_page_support-genix ul.wp-submenu a[href="admin.php?page=support-genix#/recommendation"] {border-top: 2px solid rgba(240, 246, 252, .2); margin-top: 5px; padding-top: 8px;}</style>';
+
+            add_submenu_page(
+                $coreObject->pluginBaseName,
+                $coreObject->__('Recommended Plugins'),
+                $recommendationSeparator . $coreObject->__('Recommendation'),
+                $capability,
+                $coreObject->pluginBaseName . '#/recommendation',
+                [$coreObject, 'OptionFormBase']
+            );
+        }
+
+        if ($isAdminUser) {
             add_submenu_page(
                 $coreObject->pluginBaseName,
                 $coreObject->__('Upgrade to Pro'),

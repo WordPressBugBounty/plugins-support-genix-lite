@@ -12,6 +12,8 @@ class Mapbd_wps_ticket extends ApbdWpsModel
 {
     use Mapbd_wps_ticket_trait;
 
+    const GUEST_TICKET_PARAM = 'sgguestticket';
+
     public $id;
     public $ticket_track_id;
     public $cat_id;
@@ -458,10 +460,24 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             $ticketResObj->iat = time();
             $ticketResObj->exp = time() + Apbd_wps_settings::GetGuestTokenTtl();
             $param = urlencode($encObj->encryptObj($ticketResObj));
-            return site_url("sgnix/?p={$param}");
+            return self::getGuestTicketUrl($param);
         }
         return self::getTicketAdminLink($ticketObj);
     }
+    static function getGuestTicketUrl($param)
+    {
+        return home_url('/?' . self::GUEST_TICKET_PARAM . '=' . $param);
+    }
+
+    static function appendHashRoute($base, $suffix)
+    {
+        if (false === strpos($base, '?')) {
+            $base = trailingslashit($base);
+        }
+
+        return $base . $suffix;
+    }
+
     static function getTicketHotlink($ticketObj)
     {
         // Guests only: registered users get the normal link and sign in themselves.
@@ -472,7 +488,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $page_id = absint(Apbd_wps_settings::GetModuleOption('ticket_page'));
         $page_link = ($page_id ? get_permalink($page_id) : false);
         $link_suffix = '#/ticket/' . $ticketObj->id;
-        $ticket_link = ($page_link ? trailingslashit($page_link) . $link_suffix : trailingslashit(home_url()) . $link_suffix);
+        $ticket_link = ($page_link ? self::appendHashRoute($page_link, $link_suffix) : self::appendHashRoute(home_url(), $link_suffix));
         return $ticket_link;
     }
     static function getOtherTicketLink($ticketObj)
@@ -480,7 +496,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
         $page_id = absint(Apbd_wps_settings::GetModuleOption('ticket_page'));
         $page_link = ($page_id ? get_permalink($page_id) : false);
         $link_suffix = '#/ticket/' . $ticketObj->id;
-        $ticket_link = ($page_link ? trailingslashit($page_link) . $link_suffix : $link_suffix);
+        $ticket_link = ($page_link ? self::appendHashRoute($page_link, $link_suffix) : $link_suffix);
         return $ticket_link;
     }
     static function getCustomFieldsToEmailParams($ticket_id, $params = [])

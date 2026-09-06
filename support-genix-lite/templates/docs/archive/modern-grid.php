@@ -94,64 +94,28 @@ if (is_wp_error($all_categories)) {
     $all_categories = array();
 }
 
-// Filter out categories that only have chatbot-only posts
 $categories = array();
 if (!empty($all_categories)) {
-    foreach ($all_categories as $category) {
-        // Check if this category has any non-chatbot posts
-        $non_chatbot_posts = new WP_Query(array(
-            'post_type' => 'sgkb-docs',
-            'post_status' => 'publish',
-            'posts_per_page' => 1,
-            'fields' => 'ids',
-            'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                array(
-                    'taxonomy' => 'sgkb-docs-category',
-                    'field' => 'term_id',
-                    'terms' => $category->term_id,
-                    'include_children' => false,
-                )
-            ),
-            'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                'relation' => 'OR',
-                array(
-                    'key' => 'only_for_chatbot',
-                    'compare' => 'NOT EXISTS'
-                ),
-                array(
-                    'key' => 'only_for_chatbot',
-                    'value' => '1',
-                    'compare' => '!='
-                )
-            )
-        ));
+    $category_doc_counts = sgkb_get_term_doc_counts(
+        wp_list_pluck($all_categories, 'term_id'),
+        'sgkb-docs-category'
+    );
 
-        // Only include category if it has at least one non-chatbot post
-        if ($non_chatbot_posts->found_posts > 0) {
+    foreach ($all_categories as $category) {
+        if (!empty($category_doc_counts[$category->term_id])) {
             $categories[] = $category;
         }
-        wp_reset_postdata();
     }
 }
 
-// Get stats data - always exclude chatbot-only posts
 $docs_query = new WP_Query(array(
     'post_type' => 'sgkb-docs',
     'post_status' => 'publish',
-    'posts_per_page' => -1,
+    'posts_per_page' => 1,
     'fields' => 'ids',
-    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-        'relation' => 'OR',
-        array(
-            'key' => 'only_for_chatbot',
-            'compare' => 'NOT EXISTS'
-        ),
-        array(
-            'key' => 'only_for_chatbot',
-            'value' => '1',
-            'compare' => '!='
-        )
-    )
+    'update_post_meta_cache' => false,
+    'update_post_term_cache' => false,
+    'post__not_in' => sgkb_get_chatbot_only_ids(), // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- avoids the postmeta cross join a `relation => OR` meta_query causes.
 ));
 $total_docs = $docs_query->found_posts;
 wp_reset_postdata();
@@ -165,18 +129,7 @@ $recent_args = array(
     'orderby' => 'date',
     'order' => 'DESC',
     'suppress_filters' => false, // Allow WPML/Polylang to filter by language
-    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-        'relation' => 'OR',
-        array(
-            'key' => 'only_for_chatbot',
-            'compare' => 'NOT EXISTS'
-        ),
-        array(
-            'key' => 'only_for_chatbot',
-            'value' => '1',
-            'compare' => '!='
-        )
-    )
+    'post__not_in' => sgkb_get_chatbot_only_ids(), // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- avoids the postmeta cross join a `relation => OR` meta_query causes.
 );
 
 $recent_docs = get_posts($recent_args);
@@ -282,6 +235,12 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                         ));
 
                         if (!is_wp_error($nav_categories) && !empty($nav_categories)) :
+                            // One bucketed query covers every nav category and its children.
+                            $nav_counts = sgkb_get_term_doc_counts(
+                                wp_list_pluck($nav_categories, 'term_id'),
+                                'sgkb-docs-category'
+                            );
+
                             foreach ($nav_categories as $nav_cat) :
                                 $nav_link = get_term_link($nav_cat);
                                 if (is_wp_error($nav_link)) continue;
@@ -289,35 +248,7 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                 $nav_icon = get_term_meta($nav_cat->term_id, '_sg_icon', true);
 
                                 // Always calculate correct count excluding chatbot-only posts
-                                $count_args = array(
-                                    'post_type' => 'sgkb-docs',
-                                    'post_status' => 'publish',
-                                    'posts_per_page' => -1,
-                                    'fields' => 'ids',
-                                    'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                                        array(
-                                            'taxonomy' => 'sgkb-docs-category',
-                                            'field' => 'term_id',
-                                            'terms' => $nav_cat->term_id,
-                                            'include_children' => false,
-                                        )
-                                    ),
-                                    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                                        'relation' => 'OR',
-                                        array(
-                                            'key' => 'only_for_chatbot',
-                                            'compare' => 'NOT EXISTS'
-                                        ),
-                                        array(
-                                            'key' => 'only_for_chatbot',
-                                            'value' => '1',
-                                            'compare' => '!='
-                                        )
-                                    )
-                                );
-                                $count_query = new WP_Query($count_args);
-                                $nav_count = $count_query->found_posts;
-                                wp_reset_postdata();
+                                $nav_count = isset($nav_counts[$nav_cat->term_id]) ? (int) $nav_counts[$nav_cat->term_id] : 0;
 
                                 // Skip categories with no non-chatbot posts
                                 if ($nav_count == 0) {
@@ -349,40 +280,17 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                                 $child_link = get_term_link($child_cat);
                                                 if (is_wp_error($child_link)) continue;
 
-                                                // Check if child category has non-chatbot posts
-                                                $child_count_query = new WP_Query(array(
-                                                    'post_type' => 'sgkb-docs',
-                                                    'post_status' => 'publish',
-                                                    'posts_per_page' => 1,
-                                                    'fields' => 'ids',
-                                                    'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                                                        array(
-                                                            'taxonomy' => 'sgkb-docs-category',
-                                                            'field' => 'term_id',
-                                                            'terms' => $child_cat->term_id,
-                                                            'include_children' => false,
-                                                        )
-                                                    ),
-                                                    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                                                        'relation' => 'OR',
-                                                        array(
-                                                            'key' => 'only_for_chatbot',
-                                                            'compare' => 'NOT EXISTS'
-                                                        ),
-                                                        array(
-                                                            'key' => 'only_for_chatbot',
-                                                            'value' => '1',
-                                                            'compare' => '!='
-                                                        )
-                                                    )
-                                                ));
+                                                if (!isset($nav_counts[$child_cat->term_id])) {
+                                                    $nav_counts += sgkb_get_term_doc_counts(
+                                                        array($child_cat->term_id),
+                                                        'sgkb-docs-category'
+                                                    );
+                                                }
 
-                                                if ($child_count_query->found_posts == 0) {
-                                                    wp_reset_postdata();
+                                                if (empty($nav_counts[$child_cat->term_id])) {
                                                     continue;
                                                 }
                                                 $has_valid_children = true;
-                                                wp_reset_postdata();
                                             ?>
                                                 <li class="sgkb-nav-child-item">
                                                     <a href="<?php echo esc_url($child_link); ?>" class="sgkb-nav-child-link">
@@ -544,6 +452,20 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                     ?>
                         <div class="<?php echo esc_attr($category_grid_class); ?>">
                             <?php
+                            $card_buckets = sgkb_get_docs_grouped_by_term(
+                                wp_list_pluck($categories, 'term_id'),
+                                'sgkb-docs-category',
+                                0,
+                                array(
+                                    'posts_per_page' => -1,
+                                    'post_status' => '',
+                                    'orderby' => array('date' => 'DESC', 'ID' => 'DESC'),
+                                    'update_post_meta_cache' => false,
+                                ),
+                                false,
+                                'not_exists'
+                            );
+
                             foreach ($categories as $index => $category) :
                                 $term_id = $category->term_id;
                                 $term_link = get_term_link($category);
@@ -556,50 +478,27 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                 $docs_order = get_term_meta($term_id, '_sg_docs_order', true);
                                 $docs_order = $docs_order ? array_filter(array_unique(array_map('absint', explode(',', $docs_order)))) : [];
 
-                                // Get docs for this category
-                                $docs_args = array(
-                                    'post_type' => 'sgkb-docs',
-                                    'posts_per_page' => $docs_per_category,
-                                    'tax_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                                        array(
-                                            'taxonomy' => 'sgkb-docs-category',
-                                            'field' => 'term_id',
-                                            'terms' => $term_id,
-                                            'operator' => 'IN',
-                                            'include_children' => false,
-                                        )
-                                    ),
-                                    'meta_query' => array(  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                                        array(
-                                            'key' => 'only_for_chatbot',
-                                            'compare' => 'NOT EXISTS'
-                                        )
-                                    )
-                                );
+                                // Get docs for this category out of the bucketed fetch
+                                $category_docs = isset($card_buckets[$term_id]) ? $card_buckets[$term_id] : array();
 
                                 if (!empty($docs_order)) {
-                                    $docs_args['post__in'] = $docs_order;
-                                    $docs_args['orderby'] = 'post__in';
-                                }
-
-                                $docs_query = new WP_Query($docs_args);
-                                $docs_count = $docs_query->found_posts;
-                                $last_modified = '';
-
-                                if ($docs_query->have_posts()) {
-                                    $recent_doc = get_posts(array(
-                                        'post_type' => 'sgkb-docs',
-                                        'posts_per_page' => 1,
-                                        'orderby' => 'modified',
-                                        'order' => 'DESC',
-                                        'suppress_filters' => false, // Allow WPML/Polylang to filter by language
-                                        'tax_query' => $docs_args['tax_query'],  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- Feature requires this taxonomy query.
-                                        'meta_query' => $docs_args['meta_query']  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Feature requires this meta query.
-                                    ));
-                                    if (!empty($recent_doc)) {
-                                        $last_modified = $recent_doc[0]->post_modified;
+                                    $by_id = array();
+                                    foreach ($category_docs as $category_doc) {
+                                        $by_id[$category_doc->ID] = $category_doc;
                                     }
+
+                                    $ordered = array();
+                                    foreach ($docs_order as $ordered_id) {
+                                        if (isset($by_id[$ordered_id])) {
+                                            $ordered[] = $by_id[$ordered_id];
+                                        }
+                                    }
+
+                                    $category_docs = $ordered;
                                 }
+
+                                $docs_count = count($category_docs);
+                                $category_docs = array_slice($category_docs, 0, $docs_per_category);
 
                                 // Determine if this should be a featured card
                                 $highlight_first = 'N';
@@ -659,16 +558,15 @@ $grid_class = 'sgkb-grid sgkb-grid-cols-1 sgkb-md:grid-cols-2';
                                         </p>
                                     <?php endif; ?>
 
-                                    <?php if ($docs_query->have_posts()) : ?>
+                                    <?php if (!empty($category_docs)) : ?>
                                         <ul class="sgkb-category-docs-list">
-                                            <?php while ($docs_query->have_posts()) : $docs_query->the_post(); ?>
+                                            <?php foreach ($category_docs as $category_doc) : ?>
                                                 <li>
-                                                    <a href="<?php the_permalink(); ?>">
-                                                        <?php the_title(); ?>
+                                                    <a href="<?php echo esc_url(get_permalink($category_doc)); ?>">
+                                                        <?php echo esc_html(get_the_title($category_doc)); ?>
                                                     </a>
                                                 </li>
-                                            <?php endwhile;
-                                            wp_reset_postdata(); ?>
+                                            <?php endforeach; ?>
                                         </ul>
                                     <?php endif; ?>
 
