@@ -66,8 +66,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
         // admin-ajax (cookie auth), not REST: an <img> can't send the X-WP-Nonce the
         // REST API requires. nopriv too, for public tickets; authz in the handler.
-        add_action('wp_ajax_' . self::$fileDlAction, [$this, 'ajax_file_dl']);
-        add_action('wp_ajax_nopriv_' . self::$fileDlAction, [$this, 'ajax_file_dl']);
+        Apbd_Wps_AttachmentStreamer::Register();
 
         self::$uploadBasePath = apply_filters('apbd-wps/filter/set-upload-path', self::$uploadBasePath);
 
@@ -1123,68 +1122,19 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         return absint(apply_filters('apbd-wps/filter/guest-session-ttl', $ttl));
     }
 
-    private static function GuestSessionCookieOptions($expires)
-    {
-        return [
-            'expires'  => $expires,
-            'path'     => (defined('COOKIEPATH') && COOKIEPATH) ? COOKIEPATH : '/',
-            'domain'   => defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '',
-            'secure'   => is_ssl(),
-            'httponly' => true,
-            'samesite' => 'Lax', // blocks the cookie on cross-site POST -> CSRF mitigation
-        ];
-    }
-
     public static function IssueGuestSessionCookie($ticket_id, $ticket_user)
     {
-        $exp = time() + self::GetGuestSessionTtl();
-
-        $claim = new stdClass();
-        $claim->ticket_id   = (int) $ticket_id;
-        $claim->ticket_user = (int) $ticket_user;
-        $claim->purpose     = 'guest_session';
-        $claim->iat         = time();
-        $claim->exp         = $exp;
-
-        $encObj = Apbd_Wps_EncryptionLib::getInstance(self::GetEncryptionKey());
-        $value  = $encObj->encryptObj($claim);
-        if (empty($value)) {
-            return false;
-        }
-
-        setcookie(self::GUEST_SESSION_COOKIE, $value, self::GuestSessionCookieOptions($exp));
-        $_COOKIE[self::GUEST_SESSION_COOKIE] = $value;
-        return true;
+        return Apbd_Wps_GuestSession::Issue($ticket_id, $ticket_user, self::GetGuestSessionTtl(), self::GetEncryptionKey());
     }
 
     public static function ValidateGuestSessionCookie($raw)
     {
-        if (empty($raw)) {
-            return null;
-        }
-
-        $encObj = Apbd_Wps_EncryptionLib::getInstance(self::GetEncryptionKey());
-        $claim  = $encObj->decryptObj($raw);
-
-        if (
-            empty($claim) ||
-            empty($claim->ticket_user) ||
-            empty($claim->ticket_id) ||
-            empty($claim->purpose) ||
-            'guest_session' !== $claim->purpose ||
-            empty($claim->exp) ||
-            (int) $claim->exp < time()
-        ) {
-            return null;
-        }
-
-        return $claim;
+        return Apbd_Wps_GuestSession::Validate($raw, self::GetEncryptionKey());
     }
 
     public static function ClearGuestSessionCookie()
     {
-        setcookie(self::GUEST_SESSION_COOKIE, '', self::GuestSessionCookieOptions(time() - 3600));
-        unset($_COOKIE[self::GUEST_SESSION_COOKIE]);
+        Apbd_Wps_GuestSession::Clear();
     }
 
     /**
@@ -1205,11 +1155,11 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
             return $user_id;
         }
 
-        if (empty($_COOKIE[self::GUEST_SESSION_COOKIE])) {
+        $raw = Apbd_Wps_GuestSession::ReadRaw();
+        if ('' === $raw) {
             return $user_id;
         }
 
-        $raw   = sanitize_text_field(wp_unslash($_COOKIE[self::GUEST_SESSION_COOKIE]));
         $claim = self::ValidateGuestSessionCookie($raw);
         if (empty($claim)) {
             return $user_id;
@@ -1430,35 +1380,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
 
     public static function RawVerifyCaptcha($secret = '', $token = '')
     {
-        if (empty($secret) || empty($token)) {
-            return new WP_Error('apbd_wps_recaptcha_missing_input', 'Secret key or token missing.');
-        }
-
-        $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', array(
-            'timeout' => 10,
-            'body' => array(
-                'secret' => $secret,
-                'response' => $token,
-            ),
-        ));
-
-        if (is_wp_error($response)) {
-            return new WP_Error('apbd_wps_recaptcha_unreachable', $response->get_error_message());
-        }
-
-        $status = absint(wp_remote_retrieve_response_code($response));
-
-        if (200 !== $status) {
-            return new WP_Error('apbd_wps_recaptcha_http_error', sprintf('HTTP %d', $status));
-        }
-
-        $result = json_decode(wp_remote_retrieve_body($response), true);
-
-        if (! is_array($result)) {
-            return new WP_Error('apbd_wps_recaptcha_bad_response', 'Unreadable verify response.');
-        }
-
-        return $result;
+        return Apbd_Wps_RecaptchaVerify::Verify($secret, $token);
     }
 
     protected  static function isValid($token, $secret = "")
@@ -2827,14 +2749,13 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         if (strtoupper(substr($pro_name, 0, 1)) == "D") {
             $s = new Mapbd_wps_support_meta();
             $s->item_id($ticket_id);
+            $s->item_type('T');
             $s->meta_key(preg_replace("#[^0-9]#", '', $pro_name));
             $s->meta_type('D');
             if ($s->Select()) {
                 $n = new Mapbd_wps_support_meta();
                 $n->meta_value($value);
-                $n->SetWhereUpdate("item_id", $ticket_id);
-                $n->SetWhereUpdate("meta_key", preg_replace("#[^0-9]#", '', $pro_name));
-                $n->SetWhereUpdate("meta_type", 'D');
+                $n->SetWhereUpdate("id", $s->id);
                 if (!$n->Update()) {
                     Mapbd_wps_debug_log::AddGeneralLog("Custom field update failed", ApbdWps_GetMsgAPI() . "\nTicket ID: $ticket_id, Custom Name: $pro_name, value:$value");
                 }
@@ -2939,20 +2860,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
      */
     public function ajax_file_dl()
     {
-        // Media endpoint hit by <img>; authz is in stream_ticket_attachment(), not a nonce.
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        $type = isset($_GET['type']) ? sanitize_text_field(wp_unslash($_GET['type'])) : '';
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        $id   = isset($_GET['id']) ? sanitize_text_field(wp_unslash($_GET['id'])) : '';
-        // basename()'d in the streamer; only used to locate a file, never echoed or in SQL.
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-        $file = isset($_GET['file']) ? wp_unslash($_GET['file']) : '';
-
-        if (! self::stream_ticket_attachment($type, $id, $file)) {
-            status_header(403);
-            exit;
-        }
-        exit;
+        Apbd_Wps_AttachmentStreamer::Ajax();
     }
 
     /**
@@ -2969,77 +2877,7 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
      */
     public static function stream_ticket_attachment($type, $ticket_or_reply_id, $file)
     {
-        $type     = strtoupper(sanitize_text_field((string) $type));
-        $basePath = self::get_upload_path();
-        $safeName = basename((string) $file);
-
-        if ($safeName === '' || $safeName === '.' || $safeName === '..') {
-            return false;
-        }
-
-        $ticket_id = 0;
-        $target    = null;
-
-        if ($type === 'T') {
-            $ticket_id = absint($ticket_or_reply_id);
-            if (! empty($ticket_id)) {
-                $target = $basePath . $ticket_id . '/attached_files/' . $safeName;
-            }
-        } elseif ($type === 'R') {
-            $parts = explode('_', (string) $ticket_or_reply_id);
-            if (count($parts) === 2) {
-                $rep = Mapbd_wps_ticket_reply::FindBy('ticket_id', absint($parts[0]), array('reply_id' => absint($parts[1])));
-                if ($rep) {
-                    $ticket_id = absint($rep->ticket_id);
-                    $target    = $basePath . $rep->ticket_id . '/replied/' . $rep->reply_id . '/attached_files/' . $safeName;
-                }
-            }
-        }
-
-        if (empty($ticket_id) || is_null($target)) {
-            return false;
-        }
-
-        if (! Mapbd_wps_ticket::userCanAccessTicket($ticket_id)) {
-            return false;
-        }
-
-        if (! file_exists($target)) {
-            return false;
-        }
-
-        // Defense-in-depth: the resolved path must stay inside the upload base.
-        $realBase   = realpath($basePath);
-        $realTarget = realpath($target);
-        if ($realBase === false || $realTarget === false
-            || strpos($realTarget, rtrim($realBase, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR) !== 0) {
-            return false;
-        }
-
-        $ext = strtolower(pathinfo($realTarget, PATHINFO_EXTENSION));
-        if (! in_array($ext, self::GetModuleAllowedFileType())) {
-            return false;
-        }
-
-        $mime = ApbdWps_GetMimeType($realTarget);
-        // Strip any header-breaking characters from the name before it goes in a header.
-        $dispositionName = sanitize_file_name($safeName);
-
-        if (! headers_sent()) {
-            nocache_headers();
-            header('Content-Type: ' . ($mime ? $mime : 'application/octet-stream'));
-            // "inline" so <img>/preview works; the browser can still save it.
-            header('Content-Disposition: inline; filename="' . $dispositionName . '"');
-            header('X-Content-Type-Options: nosniff');
-            header('Content-Length: ' . filesize($realTarget));
-        }
-
-        // Stream the raw binary with the proven native read. WP_Filesystem returns an
-        // empty body when get_filesystem_method() is non-direct, which blanked attachment
-        // downloads. Authorization + traversal protection are enforced above.
-        readfile($realTarget); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile, WordPress.Security.EscapeOutput.OutputNotEscaped -- Raw binary attachment download; readfile streams from disk and the bytes must not be escaped.
-
-        return true;
+        return Apbd_Wps_AttachmentStreamer::Stream($type, $ticket_or_reply_id, $file);
     }
 
     public function data()
@@ -4166,104 +4004,9 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
         echo wp_json_encode($apiResponse);
     }
 
-    /**
-     * Build the hardened .htaccess content used by the upload directory.
-     *
-     * Why: a remote-URL attachment flow (incoming webhook / HT contact form) was
-     * able to land .php files in this directory before validation. Defense-in-depth:
-     * even if a script slips in, Apache/LiteSpeed must refuse to execute it.
-     */
-    private static function GetUploadHtaccessContent()
-    {
-        return '# Support Genix - upload directory hardening (do not edit; managed by plugin)
-# Deny ALL direct HTTP access to this directory. Every file here (ticket/reply
-# attachments) is served only through the authenticated PHP proxy
-# (admin-ajax action=..._file_dl), which reads from disk via WP_Filesystem and
-# is therefore unaffected by these rules. Nothing in this tree is meant to be
-# fetched directly, so a blanket deny is safe and total.
-# NOTE: .htaccess is honoured by Apache/LiteSpeed but ignored by nginx; nginx
-# users must add an equivalent "location" deny rule at the server level.
-<IfModule authz_core_module>
-    Require all denied
-</IfModule>
-<IfModule !authz_core_module>
-    Order allow,deny
-    Deny from all
-</IfModule>
-
-# Block access to hidden/system files
-<FilesMatch "^\.">
-    <IfModule authz_core_module>
-        Require all denied
-    </IfModule>
-    <IfModule !authz_core_module>
-        Order allow,deny
-        Deny from all
-    </IfModule>
-</FilesMatch>
-
-# Deny direct access to executable / script files of any kind
-<FilesMatch "(?i)\.(php|phtml|phar|phps|pht|php[3-8]|js|mjs|html|htm|shtml|sh|bash|zsh|csh|ksh|cgi|pl|py|rb|asp|aspx|jsp|jspx|svg|htaccess|htpasswd)$">
-    <IfModule authz_core_module>
-        Require all denied
-    </IfModule>
-    <IfModule !authz_core_module>
-        Order allow,deny
-        Deny from all
-    </IfModule>
-</FilesMatch>
-
-# Disable PHP handlers if mod_php / mod_mime is loaded
-<IfModule mod_php5.c>
-    php_flag engine off
-</IfModule>
-<IfModule mod_php7.c>
-    php_flag engine off
-</IfModule>
-<IfModule mod_php8.c>
-    php_flag engine off
-</IfModule>
-<IfModule mod_mime.c>
-    RemoveHandler .php .phtml .phar .phps .pht .php3 .php4 .php5 .php6 .php7 .php8
-    RemoveType .php .phtml .phar .phps .pht .php3 .php4 .php5 .php6 .php7 .php8
-    AddType text/plain .php .phtml .phar .phps .pht .php3 .php4 .php5 .php6 .php7 .php8 .js .mjs .html .htm .shtml .sh .cgi .pl .py .svg
-</IfModule>
-
-# Prevent directory listing
-Options -Indexes -ExecCGI
-
-# Strip any X-Powered-By disclosure
-<IfModule mod_headers.c>
-    Header unset X-Powered-By
-</IfModule>
-';
-    }
-
     function CreateBaseFolder()
     {
-        // Create directory if it doesn't exist
-        if (!is_dir(self::$uploadBasePath)) {
-            wp_mkdir_p(self::$uploadBasePath);
-        }
-
-        // Always (re)write .htaccess so existing installs pick up the hardened rules.
-        // Cheap I/O on a single file and avoids needing a version-gated migration.
-        $htaccessFile = self::$uploadBasePath . "/.htaccess";
-        $desired = self::GetUploadHtaccessContent();
-        $current = file_exists($htaccessFile) ? @file_get_contents($htaccessFile) : '';
-        if ($current !== $desired) {
-            ApbdWps_FilePutContents($htaccessFile, $desired);
-        }
-
-        // Create index.php if it doesn't exist
-        $indexFile = self::$uploadBasePath . "/index.php";
-        if (!file_exists($indexFile)) {
-            ApbdWps_FilePutContents(
-                $indexFile,
-                '<?php
-// Silence is golden.'
-            );
-        }
+        Apbd_Wps_UploadDir::Ensure(self::$uploadBasePath);
     }
 
     /**
@@ -4271,24 +4014,7 @@ Options -Indexes -ExecCGI
      */
     function UpdateBaseFolder()
     {
-        // Create directory if it doesn't exist
-        if (!is_dir(self::$uploadBasePath)) {
-            wp_mkdir_p(self::$uploadBasePath);
-        }
-
-        // Always update .htaccess with latest security rules
-        $htaccessFile = self::$uploadBasePath . "/.htaccess";
-        ApbdWps_FilePutContents($htaccessFile, self::GetUploadHtaccessContent());
-
-        // Create index.php if it doesn't exist
-        $indexFile = self::$uploadBasePath . "/index.php";
-        if (!file_exists($indexFile)) {
-            ApbdWps_FilePutContents(
-                $indexFile,
-                '<?php
-// Silence is golden.'
-            );
-        }
+        Apbd_Wps_UploadDir::Ensure(self::$uploadBasePath, true);
     }
 
     /**

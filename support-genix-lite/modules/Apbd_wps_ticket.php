@@ -663,19 +663,28 @@ class Apbd_wps_ticket extends ApbdWpsBaseModuleLite
         echo wp_json_encode($apiResponse);
     }
 
+    /**
+     * Scalar-only list param; an array (e.g. `sort[]=x`) would break string handling.
+     */
+    private function GetListParam($key)
+    {
+        $value = ApbdWps_GetValue($key);
+        return is_scalar($value) ? $value : null;
+    }
+
     public function data()
     {
-        $tkt_type = ApbdWps_GetValue("tkt_type");
-        $sub_type = ApbdWps_GetValue("sub_type");
-        $category = ApbdWps_GetValue("category");
-        $tag = ApbdWps_GetValue("tag");
-        $agent = ApbdWps_GetValue("agent");
-        $priority = ApbdWps_GetValue("priority");
-        $search = ApbdWps_GetValue("search");
-        $need_reply = ApbdWps_GetValue("need_reply");
-        $sort = ApbdWps_GetValue("sort");
-        $page = ApbdWps_GetValue("page");
-        $limit = ApbdWps_GetValue("limit");
+        $tkt_type = $this->GetListParam("tkt_type");
+        $sub_type = $this->GetListParam("sub_type");
+        $category = $this->GetListParam("category");
+        $tag = $this->GetListParam("tag");
+        $agent = $this->GetListParam("agent");
+        $priority = $this->GetListParam("priority");
+        $search = $this->GetListParam("search");
+        $need_reply = $this->GetListParam("need_reply");
+        $sort = $this->GetListParam("sort");
+        $page = $this->GetListParam("page");
+        $limit = $this->GetListParam("limit");
 
         $tkt_type = in_array($tkt_type, ['T', 'MY', 'UA', 'D'], true) ? $tkt_type : 'T';
         $sub_type = in_array($sub_type, ['A', 'I', 'C', 'ST'], true) ? $sub_type : ('D' !== $tkt_type ? 'A' : 'ST');
@@ -736,17 +745,17 @@ class Apbd_wps_ticket extends ApbdWpsBaseModuleLite
 
     public function data_portal()
     {
-        $tkt_type = ApbdWps_GetValue("tkt_type");
-        $sub_type = ApbdWps_GetValue("sub_type");
-        $category = ApbdWps_GetValue("category");
-        $tag = ApbdWps_GetValue("tag");
-        $agent = ApbdWps_GetValue("agent");
-        $priority = ApbdWps_GetValue("priority");
-        $search = ApbdWps_GetValue("search");
-        $need_reply = ApbdWps_GetValue("need_reply");
-        $sort = ApbdWps_GetValue("sort");
-        $page = ApbdWps_GetValue("page");
-        $limit = ApbdWps_GetValue("limit");
+        $tkt_type = $this->GetListParam("tkt_type");
+        $sub_type = $this->GetListParam("sub_type");
+        $category = $this->GetListParam("category");
+        $tag = $this->GetListParam("tag");
+        $agent = $this->GetListParam("agent");
+        $priority = $this->GetListParam("priority");
+        $search = $this->GetListParam("search");
+        $need_reply = $this->GetListParam("need_reply");
+        $sort = $this->GetListParam("sort");
+        $page = $this->GetListParam("page");
+        $limit = $this->GetListParam("limit");
 
         $isAgent = Apbd_wps_settings::isAgentLoggedIn();
 

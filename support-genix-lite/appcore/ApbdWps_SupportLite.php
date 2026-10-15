@@ -30,40 +30,83 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
         $this->SetIsLoadJqGrid(true);
         $this->SetPluginIconClass("dashicons-logo-icon", 'dashicons-logo-icon');
         $this->setSetActionPrefix("apbd_wps");
-        $this->AddModule("Apbd_wps_role");
-        $this->AddModule("Apbd_wps_ticket_category");
-        $this->AddModule("Apbd_wps_ticket_tag");
-        $this->AddModule("Apbd_wps_ticket_assign_rule");
-        $this->AddModule("Apbd_wps_email_template");
-        $this->AddModule("Apbd_wps_canned_msg");
-        $this->AddModule("Apbd_wps_custom_field");
-        $this->AddModule("Apbd_wps_help_me_write");
-        $this->AddModule("Apbd_wps_woocommerce");
-        $this->AddModule("Apbd_wps_edd");
-        $this->AddModule("Apbd_wps_fluentcrm");
-        $this->AddModule("Apbd_wps_whatsapp");
-        $this->AddModule("Apbd_wps_slack");
-        $this->AddModule("Apbd_wps_envato_system");
-        $this->AddModule("Apbd_wps_elite_licenser");
-        $this->AddModule("Apbd_wps_tutorlms");
-        $this->AddModule("Apbd_wps_betterdocs");
-        $this->AddModule("Apbd_wps_webhook");
-        $this->AddModule("Apbd_wps_incoming_webhook");
-        $this->AddModule("Apbd_wps_ht_contact_form");
-        $this->AddModule("Apbd_wps_mailbox");
-        $this->AddModule("Apbd_wps_email_to_ticket");
-        $this->AddModule("Apbd_wps_ticket");
-        $this->AddModule("Apbd_wps_ticket_reply");
-        $this->AddModule("Apbd_wps_users");
-        $this->AddModule("Apbd_wps_settings");
-        $this->AddModule("Apbd_wps_report");
-        $this->AddModule("Apbd_wps_report_email");
-        $this->AddModule("Apbd_wps_weekend");
-        $this->AddModule("Apbd_wps_google");
-        $this->AddModule("Apbd_wps_debug_log");
-        $this->AddModule("Apbd_wps_knowledge_base");
-        $this->AddModule("Apbd_wps_elevenlabs");
-        $this->AddModule("Apbd_wps_recommended_plugins");
+
+        $modules = [
+            'Apbd_wps_role',
+            'Apbd_wps_ticket_category',
+            'Apbd_wps_ticket_tag',
+            'Apbd_wps_ticket_assign_rule',
+            'Apbd_wps_email_template',
+            'Apbd_wps_canned_msg',
+            'Apbd_wps_custom_field',
+            'Apbd_wps_help_me_write',
+            'Apbd_wps_woocommerce',
+            'Apbd_wps_edd',
+            'Apbd_wps_fluentcrm',
+            'Apbd_wps_whatsapp',
+            'Apbd_wps_slack',
+            'Apbd_wps_envato_system',
+            'Apbd_wps_elite_licenser',
+            'Apbd_wps_tutorlms',
+            'Apbd_wps_betterdocs',
+            'Apbd_wps_webhook',
+            'Apbd_wps_incoming_webhook',
+            'Apbd_wps_ht_contact_form',
+            'Apbd_wps_mailbox',
+            'Apbd_wps_email_to_ticket',
+            'Apbd_wps_ticket',
+            'Apbd_wps_ticket_reply',
+            'Apbd_wps_users',
+            'Apbd_wps_settings',
+            'Apbd_wps_report',
+            'Apbd_wps_report_email',
+            'Apbd_wps_weekend',
+            'Apbd_wps_google',
+            'Apbd_wps_debug_log',
+            'Apbd_wps_knowledge_base',
+            'Apbd_wps_elevenlabs',
+            'Apbd_wps_recommended_plugins',
+        ];
+
+        // Libs the modules call unconditionally at boot.
+        $libs = [
+            'Apbd_Wps_AttachmentStreamer',
+            'Apbd_Wps_GuestSession',
+            'Apbd_Wps_RecaptchaVerify',
+            'Apbd_Wps_UploadDir',
+        ];
+
+        // Traits the module files require_once; a deleted one must be reported, not fatal.
+        $traits = [
+            'ApbdWpsAPI_TicketTrait',
+            'Mapbd_wps_ticket_trait',
+            'Apbd_wps_ai_proxy_trait',
+            'Apbd_wps_help_me_write_generate_trait',
+            'Apbd_wps_knowledge_base_analytics_trait',
+            'Apbd_wps_knowledge_base_chatbot_trait',
+            'Apbd_wps_knowledge_base_chatquery_trait',
+            'Apbd_wps_knowledge_base_chatticket_trait',
+            'Apbd_wps_knowledge_base_duplicator_trait',
+            'Apbd_wps_knowledge_base_hierarchy_trait',
+            'Apbd_wps_knowledge_base_metabox_trait',
+            'Apbd_wps_knowledge_base_migrations_trait',
+            'Apbd_wps_knowledge_base_searches_trait',
+            'Apbd_wps_knowledge_base_shortcode_trait',
+            'Apbd_wps_knowledge_base_statistics_trait',
+            'Apbd_wps_knowledge_base_writebot_trait',
+            'Apbd_wps_settings_blocks_trait',
+            'Apbd_wps_ticket_migration_create_trait',
+            'Apbd_wps_ticket_migration_trait',
+        ];
+
+        // Check every boot file first; a partial boot would fatal later.
+        if (! $this->PreflightModules($modules, $libs, $traits)) {
+            return;
+        }
+
+        foreach ($modules as $module) {
+            $this->AddModule($module);
+        }
     }
     function _myautoload_method($class)
     {
@@ -139,7 +182,7 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
         // Note: This is a moderate policy that allows necessary functionality while blocking XSS
         $csp_directives = array(
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com", // phpcs:ignore PluginCheck.CodeAnalysis.Offloading.OffloadedContent -- CSP allowlist entry (reCAPTCHA); nothing is loaded from these hosts here.
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' data: https://fonts.gstatic.com",
             "img-src 'self' data: https: http:",
@@ -193,6 +236,7 @@ class ApbdWps_SupportLite extends ApbdWpsKarnelLite
             'logged_id' => get_current_user_id(),
             'is_master' => Apbd_wps_settings::isAgentLoggedIn(),
             'is_admin' => $isAdminUser,
+            'ai_proxy_visible' => Apbd_wps_settings::IsAIProxyVisible(),
             'admin_url' => admin_url(),
             'post_url' => admin_url('admin-ajax.php'),
             'ajax_url' => admin_url('admin-ajax.php'),

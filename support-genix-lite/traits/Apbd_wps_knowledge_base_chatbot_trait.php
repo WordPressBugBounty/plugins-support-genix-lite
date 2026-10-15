@@ -388,12 +388,12 @@ trait Apbd_wps_knowledge_base_chatbot_trait
         // Content Security Policy for iframe content
         $csp_directives = array(
             'default-src' => "'self'",
-            'script-src' => "'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://static.cloudflareinsights.com",
+            'script-src' => "'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://static.cloudflareinsights.com", // phpcs:ignore PluginCheck.CodeAnalysis.Offloading.OffloadedContent -- CSP allowlist entry (reCAPTCHA); nothing is loaded from these hosts here.
             'style-src' => "'self' 'unsafe-inline'",
             'font-src' => "'self' data:",
             'img-src' => "'self' data: https:",
             'connect-src' => "'self' https:",
-            'frame-src' => "https://www.google.com https://www.gstatic.com https://recaptcha.google.com",
+            'frame-src' => "https://www.google.com https://www.gstatic.com https://recaptcha.google.com", // phpcs:ignore PluginCheck.CodeAnalysis.Offloading.OffloadedContent -- CSP allowlist entry (reCAPTCHA); nothing is loaded from these hosts here.
             'object-src' => "'none'",
             'base-uri' => "'self'",
             'form-action' => "'self'"

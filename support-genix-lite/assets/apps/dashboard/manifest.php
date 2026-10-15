@@ -6,6 +6,6 @@
 defined('ABSPATH') || exit;
 
 return array(
-    'js'  => 'main.CN99a3H6.js',
+    'js'  => 'main.Cl9U0jh-.js',
     'css' => 'main.BIuCdw5S.css',
 );

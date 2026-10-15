@@ -541,7 +541,7 @@ class Apbd_wps_woocommerce extends ApbdWpsBaseModuleLite
     {
         if (is_array($metadata) && ! empty($metadata) && isset($metadata['W1'])) {
             $wc_data = sanitize_text_field($metadata['W1']);
-            $wc_data = (is_serialized($wc_data) ? unserialize($wc_data) : array());
+            $wc_data = (is_serialized($wc_data) ? unserialize($wc_data, array('allowed_classes' => false)) : array());
 
             if (is_array($wc_data) && ! empty($wc_data)) {
                 $metadata['wc_store_id'] = (isset($wc_data['store_id']) ? sanitize_text_field($wc_data['store_id']) : '');
@@ -711,7 +711,7 @@ class Apbd_wps_woocommerce extends ApbdWpsBaseModuleLite
 
             if (is_array($ticket_meta) && ! empty($ticket_meta)) {
                 $wc_data = (isset($ticket_meta['W1']) ? sanitize_text_field($ticket_meta['W1']) : '');
-                $wc_data = (is_serialized($wc_data) ? unserialize($wc_data) : array());
+                $wc_data = (is_serialized($wc_data) ? unserialize($wc_data, array('allowed_classes' => false)) : array());
 
                 if (is_array($wc_data) && ! empty($wc_data)) {
                     $store_id = (isset($wc_data['store_id']) ? sanitize_text_field($wc_data['store_id']) : 0);

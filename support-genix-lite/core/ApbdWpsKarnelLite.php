@@ -45,6 +45,11 @@ if (!class_exists("ApbdWpsKarnelLite")) {
         public $bootstrapVersion = '4.3.1';
         public static $_admin_notice = [];
         /**
+         * Set when a boot file cannot be loaded; the plugin then stays inert.
+         */
+        public $bootFailed = false;
+        public $bootFailure = '';
+        /**
          * @return bool
          */
         public function isLicenseActive()
@@ -472,16 +477,179 @@ if (!class_exists("ApbdWpsKarnelLite")) {
         }
 
         /**
+         * Why a plugin file cannot be loaded (e.g. emptied by a malware scanner), or '' when healthy.
+         *
+         * @param string $relativePath
+         * @return string
+         */
+        protected function PluginFileProblem($relativePath)
+        {
+            $path = plugin_dir_path($this->pluginFile) . $relativePath;
+
+            if (! file_exists($path)) {
+                return 'is missing';
+            }
+            if (! is_readable($path)) {
+                return 'is not readable (permissions ' . substr(sprintf('%o', fileperms($path)), -4) . ')';
+            }
+            if (0 === (int) filesize($path)) {
+                return 'is empty (0 bytes)';
+            }
+
+            return '';
+        }
+
+        /**
+         * @param string $moduleClassName
+         * @param bool   $loadFile Also include the file and verify it defines the class.
+         * @return string
+         */
+        protected function ModuleFileProblem($moduleClassName, $loadFile = false)
+        {
+            if (class_exists($moduleClassName)) {
+                return '';
+            }
+
+            $relativePath = "modules/" . $moduleClassName . ".php";
+            $problem = $this->PluginFileProblem($relativePath);
+
+            if ('' !== $problem) {
+                return $problem;
+            }
+
+            if ($loadFile) {
+                // No error suppression: a genuine parse error must surface as itself.
+                include_once plugin_dir_path($this->pluginFile) . $relativePath;
+
+                if (! class_exists($moduleClassName)) {
+                    return 'does not define class ' . $moduleClassName;
+                }
+            }
+
+            return '';
+        }
+
+        /**
+         * Log and notify once. Not deactivated on purpose: it recovers when the file is restored.
+         *
+         * @param string $relativePath
+         * @param string $problem
+         */
+        protected function FailBoot($relativePath, $problem)
+        {
+            if ($this->bootFailed) {
+                return;
+            }
+
+            $this->bootFailed = true;
+            $this->bootFailure = sprintf(
+                '%1$s: plugin file %2$s %3$s, so the plugin cannot start. This is almost always a host malware scanner (for example Imunify360) removing the file as a false positive, or an incomplete upload. Reinstall the plugin and ask your host to whitelist the wp-content/plugins/%4$s/ directory.',
+                $this->pluginName,
+                $relativePath,
+                $problem,
+                basename(dirname($this->pluginFile))
+            );
+
+            // Log at most once an hour per distinct failure.
+            $logKey = $this->pluginBaseName . '_boot_failure_logged';
+            $logHash = md5($this->bootFailure);
+            if (get_transient($logKey) !== $logHash) {
+                set_transient($logKey, $logHash, HOUR_IN_SECONDS);
+                error_log($this->bootFailure); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Boot failure must reach the host's PHP error log for support triage.
+            }
+
+            add_action('admin_notices', function () {
+                if (! current_user_can('activate_plugins')) {
+                    return;
+                }
+                printf('<div class="notice notice-error"><p>%s</p></div>', esc_html($this->bootFailure));
+            });
+        }
+
+        /**
+         * Check every file the boot depends on before constructing any module.
+         *
+         * @param string[] $moduleClassNames
+         * @param string[] $libClassNames
+         * @param string[] $traitNames
+         * @return bool
+         */
+        function PreflightModules(array $moduleClassNames, array $libClassNames = [], array $traitNames = [])
+        {
+            // A deleted trait is not matched by the glob below.
+            foreach ($traitNames as $traitName) {
+                $relativePath = 'traits/' . $traitName . '.php';
+                $problem = $this->PluginFileProblem($relativePath);
+                if ('' !== $problem) {
+                    $this->FailBoot($relativePath, $problem);
+                    return false;
+                }
+            }
+
+            // An emptied trait would fatal while its module file is included.
+            $traitFiles = glob(plugin_dir_path($this->pluginFile) . 'traits/*.php');
+            foreach ((is_array($traitFiles) ? $traitFiles : []) as $traitFile) {
+                $relativePath = 'traits/' . basename($traitFile);
+                $problem = $this->PluginFileProblem($relativePath);
+                if ('' !== $problem) {
+                    $this->FailBoot($relativePath, $problem);
+                    return false;
+                }
+            }
+
+            foreach ($libClassNames as $libClassName) {
+                if (class_exists($libClassName, false)) {
+                    continue;
+                }
+
+                $relativePath = 'libs/' . $libClassName . '.php';
+                $problem = $this->PluginFileProblem($relativePath);
+                if ('' === $problem && ! class_exists($libClassName)) {
+                    $problem = 'does not define class ' . $libClassName;
+                }
+                if ('' !== $problem) {
+                    $this->FailBoot($relativePath, $problem);
+                    return false;
+                }
+            }
+
+            foreach ($moduleClassNames as $moduleClassName) {
+                // Load it too: a file that defines no class would fatal after earlier modules booted.
+                $problem = $this->ModuleFileProblem($moduleClassName, true);
+                if ('' !== $problem) {
+                    $this->FailBoot('modules/' . $moduleClassName . '.php', $problem);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /**
          * @param $moduleClassName
          */
         function AddModule($moduleClassName)
         {
+            if ($this->bootFailed) {
+                return;
+            }
+
+            $problem = $this->ModuleFileProblem($moduleClassName);
+            if ('' !== $problem) {
+                $this->FailBoot('modules/' . $moduleClassName . '.php', $problem);
+                return;
+            }
+
             if (! class_exists($moduleClassName)) {
-                $path = plugin_dir_path($this->pluginFile) . "modules/" . $moduleClassName . ".php";
-                if (file_exists($path)) {
-                    @include_once($path);
+                // No error suppression: a genuine parse error must surface as itself.
+                include_once plugin_dir_path($this->pluginFile) . "modules/" . $moduleClassName . ".php";
+
+                if (! class_exists($moduleClassName)) {
+                    $this->FailBoot('modules/' . $moduleClassName . '.php', 'does not define class ' . $moduleClassName);
+                    return;
                 }
             }
+
             $this->moduleList[] = new $moduleClassName($this->pluginBaseName, $this);
             if (! $this->isTabMenu) {
                 if ($this->is_countable($this->moduleList) && count($this->moduleList) > 1) {
@@ -1072,6 +1240,10 @@ if (!class_exists("ApbdWpsKarnelLite")) {
 
         final function StartPlugin()
         {
+            if ($this->bootFailed) {
+                // No modules were constructed; registering menus/hooks would only fatal later.
+                return;
+            }
             if (is_callable($this->support_genix_slug . "_StartPlugin")) {
                 call_user_func($this->support_genix_slug . "_StartPlugin");
             }

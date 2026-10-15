@@ -124,6 +124,12 @@ if (!class_exists("ApbdWpsAjaxDataResponse")) {
                     $this->fromDate = ApbdWps_GetSystemFromWPTimezone($this->fromDate . " 00:00:00", "Y-m-d H:i:00");
                     $this->toDate   = ApbdWps_GetSystemFromWPTimezone($this->toDate . " 23:59:59", "Y-m-d H:i:s");
 
+                    // A failed conversion returns the error text (with the input), never use it in SQL.
+                    $date_format = '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/';
+                    if (! preg_match($date_format, (string) $this->fromDate) || ! preg_match($date_format, (string) $this->toDate)) {
+                        die("Failed");
+                    }
+
                     $mainobj->{$this->srcItem}("BETWEEN '" . $this->fromDate . "' AND '" . $this->toDate . "'", true);
                     $this->srcText = "";
                     $this->srcItem = "";

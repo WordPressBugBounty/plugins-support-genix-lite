@@ -1003,7 +1003,7 @@ if (!class_exists("ApbdWpsModel")) {
                         continue;
                     }
 
-                    if (('meta_value' === $key) && is_serialized($this->$key)) {
+                    if (('meta_value' === $key) && $this->IsSafeSerialized($this->$key)) {
                         continue;
                     }
 
@@ -1103,6 +1103,49 @@ if (!class_exists("ApbdWpsModel")) {
             }
 
             return $isOk;
+        }
+
+        /**
+         * Real, object-free serialized data; look-alike strings are cleaned as text.
+         *
+         * @param mixed $value
+         *
+         * @return bool
+         */
+        protected function IsSafeSerialized($value)
+        {
+            if (! is_string($value) || ! is_serialized($value)) {
+                return false;
+            }
+
+            if ('b:0;' === $value) {
+                return true;
+            }
+
+            $data = @unserialize($value, array('allowed_classes' => false)); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize -- Validation only; classes disallowed.
+
+            // The value may still carry WordPress request slashes.
+            if (false === $data) {
+                $data = @unserialize(wp_unslash($value), array('allowed_classes' => false)); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize -- Validation only; classes disallowed.
+            }
+
+            if (false === $data) {
+                return false;
+            }
+
+            $has_object = false;
+
+            if (is_object($data)) {
+                $has_object = true;
+            } elseif (is_array($data)) {
+                array_walk_recursive($data, function ($item) use (&$has_object) {
+                    if (is_object($item)) {
+                        $has_object = true;
+                    }
+                });
+            }
+
+            return ! $has_object;
         }
 
         function input_clean(&$value)

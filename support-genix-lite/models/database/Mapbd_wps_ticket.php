@@ -1327,6 +1327,10 @@ class Mapbd_wps_ticket extends ApbdWpsModel
 
     static function getTicketStat($src_by = [])
     {
+        if (! is_array($src_by)) {
+            $src_by = [];
+        }
+
         global $wpdb;
         $whereCondition = "";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
         $id = get_current_user_id();
@@ -1334,7 +1338,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             $is_public_tickets_menu = Apbd_wps_settings::GetModuleOption("is_public_tickets_menu", 'N');
 
             if ('Y' === $is_public_tickets_menu) {
-                $whereCondition = " WHERE t.ticket_user='{$id}' OR t.is_public = 'Y'";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+                $whereCondition = " WHERE (t.ticket_user='{$id}' OR t.is_public = 'Y')";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             } else {
                 $whereCondition = " WHERE t.ticket_user='{$id}'";  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
             }
@@ -1361,6 +1365,12 @@ class Mapbd_wps_ticket extends ApbdWpsModel
 
         if (! empty($src_by)) {
             foreach ($src_by as $src_item) {
+                if (! is_array($src_item) || ! isset($src_item['prop'], $src_item['val']) || ! is_scalar($src_item['prop']) || ! is_scalar($src_item['val'])) {
+                    continue;
+                }
+                if (! isset($src_item['opr']) || ! is_scalar($src_item['opr'])) {
+                    $src_item['opr'] = '';
+                }
                 $src_item['prop'] = preg_replace('#[^a-z0-9@ _\-\.\*]#i', "", $src_item['prop']);
                 $src_item['val']  = preg_replace('#[^a-z0-9@ _\-\.]#i', "", $src_item['val']);
                 // Reject any prop that is not '*' or a known column (optionally `t.`-qualified).
@@ -1429,7 +1439,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             }
 
             if ($assigned_on_condition) {
-                $whereCondition .= (! empty($whereCondition) ? ' AND ' : ' WHERE ') . $assigned_on_condition;
+                $whereCondition .= (! empty($whereCondition) ? ' AND ' : ' WHERE ') . "(" . $assigned_on_condition . ")";
             }
         }
 
@@ -1451,10 +1461,10 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             }
         }
         $responseData['T'] = $total;
-        $publicTicket = new Mapbd_wps_ticket();
-        self::setSearchBy($publicTicket, $src_by);
-        $publicTicket->is_public('Y');
-        $responseData['PUB'] = (int)$publicTicket->CountALL();
+        // Public tickets within the same scope as the counts above (customer, category, agent).
+        $pubWhere = (! empty($whereCondition) ? $whereCondition . ' AND ' : ' WHERE ') . "t.is_public = 'Y'";
+        $pubData = $mainobj->SelectQuery("SELECT count(*) total FROM {$ticket_table} as t {$join_condition} {$pubWhere}");  // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB -- Custom plugin table; direct query intentional, identifiers are internal $wpdb->prefix names, values prepared/sanitized.
+        $responseData['PUB'] = ! empty($pubData[0]->total) ? (int) $pubData[0]->total : 0;
 
         $publicTicket = new Mapbd_wps_ticket();
         self::setSearchBy($publicTicket, $src_by);
@@ -1469,7 +1479,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
     }
     private static function setSearchBy(&$mainobj, $src_by)
     {
-        if (! empty($src_by)) {
+        if (! empty($src_by) && is_array($src_by)) {
             $aps_user = new Mapbd_wps_users();
             $aps_support_meta = new Mapbd_wps_support_meta();
 
@@ -1482,6 +1492,12 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             $allowed_props = self::allowedSearchProps();
 
             foreach ($src_by as $src_item) {
+                if (! is_array($src_item) || ! isset($src_item['prop'], $src_item['val']) || ! is_scalar($src_item['prop']) || ! is_scalar($src_item['val'])) {
+                    continue;
+                }
+                if (! isset($src_item['opr']) || ! is_scalar($src_item['opr'])) {
+                    $src_item['opr'] = '';
+                }
                 $src_item['prop'] = preg_replace('#[^a-z0-9@ _\-\.\*]#i', "", $src_item['prop']);
                 $src_item['val'] = preg_replace('#[^a-z0-9@ _\-\.]#i', "", $src_item['val']);
                 // Reject any prop that is not '*' or a known column (optionally `t.`-qualified).
@@ -1512,9 +1528,9 @@ class Mapbd_wps_ticket extends ApbdWpsModel
                         }
                     } else {
                         if ($src_item['opr'] == 'like') {
-                            $mainobj->{$src_item['prop']}("like '%" . $src_item['val'] . "%'", true);
+                            $mainobj->{$prop_column}("like '%" . $src_item['val'] . "%'", true);
                         } else {
-                            $mainobj->{$src_item['prop']}($src_item['val']);
+                            $mainobj->{$prop_column}($src_item['val']);
                         }
                     }
                 }

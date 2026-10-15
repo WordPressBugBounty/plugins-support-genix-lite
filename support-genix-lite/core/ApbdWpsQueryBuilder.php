@@ -99,6 +99,8 @@ if (!class_exists("ApbdWpsQueryBuilder")) {
         protected function _like($field, $match = '', $type = 'AND ', $side = 'both', $not = '', $escape = NULL)
         {
             $field = ($escape) ? $this->escape_key($field) : $field;
+            // The match is always data, never SQL; % and _ stay wildcards as before.
+            $match = $this->escape_str((string) $match);
             if ($side === 'none') {
                 $like_statement = "{$field} {$not} LIKE '{$match}'";
             } elseif ($side === 'before') {
@@ -113,7 +115,8 @@ if (!class_exists("ApbdWpsQueryBuilder")) {
 
         public function limit($value, $offset = 0)
         {
-            $value = preg_replace("/[^0-9]/", "", $value);
+            $value  = preg_replace("/[^0-9]/", "", $value);
+            $offset = (int) $offset;
             if (empty($value)) {
                 return;
             }
@@ -249,7 +252,50 @@ if (!class_exists("ApbdWpsQueryBuilder")) {
          */
         protected function _escape_str($str)
         {
-            return $this->remove_invisible_characters($str);
+            global $wpdb;
+
+            $str = $this->remove_invisible_characters((string) $str);
+
+            // Input arrives MySQL-literal encoded (slashed $_POST); decode it, then escape.
+            $str = $this->decode_legacy_literal($str);
+
+            return $wpdb->remove_placeholder_escape(esc_sql($str));
+        }
+
+        /**
+         * Decode backslash sequences as MySQL reads a quoted string literal.
+         *
+         * @param    string
+         *
+         * @return    string
+         */
+        protected function decode_legacy_literal($str)
+        {
+            if (false === strpos($str, '\\')) {
+                return $str;
+            }
+
+            return preg_replace_callback('/\\\\(.)/s', function ($match) {
+                switch ($match[1]) {
+                    case '0':
+                        return "\0";
+                    case 'b':
+                        return "\x08";
+                    case 'n':
+                        return "\n";
+                    case 'r':
+                        return "\r";
+                    case 't':
+                        return "\t";
+                    case 'Z':
+                        return "\x1A";
+                    case '%':
+                    case '_':
+                        return $match[0];
+                    default:
+                        return $match[1];
+                }
+            }, $str);
         }
 
         /**

@@ -74,14 +74,27 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
 
         $order_by_prop = "entry_time";
         $order_by_value = "DESC";
-        if (! empty($this->payload['sort_by'][0])) {
-            $order_by_prop = $this->payload['sort_by'][0]['prop'];
-            $order_by_value = $this->payload['sort_by'][0]['ord'];
+        $sort_by = $this->GetPayload("sort_by", []);
+        if (is_array($sort_by) && ! empty($sort_by[0]) && is_array($sort_by[0])) {
+            if (! empty($sort_by[0]['prop']) && is_string($sort_by[0]['prop'])) {
+                $order_by_prop = $sort_by[0]['prop'];
+            }
+            if (! empty($sort_by[0]['ord']) && is_string($sort_by[0]['ord'])) {
+                $order_by_value = $sort_by[0]['ord'];
+            }
         }
         $mainobj = new Mapbd_wps_notification();
         $src_by = $this->GetPayload("src_by", []);
+        if (! is_array($src_by)) {
+            $src_by = [];
+        }
         foreach ($src_by as $src_item) {
-            if ($src_item['opr'] == 'like') {
+            // prop is used as a dynamic column setter and val goes into SQL.
+            if (! is_array($src_item) || ! isset($src_item['prop'], $src_item['val']) || ! is_scalar($src_item['val']) || ! in_array($src_item['prop'], ['title', 'msg', 'entry_type', 'status', 'item_type'], true)) {
+                continue;
+            }
+            $src_item['val'] = preg_replace('#[^a-z0-9@ _\-\.]#i', "", (string) $src_item['val']);
+            if (isset($src_item['opr']) && $src_item['opr'] == 'like') {
                 $mainobj->{$src_item['prop']}("like '%" . $src_item['val'] . "%'", true);
             } else {
                 $mainobj->{$src_item['prop']}($src_item['val']);
@@ -147,7 +160,10 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
 
         $category = !empty($category) ? "'" . implode("','", array_filter(array_map('absint', explode(",", $category)))) . "'" : '';
         $agent = !empty($agent) ? "'" . implode("','", array_filter(array_map('absint', explode(",", $agent)))) . "'" : '';
-        $priority = !empty($priority) ? "'" . implode("','", array_filter(array_map('sanitize_text_field', explode(",", $priority)))) . "'" : '';
+        $priority = !empty($priority) ? array_filter(array_map(function ($item) {
+            return preg_replace('/[^a-z0-9_]/i', '', (string) $item);
+        }, explode(",", (string) $priority))) : [];
+        $priority = !empty($priority) ? "'" . implode("','", $priority) . "'" : '';
 
         if (! empty($limit)) {
             if (empty($page)) {
@@ -158,9 +174,14 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
 
         $order_by_prop  = "opened_time";
         $order_by_value = "DESC";
-        if (! empty($this->payload['sort_by'][0])) {
-            $order_by_prop  = $this->payload['sort_by'][0]['prop'];
-            $order_by_value = $this->payload['sort_by'][0]['ord'];
+        $sort_by = $this->GetPayload("sort_by", []);
+        if (is_array($sort_by) && ! empty($sort_by[0]) && is_array($sort_by[0])) {
+            if (! empty($sort_by[0]['prop']) && is_string($sort_by[0]['prop'])) {
+                $order_by_prop  = $sort_by[0]['prop'];
+            }
+            if (! empty($sort_by[0]['ord']) && is_string($sort_by[0]['ord'])) {
+                $order_by_value = $sort_by[0]['ord'];
+            }
         }
 
         $is_agent_logged_in = Apbd_wps_settings::isAgentLoggedIn();
@@ -247,18 +268,30 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
         }
 
         $src_by = $this->GetPayload("src_by", []);
+        if (! is_array($src_by)) {
+            $src_by = [];
+        }
 
         $allowed_props = Mapbd_wps_ticket::allowedSearchProps();
 
         foreach ($src_by as $src_item) {
+            if (! is_array($src_item) || ! isset($src_item['prop'], $src_item['val']) || ! is_scalar($src_item['prop']) || ! is_scalar($src_item['val'])) {
+                continue;
+            }
+            if (! isset($src_item['opr']) || ! is_scalar($src_item['opr'])) {
+                $src_item['opr'] = '';
+            }
             if (('assigned_on' === $src_item['prop']) && $is_agent_logged_in && $check_assigned_on) {
                 $filter_assigned_on = absint($src_item['val']);
                 continue;
             }
-            // Reject any prop that is not '*' or a known column (optionally `t.`-qualified);
-            // prop is used below as a dynamic column setter / SQL identifier.
+            // prop is used as a column setter / SQL identifier, so allow known columns only.
             $prop_column = preg_replace('#^t\.#', '', (string) $src_item['prop']);
             if ('*' !== $src_item['prop'] && ! in_array($prop_column, $allowed_props, true)) {
+                continue;
+            }
+            // Never override the customer/category/agent scope set above.
+            if ('*' !== $src_item['prop'] && $mainobj->IsSetPrperty($prop_column)) {
                 continue;
             }
             $src_item['val'] = preg_replace('#[^a-z0-9@ _\-\.]#i', "", $src_item['val']);
@@ -289,14 +322,14 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
                         $mainobj->ticket_track_id($ticket_track_id_like_str . $src_by_query, true);
                     }
                 } else {
-                    if ('ticket_track_id' === $src_item['prop']) {
+                    if ('ticket_track_id' === $prop_column) {
                         $src_item['val'] = apply_filters('apbd-wps/filter/query-track-id', $src_item['val']);
                     }
 
                     if ($src_item['opr'] == 'like') {
-                        $mainobj->{$src_item['prop']}("like '%" . $src_item['val'] . "%'", true);
+                        $mainobj->{$prop_column}("like '%" . $src_item['val'] . "%'", true);
                     } else {
-                        $mainobj->{$src_item['prop']}($src_item['val']);
+                        $mainobj->{$prop_column}($src_item['val']);
                     }
                 }
             }
@@ -373,30 +406,6 @@ class ApbdWpsAPI_Ticket extends Apbd_Wps_APIBase
         return $this->response;
     }
 
-
-    function public_tickets()
-    {
-        global $wpdb;
-        $id = $this->get_current_user_id();
-        $page = 1;
-        $limit = 50;
-        $whereCondition = "WHERE t.is_public ='Y'";
-        $mainobj = new Mapbd_wps_ticket();
-        $responseData = new stdClass();
-        $responseData->page = $page;
-        $responseData->total = 0;
-        $responseData->tickets = $mainobj->SelectQuery("SELECT t.*,u.user_login,u.display_name FROM {$wpdb->prefix}apbd_wps_ticket AS t JOIN {$wpdb->base_prefix}users AS u ON u.ID = t.ticket_user {$whereCondition}");
-        foreach ($responseData->tickets as &$ticket) {
-            $ticket->ticket_track_id = apply_filters('apbd-wps/filter/display-track-id', $ticket->ticket_track_id);
-            $ticket->last_time_str = "2 Days Ago";
-            $ticket->display_name = ! empty($ticket->display_name) ? $ticket->display_name : $ticket->user_login;
-            $ticket->user_img = get_user_meta($ticket->ticket_user, 'supportgenix_avatar', true) ? get_user_meta($ticket->ticket_user, 'supportgenix_avatar', true) : get_avatar_url($ticket->ticket_user);
-            unset($ticket->user_login);
-        }
-        $responseData = apply_filters('apbd-wps/filter/before-get-ticket-list', $responseData);
-        $this->response->SetResponse(true, "", $responseData);
-        return $this->response;
-    }
 
     function trashed_ticket_list()
     {

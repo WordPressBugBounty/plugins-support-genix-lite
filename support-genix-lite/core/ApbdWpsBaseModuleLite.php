@@ -445,7 +445,7 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
                         'email_to_ticket_activate_item' => 'all',
                         'email_to_ticket_deactivate_item' => 'all',
                         'email_to_ticket_confirm' => 'all',
-                        'email_to_ticket_data' => 'read',
+                        'email_to_ticket_data' => 'all',
                         // Envato system.
                         'envato_system' => 'all',
                         'envato_system_login' => 'all',
@@ -483,7 +483,7 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
                         'mailbox_deactivate_item' => 'all',
                         'mailbox_settings_data' => 'all',
                         'mailbox_confirm' => 'all',
-                        'mailbox_data' => 'read',
+                        'mailbox_data' => 'all',
                         // Recommended plugins.
                         'recommended_plugins' => 'all',
                         'recommended_plugins_data' => 'all',
@@ -680,12 +680,83 @@ if (!class_exists("ApbdWpsBaseModuleLite")) {
                         'knowledge_base_searches_no_result_keywords_data' => 'access_analytics',
                         'knowledge_base_statistics_overview_data' => 'access_analytics',
                         'knowledge_base_docs_duplicate_item' => 'write_docs',
+                        // Debug log.
+                        'debug_log_add' => 'all',
+                        'debug_log_clean_data' => 'all',
+                        'debug_log_delete_item' => 'all',
+                        'debug_log_edit' => 'all',
+                        'debug_log_view_dtls' => 'all',
+                        // Email to ticket.
+                        'email_to_ticket_both_for_select' => 'read',
+                        // Help me write.
+                        'help_me_write_reply_generate' => 'read',
+                        'help_me_write_reply_refine' => 'read',
+                        // Knowledge base.
+                        'knowledge_base_analytics_reactions' => 'access_analytics',
+                        'knowledge_base_author_data_for_select' => 'read',
+                        'knowledge_base_category_data_for_select' => 'read',
+                        'knowledge_base_chatbot_conversation_detail' => 'access_analytics',
+                        'knowledge_base_chatbot_conversations_data' => 'access_analytics',
+                        'knowledge_base_chatbot_conversations_delete' => 'access_analytics',
+                        'knowledge_base_chatbot_conversations_stats' => 'access_analytics',
+                        'knowledge_base_chatbot_embed_sources' => 'access_analytics',
+                        'knowledge_base_chatbot_no_result_keywords_data' => 'access_analytics',
+                        'knowledge_base_chatbot_storage_settings_data' => 'access_analytics',
+                        'knowledge_base_chatbot_storage_settings_save' => 'access_analytics',
+                        'knowledge_base_chatbot_top_keywords_data' => 'access_analytics',
+                        'knowledge_base_docs_suggestions' => 'all',
+                        'knowledge_base_docs_suggestions_data' => 'read',
+                        'knowledge_base_migration_handle' => 'access_config',
+                        'knowledge_base_migrations_data' => 'access_config',
+                        'knowledge_base_role_for_select' => 'access_config',
+                        'knowledge_base_search' => 'read',
+                        'knowledge_base_searches_event' => 'read',
+                        'knowledge_base_space_data_for_select' => 'read',
+                        'knowledge_base_tag_data_for_select' => 'read',
+                        'knowledge_base_writebot_generate' => 'write_docs',
+                        // Notification.
+                        'notification_add' => 'read',
+                        'notification_delete_item' => 'read',
+                        'notification_edit' => 'read',
+                        'notification_is_popup_link_change' => 'read',
+                        // Settings.
+                        'settings_api_keys_ai_proxy' => 'all',
+                        'settings_api_keys_claude' => 'all',
+                        'settings_api_keys_elevenlabs' => 'all',
+                        'settings_api_keys_openai' => 'all',
+                        'settings_data_ai_proxy_credits' => 'all',
+                        'settings_data_api_keys_ai_proxy' => 'all',
+                        'settings_data_api_keys_claude' => 'all',
+                        'settings_data_api_keys_elevenlabs' => 'all',
+                        'settings_data_api_keys_openai' => 'all',
+                        'settings_data_auto_close' => 'all',
+                        'settings_data_basic' => 'read',
+                        'settings_data_setup_wizard' => 'read',
+                        'settings_elevenlabs_agents' => 'all',
+                        'settings_elevenlabs_voices' => 'all',
+                        'settings_setup_wizard' => 'all',
+                        'settings_setup_wizard_portal' => 'all',
+                        // Ticket.
+                        'ticket_change_ticket_user' => 'read',
+                        'ticket_current_viewers' => 'read',
+                        'ticket_edit_ticket_user_info' => 'read',
+                        'ticket_remove_current_viewer' => 'read',
+                        // Ticket category.
+                        'ticket_category_add_many' => 'all',
+                        'ticket_category_order_change' => 'all',
+                        'ticket_category_reset_order' => 'all',
+                        // Ticket migration.
+                        'ticket_migration_data' => 'all',
+                        'ticket_migration_handle' => 'all',
+                        // Ticket tag.
+                        'ticket_tag_data_for_select' => 'read',
                     ];
 
                     $user = wp_get_current_user();
 
                     if (!current_user_can('manage_options') && !is_super_admin($user->ID) && !in_array('administrator', $user->roles)) {
-                        $capability = (isset($epcapsList[$endpoint]) ? $epcapsList[$endpoint] : null);
+                        // Fail closed: unmapped endpoints are administrator-only.
+                        $capability = (isset($epcapsList[$endpoint]) ? $epcapsList[$endpoint] : 'all');
 
                         if (
                             $capability &&

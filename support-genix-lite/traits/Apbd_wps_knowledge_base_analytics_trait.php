@@ -239,7 +239,7 @@ trait Apbd_wps_knowledge_base_analytics_trait
         $author_ids = sanitize_text_field(ApbdWps_GetValue("author"));
 
         // Get date range data
-        $dateRange = $this->prepareDateRangeForAnalytics($date_start, $date_ended);
+        $dateRange = $this->PrepareAnalyticsDateRange($date_start . '-to-' . $date_ended);
 
         // Query current period
         $current = $this->getReactionsForPeriod(
@@ -264,9 +264,8 @@ trait Apbd_wps_knowledge_base_analytics_trait
             'previous' => $previous
         ];
 
-        // $apiResponse->AddData("data", $data);
-        // $apiResponse->SetSuccess();
-        // $apiResponse->Display();
+        $apiResponse->SetResponse(true, "", $data);
+        echo wp_json_encode($apiResponse);
         die();
     }
 

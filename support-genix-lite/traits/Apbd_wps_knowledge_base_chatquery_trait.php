@@ -1027,7 +1027,6 @@ trait Apbd_wps_knowledge_base_chatquery_trait
         ));
 
         if ($max_records >= $current_count) {
-            // phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
             return;
         }
 

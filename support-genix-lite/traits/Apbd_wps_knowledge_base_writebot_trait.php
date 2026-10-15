@@ -407,6 +407,10 @@ trait Apbd_wps_knowledge_base_writebot_trait
             return false;
         }
 
+        if (!Apbd_wps_knowledge_base::UserCanWriteDocs()) {
+            return false;
+        }
+
         // Check if Write With AI is enabled
         $status = Apbd_wps_knowledge_base::GetModuleOption('write_with_ai_status', 'I');
         if ('A' !== $status) {

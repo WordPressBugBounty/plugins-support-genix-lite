@@ -3,7 +3,7 @@ Contributors: devitemsllc, nazmulhudadev, aslamhasib
 Tags: helpdesk, support ticket, knowledge base, ai chatbot, customer support
 Requires at least: 6.0
 Tested up to: 7.1
-Stable tag: 1.4.54
+Stable tag: 1.4.55
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -467,6 +467,14 @@ Support Genix supports **OpenAI (GPT)** and **Claude (Anthropic)** for AI-powere
 
 == Changelog ==
 
+= Version: 1.4.55 - Date: 15 October, 2026 =
+* Security: Fixed an SQL injection issue in database queries.
+* Security: Stricter input validation for ticket filters and admin list searches.
+* Security: Tighter permission checks on admin AJAX actions.
+* Security: Ticket lists now always respect ticket access restrictions.
+* Fixed: The site no longer crashes if a malware scanner empties a plugin file by mistake.
+* Improved: Code reorganized for better maintainability.
+
 = Version: 1.4.54 - Date: 06 September, 2026 =
 * Added: Verify button for the reCAPTCHA v3 keys, so a wrong or mismatched key pair is reported before it blocks visitors.
 * Fixed: Support portal, AI Chatbot and Knowledge Base not loading on sites using the Plain permalink structure.
@@ -574,24 +582,5 @@ Support Genix supports **OpenAI (GPT)** and **Claude (Anthropic)** for AI-powere
 = Version: 1.4.36 - Date: 20 January, 2026 =
 * Added: Support Genix AI for instant access to AI features without API keys. Free credits included.
 * Added: Chat History & Analytics to track conversations, daily trends, peak hours, and helpful rates.
-* Improved: Overall plugin performance and stability for smoother, more reliable usage.
-* Fixed: Minor bugs and issues to enhance functionality and user experience.
-
-= Version: 1.4.35 - Date: 23 December, 2025 =
-* Fixed: Minor bugs and issues to enhance functionality and user experience.
-
-= Version: 1.4.34 - Date: 03 December, 2025 =
-* Added: Smart Knowledge Base navigation with expandable categories for easier browsing.
-* Added: Option to select preferred AI model for improved response quality.
-* Added: Lightbox for Knowledge Base article images, with an option to disable it.
-* Improved: Overall plugin performance and stability for smoother, more reliable usage.
-* Fixed: Minor bugs and issues to enhance functionality and user experience.
-* Tested: Compatibility with the latest version of WordPress.
-
-= Version: 1.4.33 - Date: 17 November, 2025 =
-* Fixed: Minor bugs and issues to enhance functionality and user experience.
-
-= Version: 1.4.32 - Date: 12 November, 2025 =
-* Added: Option to set and control the auto-refresh of the ticket list for agents.
 * Improved: Overall plugin performance and stability for smoother, more reliable usage.
 * Fixed: Minor bugs and issues to enhance functionality and user experience.

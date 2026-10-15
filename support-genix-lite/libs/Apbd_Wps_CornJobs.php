@@ -11,7 +11,8 @@ class Apbd_Wps_CornJobs extends ApbdWpsModel
     function __construct()
     {
         $this->cronSchedules();
-        $this->createSchedules();
+        // Scheduling reads the schedule labels, which are translated; wait for init.
+        add_action('init', array($this, 'createSchedules'));
         $this->createActions();
     }
 
@@ -22,16 +23,19 @@ class Apbd_Wps_CornJobs extends ApbdWpsModel
                 $schedules = [];
             }
 
+            // Other code may read schedules before translations are allowed to load.
+            $translate = did_action('after_setup_theme');
+
             $items = [
                 [
                     'recurrence' => 'support_genix_five_minutes',
                     'interval' => (5 * MINUTE_IN_SECONDS),
-                    'display' => $this->__('Every Five Minutes'),
+                    'display' => $translate ? $this->__('Every Five Minutes') : 'Every Five Minutes',
                 ],
                 [
                     'recurrence' => 'support_genix_twicedaily',
                     'interval' => (12 * HOUR_IN_SECONDS),
-                    'display' => $this->__('Twice Daily'),
+                    'display' => $translate ? $this->__('Twice Daily') : 'Twice Daily',
                 ],
             ];
 
