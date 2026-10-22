@@ -264,7 +264,7 @@ class Mapbd_wps_ticket_assign_rule extends ApbdWpsModel
                     $data_counter[$user->ID] = 0;
                 }
                 $mticket = new Mapbd_wps_ticket();
-                $stat = $mticket->SelectQuery("SELECT assigned_on as user_id, count(*) total FROM " . $wpdb->prefix . "apbd_wps_ticket WHERE assigned_on IN (9,2) group by assigned_on");
+                $stat = $mticket->SelectQuery("SELECT assigned_on as user_id, count(*) total FROM " . $wpdb->prefix . "apbd_wps_ticket WHERE assigned_on IN (" . implode(',', array_map('absint', $user_ids)) . ") group by assigned_on");
                 if (! empty($stat)) {
                     foreach ($stat as $st) {
                         $data_counter[$st->user_id] = $st->total;
@@ -295,6 +295,13 @@ class Mapbd_wps_ticket_assign_rule extends ApbdWpsModel
     static function ProcessRuleByCategory(&$ticketObj)
     {
         $Rules = self::getRuleBy($ticketObj);
+
+        // Specific-agent rules run before role rules so an explicit agent wins.
+        $specificRules = array_filter($Rules, function ($rule) {
+            return 'S' === $rule->rule_type;
+        });
+        $Rules = array_merge($specificRules, array_diff_key($Rules, $specificRules));
+
         foreach ($Rules as $rule) {
             self::ProcessRule($rule, $ticketObj);
         }
@@ -312,6 +319,9 @@ class Mapbd_wps_ticket_assign_rule extends ApbdWpsModel
             }
         } elseif ($rule->rule_type == "A") {
             //team
+            if (! empty($ticketObj->assigned_on)) {
+                return;
+            }
             $nextAgant = self::getNextAgent($rule->rule_id);
             if (! empty($nextAgant)) {
                 Mapbd_wps_ticket::AssignOn($ticketObj, $nextAgant);
@@ -344,7 +354,9 @@ class Mapbd_wps_ticket_assign_rule extends ApbdWpsModel
                 }
             }
 
-            if ($reply_obj->replied_by_type == 'A') {
+            if ($reply_obj->replied_by_type == 'A' && 'Y' === $reply_obj->is_private) {
+                // Private replies are internal: never notify the customer.
+            } elseif ($reply_obj->replied_by_type == 'A') {
                 //send email to user
                 Mapbd_wps_notification::AddNotification($ticketObj->ticket_user, "Ticket replied", "Ticket replied by %s", $ticket_replied_user, "/ticket/" . $ticketObj->id, false, "T", "A", $ticketObj->id);
                 Mapbd_wps_ticket::Send_ticket_replied_email_user($reply_obj, $ticketObj);

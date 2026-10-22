@@ -151,6 +151,17 @@ class Mapbd_wps_webhook extends ApbdWpsModel
     }
 
     /**
+     * From version 1.4.56
+     *
+     * Widen url: char(255) rejected long endpoints such as Power Automate / Teams workflow URLs.
+     */
+    static function UpdateDBTable2()
+    {
+        $thisObj = new static();
+        $thisObj->DBColumnAddOrModify('url', 'varchar', 2048, '', 'NOT NULL', 'title', 'textarea');
+    }
+
+    /**
      * From version 1.4.4
      */
     static function UpdateDBTableCharset()
@@ -176,7 +187,7 @@ class Mapbd_wps_webhook extends ApbdWpsModel
             $sql = "CREATE TABLE `{$table}` (
                       `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
                       `title` char(100) NOT NULL DEFAULT '',
-                      `url` char(255) NOT NULL DEFAULT '' COMMENT 'textarea',
+                      `url` varchar(2048) NOT NULL DEFAULT '' COMMENT 'textarea',
                       `on_tckt_create` char(1) NOT NULL COMMENT 'bool(A=Active,I=Inactive)',
                       `on_client_create` char(1) NOT NULL COMMENT 'bool(A=Active,I=Inactive)',
                       `on_tckt_replied` char(1) NOT NULL COMMENT 'bool(A=Active,I=Inactive)',

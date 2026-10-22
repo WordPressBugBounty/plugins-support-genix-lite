@@ -133,7 +133,7 @@ class Mapbd_wps_ticket_category extends ApbdWpsModel
             if (! empty($ctg)) {
                 $returnCats[] = $cat_id;
                 if (! empty($ctg->parent_category)) {
-                    if (empty($counter <= 15)) {
+                    if ($counter <= 15) {
                         $returnCats = array_merge(
                             $returnCats,
                             self::getAllCategoriesWithParents($ctg->parent_category, $counter + 1)

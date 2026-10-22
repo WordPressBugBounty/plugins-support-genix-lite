@@ -230,7 +230,7 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
     {
         //To Admin or Agent
         Mapbd_wps_email_templates::AddNewTemplate('ANT', 'To Admin or Agent', 'Ticket Created', 'A', 'New Ticket: {{ticket_title}} #{{ticket_track_id}}', '', '<p>A new ticket <strong>{{ticket_title}}</strong> has been submitted by {{ticket_user}}.</p><p>Ticket Body:<br>{{ticket_body}}</p><p>{{view_ticket_anchor}}</p><p>Thanks<br>{{site_name}}</p>');
-        Mapbd_wps_email_templates::AddNewTemplate('ANR', 'To Admin or Agent', 'Ticket Replied', 'A', 'New Response: {{ticket_title}} #{{ticket_track_id}}', '', '<p>A new response has been added to ticket <strong>{{ticket_title}}</strong> by {{ticket_user}}.</p><p>Reply Text:<br>{{replied_text}}</p><p>{{view_ticket_anchor}}</p><p>Thanks<br>{{site_name}}</p>');
+        Mapbd_wps_email_templates::AddNewTemplate('ANR', 'To Admin or Agent', 'Ticket Replied', 'A', 'New Response: {{ticket_title}} #{{ticket_track_id}}', '', '<p>A new response has been added to ticket <strong>{{ticket_title}}</strong> by {{ticket_replied_user}}.</p><p>Reply Text:<br>{{replied_text}}</p><p>{{view_ticket_anchor}}</p><p>Thanks<br>{{site_name}}</p>');
         Mapbd_wps_email_templates::AddNewTemplate('AAT', 'To Admin or Agent', 'Ticket Assigned', 'A', 'Ticket Assigned: {{ticket_title}} #{{ticket_track_id}}', '', '<p>A ticket <strong>{{ticket_title}}</strong> has been assigned to you.</p><p>Ticket Body:<br>{{ticket_body}}</p><p>{{view_ticket_anchor}}</p><p>Thanks<br>{{site_name}}</p>');
 
         //To Customer (Created by Ticket Form)
@@ -339,6 +339,23 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
             return false;
         }
     }
+    /**
+     * From version 1.4.56
+     *
+     * ANR default named the ticket owner as the replier; switch untouched defaults to the actual replier.
+     */
+    static function UpdateANRDefaultContent()
+    {
+        $obj = self::FindBy("k_word", "ANR");
+
+        if (! empty($obj) && '<p>A new response has been added to ticket <strong>{{ticket_title}}</strong> by {{ticket_user}}.</p><p>Reply Text:<br>{{replied_text}}</p><p>{{view_ticket_anchor}}</p><p>Thanks<br>{{site_name}}</p>' === $obj->content) {
+            $uobj = new self();
+            $uobj->content('<p>A new response has been added to ticket <strong>{{ticket_title}}</strong> by {{ticket_replied_user}}.</p><p>Reply Text:<br>{{replied_text}}</p><p>{{view_ticket_anchor}}</p><p>Thanks<br>{{site_name}}</p>');
+            $uobj->SetWhereUpdate("k_word", "ANR");
+            $uobj->Update();
+        }
+    }
+
     static  function SendEmailTemplates($keyword, $toEmail, $params = array(), $subject = "", $from_email = '', $reply_to = '', $attachments = [])
     {
         //reply-to
@@ -347,10 +364,12 @@ class Mapbd_wps_email_templates extends ApbdWpsModel
         }
 
         $obj = self::FindBy("k_word", $keyword);
-        if (! empty($obj)) {
-            if ($obj->status != "A") {
-                return true;
-            }
+        if (empty($obj)) {
+            // Template row missing: nothing to send.
+            return true;
+        }
+        if ($obj->status != "A") {
+            return true;
         }
         if (!isset($params["site_name"])) {
             $params["site_name"] = get_bloginfo('name');

@@ -37,7 +37,7 @@ class Apbd_Wps_Imap
         if (false === $this->stream) {
             $configbk = $config;
             $configbk['pass'] = 'hidden';
-            $msg = json_encode($config) . "<br/>Error Message:<br/>" . $this->last_error();
+            $msg = json_encode($configbk) . "<br/>Error Message:<br/>" . $this->last_error();
             Mapbd_wps_debug_log::AddGeneralLog("Email to ticket imap connection config error", $msg);
             return $msg;
         }
@@ -715,7 +715,7 @@ class Apbd_Wps_Imap
      */
     public function get_mailbox_statistics()
     {
-        return false !== $this->stream ? imap_mailboxmsginfo($this->stream) : FALSE;
+        return $this->stream ? imap_mailboxmsginfo($this->stream) : FALSE;
     }
 
 
@@ -754,9 +754,22 @@ class Apbd_Wps_Imap
         }
 
         if (! empty($headerinfos->personal)) {
-            $name = imap_mime_header_decode($headerinfos->personal);
-            $name = $name[0]->text;
-            $from['name'] = $this->convert_to_utf8($name);
+            // A name can arrive as several encoded-words, each with its own charset.
+            $name = '';
+            foreach ((array) imap_mime_header_decode($headerinfos->personal) as $part) {
+                $charset = (isset($part->charset) && 'default' !== strtolower($part->charset)) ? $part->charset : '';
+                $text = $part->text;
+                if (! empty($charset) && 'UTF-8' !== strtoupper($charset) && function_exists('mb_convert_encoding')) {
+                    try {
+                        $converted = @mb_convert_encoding($text, 'UTF-8', $charset);
+                        $text = (false !== $converted) ? $converted : $text;
+                    } catch (\Throwable $e) {
+                        // Unknown charset: keep the raw text.
+                    }
+                }
+                $name .= $text;
+            }
+            $from['name'] = $this->convert_to_utf8(trim($name));
         }
 
         return $from;
@@ -976,7 +989,7 @@ class Apbd_Wps_Imap
 
     public function __destruct()
     {
-        if (false !== $this->stream) {
+        if ($this->stream) {
             imap_close($this->stream);
         }
     }

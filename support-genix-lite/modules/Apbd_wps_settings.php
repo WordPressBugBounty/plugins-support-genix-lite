@@ -2090,6 +2090,13 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     Mapbd_wps_docs_searches_events::UpdateDBTable();
                     Mapbd_wps_chatbot_events::UpdateDBTable();
                 }
+
+                // When pro version is less than 1.8.56
+                if (1 === version_compare('1.8.56', $last_pro_version)) {
+                    // From version 1.4.56
+                    Mapbd_wps_webhook::UpdateDBTable2();
+                    Mapbd_wps_email_templates::UpdateANRDefaultContent();
+                }
             }
 
             // From version 1.4.0
@@ -2407,6 +2414,15 @@ class Apbd_wps_settings extends ApbdWpsBaseModuleLite
                     Mapbd_wps_docs_analytics::UpdateDBTable();
                     Mapbd_wps_docs_searches_events::UpdateDBTable();
                     Mapbd_wps_chatbot_events::UpdateDBTable();
+                }
+            }
+
+            // From version 1.4.56
+            if (1 === version_compare('1.4.56', $previous_version)) {
+                // When pro version is empty or less than 1.8.56
+                if (empty($last_pro_version) || (1 === version_compare('1.8.56', $last_pro_version))) {
+                    Mapbd_wps_webhook::UpdateDBTable2();
+                    Mapbd_wps_email_templates::UpdateANRDefaultContent();
                 }
             }
         }

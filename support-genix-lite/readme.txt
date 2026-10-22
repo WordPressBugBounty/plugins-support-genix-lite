@@ -3,7 +3,7 @@ Contributors: devitemsllc, nazmulhudadev, aslamhasib
 Tags: helpdesk, support ticket, knowledge base, ai chatbot, customer support
 Requires at least: 6.0
 Tested up to: 7.1
-Stable tag: 1.4.55
+Stable tag: 1.4.56
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -467,6 +467,11 @@ Support Genix supports **OpenAI (GPT)** and **Claude (Anthropic)** for AI-powere
 
 == Changelog ==
 
+= Version: 1.4.56 - Date: 22 October, 2026 =
+* Improved: Automation Rules for more accurate ticket assignment.
+* Improved: Email Notifications for more accurate details.
+* Fixed: Minor bugs and issues to enhance functionality and user experience.
+
 = Version: 1.4.55 - Date: 15 October, 2026 =
 * Security: Fixed an SQL injection issue in database queries.
 * Security: Stricter input validation for ticket filters and admin list searches.
@@ -576,11 +581,5 @@ Support Genix supports **OpenAI (GPT)** and **Claude (Anthropic)** for AI-powere
 * Fixed: Minor bugs and issues to enhance functionality and user experience.
 
 = Version: 1.4.37 - Date: 26 January, 2026 =
-* Improved: Overall plugin performance and stability for smoother, more reliable usage.
-* Fixed: Minor bugs and issues to enhance functionality and user experience.
-
-= Version: 1.4.36 - Date: 20 January, 2026 =
-* Added: Support Genix AI for instant access to AI features without API keys. Free credits included.
-* Added: Chat History & Analytics to track conversations, daily trends, peak hours, and helpful rates.
 * Improved: Overall plugin performance and stability for smoother, more reliable usage.
 * Fixed: Minor bugs and issues to enhance functionality and user experience.

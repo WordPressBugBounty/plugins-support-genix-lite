@@ -297,7 +297,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
             $ticketObj->priority("N");
             $ticketObj->email_notification("Y");
             if ($ticketObj->Save()) {
-                $title = ApbdWps_GetUserTitleByUser($ticketObj->ticket_user);
+                $title = ApbdWps_GetUserTitleById($ticketObj->ticket_user);
                 Mapbd_wps_ticket_log::AddTicketLog($ticketObj->id, $ticketObj->ticket_user, "U", $ticketObj->___("Ticket opened by %s", $title), $ticketObj->status, 'B', $ticketObj->opened_time);
                 $ticketObj->ticket_track_id = apply_filters('apbd-wps/filter/display-track-id', $ticketObj->ticket_track_id);
                 if (!$action_later) {
@@ -665,7 +665,7 @@ class Mapbd_wps_ticket extends ApbdWpsModel
 
         if (! empty($replied_obj->reply_id) && ! empty($ticketObj->id)) {
             $ticketDir = Apbd_wps_settings::get_upload_path();
-            $attached_files = Mapbd_wps_email_templates::get_all_files($ticketDir . $ticketObj->id . "/replied/" . $replied_obj->reply_id);
+            $attached_files = Mapbd_wps_email_templates::get_all_files($ticketDir . $ticketObj->id . "/replied/" . $replied_obj->reply_id . "/attached_files");
         }
 
         Mapbd_wps_email_templates::SendEmailTemplates('ANR', $toEmail, $params, '', '', '', $attached_files);
