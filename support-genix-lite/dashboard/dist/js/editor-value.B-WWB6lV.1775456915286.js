@@ -1,1 +1,0 @@
-const s=r=>{if(!r)return r;let t=r.replace(/<p>\s*<\/p>/g,"<p><br></p>").replace(/\s+/g," ").trim();const e=/^\s*(?:<p>(?:\s|<br\/?>)*<\/p>\s*)+/,p=/\s*(?:<p>(?:\s|<br\/?>)*<\/p>\s*)+$/;return t=t.replace(e,"").replace(p,""),t};export{s as t};
